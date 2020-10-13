@@ -15,6 +15,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <developers>
+        <developer>
+            <name>Gian Luca Mori</name>
+            <email>giansluca@gmail.com</email>
+            <organization>io.github.giansluca</organization>
+            <organizationUrl>https://github.com/giansluca</organizationUrl>
+        </developer>
+    </developers>
+
     <repositories>
         <repository>
             <id>geotoolkit</id>
