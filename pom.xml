@@ -295,7 +295,7 @@
                             <!--
                             <jdk>
                                 <include>true</include>
-                                <location>jre/jdk-11.0.8+10-jre/Contents/Home</location>
+                                <location>jre path</location>
                             </jdk>
                             -->
                         </configuration>
