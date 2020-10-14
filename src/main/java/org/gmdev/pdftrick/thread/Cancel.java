@@ -31,15 +31,14 @@ public class Cancel implements Runnable {
 		} catch (Exception e) {
 			logger.error("Exception", e);
 		}
-		System.gc();
 	}
 	
 	/**
 	 * Clean the interface and all objects
 	 */
 	public void execute () throws InterruptedException {
-		final JTextField currentPageField = factory.getUserInterface().getRight().getCurrentPageField();
-		final JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
+		JTextField currentPageField = factory.getUserInterface().getRight().getCurrentPageField();
+		JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
 		
 		if (factory.gettContainer().getOpenFileChooser() != null) {
 			while (!factory.gettContainer().getOpenFileChooser().isFinished()) {
@@ -111,22 +110,19 @@ public class Cancel implements Runnable {
 		}
 		
 		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					PdfTrickUtils.cleanLeftPanel();
-					PdfTrickUtils.cleanCenterPanel();
-					PdfTrickMessages.cleanTextArea();
-					currentPageField.setText("");
-					numImgSelectedField.setText("");
-				}
+			SwingUtilities.invokeAndWait(() -> {
+				PdfTrickUtils.cleanLeftPanel();
+				PdfTrickUtils.cleanCenterPanel();
+				PdfTrickMessages.cleanTextArea();
+				currentPageField.setText("");
+				numImgSelectedField.setText("");
 			});
 		} catch (InterruptedException e) {
 			logger.error("Exception", e);
 		} catch (InvocationTargetException e) {
 			logger.error("Exception", e);
 		}
-		
+
 		PdfTrickUtils.cleanImageSelectedHashMap();
 		PdfTrickUtils.cleanInlineImgSelectedHashMap();
 		PdfTrickUtils.cleanRotationFromPagesHashMap();

@@ -226,7 +226,7 @@ public class PdfTrickUtils {
 	 * Start wait icon in center panel
 	 */
 	public static void startWaitIconLoadPdf() {
-		final JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
 		
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WAIT));
 		JLabel waitLabel = new JLabel(imageIcon);
@@ -243,7 +243,7 @@ public class PdfTrickUtils {
 	 * Stop wait Icon in center panel
 	 */
 	public static void stopWaitIcon() {
-		final JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.setLayout(new WrapLayout());
 		centerPanel.removeAll();
 		centerPanel.revalidate();
@@ -254,7 +254,7 @@ public class PdfTrickUtils {
 	 * Clean the left panel
 	 */
 	public static void cleanLeftPanel() {
-		final JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
+		JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
 		FileDrop.remove(leftPanel);
 		leftPanel.removeAll();
 		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0));  
@@ -268,7 +268,7 @@ public class PdfTrickUtils {
 	 * Clean the center panel
 	 */
 	public static void cleanCenterPanel() {
-		final JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.removeAll();
 		centerPanel.revalidate();
 		centerPanel.repaint();
@@ -278,7 +278,7 @@ public class PdfTrickUtils {
 	 * Remove the drop blue border, in some circumstances that happens only in windows OS and only at runtime
 	 */
 	public static void resetDropBorder() {
-		final JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
+		JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
 		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0)); 
 	}
 	
