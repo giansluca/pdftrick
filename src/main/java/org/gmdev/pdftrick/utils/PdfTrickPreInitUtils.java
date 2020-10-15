@@ -99,10 +99,6 @@ public class PdfTrickPreInitUtils {
 			
             in.close();
 			out.close();
-		} catch (FileNotFoundException e) {
-			logger.error("Exception", e);
-		} catch (IOException e) {
-			logger.error("Exception", e);
 		} catch (Exception e) {
 			logger.error("Exception", e);
 		}

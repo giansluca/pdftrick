@@ -155,7 +155,7 @@ public class ShowThumbs implements Runnable {
 		} catch (Exception e) {
 			logger.error("Exception", e);
 			PdfTrickMessages.appendNewLine();
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 		}
 		finished = true;
 	}

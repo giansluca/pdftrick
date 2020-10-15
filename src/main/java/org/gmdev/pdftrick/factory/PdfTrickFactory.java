@@ -21,7 +21,6 @@ public class PdfTrickFactory {
 	
 	private UI2 userInterface;
 	private String os;
-	private String arch;
 	private String hiddenHomeFolder;
 	private String resultFile;
 	private NativeObjectManager nativemanager;
@@ -55,9 +54,8 @@ public class PdfTrickFactory {
 	/**
 	 * Initialize PdfTrick 
 	 */
-	public void initialize(String hiddenHomeFolder, String arch, String os) {
+	public void initialize(String hiddenHomeFolder, String os) {
 		this.os = os;
-		this.arch = arch;
 		this.hiddenHomeFolder = hiddenHomeFolder;
 		resultFile = hiddenHomeFolder+File.separator+Consts.RESULTPDFFILE;
 		nativemanager = new NativeObjectManager();
@@ -96,10 +94,6 @@ public class PdfTrickFactory {
 
 	public synchronized String getOs() {
 		return os;
-	}
-	
-	public synchronized String getArch() {
-		return arch;
 	}
 	
 	public synchronized String getHiddenHomeFolder() {

@@ -136,7 +136,7 @@ public class CheckFiles {
             in.close();
         } catch (IOException e) {
         	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+        	PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
         }
         
         return line;
@@ -180,7 +180,7 @@ public class CheckFiles {
 				}
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+				PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 			}	
 		}
 		
@@ -252,7 +252,7 @@ public class CheckFiles {
 			userProtection = true;
 		} catch (IOException e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 		}
 	}
 	
@@ -368,7 +368,7 @@ public class CheckFiles {
 				PdfTrickMessages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_07"), n, file.getName()));
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.appendLater("ERROR", Consts.SENDLOG_MSG);
+				PdfTrickMessages.appendLater("ERROR", Consts.SEND_LOG_MSG);
 			}
 		}
 	}

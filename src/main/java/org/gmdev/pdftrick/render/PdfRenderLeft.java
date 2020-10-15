@@ -37,7 +37,7 @@ public class PdfRenderLeft {
 			reader.close();
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 		}
 		
 		// system of thread that call native function and renderizing pdf cover in png images 

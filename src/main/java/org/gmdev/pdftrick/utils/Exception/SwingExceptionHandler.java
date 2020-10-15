@@ -11,6 +11,6 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
 	@Override  
 	public void uncaughtException(Thread aThread, Throwable t) {
 		logger.error("Exception", t);
-		PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+		PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 	}
 }

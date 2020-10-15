@@ -98,7 +98,7 @@ public class ImagesExtractor {
 				ImageIO.write(inImg.getImage(), encode, outputfile);
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+				PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 			}
 			
 			z++;
@@ -144,7 +144,7 @@ public class ImagesExtractor {
 						ImageIO.write(buff, type, outputfile);
 					} catch (Exception e) {
 						logger.error("Exception", e);
-						PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+						PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 					}
 				}
 				
@@ -166,7 +166,7 @@ public class ImagesExtractor {
 							buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 						} catch (Exception ex) {
 							logger.error("Exception", e);
-							PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+							PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 						}
 					}
 					
@@ -222,7 +222,7 @@ public class ImagesExtractor {
 			PdfTrickMessages.append("INFO", messages.getProperty("tmsg_19"));
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 			retExtract = false;
 		}
 		return retExtract;

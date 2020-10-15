@@ -105,7 +105,7 @@ public class ImageListenerShowThumb implements RenderListener {
 					}
 				} catch (Exception e) {
 					logger.error("Exception", e);
-					PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+					PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 					unsupportedImage++;
 					return;
 				}
@@ -128,13 +128,13 @@ public class ImageListenerShowThumb implements RenderListener {
 						buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 					} catch (Exception e) {
 						logger.error("Exception", e);
-						PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+						PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 						unsupportedImage++;
 						return;
 					}
 				} catch (Exception e) {
 					logger.error("Exception", e);
-					PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+					PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 					unsupportedImage++;
 					return;
 				}
@@ -242,11 +242,11 @@ public class ImageListenerShowThumb implements RenderListener {
 			}
 		} catch (IOException e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 			unsupportedImage++;
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 			unsupportedImage++;
 		}
 	}

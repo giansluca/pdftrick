@@ -59,12 +59,9 @@ public class PdfTrickMessages {
 						txtArea.append(builder.toString());
 					}
 				});
-			} catch (InterruptedException e) {
+			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
-			} catch (InvocationTargetException e) {
-				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+				PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 			}
 		} else {
 			txtArea.append(builder.toString());
@@ -187,7 +184,7 @@ public class PdfTrickMessages {
 			});
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 		}
 	}
 

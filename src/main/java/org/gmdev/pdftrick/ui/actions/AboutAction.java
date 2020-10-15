@@ -32,11 +32,10 @@ public class AboutAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		final Properties messages = factory.getMessages();
-		final String arch = factory.getArch();
 		final String os = factory.getOs();
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.MAIN_ICO));
 		
-		PdfTrickMessages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os, arch), 
+		PdfTrickMessages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os),
 				messages.getProperty("jmsg_07"), 1, imageIcon);
 	}
 	

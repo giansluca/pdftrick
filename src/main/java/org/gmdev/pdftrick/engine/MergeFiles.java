@@ -61,18 +61,12 @@ public class MergeFiles {
 			// Resulting pdf
             OutputStream out = new FileOutputStream(mergedFile);
             doMerge(list, out);
-        } catch (FileNotFoundException e) {
+        } catch (IOException | DocumentException e) {
         	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
-        } catch (DocumentException e) {
-        	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
-        } catch (IOException e) {
-        	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+        	PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
         }
-		
-        return mergedFile;
+
+		return mergedFile;
 	}
 	
 	private void doMerge(List<StreamPwdContainer> list, OutputStream outputStream) throws DocumentException, IOException {

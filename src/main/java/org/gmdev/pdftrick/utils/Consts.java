@@ -19,7 +19,7 @@ public final class Consts {
 	public static final String NATIVELIB_WIN_64 ="libpdftrick_native_1.7a_64.dll";
 	public static final String NATIVELIB_MAC_64 ="libpdftrick_native_1.7a_64.jnilib";
 	public static final String PROPERTYFILE = "properties/pdftrick.properties";
-	public static final String PROPERTYL4JFILE = "properties/log4j.properties";
+	public static final String PROPERTY_L4J_FILE = "properties/log4j.properties";
 	public static final String LOGFILE = "pdftrick.log";
 	public static final String GENERICICCFILE = "Generic_CMYK_Profile.icc";
 	public static final String LICENSEFILE = "license.txt";
@@ -52,9 +52,8 @@ public final class Consts {
 	public static final String WAIT_EXT = "icons/wait_ext.gif";
 	
 	// static messages
-	public static final String SENDLOG_MSG = "an error occurred, to improve Pdf Trick please send a log file by clicking Help/Send Log";
-	public static final String ERRORTYPE = "Access Error";
-	public static final String ERROR_01 = "PdfTrick is already running ...";
-	public static final String ERROR_02 = "Wrong architecture!";
+	public static final String SEND_LOG_MSG = "an error occurred, to improve Pdf Trick please send a log file by clicking Help/Send Log";
+	public static final String ERROR_TYPE = "Access Error";
+	public static final String ERROR_RUNNING = "PdfTrick is already running ...";
 	public static final String ERROR_64 = "Wrong architecture! PdfTrick can run only in a 64 bit machine";
 }

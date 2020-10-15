@@ -91,7 +91,7 @@ public class ImgThumb implements Runnable {
 			PdfTrickMessages.append("INFO", infoUnsupported+infoAvailable);
 		} catch(Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 		}
 		
 		SwingUtilities.invokeLater(new ManagePanelWait("thumb", "thumb_hide"));

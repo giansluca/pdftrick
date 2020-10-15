@@ -36,7 +36,7 @@ public class PageThumb implements Runnable {
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SENDLOG_MSG);
+			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 		}
 	}
 	
