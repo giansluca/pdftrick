@@ -9,32 +9,33 @@ import javax.swing.*;
 import org.apache.log4j.*;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.utils.*;
-import org.gmdev.pdftrick.utils.Exception.SwingExceptionHandler;
+
+import static org.gmdev.pdftrick.utils.SetuptUtils.*;
 
 public class PdfTrick {
     private static final Logger LOGGER = Logger.getLogger(PdfTrick.class);
     private static final String ERROR_TYPE = Consts.ERROR_TYPE;
 
     public static void main(String[] args) {
+        // logger config
         PropertyConfigurator.configure(FileLoader.loadAsStream(Consts.PROPERTY_L4J_FILE));
 
-        // set the default UncaughtExceptionHandler
-        Thread.setDefaultUncaughtExceptionHandler(new SwingExceptionHandler());
-        System.setProperty("sun.awt.exception.handler", SwingExceptionHandler.class.getName());
-
         // check OS
-        String pdfTrickOs = args[0];
-        if (pdfTrickOs.equalsIgnoreCase("win") && !PdfTrickPreInitUtils.isWindows())
-            System.exit(0);
-        else if (pdfTrickOs.equalsIgnoreCase("mac") && !PdfTrickPreInitUtils.isMac())
-            System.exit(0);
+        if (args == null || args.length == 0)
+            throw new IllegalStateException("Os argument is missing");
+
+        String argOs = args[0];
+        if (isWindows() && !argOs.equals(WIN_OS))
+            throw new IllegalStateException(String.format("in Windows system Os argument should be '%s'", WIN_OS));
+        else if (isMac() && !argOs.equals(MAC_OS))
+            throw new IllegalStateException(String.format("in Mac system Os argument should be '%s'", MAC_OS));
 
         // checking Architecture
-        boolean checkArch = PdfTrickPreInitUtils.isJvm64();
+        boolean checkArch = isJvm64();
 
-        // set some properties in a osx environment before the UI initialisation
-        if (PdfTrickPreInitUtils.isMac())
-            PdfTrickPreInitUtils.setMacPreferencies();
+        // set some properties in a osx environment before the UI initialization
+        if (SetuptUtils.isMac())
+            SetuptUtils.setMacPreferences();
 
         Locale.setDefault(Locale.ENGLISH);
         JComponent.setDefaultLocale(Locale.ENGLISH);
@@ -45,13 +46,13 @@ public class PdfTrick {
                 ServerSocket serverSocket = new ServerSocket(15486);
 
                 // create hidden working folder
-                String hiddenHomeFolder = PdfTrickPreInitUtils.createHiddenHomeFolder();
+                String hiddenHomeFolder = SetuptUtils.createHiddenHomeFolder();
 
                 // extract native c lib
-                PdfTrickPreInitUtils.extractNativeLibrary();
+                SetuptUtils.extractNativeLibrary();
 
                 // run
-                PdfTrickFactory.getFactory().initialize(hiddenHomeFolder, pdfTrickOs);
+                PdfTrickFactory.getFactory().initialize(hiddenHomeFolder, argOs);
             } catch (BindException e) {
                 final ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
                 try {

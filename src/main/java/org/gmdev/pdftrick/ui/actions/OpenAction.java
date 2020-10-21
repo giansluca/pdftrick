@@ -26,9 +26,9 @@ public class OpenAction extends AbstractAction {
 	public OpenAction() {
 		super.putValue(NAME, "Open");
 		super.putValue(SMALL_ICON, open_icon);
-		if (PdfTrickPreInitUtils.isWindows()) {
+		if (SetuptUtils.isWindows()) {
 			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-		} else if (PdfTrickPreInitUtils.isMac()) {
+		} else if (SetuptUtils.isMac()) {
 			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
 		}
 	}

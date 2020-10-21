@@ -86,9 +86,9 @@ public class PdfTrickUtils {
 	public static String getNativeLibrary() {
 		String nativeLibPath = "";
 		
-		if (PdfTrickPreInitUtils.isWindows()) {
+		if (SetuptUtils.isWindows()) {
 			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+Consts.NATIVELIB_WIN_64;
-		} else if (PdfTrickPreInitUtils.isMac()) {
+		} else if (SetuptUtils.isMac()) {
 			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+Consts.NATIVELIB_MAC_64;
 		}
 		

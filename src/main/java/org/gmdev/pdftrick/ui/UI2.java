@@ -20,7 +20,7 @@ import org.gmdev.pdftrick.ui.panels.Menu;
 import org.gmdev.pdftrick.ui.panels.RightPanel;
 import org.gmdev.pdftrick.utils.Consts;
 import org.gmdev.pdftrick.utils.FileLoader;
-import org.gmdev.pdftrick.utils.PdfTrickPreInitUtils;
+import org.gmdev.pdftrick.utils.SetuptUtils;
 import net.miginfocom.swing.MigLayout;
 
 public class UI2 extends JFrame {
@@ -45,7 +45,7 @@ public class UI2 extends JFrame {
 	    }
 		
 		// Set icon image in windows and osx system
-	    if (PdfTrickPreInitUtils.isWindows()) {
+	    if (SetuptUtils.isWindows()) {
 	    	int loadingDone = MediaTracker.ABORTED | MediaTracker.ERRORED | MediaTracker.COMPLETE;
 	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.MAIN_ICO));
 	    	
@@ -56,7 +56,7 @@ public class UI2 extends JFrame {
 	    	if (imageIcon.getImageLoadStatus() == MediaTracker.COMPLETE) {
 	    		super.setIconImage(imageIcon.getImage());
 	    	}	
-	    } else if (PdfTrickPreInitUtils.isMac()) {
+	    } else if (SetuptUtils.isMac()) {
 	    	int loadingDone = MediaTracker.ABORTED | MediaTracker.ERRORED | MediaTracker.COMPLETE;
 	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.MAIN_ICO));
 	    	
