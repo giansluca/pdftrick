@@ -16,7 +16,7 @@ import org.gmdev.pdftrick.thread.ImgExtraction;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.Consts;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.SetuptUtils;
+import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class GetImgAction extends AbstractAction  {
 	
@@ -66,9 +66,9 @@ public class GetImgAction extends AbstractAction  {
 			
 			if (keys.size() > 0 || kk.size() > 0) {
 				if (choosefolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) { 
-					if (SetuptUtils.isWindows()) {
+					if (SetupUtils.isWindows()) {
 						selectedFolderToSave = choosefolderToSave.getSelectedFile().getAbsolutePath();
-					} else if (SetuptUtils.isMac()) {
+					} else if (SetupUtils.isMac()) {
 						selectedFolderToSave = choosefolderToSave.getCurrentDirectory().getAbsolutePath();
 					}
 					factory.setFolderToSave(selectedFolderToSave);

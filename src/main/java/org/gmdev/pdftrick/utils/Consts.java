@@ -3,7 +3,7 @@ package org.gmdev.pdftrick.utils;
 public final class Consts {
 	// general
 	public static final String APPNAME = "PdfTrick";
-	public static final String HIDDENFOLDER = ".pdftrick";
+	public static final String HOME_FOLDER = ".pdftrick";
 	public static final String LICENCETITLE = "PdfTrick Licence";
 	public static final String RESULTPDFFILE = "resultfile.pdf";
 	public static final String JFCEXTRACTTITLE = "Folder to save";
@@ -35,12 +35,12 @@ public final class Consts {
 	public static final String WARNING_ICO = "icons/warning.png";
 	public static final String ABOUT_ICO = "icons/about_icon.png";
 	public static final String EXIT_ICO = "icons/exit_icon.png";
-	public static final String OPENFILE_ICO = "icons/open_icon.png";
-	public static final String SENDLOG_ICO = "icons/sendlog_icon.png";
+	public static final String OPEN_FILE_ICO = "icons/open_icon.png";
+	public static final String SEND_LOG_ICO = "icons/sendlog_icon.png";
 	public static final String LICENSE_ICO = "icons/license_icon.png";
-	public static final String GETIMG_ICO = "icons/getigm_icon.png";
+	public static final String GET_IMG_ICO = "icons/getigm_icon.png";
 	public static final String CANCEL_ICO = "icons/cancel_icon.png";
-	public static final String CLEANSEL_ICO = "icons/clean_icon.png";
+	public static final String CLEAN_SEL_ICO = "icons/clean_icon.png";
 	public static final String UP_ICO = "icons/filechooser/up_icon.png";
 	public static final String HOME_ICO = "icons/filechooser/home_icon.png";
 	public static final String DESKTOP_ICO = "icons/filechooser/desktop_icon.png";
@@ -53,7 +53,7 @@ public final class Consts {
 	
 	// static messages
 	public static final String SEND_LOG_MSG = "an error occurred, to improve Pdf Trick please send a log file by clicking Help/Send Log";
-	public static final String ERROR_TYPE = "Access Error";
-	public static final String ERROR_RUNNING = "PdfTrick is already running ...";
+	public static final String ERROR = "Error";
+	public static final String ERROR_RUNNING = "PdfTrick is already running";
 	public static final String ERROR_64 = "Wrong architecture! PdfTrick can run only in a 64 bit machine";
 }

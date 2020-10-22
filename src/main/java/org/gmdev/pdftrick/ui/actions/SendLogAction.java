@@ -17,7 +17,7 @@ public class SendLogAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 4422793984411438906L;
 	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
-	private final ImageIcon sendLog_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.SENDLOG_ICO));
+	private final ImageIcon sendLog_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.SEND_LOG_ICO));
 	
 	public SendLogAction() {
 		super.putValue(NAME, "Send Log");

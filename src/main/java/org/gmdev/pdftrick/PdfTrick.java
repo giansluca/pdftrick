@@ -1,6 +1,5 @@
 package org.gmdev.pdftrick;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 import java.util.Locale;
 
@@ -10,82 +9,73 @@ import org.apache.log4j.*;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.utils.*;
 
-import static org.gmdev.pdftrick.utils.SetuptUtils.*;
+import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
 public class PdfTrick {
     private static final Logger LOGGER = Logger.getLogger(PdfTrick.class);
-    private static final String ERROR_TYPE = Consts.ERROR_TYPE;
+    public static String os;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // logger config
         PropertyConfigurator.configure(FileLoader.loadAsStream(Consts.PROPERTY_L4J_FILE));
 
         // check OS
         if (args == null || args.length == 0)
-            throw new IllegalStateException("Os argument is missing");
+            throw new IllegalArgumentException("Os argument is missing");
 
-        String argOs = args[0];
-        if (isWindows() && !argOs.equals(WIN_OS))
-            throw new IllegalStateException(String.format("in Windows system Os argument should be '%s'", WIN_OS));
-        else if (isMac() && !argOs.equals(MAC_OS))
-            throw new IllegalStateException(String.format("in Mac system Os argument should be '%s'", MAC_OS));
-
-        // checking Architecture
-        boolean checkArch = isJvm64();
+        os = args[0];
+        if (!getOs().equals(os))
+            throw new IllegalArgumentException(
+                    String.format("Os argument should be '%s' or '%s'", WIN_OS, MAC_OS));
 
         // set some properties in a osx environment before the UI initialization
-        if (SetuptUtils.isMac())
-            SetuptUtils.setMacPreferences();
+        if (os.equals(MAC_OS))
+            setMacPreferences();
 
+        // locale config
         Locale.setDefault(Locale.ENGLISH);
         JComponent.setDefaultLocale(Locale.ENGLISH);
 
-        if (checkArch) {
-            try{
-                // check one instance only, bind a port
-                ServerSocket serverSocket = new ServerSocket(15486);
+        // checking Architecture
+        if (!isJvm64()) {
+            SwingUtilities.invokeAndWait(() -> {
+                ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
+                JOptionPane.showMessageDialog(
+                        null,
+                        Consts.ERROR_64,
+                        Consts.ERROR,
+                        JOptionPane.WARNING_MESSAGE,
+                        warningIcon);
+            });
 
-                // create hidden working folder
-                String hiddenHomeFolder = SetuptUtils.createHiddenHomeFolder();
-
-                // extract native c lib
-                SetuptUtils.extractNativeLibrary();
-
-                // run
-                PdfTrickFactory.getFactory().initialize(hiddenHomeFolder, argOs);
-            } catch (BindException e) {
-                final ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
-                try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            JOptionPane.showMessageDialog(
-                                    null, Consts.ERROR_RUNNING, ERROR_TYPE, JOptionPane.WARNING_MESSAGE, warningIcon);
-                        }
-                    });
-                    System.exit(0);
-                } catch (InterruptedException | InvocationTargetException e1) {
-                    e1.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    @Override
-                    public void run() {
-                        ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
-                        JOptionPane.showMessageDialog(
-                                null, Consts.ERROR_64, ERROR_TYPE, JOptionPane.WARNING_MESSAGE, warningIcon);
-                    }
-                });
-            } catch (InterruptedException | InvocationTargetException e) {
-                LOGGER.error("Exception", e);
-            }
-
-            System.exit(0);
+            throw new IllegalStateException("Wrong architecture");
         }
+
+        try {
+            // check one instance only binding a port
+            new ServerSocket(15486);
+
+            // create hidden working folder
+            String homeFolder = createHomeFolder();
+
+            // extract native lib
+            extractNativeLibrary();
+
+            // run
+            PdfTrickFactory.getFactory().initialize(homeFolder, os);
+        } catch (BindException e) {
+            ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
+            SwingUtilities.invokeAndWait(() ->
+                    JOptionPane.showMessageDialog(
+                            null,
+                            Consts.ERROR_RUNNING,
+                            Consts.ERROR,
+                            JOptionPane.WARNING_MESSAGE,
+                            warningIcon));
+
+            throw new IllegalStateException(Consts.ERROR_RUNNING);
+        }
+
     }
 
 }

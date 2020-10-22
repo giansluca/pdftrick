@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.utils.Consts;
 import org.gmdev.pdftrick.utils.FileLoader;
-import org.gmdev.pdftrick.utils.SetuptUtils;
+import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class LicenseAction extends AbstractAction {
 	
@@ -39,7 +39,7 @@ public class LicenseAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		boolean win = SetuptUtils.isWindows();
+		boolean win = SetupUtils.isWindows();
 		JDialog dialog = new JDialog(factory.getUserInterface(), true);
 		
 		// box

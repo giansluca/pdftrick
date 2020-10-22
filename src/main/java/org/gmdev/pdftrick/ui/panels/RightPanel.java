@@ -15,9 +15,9 @@ import org.gmdev.pdftrick.utils.FileLoader;
 
 public class RightPanel {
 	
-	private final ImageIcon getimages_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.GETIMG_ICO));
+	private final ImageIcon getImages_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.GET_IMG_ICO));
 	private final ImageIcon cancel_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.CANCEL_ICO));
-	private final ImageIcon cleanSelection_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.CLEANSEL_ICO));
+	private final ImageIcon cleanSelection_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.CLEAN_SEL_ICO));
 	
 	private final JPanel rightPanel;
     private final JPanel rightTopPanel;
@@ -36,7 +36,7 @@ public class RightPanel {
 	    getImagesButton.setFocusable(false);
 	    getImagesButton.setAction(new GetImgAction());
 	    getImagesButton.setText("GET IMG");
-	    getImagesButton.setIcon(getimages_icon);
+	    getImagesButton.setIcon(getImages_icon);
 	   
 	    cancelButton = new JButton("Cancel");
 	    cancelButton.setFocusable(false);

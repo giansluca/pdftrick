@@ -49,14 +49,12 @@ import com.levigo.jbig2.JBIG2ImageReaderSpi;
 public class CustomExtraImgReader {
 	
 	private static final Logger logger = Logger.getLogger(CustomExtraImgReader.class);
-
 	private static final int COLOR_TYPE_RGB = 1;
 	private static final int COLOR_TYPE_CMYK = 2;
 	private static final int COLOR_TYPE_YCCK = 3;
-
     private static int colorType = COLOR_TYPE_RGB;
     private static boolean hasAdobeMarker = false;
-    
+
     /**
      * Read a JBIG2 image
      */

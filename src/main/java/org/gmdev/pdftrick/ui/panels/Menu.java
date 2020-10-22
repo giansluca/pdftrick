@@ -12,14 +12,14 @@ import org.gmdev.pdftrick.ui.actions.LicenseAction;
 import org.gmdev.pdftrick.ui.actions.MacActions;
 import org.gmdev.pdftrick.ui.actions.OpenAction;
 import org.gmdev.pdftrick.ui.actions.SendLogAction;
-import org.gmdev.pdftrick.utils.SetuptUtils;
+import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class Menu {
 	
 	private final JMenuBar menubar;
 	
 	public Menu() {
-		if (SetuptUtils.isMac()) {
+		if (SetupUtils.isMac()) {
 			MacActions macActions = new MacActions();
 			Desktop desktop = Desktop.getDesktop();
 
@@ -35,7 +35,7 @@ public class Menu {
 		}
 		
 		menubar = new JMenuBar();
-        if (SetuptUtils.isWindows()) {
+        if (SetupUtils.isWindows()) {
         	JMenu pdftrick = new JMenu("PdfTrick");
         	
         	JMenuItem aboutMenuItem = new JMenuItem();

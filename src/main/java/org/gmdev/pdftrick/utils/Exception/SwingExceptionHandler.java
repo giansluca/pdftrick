@@ -9,8 +9,8 @@ public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
 	private static final Logger logger = Logger.getLogger(SwingExceptionHandler.class);
 		 
 	@Override  
-	public void uncaughtException(Thread aThread, Throwable t) {
-		logger.error("Exception", t);
+	public void uncaughtException(Thread aThread, Throwable e) {
+		logger.error(e);
 		PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
 	}
 }

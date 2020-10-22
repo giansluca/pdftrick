@@ -21,14 +21,14 @@ public class OpenAction extends AbstractAction {
 	
 	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
 	private static final long serialVersionUID = 490332474672907971L;
-	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.OPENFILE_ICO));
+	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.OPEN_FILE_ICO));
 	
 	public OpenAction() {
 		super.putValue(NAME, "Open");
 		super.putValue(SMALL_ICON, open_icon);
-		if (SetuptUtils.isWindows()) {
+		if (SetupUtils.isWindows()) {
 			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-		} else if (SetuptUtils.isMac()) {
+		} else if (SetupUtils.isMac()) {
 			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
 		}
 	}

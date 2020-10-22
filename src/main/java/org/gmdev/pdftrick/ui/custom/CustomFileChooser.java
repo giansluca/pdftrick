@@ -22,7 +22,7 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.gmdev.pdftrick.utils.Consts;
 import org.gmdev.pdftrick.utils.FileLoader;
-import org.gmdev.pdftrick.utils.SetuptUtils;
+import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class CustomFileChooser extends JFileChooser {
 	
@@ -32,9 +32,9 @@ public class CustomFileChooser extends JFileChooser {
 	private final ImageIcon desktop_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.DESKTOP_ICO));
 	
 	public CustomFileChooser() {
-		if (SetuptUtils.isMac()) {
+		if (SetupUtils.isMac()) {
 			setupMac();
-		} else if (SetuptUtils.isWindows()) {
+		} else if (SetupUtils.isWindows()) {
 			setupWin();
 		}
 	}
