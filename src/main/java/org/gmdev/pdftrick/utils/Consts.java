@@ -53,5 +53,4 @@ public final class Consts {
 	
 	// static messages
 	public static final String SEND_LOG_MSG = "an error occurred, to improve Pdf Trick please send a log file by clicking Help/Send Log";
-	public static final String ERROR_RUNNING = "PdfTrick is already running";
 }
