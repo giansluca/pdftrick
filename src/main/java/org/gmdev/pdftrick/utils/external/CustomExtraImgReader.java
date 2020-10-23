@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.utils;
+package org.gmdev.pdftrick.utils.external;
 
 import java.awt.Image;
 import java.awt.color.ColorSpace;
@@ -45,6 +45,10 @@ import com.itextpdf.text.pdf.parser.PdfImageObject;
 import com.levigo.jbig2.JBIG2Globals;
 import com.levigo.jbig2.JBIG2ImageReader;
 import com.levigo.jbig2.JBIG2ImageReaderSpi;
+import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.FileLoader;
+import org.gmdev.pdftrick.utils.PdfTrickMessages;
+import org.gmdev.pdftrick.utils.PdfTrickUtils;
 
 public class CustomExtraImgReader {
 	
@@ -162,7 +166,7 @@ public class CustomExtraImgReader {
 	    	PdfImageObject maskImage = new PdfImageObject(maskStream);
         	buffMask = maskImage.getBufferedImage();
         	
-        	Image img = PdfTrickUtils.TransformGrayToTransparency(buffMask); 
+        	Image img = PdfTrickUtils.TransformGrayToTransparency(buffMask);
         	buffImg = PdfTrickUtils.ApplyTransparency(buffPic, img);
 	    } else {
 	    	buffImg = buffPic;

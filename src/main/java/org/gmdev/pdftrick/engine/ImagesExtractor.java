@@ -17,7 +17,7 @@ import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.utils.Consts;
-import org.gmdev.pdftrick.utils.CustomExtraImgReader;
+import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
 

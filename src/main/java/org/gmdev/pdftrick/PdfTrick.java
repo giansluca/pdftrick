@@ -7,49 +7,39 @@ import javax.swing.*;
 
 import org.apache.log4j.*;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.swingmanager.WarningPanel;
 import org.gmdev.pdftrick.utils.*;
 
 import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
 public class PdfTrick {
     private static final Logger LOGGER = Logger.getLogger(PdfTrick.class);
-    public static String os;
+    private static String argOs;
 
     public static void main(String[] args) throws Exception {
         // logger config
         PropertyConfigurator.configure(FileLoader.loadAsStream(Consts.PROPERTY_L4J_FILE));
 
-        // check OS
-        if (args == null || args.length == 0)
-            throw new IllegalArgumentException("Os argument is missing");
-
-        os = args[0];
-        if (!getOs().equals(os))
-            throw new IllegalArgumentException(
-                    String.format("Os argument should be '%s' or '%s'", WIN_OS, MAC_OS));
-
-        // set some properties in a osx environment before the UI initialization
-        if (os.equals(MAC_OS))
-            setMacPreferences();
-
         // locale config
         Locale.setDefault(Locale.ENGLISH);
         JComponent.setDefaultLocale(Locale.ENGLISH);
 
-        // checking Architecture
-        if (!isJvm64()) {
-            SwingUtilities.invokeAndWait(() -> {
-                ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
-                JOptionPane.showMessageDialog(
-                        null,
-                        Consts.ERROR_64,
-                        Consts.ERROR,
-                        JOptionPane.WARNING_MESSAGE,
-                        warningIcon);
-            });
+        // check OS
+        if (args == null || args.length == 0)
+            throw new IllegalArgumentException("Os argument is missing");
 
-            throw new IllegalStateException("Wrong architecture");
-        }
+        argOs = args[0];
+        if (!getOs().equals(argOs))
+            throw new IllegalArgumentException(
+                    String.format("Os argument should be '%s' or '%s'", WIN_OS, MAC_OS));
+
+        // set some properties in a osx environment before the UI initialization
+        if (argOs.equals(MAC_OS))
+            setMacPreferences();
+
+        // checking Architecture
+        if (!isJvm64())
+            WarningPanel.displayArchWarningAndThrow();
 
         try {
             // check one instance only binding a port
@@ -62,14 +52,14 @@ public class PdfTrick {
             extractNativeLibrary();
 
             // run
-            PdfTrickFactory.getFactory().initialize(homeFolder, os);
+            PdfTrickFactory.getFactory().initialize(homeFolder, argOs);
         } catch (BindException e) {
             ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
             SwingUtilities.invokeAndWait(() ->
                     JOptionPane.showMessageDialog(
                             null,
                             Consts.ERROR_RUNNING,
-                            Consts.ERROR,
+                            "Warning",
                             JOptionPane.WARNING_MESSAGE,
                             warningIcon));
 

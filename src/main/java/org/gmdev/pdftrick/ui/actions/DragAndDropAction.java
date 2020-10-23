@@ -11,7 +11,7 @@ import org.gmdev.pdftrick.thread.DragAnDropFileChooser;
 import org.gmdev.pdftrick.utils.Consts;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
-import org.gmdev.pdftrick.utils.FileDrop;
+import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener {
 	

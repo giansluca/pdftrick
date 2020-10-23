@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.ui.actions.DragAndDropAction;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
+import org.gmdev.pdftrick.utils.external.FileDrop;
 import org.imgscalr.Scalr;
 
 public class PdfTrickUtils {

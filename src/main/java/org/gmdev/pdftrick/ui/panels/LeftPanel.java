@@ -8,7 +8,7 @@ import javax.swing.JScrollPane;
 
 import org.gmdev.pdftrick.ui.actions.DragAndDropAction;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
-import org.gmdev.pdftrick.utils.FileDrop;
+import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class LeftPanel {
 	
