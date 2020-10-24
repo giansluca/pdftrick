@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.utils.Exception;
+package org.gmdev.pdftrick.utils.exception;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.utils.Consts;

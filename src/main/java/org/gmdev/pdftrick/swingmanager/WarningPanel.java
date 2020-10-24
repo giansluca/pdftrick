@@ -11,7 +11,7 @@ public class WarningPanel {
     private static final String WARNING_TITLE = "Warning";
 
     public static void displayArchWarningAndThrow() {
-        String message = "PdfTrick can run only on a 64 bit machine";
+        String message = "PdfTrick can run only on a 64 bit Jvm";
 
         Runnable displayTask = () -> JOptionPane.showMessageDialog(
                 null,
