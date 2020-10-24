@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class WarningPanel {
 
-    private static final ImageIcon warningIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
+    private static final ImageIcon WARNING_ICON = new ImageIcon(FileLoader.loadAsUrl(Consts.WARNING_ICO));
     private static final String WARNING_TITLE = "Warning";
 
     public static void displayArchWarningAndThrow() {
@@ -18,7 +18,7 @@ public class WarningPanel {
                 message,
                 WARNING_TITLE,
                 JOptionPane.WARNING_MESSAGE,
-                warningIcon);
+                WARNING_ICON);
 
         SwingInvoker.invokeAndWait(displayTask);
         throw new IllegalStateException(message);
@@ -32,7 +32,7 @@ public class WarningPanel {
                 message,
                 WARNING_TITLE,
                 JOptionPane.WARNING_MESSAGE,
-                warningIcon);
+                WARNING_ICON);
 
         SwingInvoker.invokeAndWait(displayTask);
         throw new IllegalStateException(message);

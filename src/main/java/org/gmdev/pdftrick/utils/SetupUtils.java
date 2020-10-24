@@ -20,17 +20,15 @@ public class SetupUtils {
 		if (System.getProperty("os.name").toLowerCase().contains(MAC_OS))
 			return MAC_OS;
 		else
-			throw new IllegalStateException("FATAL! Unknown Operating system");
+			throw new IllegalStateException("Unknown Operating system");
 	}
 
 	public static boolean isWindows() {
-		String os = System.getProperty("os.name").toLowerCase();
-		return os.contains(WIN_OS);
+		return getOs().equals(WIN_OS);
 	}
 
 	public static boolean isMac() {
-		String os = System.getProperty("os.name").toLowerCase();
-		return os.contains(MAC_OS);
+		return getOs().equals(MAC_OS);
 	}
 
 	public static boolean isJvm64() {

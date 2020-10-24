@@ -50,7 +50,7 @@ class PdfTrickTest {
     }
 
     @Test
-    void isShouldThrowIfJvmArchitectureIsNot64() throws Exception {
+    void isShouldThrowIfJvmArchitectureIsNot64() {
         // Given
         String os = "mac";
         String[] args = {os};
