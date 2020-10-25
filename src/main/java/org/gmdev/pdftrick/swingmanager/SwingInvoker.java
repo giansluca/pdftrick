@@ -7,13 +7,13 @@ import java.lang.reflect.InvocationTargetException;
 
 public class SwingInvoker {
 
-    private static final Logger LOGGER = Logger.getLogger(SwingInvoker.class);
+    private static final Logger logger = Logger.getLogger(SwingInvoker.class);
 
     public static void invokeAndWait(Runnable doRun) {
         try {
             SwingUtilities.invokeAndWait(doRun);
         } catch (InterruptedException | InvocationTargetException e) {
-            LOGGER.error(e);
+            logger.error(e);
         }
     }
 }

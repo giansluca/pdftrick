@@ -1,7 +1,5 @@
 package org.gmdev.pdftrick;
 
-import java.io.IOException;
-import java.net.*;
 import java.util.Locale;
 
 import javax.swing.*;
@@ -10,6 +8,7 @@ import org.apache.log4j.*;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.swingmanager.WarningPanel;
 import org.gmdev.pdftrick.utils.*;
+import org.gmdev.pdftrick.validation.SingleInstanceValidator;
 
 import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
@@ -29,12 +28,9 @@ public class PdfTrick {
         if (!isJvm64())
             WarningPanel.displayArchWarningAndThrow();
 
-        // check only one instance running binding a port
-        try {
-            new ServerSocket(15486);
-        } catch (IOException e) {
-            WarningPanel.displayAlreadyRunningAndThrow();
-        }
+        // check single instance running binding a port
+        var singleInstanceValidator = new SingleInstanceValidator();
+        singleInstanceValidator.checkPdfTrickAlreadyRunning();
 
         // logger config
         PropertyConfigurator.configure(FileLoader.loadAsStream(Consts.PROPERTY_L4J_FILE));
@@ -54,7 +50,8 @@ public class PdfTrick {
         extractNativeLibrary();
 
         // run
-        PdfTrickFactory.getFactory().initialize(homeFolder, argOs);
+        PdfTrickFactory factory = PdfTrickFactory.getFactory();
+        factory.initialize(homeFolder, argOs);
     }
 
 }

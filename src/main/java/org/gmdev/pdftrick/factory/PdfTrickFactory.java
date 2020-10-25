@@ -38,7 +38,7 @@ public class PdfTrickFactory {
 	/**
 	 * private constructor (Singleton)
 	 */
-	private PdfTrickFactory(){}
+	//private PdfTrickFactory(){}
 	
 	public static PdfTrickFactory getFactory() {
 		if (instance == null) {

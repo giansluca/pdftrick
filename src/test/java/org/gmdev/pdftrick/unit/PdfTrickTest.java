@@ -1,18 +1,31 @@
 package org.gmdev.pdftrick.unit;
 
 import org.gmdev.pdftrick.PdfTrick;
+import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.SetupUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 
 class PdfTrickTest {
+
+    @Mock
+    PdfTrickFactory factory;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void isShouldThrowIfOsArgumentIsNull() {
@@ -70,5 +83,30 @@ class PdfTrickTest {
         // Finally
         setupUtilsMock.close();
         swingInvokerMock.close();
+    }
+
+    @Test
+    void isShouldTRunWithNoErrors() {
+        // Given
+        String os = "mac";
+        String[] args = {os};
+
+        MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class);
+        setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
+        setupUtilsMock.when(SetupUtils::isJvm64).thenReturn(true);
+
+        MockedStatic<PdfTrickFactory> pdfTrickFactoryMock =
+                Mockito.mockStatic(PdfTrickFactory.class);
+        pdfTrickFactoryMock.when(PdfTrickFactory::getFactory).thenReturn(factory);
+
+        doNothing().when(factory).initialize(anyString(), anyString());
+
+        // When
+        // Then
+        PdfTrick.main(args);
+
+        // Finally
+        setupUtilsMock.close();
+        pdfTrickFactoryMock.close();
     }
 }
