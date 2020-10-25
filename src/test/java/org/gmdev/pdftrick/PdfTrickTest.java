@@ -1,6 +1,5 @@
-package org.gmdev.pdftrick.unit;
+package org.gmdev.pdftrick;
 
-import org.gmdev.pdftrick.PdfTrick;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.SetupUtils;
