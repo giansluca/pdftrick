@@ -52,6 +52,7 @@ public class PdfTrick {
         // run
         PdfTrickFactory factory = PdfTrickFactory.getFactory();
         factory.initialize(homeFolder, argOs);
+        singleInstanceValidator.stopFlagServerSocket();
     }
 
 }
