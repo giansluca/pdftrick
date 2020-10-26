@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 
 public class SetupUtils {
 	
-	private static final Logger LOGGER = Logger.getLogger(SetupUtils.class);
+	private static final Logger logger = Logger.getLogger(SetupUtils.class);
 	public static final String WIN_OS = "win";
 	public static final String MAC_OS = "mac";
 
@@ -74,31 +74,34 @@ public class SetupUtils {
             in.close();
 			out.close();
 		} catch (Exception e) {
-			LOGGER.error(e);
+			logger.error(e);
 		}
-	}
-
-	public static String createHomeFolder() {
-		String userPath = System.getProperty("user.home");
-		File userPathFolder = new File(userPath + File.separator + Consts.HOME_FOLDER);
-		
-		if (!userPathFolder.exists()) {
-			userPathFolder.mkdir();
-			if (isWindows()) {
-				String[] cmd = {"attrib","+h",userPathFolder.getPath()};
-				try {
-					Runtime.getRuntime().exec(cmd);
-				} catch (IOException e) {
-					LOGGER.error(e);
-				}
-			}
-		}
-		return userPathFolder.getPath();
 	}
 
 	public static String getHomeFolder() {
-		String userPath = System.getProperty("user.home");
-		return userPath + File.separator + Consts.HOME_FOLDER;
+		String userHomePath = System.getProperty("user.home");
+		File pdfTrickHomeFolder = new File(userHomePath + File.separator + Consts.PDFTRICK_FOLDER);
+
+		if (pdfTrickHomeFolder.exists())
+			return pdfTrickHomeFolder.getPath();
+
+		return createHomeFolder(pdfTrickHomeFolder);
+	}
+
+	private static String createHomeFolder(File pdfTrickHomeFolder) {
+		if (!pdfTrickHomeFolder.mkdir())
+			throw new IllegalStateException("Error creating PdfTrick home folder");
+
+		if (isWindows()) {
+			String[] command = {"attrib", "+h", pdfTrickHomeFolder.getPath()};
+			try {
+				Runtime.getRuntime().exec(command);
+			} catch (IOException e) {
+				logger.error(e);
+			}
+		}
+
+		return pdfTrickHomeFolder.getPath();
 	}
 
 }

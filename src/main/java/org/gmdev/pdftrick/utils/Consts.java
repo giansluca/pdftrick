@@ -2,8 +2,8 @@ package org.gmdev.pdftrick.utils;
 
 public final class Consts {
 	// general
-	public static final String APPNAME = "PdfTrick";
-	public static final String HOME_FOLDER = ".pdftrick";
+	public static final String APP_NAME = "PdfTrick";
+	public static final String PDFTRICK_FOLDER = ".pdftrick";
 	public static final String LICENCETITLE = "PdfTrick Licence";
 	public static final String RESULTPDFFILE = "resultfile.pdf";
 	public static final String JFCEXTRACTTITLE = "Folder to save";

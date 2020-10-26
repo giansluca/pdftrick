@@ -32,6 +32,9 @@ public class PdfTrick {
         var singleInstanceValidator = new SingleInstanceValidator();
         singleInstanceValidator.checkPdfTrickAlreadyRunning();
 
+        // create home folder
+        String homeFolder = getHomeFolder();
+
         // logger config
         PropertyConfigurator.configure(FileLoader.loadAsStream(Consts.PROPERTY_L4J_FILE));
 
@@ -39,12 +42,9 @@ public class PdfTrick {
         Locale.setDefault(Locale.ENGLISH);
         JComponent.setDefaultLocale(Locale.ENGLISH);
 
-        // set some properties in a osx environment before the UI initialization
+        // set some properties in a osx environment
         if (argOs.equals(MAC_OS))
             setMacPreferences();
-
-        // create home folder
-        String homeFolder = createHomeFolder();
 
         // extract native lib
         extractNativeLibrary();

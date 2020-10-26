@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.swingmanager.WarningPanel;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 
 public class SingleInstanceValidator {
@@ -20,8 +21,10 @@ public class SingleInstanceValidator {
     public void startFlagServerSocket() {
         try {
             serverSocket = new ServerSocket(SERVER_PORT);
-        } catch (IOException e) {
+        } catch (BindException e) {
             WarningPanel.displayAlreadyRunningAndThrow();
+        } catch (IOException e) {
+            logger.error(e);
         }
     }
 

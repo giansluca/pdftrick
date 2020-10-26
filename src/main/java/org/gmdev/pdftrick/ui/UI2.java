@@ -77,7 +77,7 @@ public class UI2 extends JFrame {
         glassPanel = new GlassPane();
         menu = new Menu();
         
-        setTitle(Consts.APPNAME);
+        setTitle(Consts.APP_NAME);
         addWindowListener(new WindowsActions());
         setJMenuBar(menu.getMenubar());
         getRootPane().setGlassPane(glassPanel);
