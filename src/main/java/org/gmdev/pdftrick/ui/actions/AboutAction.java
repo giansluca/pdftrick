@@ -9,16 +9,16 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 public class AboutAction extends AbstractAction {
 	
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	private static final long serialVersionUID = -9051815693784339746L;
-	private final ImageIcon about_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.ABOUT_ICO));
+	private final ImageIcon about_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.ABOUT_ICO));
 	
 	public AboutAction() {
 		super.putValue(NAME, "About");
@@ -33,7 +33,7 @@ public class AboutAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		final Properties messages = factory.getMessages();
 		final String os = factory.getOs();
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.MAIN_ICO));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
 		
 		PdfTrickMessages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os),
 				messages.getProperty("jmsg_07"), 1, imageIcon);

@@ -23,16 +23,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ThumbAction;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
 
 public class ShowThumbs implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ShowThumbs.class);
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	private volatile boolean finished = false;
 	
@@ -155,7 +155,7 @@ public class ShowThumbs implements Runnable {
 		} catch (Exception e) {
 			logger.error("Exception", e);
 			PdfTrickMessages.appendNewLine();
-			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 		finished = true;
 	}

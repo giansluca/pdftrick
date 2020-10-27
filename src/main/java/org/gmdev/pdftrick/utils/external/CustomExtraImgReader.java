@@ -45,7 +45,7 @@ import com.itextpdf.text.pdf.parser.PdfImageObject;
 import com.levigo.jbig2.JBIG2Globals;
 import com.levigo.jbig2.JBIG2ImageReader;
 import com.levigo.jbig2.JBIG2ImageReaderSpi;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
@@ -88,7 +88,7 @@ public class CustomExtraImgReader {
 			inG.close();
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
     	return buffImg;
     }
@@ -297,7 +297,7 @@ public class CustomExtraImgReader {
      */
     private static BufferedImage convertCmykToRgb(Raster cmykRaster, ICC_Profile cmykProfile) throws IOException {
         if (cmykProfile == null) {
-            cmykProfile = ICC_Profile.getInstance(FileLoader.loadAsStream(Consts.GENERICICCFILE));
+            cmykProfile = ICC_Profile.getInstance(FileLoader.loadAsStream(Constants.GENERIC_ICC_FILE));
         }    
         
         if (cmykProfile.getProfileClass() != ICC_Profile.CLASS_DISPLAY) {

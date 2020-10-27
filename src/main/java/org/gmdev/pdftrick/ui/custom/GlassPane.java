@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 
 public class GlassPane extends JPanel implements MouseListener, KeyListener {
@@ -35,7 +35,7 @@ public class GlassPane extends JPanel implements MouseListener, KeyListener {
 	 * Set icon wait for thumb mode (green)
 	 */
 	private void initThumbSpinner() {	
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WAIT_IMG));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.WAIT_IMG));
 		
 		thumbSpinner = new JLabel();
 		thumbSpinner.setHorizontalAlignment(JLabel.CENTER);
@@ -51,7 +51,7 @@ public class GlassPane extends JPanel implements MouseListener, KeyListener {
 	 * Set icon wait for extract mode (red)
 	 */
 	private void initExtractSpinner() {
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WAIT_EXT));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.WAIT_EXT));
 		
 		extractSpinner = new JLabel();
 		extractSpinner.setHorizontalAlignment(JLabel.CENTER);

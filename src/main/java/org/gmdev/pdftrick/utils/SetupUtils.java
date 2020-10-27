@@ -46,11 +46,11 @@ public class SetupUtils {
 		File nativeLib = null;
 		
 		if (isWindows()) {
-			nameLib = Consts.NATIVELIB_WIN_64;
-			nativeLib = new File(getHomeFolder() + File.separator + Consts.NATIVELIB_WIN_64);
+			nameLib = Constants.NATIVE_LIB_WIN_64;
+			nativeLib = new File(getHomeFolder() + File.separator + Constants.NATIVE_LIB_WIN_64);
 		} else if (isMac()) {
-			nameLib = Consts.NATIVELIB_MAC_64;
-			nativeLib = new File(getHomeFolder() + File.separator + Consts.NATIVELIB_MAC_64);
+			nameLib = Constants.NATIVE_LIB_MAC_64;
+			nativeLib = new File(getHomeFolder() + File.separator + Constants.NATIVE_LIB_MAC_64);
 		}
 
 		if (nativeLib.exists()) {
@@ -59,7 +59,7 @@ public class SetupUtils {
 		
 		try {
 			InputStream in = FileLoader.loadAsStream(
-					Consts.NATIVELIB_PATH + File.separator + nameLib);
+					Constants.NATIVE_LIB_PATH + File.separator + nameLib);
 
 			File fileOut = new File(getHomeFolder() + File.separator + nameLib);
 			OutputStream out = new FileOutputStream(fileOut);
@@ -80,7 +80,7 @@ public class SetupUtils {
 
 	public static String getHomeFolder() {
 		String userHomePath = System.getProperty("user.home");
-		File pdfTrickHomeFolder = new File(userHomePath + File.separator + Consts.PDFTRICK_FOLDER);
+		File pdfTrickHomeFolder = new File(userHomePath + File.separator + Constants.PDFTRICK_FOLDER);
 
 		if (pdfTrickHomeFolder.exists())
 			return pdfTrickHomeFolder.getPath();

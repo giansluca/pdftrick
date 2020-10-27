@@ -11,8 +11,8 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageListenerShowThumb;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 import com.itextpdf.text.pdf.PdfReader;
@@ -21,7 +21,7 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 public class ImgThumb implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ImgThumb.class);
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	private final int numberPage;
 	volatile boolean finished = false;
@@ -91,7 +91,7 @@ public class ImgThumb implements Runnable {
 			PdfTrickMessages.append("INFO", infoUnsupported+infoAvailable);
 		} catch(Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 		
 		SwingUtilities.invokeLater(new ManagePanelWait("thumb", "thumb_hide"));

@@ -2,7 +2,6 @@ package org.gmdev.pdftrick.engine;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,8 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 import com.itextpdf.text.Document;
@@ -31,7 +30,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class MergeFiles {
 	
 	private static final Logger logger = Logger.getLogger(MergeFiles.class);
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	/**
 	 * Merge multiple pdf files
@@ -63,7 +62,7 @@ public class MergeFiles {
             doMerge(list, out);
         } catch (IOException | DocumentException e) {
         	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+        	PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
         }
 
 		return mergedFile;

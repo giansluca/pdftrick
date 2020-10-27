@@ -11,17 +11,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.ImgExtraction;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class GetImgAction extends AbstractAction  {
 	
 	private static final long serialVersionUID = 5066094189763059556L;
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	public GetImgAction() {
 	}
@@ -47,7 +47,7 @@ public class GetImgAction extends AbstractAction  {
 			return;
 		}
 		if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
-			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Consts.WARNING_ICO));
+			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
 			return;
@@ -58,7 +58,7 @@ public class GetImgAction extends AbstractAction  {
 		if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
 			CustomFileChooser choosefolderToSave = new CustomFileChooser();
 			choosefolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			choosefolderToSave.setDialogTitle(Consts.JFCEXTRACTTITLE);
+			choosefolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
 			
 			String selectedFolderToSave = "";
 			Set<String> keys = factory.getImageSelected().keySet();

@@ -15,8 +15,8 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
@@ -36,7 +36,7 @@ import com.itextpdf.text.pdf.parser.PdfImageObject;
 public class ImagesExtractor {
 	
 	private static final Logger logger = Logger.getLogger(ImagesExtractor.class);
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	/**
 	 * Prepare for the extraction and call images extractor
@@ -98,7 +98,7 @@ public class ImagesExtractor {
 				ImageIO.write(inImg.getImage(), encode, outputfile);
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+				PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			}
 			
 			z++;
@@ -144,7 +144,7 @@ public class ImagesExtractor {
 						ImageIO.write(buff, type, outputfile);
 					} catch (Exception e) {
 						logger.error("Exception", e);
-						PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+						PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 					}
 				}
 				
@@ -166,7 +166,7 @@ public class ImagesExtractor {
 							buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 						} catch (Exception ex) {
 							logger.error("Exception", e);
-							PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+							PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 						}
 					}
 					
@@ -222,7 +222,7 @@ public class ImagesExtractor {
 			PdfTrickMessages.append("INFO", messages.getProperty("tmsg_19"));
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			retExtract = false;
 		}
 		return retExtract;

@@ -20,16 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class CustomFileChooser extends JFileChooser {
 	
 	private static final long serialVersionUID = -5896368165854589643L;
-	private final ImageIcon up_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.UP_ICO));
-	private final ImageIcon home_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.HOME_ICO));
-	private final ImageIcon desktop_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.DESKTOP_ICO));
+	private final ImageIcon up_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.UP_ICO));
+	private final ImageIcon home_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.HOME_ICO));
+	private final ImageIcon desktop_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.DESKTOP_ICO));
 	
 	public CustomFileChooser() {
 		if (SetupUtils.isMac()) {

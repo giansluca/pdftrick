@@ -1,11 +1,11 @@
 package org.gmdev.pdftrick.thread;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.ui.UI2;
 
 public class ManagePanelWait implements Runnable {
 	
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	private final String mode;
 	private final String key;

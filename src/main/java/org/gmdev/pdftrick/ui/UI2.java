@@ -18,7 +18,7 @@ import org.gmdev.pdftrick.ui.panels.CenterPanel;
 import org.gmdev.pdftrick.ui.panels.LeftPanel;
 import org.gmdev.pdftrick.ui.panels.Menu;
 import org.gmdev.pdftrick.ui.panels.RightPanel;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.SetupUtils;
 import net.miginfocom.swing.MigLayout;
@@ -47,7 +47,7 @@ public class UI2 extends JFrame {
 		// Set icon image in windows and osx system
 	    if (SetupUtils.isWindows()) {
 	    	int loadingDone = MediaTracker.ABORTED | MediaTracker.ERRORED | MediaTracker.COMPLETE;
-	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.MAIN_ICO));
+	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
 	    	
 	    	while ((imageIcon.getImageLoadStatus() & loadingDone) == 0) {
 	    		// look a bit ...
@@ -58,7 +58,7 @@ public class UI2 extends JFrame {
 	    	}	
 	    } else if (SetupUtils.isMac()) {
 	    	int loadingDone = MediaTracker.ABORTED | MediaTracker.ERRORED | MediaTracker.COMPLETE;
-	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.MAIN_ICO));
+	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
 	    	
 	    	while ((imageIcon.getImageLoadStatus() & loadingDone) == 0) {
 	    		// look a bit ...
@@ -77,7 +77,7 @@ public class UI2 extends JFrame {
         glassPanel = new GlassPane();
         menu = new Menu();
         
-        setTitle(Consts.APP_NAME);
+        setTitle(Constants.APP_NAME);
         addWindowListener(new WindowsActions());
         setJMenuBar(menu.getMenubar());
         getRootPane().setGlassPane(glassPanel);

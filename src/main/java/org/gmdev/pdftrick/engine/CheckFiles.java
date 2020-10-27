@@ -27,8 +27,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 import com.itextpdf.text.exceptions.BadPasswordException;
@@ -43,7 +43,7 @@ import com.itextpdf.text.pdf.PdfStream;
 public class CheckFiles {
 	
 	private static final Logger logger = Logger.getLogger(CheckFiles.class);
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	private boolean checkEncryption = false;
 	private final HashMap<String, String> namePwd;
@@ -136,7 +136,7 @@ public class CheckFiles {
             in.close();
         } catch (IOException e) {
         	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+        	PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
         }
         
         return line;
@@ -180,7 +180,7 @@ public class CheckFiles {
 				}
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+				PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			}	
 		}
 		
@@ -252,7 +252,7 @@ public class CheckFiles {
 			userProtection = true;
 		} catch (IOException e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 	}
 	
@@ -260,10 +260,10 @@ public class CheckFiles {
 	 * Show dialog to get the User password and check it.
 	 */
 	private String askAndChekPwd(File file, Properties messages, int n) {
-		ImageIcon imageIcon = new ImageIcon(getClass().getResource(Consts.MAIN_ICO));
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource(Constants.MAIN_ICO));
 		
 		final JDialog userPwdDialog = new JDialog((JDialog)null, true);
-		userPwdDialog.setTitle(Consts.PWDDIALOG);
+		userPwdDialog.setTitle(Constants.PWD_DIALOG);
 		userPwdDialog.setIconImage(imageIcon.getImage());
 		userPwdDialog.setSize(620, 80);
 		userPwdDialog.setResizable(false);
@@ -368,7 +368,7 @@ public class CheckFiles {
 				PdfTrickMessages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_07"), n, file.getName()));
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.appendLater("ERROR", Consts.SEND_LOG_MSG);
+				PdfTrickMessages.appendLater("ERROR", Constants.SEND_LOG_MSG);
 			}
 		}
 	}

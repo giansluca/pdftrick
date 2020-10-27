@@ -4,13 +4,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.Cancel;
 
 public class CancelAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 5288882061002308348L;
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	public CancelAction() {
 	}

@@ -6,12 +6,12 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
 
 public class MacActions {
 
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	public MacActions() {
 	}
@@ -52,7 +52,7 @@ public class MacActions {
 		if (factory.gettContainer().getImgExtraction() !=null && !factory.gettContainer().getImgExtraction().isFinished()) {
 			factory.gettContainer().getImgExtraction().stop();
 			if (factory.gettContainer().getImgExtractionThread() !=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
-				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Consts.WARNING_ICO));
+				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 				PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
 						JOptionPane.WARNING_MESSAGE, warningIcon);
 			}
@@ -73,7 +73,7 @@ public class MacActions {
 	public void handleAbout() { 
 		Properties messages = factory.getMessages();
 		String os = factory.getOs();
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.MAIN_ICO));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
 		
 		PdfTrickMessages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_m"), os), 
 				messages.getProperty("jmsg_07"), 1, imageIcon);

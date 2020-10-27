@@ -9,14 +9,14 @@ import javax.swing.SwingUtilities;
 
 import org.gmdev.pdftrick.engine.CheckFiles;
 import org.gmdev.pdftrick.engine.MergeFiles;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
 
 public class DragAnDropFileChooser implements Runnable {
 	
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	private final File[] fileDrop;
 	volatile boolean finished = false;

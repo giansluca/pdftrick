@@ -9,14 +9,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
 
 public class ExitAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 4846729705239261046L;
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
-	private final ImageIcon exit_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.EXIT_ICO));
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private final ImageIcon exit_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.EXIT_ICO));
 	
 	public ExitAction() {
 		super.putValue(NAME, "Exit");
@@ -62,7 +62,7 @@ public class ExitAction extends AbstractAction {
 		if (factory.gettContainer().getImgExtraction() !=null && !factory.gettContainer().getImgExtraction().isFinished()) {
 			factory.gettContainer().getImgExtraction().stop();
 			if (factory.gettContainer().getImgExtractionThread() !=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
-				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Consts.WARNING_ICO));
+				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 				PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
 						JOptionPane.WARNING_MESSAGE, warningIcon);
 			}

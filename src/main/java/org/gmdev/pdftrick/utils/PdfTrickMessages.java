@@ -12,11 +12,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 
 public class PdfTrickMessages {
 	
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	private static final Logger logger = Logger.getLogger(PdfTrickMessages.class);
 	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 	
@@ -61,7 +61,7 @@ public class PdfTrickMessages {
 				});
 			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+				PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			}
 		} else {
 			txtArea.append(builder.toString());
@@ -184,7 +184,7 @@ public class PdfTrickMessages {
 			});
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 	}
 

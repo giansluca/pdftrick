@@ -12,16 +12,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.OpenFileChooser;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
 
 public class OpenAction extends AbstractAction {
 	
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	private static final long serialVersionUID = 490332474672907971L;
-	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.OPEN_FILE_ICO));
+	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.OPEN_FILE_ICO));
 	
 	public OpenAction() {
 		super.putValue(NAME, "Open");
@@ -43,7 +43,7 @@ public class OpenAction extends AbstractAction {
 		
 		CustomFileChooser fileOpen = new CustomFileChooser();
 		fileOpen.setMultiSelectionEnabled(true);
-		fileOpen.setDialogTitle(Consts.JFCOPENTITLE);
+		fileOpen.setDialogTitle(Constants.JFC_OPEN_TITLE);
 		int ret = fileOpen.showOpenDialog(contentPanel);
 		
 		if (ret == JFileChooser.APPROVE_OPTION) {
@@ -55,7 +55,7 @@ public class OpenAction extends AbstractAction {
         	}
         	
         	if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
-    			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Consts.WARNING_ICO));	
+    			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     			PdfTrickUtils.resetDropBorder();
     			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
@@ -63,7 +63,7 @@ public class OpenAction extends AbstractAction {
         	}  
         	
         	if (factory.gettContainer().getImgExtractionThread()!=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
-        		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Consts.WARNING_ICO));
+        		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     		    PdfTrickUtils.resetDropBorder();
     		    PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
@@ -71,7 +71,7 @@ public class OpenAction extends AbstractAction {
         	}
         	
         	if (factory.gettContainer().getImgThumbThread()!=null && factory.gettContainer().getImgThumbThread().isAlive()) {
-        		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Consts.WARNING_ICO));
+        		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     			PdfTrickUtils.resetDropBorder();
     			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);

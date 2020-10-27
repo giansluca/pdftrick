@@ -28,7 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.DragAndDropAction;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.utils.external.FileDrop;
@@ -37,7 +37,7 @@ import org.imgscalr.Scalr;
 public class PdfTrickUtils {
 	
 	private static final Logger logger = Logger.getLogger(PdfTrickUtils.class);
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	/**
 	 * Find jvm architecture
@@ -76,7 +76,7 @@ public class PdfTrickUtils {
 		Properties prop = new Properties();
 		
 		try {
-			prop.load(FileLoader.loadAsStream(Consts.PROPERTYFILE));
+			prop.load(FileLoader.loadAsStream(Constants.PROPERTY_FILE));
 		} catch (IOException e) {
 			logger.error("Exception", e);
 		}
@@ -88,9 +88,9 @@ public class PdfTrickUtils {
 		String nativeLibPath = "";
 		
 		if (SetupUtils.isWindows()) {
-			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+Consts.NATIVELIB_WIN_64;
+			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+ Constants.NATIVE_LIB_WIN_64;
 		} else if (SetupUtils.isMac()) {
-			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+Consts.NATIVELIB_MAC_64;
+			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+ Constants.NATIVE_LIB_MAC_64;
 		}
 		
 		return nativeLibPath;
@@ -229,7 +229,7 @@ public class PdfTrickUtils {
 	public static void startWaitIconLoadPdf() {
 		JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
 		
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.WAIT));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.WAIT));
 		JLabel waitLabel = new JLabel(imageIcon);
 		
 		waitLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -323,9 +323,9 @@ public class PdfTrickUtils {
 		logger.info("Arch: "+System.getProperty("sun.arch.data.model"));
 		logger.info("Jvm: "+System.getProperty("java.version")); 
 		String ftpUrl = "ftp://%s:%s@%s/%s;type=i";
-		String filePath = factory.getHiddenHomeFolder()+File.separator+Consts.LOGFILE;
-		String uploadPath = File.separator+Consts.FOLDER+File.separator+getTimedDirResult()+".log";
-		ftpUrl = String.format(ftpUrl, Consts.USER, Consts.PASS, Consts.HOST, uploadPath);
+		String filePath = factory.getHiddenHomeFolder()+File.separator+ Constants.LOGFILE;
+		String uploadPath = File.separator+ Constants.FOLDER+File.separator+getTimedDirResult()+".log";
+		ftpUrl = String.format(ftpUrl, Constants.USER, Constants.PASS, Constants.HOST, uploadPath);
 		
 		try {
 		    URL url = new URL(ftpUrl);

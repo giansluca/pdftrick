@@ -8,16 +8,16 @@ import javax.swing.JTextField;
 import org.gmdev.pdftrick.ui.actions.CancelAction;
 import org.gmdev.pdftrick.ui.actions.CleanSelectionAction;
 import org.gmdev.pdftrick.ui.actions.GetImgAction;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.utils.Constants;
 
 import net.miginfocom.swing.MigLayout;
 import org.gmdev.pdftrick.utils.FileLoader;
 
 public class RightPanel {
 	
-	private final ImageIcon getImages_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.GET_IMG_ICO));
-	private final ImageIcon cancel_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.CANCEL_ICO));
-	private final ImageIcon cleanSelection_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.CLEAN_SEL_ICO));
+	private final ImageIcon getImages_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.GET_IMG_ICO));
+	private final ImageIcon cancel_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.CANCEL_ICO));
+	private final ImageIcon cleanSelection_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.CLEAN_SEL_ICO));
 	
 	private final JPanel rightPanel;
     private final JPanel rightTopPanel;

@@ -17,17 +17,17 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class LicenseAction extends AbstractAction {
 	
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	private static final Logger logger = Logger.getLogger(LicenseAction.class);
 	private static final long serialVersionUID = 6003243894996325087L;
-	private final ImageIcon license_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.LICENSE_ICO));
+	private final ImageIcon license_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.LICENSE_ICO));
 	
 	public LicenseAction() {
 		super.putValue(NAME, "License");
@@ -43,7 +43,7 @@ public class LicenseAction extends AbstractAction {
 		JDialog dialog = new JDialog(factory.getUserInterface(), true);
 		
 		// box
-		dialog.setTitle(Consts.LICENCETITLE);
+		dialog.setTitle(Constants.LICENSE_TITLE);
 		if (win) {
 			dialog.setSize(564, 680);
 		} else {
@@ -58,7 +58,7 @@ public class LicenseAction extends AbstractAction {
 	    JTextArea licArea = new JTextArea();
 	    
 	    try {
-	    	licArea.read(new InputStreamReader(FileLoader.loadAsStream(Consts.LICENSEFILE)), Consts.LICENCETITLE);
+	    	licArea.read(new InputStreamReader(FileLoader.loadAsStream(Constants.LICENSE_FILE)), Constants.LICENSE_TITLE);
 		} catch (IOException ex) {
 			logger.error("Exception", ex);
 		}
@@ -80,7 +80,7 @@ public class LicenseAction extends AbstractAction {
 	    scrollPane_LicArea.setViewportView(licArea);
 	    
 	    // logo
-	    ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Consts.GPL3_ICO));
+	    ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.GPL3_ICO));
 	    JLabel logo = new JLabel();
 	    logo.setIcon(imageIcon);
 	    logo.setBounds(20, 610, imageIcon.getIconWidth(), imageIcon.getIconHeight());

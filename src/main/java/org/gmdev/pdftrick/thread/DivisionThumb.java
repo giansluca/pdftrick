@@ -1,15 +1,15 @@
 package org.gmdev.pdftrick.thread;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.NativeObjectManager;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 public class DivisionThumb implements Runnable  {
 	
 	private static final Logger logger = Logger.getLogger(DivisionThumb.class);
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	private final int division;
 	private final String imgPath;
@@ -39,13 +39,13 @@ public class DivisionThumb implements Runnable  {
 		
 		while (i <= division && !finished) {
 			try {
-				nativeManager.runNativeLib_thumbs(factory.getResultFile(), imgPath, i, Consts.ZOOM_THUMB);
+				nativeManager.runNativeLib_thumbs(factory.getResultFile(), imgPath, i, Constants.ZOOM_THUMB);
 				//System.out.println(Thread.currentThread().getName() + " add image " + i);
 				i++;
 			} catch (Exception e) {
 				Thread.currentThread().interrupt();
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Consts.SEND_LOG_MSG);
+				PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			}
 		}
 		

@@ -1,8 +1,10 @@
 package org.gmdev.pdftrick;
 
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.SetupUtils;
+import org.gmdev.pdftrick.validation.SingleInstanceValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +21,10 @@ import static org.mockito.Mockito.doNothing;
 class PdfTrickTest {
 
     @Mock
-    PdfTrickFactory factory;
+    PdfTrickBag pdfTrickBag;
+
+    @Mock
+    SingleInstanceValidator singleInstanceValidator;
 
     @BeforeEach
     void setUp() {
@@ -94,11 +99,14 @@ class PdfTrickTest {
         setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
         setupUtilsMock.when(SetupUtils::isJvm64).thenReturn(true);
 
-        MockedStatic<PdfTrickFactory> pdfTrickFactoryMock =
-                Mockito.mockStatic(PdfTrickFactory.class);
-        pdfTrickFactoryMock.when(PdfTrickFactory::getFactory).thenReturn(factory);
+        MockedStatic<PdfTrickFactory> pdfTrickFactoryMock = Mockito.mockStatic(PdfTrickFactory.class);
+        pdfTrickFactoryMock.when(PdfTrickFactory::getSingleInstanceValidator)
+                .thenReturn(singleInstanceValidator);
+        doNothing().when(singleInstanceValidator).checkPdfTrickAlreadyRunning();
 
-        doNothing().when(factory).initialize(anyString(), anyString());
+        MockedStatic<PdfTrickBag> pdfTrickBagMock = Mockito.mockStatic(PdfTrickBag.class);
+        pdfTrickBagMock.when(PdfTrickBag::getPdfTrickBag).thenReturn(pdfTrickBag);
+        doNothing().when(pdfTrickBag).initialize(anyString(), anyString());
 
         // When
         // Then
@@ -106,6 +114,6 @@ class PdfTrickTest {
 
         // Finally
         setupUtilsMock.close();
-        pdfTrickFactoryMock.close();
+        pdfTrickBagMock.close();
     }
 }

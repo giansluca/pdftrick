@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
@@ -23,7 +23,7 @@ import org.gmdev.pdftrick.utils.PdfTrickUtils;
 public class CleanSelectionAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 1827086419763590961L;
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 	
 	public CleanSelectionAction() {
 	}

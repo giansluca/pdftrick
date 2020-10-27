@@ -7,17 +7,16 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
-import org.gmdev.pdftrick.utils.Consts;
+import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
 
 public class SendLogAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 4422793984411438906L;
-	private static final PdfTrickFactory factory = PdfTrickFactory.getFactory();
-	private final ImageIcon sendLog_icon = new ImageIcon(FileLoader.loadAsUrl(Consts.SEND_LOG_ICO));
+	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private final ImageIcon sendLog_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.SEND_LOG_ICO));
 	
 	public SendLogAction() {
 		super.putValue(NAME, "Send Log");
@@ -47,7 +46,7 @@ public class SendLogAction extends AbstractAction {
 		}
 		
 		if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
-			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Consts.WARNING_ICO));
+			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
 			return;
@@ -70,7 +69,7 @@ public class SendLogAction extends AbstractAction {
 	public void sendLog() {
 		Properties messages = factory.getMessages();
 		PdfTrickMessages.append("INFO", messages.getProperty("tmsg_06"));
-		PdfTrickUtils.sendLog();
+		//PdfTrickUtils.sendLog();
 		PdfTrickMessages.append("INFO", messages.getProperty("tmsg_07"));
 	}
 	
