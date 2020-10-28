@@ -1,8 +1,6 @@
-package org.gmdev.pdftrick.utils.exception;
+package org.gmdev.pdftrick.exception;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 public class DefaultHandler implements Thread.UncaughtExceptionHandler {
 	 
@@ -11,6 +9,5 @@ public class DefaultHandler implements Thread.UncaughtExceptionHandler {
 	@Override  
 	public void uncaughtException(Thread aThread, Throwable e) {
 		logger.error(e);
-		PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 	}
 }

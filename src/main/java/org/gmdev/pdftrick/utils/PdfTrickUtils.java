@@ -312,41 +312,7 @@ public class PdfTrickUtils {
 	    
 	    return dest;
 	}
-	
-	/**
-	 * Send log to server, yes password is not protected, i decided to not implement 
-	 * a security system for ftp credential ... 
-	 * the folder contains only log sent by user and if you want see inside .. you can :) 
-	 */
-	public static void sendLog() {
-		logger.info("Os: "+System.getProperty("os.name"));
-		logger.info("Arch: "+System.getProperty("sun.arch.data.model"));
-		logger.info("Jvm: "+System.getProperty("java.version")); 
-		String ftpUrl = "ftp://%s:%s@%s/%s;type=i";
-		String filePath = factory.getHiddenHomeFolder()+File.separator+ Constants.LOGFILE;
-		String uploadPath = File.separator+ Constants.FOLDER+File.separator+getTimedDirResult()+".log";
-		ftpUrl = String.format(ftpUrl, Constants.USER, Constants.PASS, Constants.HOST, uploadPath);
-		
-		try {
-		    URL url = new URL(ftpUrl);
-		    URLConnection conn = url.openConnection();
-		    OutputStream outputStream = conn.getOutputStream();
-		    
-		    FileInputStream inputStream = new FileInputStream(filePath);
-		    byte[] buffer = new byte[1024];
-		    int bytesRead = -1;
-		    
-		    while ((bytesRead = inputStream.read(buffer)) != -1) {
-		        outputStream.write(buffer, 0, bytesRead);
-		    }
-		    
-		    inputStream.close();
-		    outputStream.close();
-		} catch (IOException e) {
-			logger.error("Exception", e);
-		}
-	}
-	
+
 	/**
 	 * Print a welcome message on the text area
 	 */

@@ -24,9 +24,7 @@ import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageInline;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageNormal;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
-import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
 
 import com.itextpdf.text.exceptions.UnsupportedPdfException;
@@ -39,9 +37,6 @@ import com.itextpdf.text.pdf.parser.PdfImageObject;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
-/**
- * @author Gian Luca Mori
- */
 public class ImageListenerShowThumb implements RenderListener {
 	
 	private static final Logger logger = Logger.getLogger(ImageListenerShowThumb.class);
@@ -105,7 +100,6 @@ public class ImageListenerShowThumb implements RenderListener {
 					}
 				} catch (Exception e) {
 					logger.error("Exception", e);
-					PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 					unsupportedImage++;
 					return;
 				}
@@ -128,13 +122,11 @@ public class ImageListenerShowThumb implements RenderListener {
 						buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 					} catch (Exception e) {
 						logger.error("Exception", e);
-						PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 						unsupportedImage++;
 						return;
 					}
 				} catch (Exception e) {
 					logger.error("Exception", e);
-					PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 					unsupportedImage++;
 					return;
 				}
@@ -242,11 +234,9 @@ public class ImageListenerShowThumb implements RenderListener {
 			}
 		} catch (IOException e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			unsupportedImage++;
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			unsupportedImage++;
 		}
 	}

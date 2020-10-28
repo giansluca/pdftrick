@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
@@ -98,7 +97,6 @@ public class ImagesExtractor {
 				ImageIO.write(inImg.getImage(), encode, outputfile);
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			}
 			
 			z++;
@@ -140,11 +138,10 @@ public class ImagesExtractor {
 						String type = "png";
 						String filename = String.format(result, z, type);
 						
-						File outputfile = new File(filename);
-						ImageIO.write(buff, type, outputfile);
+						File outputFile = new File(filename);
+						ImageIO.write(buff, type, outputFile);
 					} catch (Exception e) {
 						logger.error("Exception", e);
-						PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 					}
 				}
 				
@@ -166,7 +163,6 @@ public class ImagesExtractor {
 							buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 						} catch (Exception ex) {
 							logger.error("Exception", e);
-							PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 						}
 					}
 					
@@ -222,7 +218,6 @@ public class ImagesExtractor {
 			PdfTrickMessages.append("INFO", messages.getProperty("tmsg_19"));
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			retExtract = false;
 		}
 		return retExtract;

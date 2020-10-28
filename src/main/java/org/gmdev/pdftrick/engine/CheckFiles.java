@@ -37,9 +37,6 @@ import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStream;
 
-/**
- * @author Gian Luca Mori
- */
 public class CheckFiles {
 	
 	private static final Logger logger = Logger.getLogger(CheckFiles.class);
@@ -136,7 +133,6 @@ public class CheckFiles {
             in.close();
         } catch (IOException e) {
         	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
         }
         
         return line;
@@ -180,8 +176,7 @@ public class CheckFiles {
 				}
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
-			}	
+			}
 		}
 		
 		if (!checkNumImg) {
@@ -252,7 +247,6 @@ public class CheckFiles {
 			userProtection = true;
 		} catch (IOException e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 	}
 	
@@ -350,7 +344,7 @@ public class CheckFiles {
 			try {
 				if (userProtection || ownerProtection) {
 					reader = new PdfReader(file.getPath(), pwd.getBytes());
-					if (reader!=null) {
+					if (reader != null) {
 						if (reader.isEncrypted()) { 
 							if (reader.isOpenedWithFullPermissions()) {
 								check="ok";
@@ -368,7 +362,6 @@ public class CheckFiles {
 				PdfTrickMessages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_07"), n, file.getName()));
 			} catch (IOException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.appendLater("ERROR", Constants.SEND_LOG_MSG);
 			}
 		}
 	}

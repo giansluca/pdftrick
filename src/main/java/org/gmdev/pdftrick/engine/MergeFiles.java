@@ -13,8 +13,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -24,9 +22,6 @@ import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 
-/**
- * @author Gian Luca Mori
- */
 public class MergeFiles {
 	
 	private static final Logger logger = Logger.getLogger(MergeFiles.class);
@@ -62,7 +57,6 @@ public class MergeFiles {
             doMerge(list, out);
         } catch (IOException | DocumentException e) {
         	logger.error("Exception", e);
-        	PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
         }
 
 		return mergedFile;

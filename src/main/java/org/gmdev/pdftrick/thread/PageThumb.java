@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.NativeObjectManager;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 public class PageThumb implements Runnable {
 	
@@ -36,7 +35,6 @@ public class PageThumb implements Runnable {
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 	}
 	

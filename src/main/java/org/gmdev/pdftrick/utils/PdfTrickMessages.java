@@ -61,7 +61,6 @@ public class PdfTrickMessages {
 				});
 			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
-				PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 			}
 		} else {
 			txtArea.append(builder.toString());
@@ -184,7 +183,6 @@ public class PdfTrickMessages {
 			});
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 	}
 

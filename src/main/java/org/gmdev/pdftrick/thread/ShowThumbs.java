@@ -25,7 +25,6 @@ import javax.swing.border.Border;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ThumbAction;
-import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
 
@@ -155,7 +154,6 @@ public class ShowThumbs implements Runnable {
 		} catch (Exception e) {
 			logger.error("Exception", e);
 			PdfTrickMessages.appendNewLine();
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 		finished = true;
 	}

@@ -12,7 +12,6 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageListenerShowThumb;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 
 import com.itextpdf.text.pdf.PdfReader;
@@ -91,7 +90,6 @@ public class ImgThumb implements Runnable {
 			PdfTrickMessages.append("INFO", infoUnsupported+infoAvailable);
 		} catch(Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 		
 		SwingUtilities.invokeLater(new ManagePanelWait("thumb", "thumb_hide"));

@@ -2,9 +2,6 @@ package org.gmdev.pdftrick.engine.ImageAttr;
 
 import java.awt.image.BufferedImage;
 
-/**
- * @author Gian Luca Mori
- */
 public class InlineImage {
 	
 	private BufferedImage image;

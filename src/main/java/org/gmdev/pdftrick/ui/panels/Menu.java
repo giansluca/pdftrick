@@ -11,7 +11,6 @@ import org.gmdev.pdftrick.ui.actions.ExitAction;
 import org.gmdev.pdftrick.ui.actions.LicenseAction;
 import org.gmdev.pdftrick.ui.actions.MacActions;
 import org.gmdev.pdftrick.ui.actions.OpenAction;
-import org.gmdev.pdftrick.ui.actions.SendLogAction;
 import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class Menu {
@@ -58,12 +57,8 @@ public class Menu {
     	
     	JMenuItem licence = new JMenuItem();
     	licence.setAction(new LicenseAction());
-    	
-    	JMenuItem sendLog = new JMenuItem();
-    	sendLog.setAction(new SendLogAction());
-    	
+
     	help.add(licence);
-    	help.add(sendLog);
     	menubar.add(file);
     	menubar.add(help);
 	}

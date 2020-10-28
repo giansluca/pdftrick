@@ -32,7 +32,7 @@ class PdfTrickTest {
     }
 
     @Test
-    void isShouldThrowIfOsArgumentIsNull() {
+    void isShouldThrowIfOsArgumentIsEmptyOrNull() {
         // Given
         String[] args1 = {};
 
@@ -44,7 +44,7 @@ class PdfTrickTest {
 
         assertThatThrownBy(() -> PdfTrick.main(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Os argument is missing");
+                .hasMessageContaining("Argument object cannot be null");
     }
 
     @ParameterizedTest
@@ -53,7 +53,7 @@ class PdfTrickTest {
     })
     void isShouldThrowIfOsAndOsArgumentDoNotMatch(String os) {
         // Given
-        String[] args = {"wrong"};
+        String[] args = {"-os", "wrong"};
 
         try (MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class)) {
             setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
@@ -67,10 +67,27 @@ class PdfTrickTest {
     }
 
     @Test
+    void isShouldThrowIfOsArgumentNameIsMisspelled() {
+        // Given
+        String[] args = {"-wrong", "win"};
+        String os = "win";
+
+        try (MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class)) {
+            setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
+
+            // When
+            // Then
+            assertThatThrownBy(() -> PdfTrick.main(args))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessageContaining("Argument name -wrong unexpected.");
+        }
+    }
+
+    @Test
     void isShouldThrowIfJvmArchitectureIsNot64() {
         // Given
         String os = "mac";
-        String[] args = {os};
+        String[] args = {"-os", os};
 
         MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class);
         setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
@@ -93,7 +110,7 @@ class PdfTrickTest {
     void isShouldTRunWithNoErrors() {
         // Given
         String os = "mac";
-        String[] args = {os};
+        String[] args = {"-os", os};
 
         MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class);
         setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);

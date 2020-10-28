@@ -235,7 +235,7 @@
                                     <classPath>
                                         <mainClass>org.gmdev.pdftrick.PdfTrick</mainClass>
                                     </classPath>
-                                    <cmdLine>win</cmdLine>
+                                    <cmdLine>-os win</cmdLine>
                                     <stayAlive>false</stayAlive>
                                     <singleInstance>
                                         <mutexName>PdfTrick</mutexName>
@@ -300,6 +300,7 @@
                                 <JVMOptions>
                                 </JVMOptions>
                                 <JVMArguments>
+                                    <string>-os</string>
                                     <string>mac</string>
                                 </JVMArguments>
                             </plist>

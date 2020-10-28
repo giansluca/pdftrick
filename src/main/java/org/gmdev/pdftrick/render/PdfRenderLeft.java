@@ -5,15 +5,10 @@ import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.DivisionThumb;
 import org.gmdev.pdftrick.thread.ExecPool;
 import org.gmdev.pdftrick.thread.ShowThumbs;
-import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
 
 import com.itextpdf.text.pdf.PdfReader;
 
-/**
- * @author Gian Luca Mori
- */
 public class PdfRenderLeft {
 	
 	private static final Logger logger = Logger.getLogger(PdfRenderLeft.class);
@@ -37,7 +32,6 @@ public class PdfRenderLeft {
 			reader.close();
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
 		
 		// system of thread that call native function and renderizing pdf cover in png images 

@@ -88,7 +88,6 @@ public class CustomExtraImgReader {
 			inG.close();
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.append("ERROR", Constants.SEND_LOG_MSG);
 		}
     	return buffImg;
     }

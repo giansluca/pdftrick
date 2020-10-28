@@ -51,6 +51,4 @@ public final class Constants {
 	public static final String WAIT_IMG = "icons/wait_img.gif";
 	public static final String WAIT_EXT = "icons/wait_ext.gif";
 	
-	// static messages
-	public static final String SEND_LOG_MSG = "an error occurred, to improve Pdf Trick please send a log file by clicking Help/Send Log";
 }

@@ -35,22 +35,16 @@ public class SetupUtils {
 		return System.getProperty("sun.arch.data.model").contains("64");
 	}
 
-	public static void setMacPreferences() {
-		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "PdfTrick");
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		System.setProperty("apple.awt.fileDialogForDirectories", "true");
-	}
-
 	public static void extractNativeLibrary() {
 		String nameLib = "";
 		File nativeLib = null;
 		
 		if (isWindows()) {
 			nameLib = Constants.NATIVE_LIB_WIN_64;
-			nativeLib = new File(getHomeFolder() + File.separator + Constants.NATIVE_LIB_WIN_64);
+			nativeLib = new File(getOrCreateHomeFolder() + File.separator + Constants.NATIVE_LIB_WIN_64);
 		} else if (isMac()) {
 			nameLib = Constants.NATIVE_LIB_MAC_64;
-			nativeLib = new File(getHomeFolder() + File.separator + Constants.NATIVE_LIB_MAC_64);
+			nativeLib = new File(getOrCreateHomeFolder() + File.separator + Constants.NATIVE_LIB_MAC_64);
 		}
 
 		if (nativeLib.exists()) {
@@ -61,7 +55,7 @@ public class SetupUtils {
 			InputStream in = FileLoader.loadAsStream(
 					Constants.NATIVE_LIB_PATH + File.separator + nameLib);
 
-			File fileOut = new File(getHomeFolder() + File.separator + nameLib);
+			File fileOut = new File(getOrCreateHomeFolder() + File.separator + nameLib);
 			OutputStream out = new FileOutputStream(fileOut);
 			
 			byte[] buf = new byte[8192];
@@ -78,7 +72,7 @@ public class SetupUtils {
 		}
 	}
 
-	public static String getHomeFolder() {
+	public static String getOrCreateHomeFolder() {
 		String userHomePath = System.getProperty("user.home");
 		File pdfTrickHomeFolder = new File(userHomePath + File.separator + Constants.PDFTRICK_FOLDER);
 
