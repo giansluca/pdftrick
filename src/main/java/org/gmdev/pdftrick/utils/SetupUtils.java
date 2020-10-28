@@ -1,10 +1,6 @@
 package org.gmdev.pdftrick.utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 import org.apache.log4j.Logger;
 
@@ -36,7 +32,7 @@ public class SetupUtils {
 	}
 
 	public static void extractNativeLibrary(String homeFolder, String operatingSystem) {
-		String nameLib = "";
+		String nameLib;
 		File nativeLib;
 		
 		if (operatingSystem.equals(WIN_OS)) {
@@ -53,8 +49,7 @@ public class SetupUtils {
 			return;
 		
 		try {
-			InputStream in = FileLoader.loadAsStream(
-					Constants.NATIVE_LIB_PATH + File.separator + nameLib);
+			InputStream in = FileLoader.loadAsStream(Constants.NATIVE_LIB_PATH + "/" + nameLib);
 
 			File fileOut = new File(homeFolder + File.separator + nameLib);
 			OutputStream out = new FileOutputStream(fileOut);
@@ -68,7 +63,7 @@ public class SetupUtils {
 			
             in.close();
 			out.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			logger.error(e);
 		}
 	}

@@ -11,7 +11,6 @@ import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.swingmanager.WarningPanel;
 import org.gmdev.pdftrick.utils.*;
-import org.gmdev.pdftrick.exception.DefaultHandler;
 
 import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
@@ -20,8 +19,7 @@ public class PdfTrick {
     public static void main(String[] args) {
         configureLogger();
         setLocale();
-        setDefaultUncaughtExceptionHandler();
-        String operatingSystem = checkAndGetOs(args);
+        String operatingSystem = checkAndGetSystemOs(args);
 
         if (operatingSystem.equals(MAC_OS))
             setMacPreferences();
@@ -45,11 +43,7 @@ public class PdfTrick {
         JComponent.setDefaultLocale(Locale.ENGLISH);
     }
 
-    public static void setDefaultUncaughtExceptionHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(new DefaultHandler());
-    }
-
-    private static String checkAndGetOs(String[] args) {
+    private static String checkAndGetSystemOs(String[] args) {
         String osArgument = parseOsArguments(args);
         String systemOs = getOs();
         if (!systemOs.equals(osArgument))
