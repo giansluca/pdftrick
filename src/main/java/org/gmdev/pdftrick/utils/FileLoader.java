@@ -6,7 +6,7 @@ import java.net.URL;
 public class FileLoader {
 
     public static InputStream loadAsStream(String filename) {
-        InputStream in = FileLoader.class.getClassLoader().getResourceAsStream(filename);
+        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
         if (in == null)
             throw new IllegalStateException(String.format("No resource found: %s", filename));
         return in;
