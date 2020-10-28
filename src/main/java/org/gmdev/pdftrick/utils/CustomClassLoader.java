@@ -41,10 +41,11 @@ public class CustomClassLoader extends ClassLoader {
     }
      
     private byte[] loadClassData(String name) throws IOException {
-    	BufferedInputStream in = new BufferedInputStream(CustomClassLoader.class.getResourceAsStream("/"+name.replace(".", "/")+ ".class"));
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	BufferedInputStream in = new BufferedInputStream(CustomClassLoader.class.getResourceAsStream(
+    	        "/" + name.replace(".", "/")+ ".class"));
+
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
         int i;
-        
         while ((i = in.read()) != -1) {
             out.write(i);
         }

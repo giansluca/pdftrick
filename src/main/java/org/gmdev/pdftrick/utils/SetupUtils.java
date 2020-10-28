@@ -32,33 +32,30 @@ public class SetupUtils {
 	}
 
 	public static void extractNativeLibrary(String homeFolder, String operatingSystem) {
-		String nameLib;
-		File nativeLib;
-		
+		String libName;
+		File libFile;
 		if (operatingSystem.equals(WIN_OS)) {
-			nameLib = Constants.NATIVE_LIB_WIN_64;
-			nativeLib = new File(homeFolder + File.separator + Constants.NATIVE_LIB_WIN_64);
+			libName = Constants.NATIVE_LIB_WIN_64;
+			libFile = new File(homeFolder + File.separator + libName);
 		} else if (operatingSystem.equals(MAC_OS)) {
-			nameLib = Constants.NATIVE_LIB_MAC_64;
-			nativeLib = new File(homeFolder + File.separator + Constants.NATIVE_LIB_MAC_64);
+			libName = Constants.NATIVE_LIB_MAC_64;
+			libFile = new File(homeFolder + File.separator + libName);
 		} else {
 			throw new IllegalStateException("Error selecting native library, should never get here");
 		}
 
-		if (nativeLib.exists())
+		if (libFile.exists())
 			return;
 		
 		try {
-			InputStream in = FileLoader.loadAsStream(Constants.NATIVE_LIB_PATH + "/" + nameLib);
-
-			File fileOut = new File(homeFolder + File.separator + nameLib);
+			InputStream in = FileLoader.loadAsStream(Constants.NATIVE_LIB_PATH + "/" + libName);
+			File fileOut = new File(homeFolder + File.separator + libName);
 			OutputStream out = new FileOutputStream(fileOut);
 			
-			byte[] buf = new byte[8192];
+			byte[] buffer = new byte[8192];
             int len;
-            
-            while ((len = in.read(buf)) != -1) {
-                out.write(buf, 0, len);
+            while ((len = in.read(buffer)) != -1) {
+                out.write(buffer, 0, len);
             }
 			
             in.close();
