@@ -8,7 +8,7 @@ public class FileLoader {
     public static InputStream loadAsStream(String filename) {
         InputStream in = FileLoader.class.getClassLoader().getResourceAsStream(filename);
         if (in == null)
-            throw new IllegalStateException(String.format("FATAL! No resource found: %s", filename));
+            throw new IllegalStateException(String.format("No resource found: %s", filename));
         return in;
     }
 

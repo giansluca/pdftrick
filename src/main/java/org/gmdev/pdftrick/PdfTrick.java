@@ -29,7 +29,7 @@ public class PdfTrick {
         checkArchitecture();
         checkSingleInstanceRunning();
         String homeFolder = getOrCreateHomeFolder();
-        extractNativeLibrary();
+        extractNativeLibrary(homeFolder, operatingSystem);
 
         // run
         var pdfTrickBag = PdfTrickBag.getPdfTrickBag();

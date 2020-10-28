@@ -35,27 +35,28 @@ public class SetupUtils {
 		return System.getProperty("sun.arch.data.model").contains("64");
 	}
 
-	public static void extractNativeLibrary() {
+	public static void extractNativeLibrary(String homeFolder, String operatingSystem) {
 		String nameLib = "";
-		File nativeLib = null;
+		File nativeLib;
 		
-		if (isWindows()) {
+		if (operatingSystem.equals(WIN_OS)) {
 			nameLib = Constants.NATIVE_LIB_WIN_64;
-			nativeLib = new File(getOrCreateHomeFolder() + File.separator + Constants.NATIVE_LIB_WIN_64);
-		} else if (isMac()) {
+			nativeLib = new File(homeFolder + File.separator + Constants.NATIVE_LIB_WIN_64);
+		} else if (operatingSystem.equals(MAC_OS)) {
 			nameLib = Constants.NATIVE_LIB_MAC_64;
-			nativeLib = new File(getOrCreateHomeFolder() + File.separator + Constants.NATIVE_LIB_MAC_64);
+			nativeLib = new File(homeFolder + File.separator + Constants.NATIVE_LIB_MAC_64);
+		} else {
+			throw new IllegalStateException("Error selecting native library, should never get here");
 		}
 
-		if (nativeLib.exists()) {
+		if (nativeLib.exists())
 			return;
-		}
 		
 		try {
 			InputStream in = FileLoader.loadAsStream(
 					Constants.NATIVE_LIB_PATH + File.separator + nameLib);
 
-			File fileOut = new File(getOrCreateHomeFolder() + File.separator + nameLib);
+			File fileOut = new File(homeFolder + File.separator + nameLib);
 			OutputStream out = new FileOutputStream(fileOut);
 			
 			byte[] buf = new byte[8192];
