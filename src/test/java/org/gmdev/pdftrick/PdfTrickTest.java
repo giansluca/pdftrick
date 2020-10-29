@@ -109,16 +109,25 @@ class PdfTrickTest {
         String[] args = {"-wrong", "win"};
         String os = "win";
 
-        try (MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class)) {
+        MockedStatic<SingleInstanceValidator> singleInstanceValidatorMock =
+                Mockito.mockStatic(SingleInstanceValidator.class);
+        singleInstanceValidatorMock.when(SingleInstanceValidator::getInstance)
+                .thenReturn(singleInstanceValidator);
+        doNothing().when(singleInstanceValidator).checkPdfTrickAlreadyRunning();
+
+        MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class);
             setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
             setupUtilsMock.when(SetupUtils::isJvm64).thenReturn(true);
 
-            // When
-            // Then
-            assertThatThrownBy(() -> PdfTrick.main(args))
-                    .isInstanceOf(IllegalStateException.class)
-                    .hasMessageContaining("Argument name -wrong unexpected.");
-        }
+        // When
+        // Then
+        assertThatThrownBy(() -> PdfTrick.main(args))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Argument name -wrong unexpected.");
+
+        // Finally
+        singleInstanceValidatorMock.close();
+        setupUtilsMock.close();
     }
 
     @Test
