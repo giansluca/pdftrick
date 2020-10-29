@@ -1,12 +1,13 @@
 package org.gmdev.pdftrick.utils;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import org.apache.log4j.Logger;
+import static org.gmdev.pdftrick.utils.Constants.*;
 
 public class SetupUtils {
 	
-	private static final Logger logger = Logger.getLogger(SetupUtils.class);
 	public static final String WIN_OS = "win";
 	public static final String MAC_OS = "mac";
 
@@ -31,43 +32,35 @@ public class SetupUtils {
 		return System.getProperty("sun.arch.data.model").contains("64");
 	}
 
-	public static void extractNativeLibrary(String homeFolder, String operatingSystem) {
+	public static void setNativeLibrary(String homeFolder, String operatingSystem) {
 		String libName;
-		File libFile;
-		if (operatingSystem.equals(WIN_OS)) {
-			libName = Constants.NATIVE_LIB_WIN_64;
-			libFile = new File(homeFolder + File.separator + libName);
-		} else if (operatingSystem.equals(MAC_OS)) {
-			libName = Constants.NATIVE_LIB_MAC_64;
-			libFile = new File(homeFolder + File.separator + libName);
-		} else {
+		if (operatingSystem.equals(WIN_OS))
+			libName = NATIVE_LIB_WIN_64;
+		else if (operatingSystem.equals(MAC_OS))
+			libName = NATIVE_LIB_MAC_64;
+		else
 			throw new IllegalStateException("Error selecting native library, should never get here");
-		}
 
-		if (libFile.exists())
+		Path libPath = Path.of(homeFolder + File.separator + libName);
+		if (libPath.toFile().exists())
 			return;
-		
+
+		String libToCopy = NATIVE_LIB_PATH + "/" + libName;
+		extractNativeLibrary(libPath, libToCopy);
+	}
+
+	private static void extractNativeLibrary(Path to, String libToCopy) {
+		InputStream from = FileLoader.loadAsStream(libToCopy);
 		try {
-			InputStream in = FileLoader.loadAsStream(Constants.NATIVE_LIB_PATH + "/" + libName);
-			File fileOut = new File(homeFolder + File.separator + libName);
-			OutputStream out = new FileOutputStream(fileOut);
-			
-			byte[] buffer = new byte[8192];
-            int len;
-            while ((len = in.read(buffer)) != -1) {
-                out.write(buffer, 0, len);
-            }
-			
-            in.close();
-			out.close();
+			Files.copy(from, to);
 		} catch (IOException e) {
-			logger.error(e);
+			throw new IllegalStateException(e);
 		}
 	}
 
 	public static String getOrCreateHomeFolder() {
 		String userHomePath = System.getProperty("user.home");
-		File pdfTrickHomeFolder = new File(userHomePath + File.separator + Constants.PDFTRICK_FOLDER);
+		File pdfTrickHomeFolder = new File(userHomePath + File.separator + PDFTRICK_FOLDER);
 
 		if (pdfTrickHomeFolder.exists())
 			return pdfTrickHomeFolder.getPath();
@@ -84,7 +77,7 @@ public class SetupUtils {
 			try {
 				Runtime.getRuntime().exec(command);
 			} catch (IOException e) {
-				logger.error(e);
+				throw new IllegalStateException(e);
 			}
 		}
 

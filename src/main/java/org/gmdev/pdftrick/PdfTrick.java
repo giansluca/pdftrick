@@ -8,30 +8,30 @@ import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
 import org.apache.log4j.*;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.factory.PdfTrickFactory;
 import org.gmdev.pdftrick.swingmanager.WarningPanel;
 import org.gmdev.pdftrick.utils.*;
+import org.gmdev.pdftrick.validation.SingleInstanceValidator;
 
 import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
 public class PdfTrick {
 
+    private static String operatingSystem;
+    private static String homeFolder;
+
     public static void main(String[] args) {
         configureLogger();
         setLocale();
-        String operatingSystem = checkAndGetSystemOs(args);
+        checkArchitecture();
+        checkSingleInstanceRunning();
 
+        operatingSystem = checkAndGetSystemOs(args);
         if (operatingSystem.equals(MAC_OS))
             setMacPreferences();
 
-        checkArchitecture();
-        checkSingleInstanceRunning();
-        String homeFolder = getOrCreateHomeFolder();
-        extractNativeLibrary(homeFolder, operatingSystem);
-
-        // run
-        var pdfTrickBag = PdfTrickBag.getPdfTrickBag();
-        pdfTrickBag.initialize(homeFolder, operatingSystem);
+        homeFolder = getOrCreateHomeFolder();
+        setNativeLibrary(homeFolder, operatingSystem);
+        run();
     }
 
     private static void configureLogger() {
@@ -83,8 +83,13 @@ public class PdfTrick {
     }
 
     private static void checkSingleInstanceRunning() {
-        var singleInstanceValidator = PdfTrickFactory.getSingleInstanceValidator();
+        var singleInstanceValidator = SingleInstanceValidator.getInstance();
         singleInstanceValidator.checkPdfTrickAlreadyRunning();
+    }
+
+    private static void run() {
+        var pdfTrickBag = PdfTrickBag.getPdfTrickBag();
+        pdfTrickBag.initialize(homeFolder, operatingSystem);
     }
 
 

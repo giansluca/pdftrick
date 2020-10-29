@@ -11,8 +11,16 @@ public class SingleInstanceValidator {
 
     private static final Logger logger = Logger.getLogger(SingleInstanceValidator.class);
     private static final int SERVER_PORT = 12345;
+    private static SingleInstanceValidator singleInstanceValidator;
 
     private ServerSocket serverSocket;
+
+    public static SingleInstanceValidator getInstance() {
+        if (singleInstanceValidator == null)
+            singleInstanceValidator = new SingleInstanceValidator();
+
+        return singleInstanceValidator;
+    }
 
     public void checkPdfTrickAlreadyRunning() {
         startFlagServerSocket();

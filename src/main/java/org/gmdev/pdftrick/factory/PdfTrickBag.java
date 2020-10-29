@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UI2;
 import org.gmdev.pdftrick.utils.*;
 

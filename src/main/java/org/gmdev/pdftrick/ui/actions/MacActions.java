@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.utils.*;
 
 public class MacActions {

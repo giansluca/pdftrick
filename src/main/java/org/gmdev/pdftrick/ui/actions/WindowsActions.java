@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.NativeObjectManager;
+import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.utils.PdfTrickMessages;
 import org.gmdev.pdftrick.utils.PdfTrickUtils;
 

@@ -20,7 +20,6 @@ public final class Constants {
 	public static final String NATIVE_LIB_MAC_64 ="libpdftrick_native_1.7a_64.jnilib";
 	public static final String PROPERTY_FILE = "properties/pdftrick.properties";
 	public static final String PROPERTY_L4J_FILE = "properties/log4j.properties";
-	public static final String LOGFILE = "pdftrick.log";
 	public static final String GENERIC_ICC_FILE = "Generic_CMYK_Profile.icc";
 	public static final String LICENSE_FILE = "license.txt";
 
@@ -36,7 +35,6 @@ public final class Constants {
 	public static final String ABOUT_ICO = "icons/about_icon.png";
 	public static final String EXIT_ICO = "icons/exit_icon.png";
 	public static final String OPEN_FILE_ICO = "icons/open_icon.png";
-	public static final String SEND_LOG_ICO = "icons/sendlog_icon.png";
 	public static final String LICENSE_ICO = "icons/license_icon.png";
 	public static final String GET_IMG_ICO = "icons/getigm_icon.png";
 	public static final String CANCEL_ICO = "icons/cancel_icon.png";
