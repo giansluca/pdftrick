@@ -29,7 +29,7 @@ public class PdfTrick {
         if (operatingSystem.equals(MAC_OS))
             setMacPreferences();
 
-        homeFolder = getOrCreateHomeFolder();
+        homeFolder = getOrCreateHomeFolder(operatingSystem);
         setNativeLibrary(homeFolder, operatingSystem);
         run();
     }
