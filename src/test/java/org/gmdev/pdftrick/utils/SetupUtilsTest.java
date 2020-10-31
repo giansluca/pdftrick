@@ -73,12 +73,10 @@ class SetupUtilsTest {
         systemPropertyMock.close();
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "mac"
-    })
-    void itShouldCreatePdfTrickHomeFolder(String os) {
+    @Test
+    void itShouldCreatePdfTrickHomeFolder() {
         // Given
+        String os = SetupUtils.getOs();
         String property = "user.home";
         String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
 
@@ -97,12 +95,10 @@ class SetupUtilsTest {
         systemPropertyMock.close();
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "mac"
-    })
-    void itShouldReturnThePdfTrickHomeFolder(String os) {
+    @Test
+    void itShouldReturnThePdfTrickHomeFolder() {
         // Given
+        String os = SetupUtils.getOs();
         String property = "user.home";
         String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
 
