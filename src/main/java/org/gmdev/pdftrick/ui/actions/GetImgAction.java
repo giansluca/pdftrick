@@ -15,7 +15,7 @@ import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.ImgExtraction;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
+import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class GetImgAction extends AbstractAction  {
@@ -35,20 +35,20 @@ public class GetImgAction extends AbstractAction  {
 		final Container contentPanel = factory.getUserInterface().getContentPane();
 		
 		if (factory.gettContainer().getImgExtractionThread() != null && factory.gettContainer().getImgExtractionThread().isAlive()) {
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_02"));
+			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
 		if (factory.gettContainer().getOpenFileChooserThread() != null && factory.gettContainer().getOpenFileChooserThread().isAlive()) {
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_01"));
+			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
 		if (factory.gettContainer().getDragAnDropFileChooserThread() != null && factory.gettContainer().getDragAnDropFileChooserThread().isAlive()) {
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_01"));
+			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
 		if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
 			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
+			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
 			return;
 		}
@@ -76,11 +76,11 @@ public class GetImgAction extends AbstractAction  {
 					extract = false;
 				}
 			} else {
-				PdfTrickMessages.append("INFO", messages.getProperty("tmsg_03"));
+				Messages.append("INFO", messages.getProperty("tmsg_03"));
 				extract = false;
 			}
 		} else {
-			PdfTrickMessages.append("INFO", messages.getProperty("tmsg_04"));
+			Messages.append("INFO", messages.getProperty("tmsg_04"));
 			extract = false;
 		}
 		if (extract) {

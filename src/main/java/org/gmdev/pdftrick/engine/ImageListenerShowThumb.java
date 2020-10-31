@@ -25,7 +25,7 @@ import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageNormal;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Utils;
 
 import com.itextpdf.text.exceptions.UnsupportedPdfException;
 import com.itextpdf.text.pdf.PRStream;
@@ -142,8 +142,8 @@ public class ImageListenerShowThumb implements RenderListener {
 			        if (!image.getFileType().equalsIgnoreCase("jpg") && buffPic != null) {
 			        	PdfImageObject maskImage = new PdfImageObject(maskStream);
 			        	buffMask = maskImage.getBufferedImage();
-			        	Image img = PdfTrickUtils.TransformGrayToTransparency(buffMask); 
-			        	buffImg = PdfTrickUtils.ApplyTransparency(buffPic, img);
+			        	Image img = Utils.TransformGrayToTransparency(buffMask);
+			        	buffImg = Utils.ApplyTransparency(buffPic, img);
 			        } else {
 			        	buffImg = buffPic;
 			        }
@@ -182,7 +182,7 @@ public class ImageListenerShowThumb implements RenderListener {
 			}
 			
 			if (buffImg != null) {
-				buffImg = PdfTrickUtils.adjustImage(buffImg, flip, rotate);
+				buffImg = Utils.adjustImage(buffImg, flip, rotate);
 				RenderedImageAttributes imageAttrs = null;
 				
 				if (isInline) {
@@ -204,13 +204,13 @@ public class ImageListenerShowThumb implements RenderListener {
 						faktor = 160 / (double)w;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = PdfTrickUtils.getScaledImagWithScalr(buffImg, scaledW, scaledH);
+						buffImg = Utils.getScaledImagWithScalr(buffImg, scaledW, scaledH);
 					
 					} else {
 						faktor = 160 / (double)h;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = PdfTrickUtils.getScaledImagWithScalr(buffImg, scaledW, scaledH);
+						buffImg = Utils.getScaledImagWithScalr(buffImg, scaledW, scaledH);
 					}
 				}
 				

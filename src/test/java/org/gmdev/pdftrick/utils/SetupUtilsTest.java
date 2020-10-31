@@ -3,11 +3,11 @@ package org.gmdev.pdftrick.utils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.mockito.*;
+import java.io.File;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class SetupUtilsTest {
 
@@ -70,6 +70,57 @@ class SetupUtilsTest {
         assertThat(isJvm64).isEqualTo(expected);
 
         // Finally
+        systemPropertyMock.close();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "mac"
+    })
+    void itShouldCreatePdfTrickHomeFolder(String os) {
+        // Given
+        String property = "user.home";
+        String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
+
+        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
+
+        // When
+        SetupUtils.getOrCreateHomeFolder(os);
+
+        // Then
+        File expectedFakeHome = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
+        assertThat(expectedFakeHome.exists()).isTrue();
+
+        // Finally
+        assertThat(expectedFakeHome.delete()).isTrue();
+        systemPropertyMock.close();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "mac"
+    })
+    void itShouldReturnThePdfTrickHomeFolder(String os) {
+        // Given
+        String property = "user.home";
+        String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
+
+        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
+
+        File fakeHomeFolder = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
+        if(!fakeHomeFolder.mkdir())
+            fail();
+
+        // When
+        String pdfTrickHome = SetupUtils.getOrCreateHomeFolder(os);
+
+        // Then
+        assertThat(pdfTrickHome).isEqualTo(fakeHomeFolder.getPath());
+
+        // Finally
+        assertThat(fakeHomeFolder.delete()).isTrue();
         systemPropertyMock.close();
     }
 

@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImagesExtractor;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class ImgExtraction implements Runnable {
 	
@@ -99,8 +99,8 @@ public class ImgExtraction implements Runnable {
 			}
 		}
 		
-		PdfTrickUtils.cleanImageSelectedHashMap();
-		PdfTrickUtils.cleanInlineImgSelectedHashMap();
+		Utils.cleanImageSelectedHashMap();
+		Utils.cleanInlineImgSelectedHashMap();
 		numImgSelectedField.setText("");
 		
 		System.gc();

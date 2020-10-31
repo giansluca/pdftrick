@@ -1,8 +1,7 @@
 package org.gmdev.pdftrick.utils;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 
 import static org.gmdev.pdftrick.utils.Constants.*;
 import static org.gmdev.pdftrick.utils.SystemProperty.*;
@@ -34,6 +33,32 @@ public class SetupUtils {
 		return getSystemProperty("sun.arch.data.model").contains("64");
 	}
 
+	public static String getOrCreateHomeFolder(String os) {
+		String userHomePath = getSystemProperty("user.home");
+		File homeFolder = new File(userHomePath + File.separator + PDFTRICK_FOLDER);
+
+		if (homeFolder.exists())
+			return homeFolder.getPath();
+
+		return createHomeFolder(homeFolder, os);
+	}
+
+	private static String createHomeFolder(File homeFolder, String os) {
+		if (!homeFolder.mkdir())
+			throw new IllegalStateException("Error creating PdfTrick home folder");
+
+		if (os.equals(WIN_OS)) {
+			String[] command = {"attrib", "+h", homeFolder.getPath()};
+			try {
+				Runtime.getRuntime().exec(command);
+			} catch (IOException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
+		return homeFolder.getPath();
+	}
+
 	public static void setNativeLibrary(String homeFolder, String operatingSystem) {
 		String libName;
 		if (operatingSystem.equals(WIN_OS))
@@ -58,32 +83,6 @@ public class SetupUtils {
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-	}
-
-	public static String getOrCreateHomeFolder(String os) {
-		String userHomePath = System.getProperty("user.home");
-		File homeFolder = new File(userHomePath + File.separator + PDFTRICK_FOLDER);
-
-		if (homeFolder.exists())
-			return homeFolder.getPath();
-
-		return createHomeFolder(homeFolder, os);
-	}
-
-	private static String createHomeFolder(File homeFolder, String os) {
-		if (!homeFolder.mkdir())
-			throw new IllegalStateException("Error creating PdfTrick home folder");
-
-		if (os.equals(WIN_OS)) {
-			String[] command = {"attrib", "+h", homeFolder.getPath()};
-			try {
-				Runtime.getRuntime().exec(command);
-			} catch (IOException e) {
-				throw new IllegalStateException(e);
-			}
-		}
-
-		return homeFolder.getPath();
 	}
 
 }

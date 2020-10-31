@@ -12,7 +12,7 @@ import javax.swing.KeyStroke;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
+import org.gmdev.pdftrick.utils.Messages;
 
 public class AboutAction extends AbstractAction {
 	
@@ -35,7 +35,7 @@ public class AboutAction extends AbstractAction {
 		final String os = factory.getOs();
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
 		
-		PdfTrickMessages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os),
+		Messages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os),
 				messages.getProperty("jmsg_07"), 1, imageIcon);
 	}
 	

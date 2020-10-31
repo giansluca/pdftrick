@@ -14,7 +14,7 @@ import javax.swing.border.Border;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.ImgThumb;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class ThumbAction implements MouseListener {
 	
@@ -50,7 +50,7 @@ public class ThumbAction implements MouseListener {
 			picLabel.setBorder(borderGray);
 			factory.setSelected("");
 			currentPageField.setText("");
-			PdfTrickUtils.cleanCenterPanel();
+			Utils.cleanCenterPanel();
 			
 		// select page	
 		} else {
@@ -65,7 +65,7 @@ public class ThumbAction implements MouseListener {
 			picLabel.setBorder(borderGreen);
 			factory.setSelected(String.valueOf(numberPage-1));
 			currentPageField.setText("Page "+numberPage);
-			PdfTrickUtils.cleanCenterPanel();
+			Utils.cleanCenterPanel();
 			
 			ImgThumb imgThumb = new ImgThumb(numberPage);
 			factory.gettContainer().setImgThumb(imgThumb);

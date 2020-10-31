@@ -29,7 +29,7 @@ import javax.swing.event.DocumentListener;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
+import org.gmdev.pdftrick.utils.Messages;
 
 import com.itextpdf.text.exceptions.BadPasswordException;
 import com.itextpdf.text.pdf.PdfName;
@@ -106,7 +106,7 @@ public class CheckFiles {
 			// check if the file uploaded is actually a pdf file
 			if (!fileString.substring(0, 4).equalsIgnoreCase("%PDF")) {
 				check = false;
-				PdfTrickMessages.append("WARNING", MessageFormat.format(messages.getProperty("dmsg_04"), nameFile));
+				Messages.append("WARNING", MessageFormat.format(messages.getProperty("dmsg_04"), nameFile));
 			}
 		}
 		long sizeResultFileKB = sizeResultFile / 1024;
@@ -114,7 +114,7 @@ public class CheckFiles {
 		
 		if (sizeResultFileMB > 256) {
 			check = false;
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_20"));
+			Messages.append("WARNING", messages.getProperty("tmsg_20"));
 		}
 		
 		return check;
@@ -180,7 +180,7 @@ public class CheckFiles {
 		}
 		
 		if (!checkNumImg) {
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_21"));
+			Messages.append("WARNING", messages.getProperty("tmsg_21"));
 		}
 		
 		return checkNumImg;
@@ -213,7 +213,7 @@ public class CheckFiles {
 				}
 				
 				if (_ck.equalsIgnoreCase("abort")) {
-					PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_22"));
+					Messages.append("WARNING", messages.getProperty("tmsg_22"));
 					check = false;
 				}
 				
@@ -351,7 +351,7 @@ public class CheckFiles {
 								namePwd.put(file.getName(), pwd);
 							} else {
 								check="no";
-								PdfTrickMessages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_08"), n, file.getName()));
+								Messages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_08"), n, file.getName()));
 							}
 						}	
 						reader.close();
@@ -359,7 +359,7 @@ public class CheckFiles {
 				} 
 			} catch (BadPasswordException e) {
 				check="no";
-				PdfTrickMessages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_07"), n, file.getName()));
+				Messages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_07"), n, file.getName()));
 			} catch (IOException e) {
 				logger.error("Exception", e);
 			}

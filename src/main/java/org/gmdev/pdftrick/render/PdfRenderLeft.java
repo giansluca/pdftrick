@@ -5,7 +5,7 @@ import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.DivisionThumb;
 import org.gmdev.pdftrick.thread.ExecPool;
 import org.gmdev.pdftrick.thread.ShowThumbs;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Utils;
 
 import com.itextpdf.text.pdf.PdfReader;
 
@@ -21,7 +21,7 @@ public class PdfRenderLeft {
 	 * Render pdf resultfile thumbs in a left_panel, using threads pool
 	 */
 	public void pdfRender() {
-		String imgPath = PdfTrickUtils.createImgFolder();
+		String imgPath = Utils.createImgFolder();
 		int totPages = 0;
 		
 		// get the page number of the new generated pdf

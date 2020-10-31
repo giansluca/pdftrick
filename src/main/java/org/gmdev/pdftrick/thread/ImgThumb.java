@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageListenerShowThumb;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
+import org.gmdev.pdftrick.utils.Messages;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
@@ -87,7 +87,7 @@ public class ImgThumb implements Runnable {
 				String t = listener.getNumImg() > 1 ? messages.getProperty("tmsg_15") : messages.getProperty("tmsg_16");
 				infoAvailable = listener.getNumImg()+" "+t;
 			}
-			PdfTrickMessages.append("INFO", infoUnsupported+infoAvailable);
+			Messages.append("INFO", infoUnsupported+infoAvailable);
 		} catch(Exception e) {
 			logger.error("Exception", e);
 		}

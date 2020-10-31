@@ -49,31 +49,31 @@ public class OpenAction extends AbstractAction {
 		if (ret == JFileChooser.APPROVE_OPTION) {
         	if ( (factory.gettContainer().getDragAnDropFileChooserThread() != null && factory.gettContainer().getDragAnDropFileChooserThread().isAlive()) ||
         		(factory.gettContainer().getOpenFileChooserThread() != null &&	factory.gettContainer().getOpenFileChooserThread().isAlive())) {
-        		PdfTrickUtils.resetDropBorder();
-    			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_01"));
+        		Utils.resetDropBorder();
+    			Messages.append("WARNING", messages.getProperty("tmsg_01"));
     			return;
         	}
         	
         	if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
     			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    			PdfTrickUtils.resetDropBorder();
-    			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
+    			Utils.resetDropBorder();
+    			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
     			return;
         	}  
         	
         	if (factory.gettContainer().getImgExtractionThread()!=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    		    PdfTrickUtils.resetDropBorder();
-    		    PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
+    		    Utils.resetDropBorder();
+    		    Messages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
     		    return;	
         	}
         	
         	if (factory.gettContainer().getImgThumbThread()!=null && factory.gettContainer().getImgThumbThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    			PdfTrickUtils.resetDropBorder();
-    			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
+    			Utils.resetDropBorder();
+    			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
     			return;	
         	}

@@ -47,8 +47,7 @@ import com.levigo.jbig2.JBIG2ImageReader;
 import com.levigo.jbig2.JBIG2ImageReaderSpi;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class CustomExtraImgReader {
 	
@@ -165,8 +164,8 @@ public class CustomExtraImgReader {
 	    	PdfImageObject maskImage = new PdfImageObject(maskStream);
         	buffMask = maskImage.getBufferedImage();
         	
-        	Image img = PdfTrickUtils.TransformGrayToTransparency(buffMask);
-        	buffImg = PdfTrickUtils.ApplyTransparency(buffPic, img);
+        	Image img = Utils.TransformGrayToTransparency(buffMask);
+        	buffImg = Utils.ApplyTransparency(buffPic, img);
 	    } else {
 	    	buffImg = buffPic;
 	    }

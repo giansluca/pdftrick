@@ -54,7 +54,7 @@ public class MacActions {
 			factory.gettContainer().getImgExtraction().stop();
 			if (factory.gettContainer().getImgExtractionThread() !=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
 				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-				PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
+				Messages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
 						JOptionPane.WARNING_MESSAGE, warningIcon);
 			}
 		}
@@ -62,8 +62,8 @@ public class MacActions {
 		NativeObjectManager nativeManager = factory.getNativemanager();
 		nativeManager.unloadNativeLib();
 		
-		PdfTrickUtils.deleteResultFile();
-		PdfTrickUtils.deleteImgFolderAnDFile();
+		Utils.deleteResultFile();
+		Utils.deleteImgFolderAnDFile();
 		
 		System.exit(0);
 	}
@@ -76,7 +76,7 @@ public class MacActions {
 		String os = factory.getOs();
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
 		
-		PdfTrickMessages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_m"), os), 
+		Messages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_m"), os),
 				messages.getProperty("jmsg_07"), 1, imageIcon);
 	}
 

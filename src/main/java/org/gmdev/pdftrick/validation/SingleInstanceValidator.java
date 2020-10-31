@@ -2,7 +2,6 @@ package org.gmdev.pdftrick.validation;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.swingmanager.WarningPanel;
-
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;

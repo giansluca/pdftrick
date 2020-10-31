@@ -25,8 +25,8 @@ import javax.swing.border.Border;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ThumbAction;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class ShowThumbs implements Runnable {
 	
@@ -58,7 +58,7 @@ public class ShowThumbs implements Runnable {
 		long delta = 1000;
 		
 		try {
-			PdfTrickMessages.appendNoNewLine("INFO", messages.getProperty("tmsg_08"));
+			Messages.appendNoNewLine("INFO", messages.getProperty("tmsg_08"));
 			int nPages = factory.getNumPages(); 
 			File[] imgVett = getCoverImagesRendered(hiddenHomeFolder);
 			
@@ -66,7 +66,7 @@ public class ShowThumbs implements Runnable {
 			while (i < nPages && !finished) {
 				long timeLoop = System.currentTimeMillis();
 				if (timeLoop > time + delta) {
-					PdfTrickMessages.appendIline(messages.getProperty("tmsg_09"));
+					Messages.appendIline(messages.getProperty("tmsg_09"));
 					delta = delta + 1000;
 				}
 				imgVett = getCoverImagesRendered(hiddenHomeFolder);
@@ -101,9 +101,9 @@ public class ShowThumbs implements Runnable {
 								int w = bufImg.getWidth();
 								int h = bufImg.getHeight();
 								if (w > h) {
-									bufImg = PdfTrickUtils.getScaledImage(bufImg, 170, 126);
+									bufImg = Utils.getScaledImage(bufImg, 170, 126);
 								} else {
-									bufImg = PdfTrickUtils.getScaledImage(bufImg, 170, 228);
+									bufImg = Utils.getScaledImage(bufImg, 170, 228);
 								}
 								
 								// update left panel, need invokeLater because i'm out EDT here
@@ -134,8 +134,8 @@ public class ShowThumbs implements Runnable {
 			}
 			
 			if (!finished) {
-				PdfTrickMessages.appendNewLine();
-				PdfTrickMessages.append("INFO", messages.getProperty("tmsg_10"));
+				Messages.appendNewLine();
+				Messages.append("INFO", messages.getProperty("tmsg_10"));
 				
 				// after rendering add the mouse listener for each thumb (jlabel) and stop wait Icon, i need invokeLater because i'm out EDT here 
 				SwingUtilities.invokeLater(new Runnable() {
@@ -147,13 +147,13 @@ public class ShowThumbs implements Runnable {
 							picLabel.addMouseListener(new ThumbAction(z+1));
 							picLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						}
-						PdfTrickUtils.stopWaitIcon();
+						Utils.stopWaitIcon();
 					}
 				});
 			}
 		} catch (Exception e) {
 			logger.error("Exception", e);
-			PdfTrickMessages.appendNewLine();
+			Messages.appendNewLine();
 		}
 		finished = true;
 	}

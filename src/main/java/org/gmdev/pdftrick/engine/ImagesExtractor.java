@@ -17,8 +17,8 @@ import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.Utils;
 
 import com.itextpdf.text.exceptions.UnsupportedPdfException;
 import com.itextpdf.text.pdf.PRStream;
@@ -46,9 +46,9 @@ public class ImagesExtractor {
 		final File resultFile = new File(factory.getResultFile());
 		boolean getImgCheck = false;
 	
-		PdfTrickMessages.append("INFO", messages.getProperty("tmsg_17"));	
+		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
-		String finalFolderTosave = factory.getFolderToSave()+PdfTrickUtils.getTimedDirResult();
+		String finalFolderTosave = factory.getFolderToSave()+ Utils.getTimedDirResult();
 		File fileFinalFolderTosave = new File(finalFolderTosave);
 		fileFinalFolderTosave.mkdir();
 			
@@ -56,8 +56,8 @@ public class ImagesExtractor {
 		
 		// if extraction breaks ...
 		if (!getImgCheck) { 
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_18"));
-			PdfTrickUtils.deleteSelectedFolderToSave(finalFolderTosave);
+			Messages.append("WARNING", messages.getProperty("tmsg_18"));
+			Utils.deleteSelectedFolderToSave(finalFolderTosave);
 		}			
 	}
 	
@@ -134,7 +134,7 @@ public class ImagesExtractor {
 				} catch (UnsupportedPdfException updfe) {
 					try {
 						buff = CustomExtraImgReader.readIndexedPNG(ref, resultFilePath);
-						buff = PdfTrickUtils.adjustImage(buff, flip, rotate);
+						buff = Utils.adjustImage(buff, flip, rotate);
 						String type = "png";
 						String filename = String.format(result, z, type);
 						
@@ -178,8 +178,8 @@ public class ImagesExtractor {
 				    		PdfImageObject maskImage = new PdfImageObject(maskStream);
 				    		buffMask = maskImage.getBufferedImage();
 				    
-				    		Image img = PdfTrickUtils.TransformGrayToTransparency(buffMask); 
-				    		buff = PdfTrickUtils.ApplyTransparency(buffPic, img);
+				    		Image img = Utils.TransformGrayToTransparency(buffMask);
+				    		buff = Utils.ApplyTransparency(buffPic, img);
 				    	} else {
 				        	buff = buffPic;
 				        }
@@ -188,7 +188,7 @@ public class ImagesExtractor {
 				    }	
 				    
 					if (buff != null) {
-						buff = PdfTrickUtils.adjustImage(buff, flip, rotate);
+						buff = Utils.adjustImage(buff, flip, rotate);
 						
 						//particular cases of encoding
 						String encode ="";
@@ -215,7 +215,7 @@ public class ImagesExtractor {
 				extractInlineImgSel(timeDirResult, inlineImgSelected, z);
 			}
 			
-			PdfTrickMessages.append("INFO", messages.getProperty("tmsg_19"));
+			Messages.append("INFO", messages.getProperty("tmsg_19"));
 		} catch (Exception e) {
 			logger.error("Exception", e);
 			retExtract = false;

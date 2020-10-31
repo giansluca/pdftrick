@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.thread.DragAnDropFileChooser;
 import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.Utils;
 import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener {
@@ -29,31 +29,31 @@ public class DragAndDropAction implements FileDrop.Listener {
 		
 		if ( (factory.gettContainer().getDragAnDropFileChooserThread() != null && factory.gettContainer().getDragAnDropFileChooserThread().isAlive() ) ||
 			(factory.gettContainer().getOpenFileChooserThread() != null &&	factory.gettContainer().getOpenFileChooserThread().isAlive())) {
-			PdfTrickUtils.resetDropBorder();
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_01"));
+			Utils.resetDropBorder();
+			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			
 			return;
 		}
 		if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
 			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-			PdfTrickUtils.resetDropBorder();
-			PdfTrickMessages.displayMessage(null,messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
+			Utils.resetDropBorder();
+			Messages.displayMessage(null,messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
     		
 			return;
     	}  
     	if (factory.gettContainer().getImgExtractionThread()!=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
     		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-		    PdfTrickUtils.resetDropBorder();
-		    PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
+		    Utils.resetDropBorder();
+		    Messages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
     		
 		    return;	
     	}
     	if (factory.gettContainer().getImgThumbThread()!=null && factory.gettContainer().getImgThumbThread().isAlive()) {
     		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-			PdfTrickUtils.resetDropBorder();
-			PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_04"), messages.getProperty("jmsg_01"),
+			Utils.resetDropBorder();
+			Messages.displayMessage(null, messages.getProperty("jmsg_04"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
     		
 			return;	

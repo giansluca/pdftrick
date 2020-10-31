@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.utils;
 
 public final class Constants {
+
 	// general
 	public static final String APP_NAME = "PdfTrick";
 	public static final String PDFTRICK_FOLDER = ".pdftrick";
@@ -10,10 +11,9 @@ public final class Constants {
 	public static final String JFC_OPEN_TITLE = "Open files";
 	public static final String PWD_DIALOG = "Password is required";
 	
-	// engine
+	// cover images
 	public static final int ZOOM_THUMB = 30;
-	public static final int ZOOM_COVER = 100;
-	
+
 	// files
 	public static final String NATIVE_LIB_PATH = "nativelib";
 	public static final String NATIVE_LIB_WIN_64 ="libpdftrick_native_1.7a_64.dll";
@@ -23,13 +23,7 @@ public final class Constants {
 	public static final String GENERIC_ICC_FILE = "Generic_CMYK_Profile.icc";
 	public static final String LICENSE_FILE = "license.txt";
 
-	// ftp
-	public static final String HOST = "ftp.drivehq.com";
-	public static final String FOLDER = "pdftricklog";
-	public static final String USER = "pdftricklog";
-	public static final String PASS = "123qweasd";
-	
-	// icon
+	// icons
 	public static final String MAIN_ICO = "icons/main_icon.png";
 	public static final String WARNING_ICO = "icons/warning.png";
 	public static final String ABOUT_ICO = "icons/about_icon.png";
@@ -44,7 +38,7 @@ public final class Constants {
 	public static final String DESKTOP_ICO = "icons/filechooser/desktop_icon.png";
 	public static final String GPL3_ICO = "icons/gpl_3.png";
 	
-	// gif
+	// gifs
 	public static final String WAIT = "icons/wait.gif";
 	public static final String WAIT_IMG = "icons/wait_img.gif";
 	public static final String WAIT_EXT = "icons/wait_ext.gif";

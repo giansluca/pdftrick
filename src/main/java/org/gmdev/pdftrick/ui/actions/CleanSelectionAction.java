@@ -17,8 +17,8 @@ import javax.swing.border.Border;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class CleanSelectionAction extends AbstractAction {
 	
@@ -39,12 +39,12 @@ public class CleanSelectionAction extends AbstractAction {
 		final HashMap<String, RenderedImageAttributes> inlineImgSelected = factory.getInlineImgSelected();
 		
 		if (factory.gettContainer().getImgExtractionThread() != null && factory.gettContainer().getImgExtractionThread().isAlive()) {
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_02"));
+			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
 		
 		if (factory.gettContainer().getImgThumbThread() !=null && factory.gettContainer().getImgThumbThread().isAlive()) {
-			PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_23"));
+			Messages.append("WARNING", messages.getProperty("tmsg_23"));
 			return;
 		}
 		
@@ -61,7 +61,7 @@ public class CleanSelectionAction extends AbstractAction {
 		}
 		
 		if (factory.getImageSelected().size() == 0 && inlineImgSelected.size() == 0) {
-			PdfTrickMessages.append("INFO", messages.getProperty("tmsg_24"));
+			Messages.append("INFO", messages.getProperty("tmsg_24"));
 		} else {
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);
 			Component[] comps =  centerPanel.getComponents();
@@ -88,8 +88,8 @@ public class CleanSelectionAction extends AbstractAction {
 				}
 			}
 			
-			PdfTrickUtils.cleanImageSelectedHashMap();
-			PdfTrickUtils.cleanInlineImgSelectedHashMap();
+			Utils.cleanImageSelectedHashMap();
+			Utils.cleanInlineImgSelectedHashMap();
 			numImgSelectedField.setText("");
 		}
 		

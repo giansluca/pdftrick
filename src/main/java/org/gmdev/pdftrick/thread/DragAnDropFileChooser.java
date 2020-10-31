@@ -11,8 +11,8 @@ import org.gmdev.pdftrick.engine.CheckFiles;
 import org.gmdev.pdftrick.engine.MergeFiles;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class DragAnDropFileChooser implements Runnable {
 	
@@ -46,25 +46,25 @@ public class DragAnDropFileChooser implements Runnable {
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
 			public void run() {
-				PdfTrickUtils.cleanLeftPanel();
-				PdfTrickUtils.cleanCenterPanel();
-				PdfTrickMessages.cleanTextArea();
+				Utils.cleanLeftPanel();
+				Utils.cleanCenterPanel();
+				Messages.cleanTextArea();
 				currentPageField.setText("");
 				numImgSelectedField.setText("");
-				PdfTrickUtils.startWaitIconLoadPdf();
+				Utils.startWaitIconLoadPdf();
 			}
 		});
     	
     	// clean areatext fileVett resultFile imageSelected imageselected in case of reopen jfilechooser 
     	factory.setSelected("");
     	factory.setFolderToSave("");
-    	PdfTrickUtils.cleanFilevett();
-    	PdfTrickUtils.cleanImageSelectedHashMap();
-    	PdfTrickUtils.cleanInlineImgSelectedHashMap();
-    	PdfTrickUtils.cleanRotationFromPagesHashMap();
+    	Utils.cleanFilevett();
+    	Utils.cleanImageSelectedHashMap();
+    	Utils.cleanInlineImgSelectedHashMap();
+    	Utils.cleanRotationFromPagesHashMap();
     		
-    	PdfTrickUtils.deleteImgFolderAnDFile();
-    	PdfTrickUtils.deleteResultFile();
+    	Utils.deleteImgFolderAnDFile();
+    	Utils.deleteResultFile();
     	System.gc();
     	
 		for (int i = 0; i < fileDrop.length; i++) {
@@ -83,12 +83,12 @@ public class DragAnDropFileChooser implements Runnable {
         	if (!fileCheck) {
         		// in case of check failed i clean panel left and center, other stuff 
         		// (vector, hasmap, resultpdf was cleaned on approve open filechooser)
-        		PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_11"));
+        		Messages.append("WARNING", messages.getProperty("tmsg_11"));
         		SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						PdfTrickUtils.cleanLeftPanel();
-						PdfTrickUtils.cleanCenterPanel();
+						Utils.cleanLeftPanel();
+						Utils.cleanCenterPanel();
 					}
 				});
         	} else {
@@ -97,22 +97,22 @@ public class DragAnDropFileChooser implements Runnable {
             	File resultFile = engine.mergePdf(filesVett, factory.getResultFile());
             	
             	if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
-            		PdfTrickMessages.append("INFO", messages.getProperty("tmsg_12"));
+            		Messages.append("INFO", messages.getProperty("tmsg_12"));
             		PdfRenderLeft render = new PdfRenderLeft();
             		render.pdfRender();
             	} else {
-            		PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_13"));	
+            		Messages.append("WARNING", messages.getProperty("tmsg_13"));
             	}
         	}
         } else {
         	SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					PdfTrickUtils.stopWaitIcon();
-					PdfTrickUtils.cleanCenterPanel();
+					Utils.stopWaitIcon();
+					Utils.cleanCenterPanel();
 				}
 			});
-        	PdfTrickMessages.append("WARNING", messages.getProperty("tmsg_14"));
+        	Messages.append("WARNING", messages.getProperty("tmsg_14"));
         }
         
         finished = true;

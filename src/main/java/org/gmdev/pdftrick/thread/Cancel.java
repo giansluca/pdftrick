@@ -7,8 +7,8 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class Cancel implements Runnable {
 	
@@ -111,9 +111,9 @@ public class Cancel implements Runnable {
 		
 		try {
 			SwingUtilities.invokeAndWait(() -> {
-				PdfTrickUtils.cleanLeftPanel();
-				PdfTrickUtils.cleanCenterPanel();
-				PdfTrickMessages.cleanTextArea();
+				Utils.cleanLeftPanel();
+				Utils.cleanCenterPanel();
+				Messages.cleanTextArea();
 				currentPageField.setText("");
 				numImgSelectedField.setText("");
 			});
@@ -123,15 +123,15 @@ public class Cancel implements Runnable {
 			logger.error("Exception", e);
 		}
 
-		PdfTrickUtils.cleanImageSelectedHashMap();
-		PdfTrickUtils.cleanInlineImgSelectedHashMap();
-		PdfTrickUtils.cleanRotationFromPagesHashMap();
+		Utils.cleanImageSelectedHashMap();
+		Utils.cleanInlineImgSelectedHashMap();
+		Utils.cleanRotationFromPagesHashMap();
 		factory.setSelected("");
 		factory.setFolderToSave("");
-		PdfTrickUtils.cleanFilevett();
+		Utils.cleanFilevett();
 		
-		PdfTrickUtils.deleteResultFile();
-		PdfTrickUtils.deleteImgFolderAnDFile();
+		Utils.deleteResultFile();
+		Utils.deleteImgFolderAnDFile();
 		finished = true;
 	}
 	

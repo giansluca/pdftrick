@@ -54,7 +54,7 @@ public class PdfTrickBag {
 		selected = "";
 		folderToSave = "";
 		rotationFromPages = new HashMap<Integer, String>();
-		messages = PdfTrickUtils.loadProperties();
+		messages = Utils.loadProperties();
 		namePwd = new HashMap<String, String>();
 		imageSelected = new HashMap<String, RenderedImageAttributes>();
 		inlineImgSelected = new HashMap<String, RenderedImageAttributes>();
@@ -62,15 +62,15 @@ public class PdfTrickBag {
 		
 		// if result file exist (for example due to a previous exception and not deleted by PdfTrick), 
 		// for security i call the clean here on startUp
-		PdfTrickUtils.deleteImgFolderAnDFile();
-		PdfTrickUtils.deleteResultFile();
+		Utils.deleteImgFolderAnDFile();
+		Utils.deleteResultFile();
 		
 		//inizialize UI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					userInterface = new UI2();
-					PdfTrickUtils.welcomeMessage();
+					Utils.welcomeMessage();
 					userInterface.setVisible(true);
 				} catch (Exception e) {
 					logger.error("Exception", e);

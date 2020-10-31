@@ -1,7 +1,7 @@
 package org.gmdev.pdftrick.nativeutil;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class NativeLibCall {
 	
@@ -14,7 +14,7 @@ public class NativeLibCall {
 	 * Load native library from hidden home folder
 	 */
 	static{
-		String nativeLibPath = PdfTrickUtils.getNativeLibrary();
+		String nativeLibPath = Utils.getNativeLibrary();
 		
 		try{
 			System.load(nativeLibPath);

@@ -10,8 +10,8 @@ import javax.swing.JOptionPane;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
-import org.gmdev.pdftrick.utils.PdfTrickMessages;
-import org.gmdev.pdftrick.utils.PdfTrickUtils;
+import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.Utils;
 
 public class WindowsActions implements WindowListener {
 	
@@ -63,15 +63,15 @@ public class WindowsActions implements WindowListener {
 			factory.gettContainer().getImgExtraction().stop();
 			if (factory.gettContainer().getImgExtractionThread() !=null && factory.gettContainer().getImgExtractionThread() .isAlive()) {
 				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-				PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
+				Messages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
 						JOptionPane.WARNING_MESSAGE, warningIcon);
 			}
 		}
 		
 		NativeObjectManager nativeManager = factory.getNativemanager();
 		nativeManager.unloadNativeLib();
-		PdfTrickUtils.deleteResultFile();
-		PdfTrickUtils.deleteImgFolderAnDFile();
+		Utils.deleteResultFile();
+		Utils.deleteImgFolderAnDFile();
 		
 		System.exit(0);	
 	}

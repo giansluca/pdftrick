@@ -1,12 +1,8 @@
 package org.gmdev.pdftrick.validation;
 
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

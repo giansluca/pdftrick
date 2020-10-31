@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.swingmanager;
 
 import org.apache.log4j.Logger;
-
 import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 

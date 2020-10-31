@@ -1,8 +1,6 @@
 package org.gmdev.pdftrick.swingmanager;
 
-import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.FileLoader;
-
+import org.gmdev.pdftrick.utils.*;
 import javax.swing.*;
 
 public class WarningPanel {

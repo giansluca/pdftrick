@@ -64,7 +64,7 @@ public class ExitAction extends AbstractAction {
 			factory.gettContainer().getImgExtraction().stop();
 			if (factory.gettContainer().getImgExtractionThread() !=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
 				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-				PdfTrickMessages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
+				Messages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
 						JOptionPane.WARNING_MESSAGE, warningIcon);
 			}
 		}
@@ -72,8 +72,8 @@ public class ExitAction extends AbstractAction {
 		NativeObjectManager nativeManager = factory.getNativemanager();
 		nativeManager.unloadNativeLib();
 		
-		PdfTrickUtils.deleteResultFile();
-		PdfTrickUtils.deleteImgFolderAnDFile();
+		Utils.deleteResultFile();
+		Utils.deleteImgFolderAnDFile();
 		
 		System.exit(0);
 	}

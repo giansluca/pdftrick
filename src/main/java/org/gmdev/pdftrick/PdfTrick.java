@@ -1,9 +1,7 @@
 package org.gmdev.pdftrick;
 
 import java.util.Locale;
-
 import javax.swing.*;
-
 import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
 import org.apache.log4j.*;
