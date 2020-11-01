@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.*;
 import java.io.File;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -84,7 +85,7 @@ class SetupUtilsTest {
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
 
         // When
-        SetupUtils.getOrCreateHomeFolder(os);
+        SetupUtils.setAndGetHomeFolder(os);
 
         // Then
         File expectedFakeHome = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
@@ -110,13 +111,42 @@ class SetupUtilsTest {
             fail();
 
         // When
-        String pdfTrickHome = SetupUtils.getOrCreateHomeFolder(os);
+        String pdfTrickHome = SetupUtils.setAndGetHomeFolder(os);
 
         // Then
         assertThat(pdfTrickHome).isEqualTo(fakeHomeFolder.getPath());
 
         // Finally
         assertThat(fakeHomeFolder.delete()).isTrue();
+        systemPropertyMock.close();
+    }
+
+    @Test
+    void itShouldExtractTheNativeLibrary() {
+        // Given
+        String property = "user.home";
+        String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
+
+        String os = SetupUtils.getOs();
+        String libName = null;
+        if (os.equals(SetupUtils.MAC_OS))
+            libName = "libpdftrick_native_1.7a_64.jnilib";
+        else if(os.equals(SetupUtils.WIN_OS))
+            libName = "libpdftrick_native_1.7a_64.dll";
+
+        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
+
+        Path expectedLibPath = Path.of(fakeHome + File.separator + libName);
+
+        // When
+        Path libPath = SetupUtils.setAndGetNativeLibrary(fakeHome, os);
+
+        // Then
+        assertThat(expectedLibPath ).isEqualTo(libPath);
+
+        // Finally
+        assertThat(libPath.toFile().delete()).isTrue();
         systemPropertyMock.close();
     }
 

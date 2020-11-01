@@ -1,5 +1,6 @@
 package org.gmdev.pdftrick;
 
+import java.nio.file.Path;
 import java.util.Locale;
 import javax.swing.*;
 import io.github.giansluca.jargs.Jargs;
@@ -16,6 +17,7 @@ public class PdfTrick {
 
     private static String operatingSystem;
     private static String homeFolder;
+    private static Path nativeLibraryPath;
 
     public static void main(String[] args) {
         configureLogger();
@@ -27,8 +29,8 @@ public class PdfTrick {
         if (operatingSystem.equals(MAC_OS))
             setMacPreferences();
 
-        homeFolder = getOrCreateHomeFolder(operatingSystem);
-        setNativeLibrary(homeFolder, operatingSystem);
+        homeFolder = setAndGetHomeFolder(operatingSystem);
+        nativeLibraryPath = setAndGetNativeLibrary(homeFolder, operatingSystem);
         run();
     }
 
@@ -87,7 +89,7 @@ public class PdfTrick {
 
     private static void run() {
         var pdfTrickBag = PdfTrickBag.getPdfTrickBag();
-        pdfTrickBag.initialize(homeFolder, operatingSystem);
+        pdfTrickBag.initialize(operatingSystem, homeFolder, nativeLibraryPath);
     }
 
 

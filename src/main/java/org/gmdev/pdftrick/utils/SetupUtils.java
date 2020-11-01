@@ -33,7 +33,7 @@ public class SetupUtils {
 		return getSystemProperty("sun.arch.data.model").contains("64");
 	}
 
-	public static String getOrCreateHomeFolder(String os) {
+	public static String setAndGetHomeFolder(String os) {
 		String userHomePath = getSystemProperty("user.home");
 		File homeFolder = new File(userHomePath + File.separator + PDFTRICK_FOLDER);
 
@@ -59,7 +59,7 @@ public class SetupUtils {
 		return homeFolder.getPath();
 	}
 
-	public static void setNativeLibrary(String homeFolder, String operatingSystem) {
+	public static Path setAndGetNativeLibrary(String homeFolder, String operatingSystem) {
 		String libName;
 		if (operatingSystem.equals(WIN_OS))
 			libName = NATIVE_LIB_WIN_64;
@@ -70,19 +70,21 @@ public class SetupUtils {
 
 		Path libPath = Path.of(homeFolder + File.separator + libName);
 		if (libPath.toFile().exists())
-			return;
+			return libPath;
 
 		String libToCopy = NATIVE_LIB_PATH + "/" + libName;
-		extractNativeLibrary(libPath, libToCopy);
+		return extractNativeLibrary(libPath, libToCopy);
 	}
 
-	private static void extractNativeLibrary(Path to, String libToCopy) {
+	private static Path extractNativeLibrary(Path to, String libToCopy) {
 		InputStream from = FileLoader.loadAsStream(libToCopy);
 		try {
 			Files.copy(from, to);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
+
+		return to;
 	}
 
 }

@@ -53,7 +53,7 @@ public class ShowThumbs implements Runnable {
 	public void execute() {
 		final Properties messages = factory.getMessages();
 		final JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
-		final String hiddenHomeFolder = factory.getHiddenHomeFolder();
+		final String hiddenHomeFolder = factory.getHomeFolder();
 		long time = System.currentTimeMillis();
 		long delta = 1000;
 		

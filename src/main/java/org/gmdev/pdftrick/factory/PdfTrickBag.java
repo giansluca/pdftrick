@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.factory;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.*;
 
 import javax.swing.SwingUtilities;
@@ -18,7 +19,8 @@ public class PdfTrickBag {
 	
 	private UI2 userInterface;
 	private String os;
-	private String hiddenHomeFolder;
+	private String homeFolder;
+	private Path nativeLibraryPath;
 	private String resultFile;
 	private NativeObjectManager nativemanager;
 	private int numPages;
@@ -45,10 +47,11 @@ public class PdfTrickBag {
 		return instance;
 	}
 
-	public void initialize(String hiddenHomeFolder, String os) {
+	public void initialize(String os, String homeFolder, Path nativeLibraryPath) {
 		this.os = os;
-		this.hiddenHomeFolder = hiddenHomeFolder;
-		resultFile = hiddenHomeFolder+File.separator+ Constants.RESULT_PDF_FILE;
+		this.homeFolder = homeFolder;
+		this.nativeLibraryPath = nativeLibraryPath;
+		resultFile = homeFolder + File.separator + Constants.RESULT_PDF_FILE;
 		nativemanager = new NativeObjectManager();
 		filesVett = new ArrayList<File>();
 		selected = "";
@@ -87,8 +90,8 @@ public class PdfTrickBag {
 		return os;
 	}
 	
-	public synchronized String getHiddenHomeFolder() {
-		return hiddenHomeFolder;
+	public synchronized String getHomeFolder() {
+		return homeFolder;
 	}
 	
 	public synchronized String getResultFile() {

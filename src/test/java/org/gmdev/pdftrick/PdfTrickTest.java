@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.*;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 
@@ -148,7 +149,7 @@ class PdfTrickTest {
 
         MockedStatic<PdfTrickBag> pdfTrickBagMock = Mockito.mockStatic(PdfTrickBag.class);
         pdfTrickBagMock.when(PdfTrickBag::getPdfTrickBag).thenReturn(pdfTrickBag);
-        doNothing().when(pdfTrickBag).initialize(anyString(), anyString());
+        doNothing().when(pdfTrickBag).initialize(anyString(), anyString(), any());
 
         // When
         // Then

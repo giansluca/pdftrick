@@ -20,26 +20,21 @@ public class Utils {
 	private static final Logger logger = Logger.getLogger(Utils.class);
 	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
 
-	/**
-	 * Create a path (File) in current folder like: /PdfTrick/trick-current_date(gg-mm-yyyy-hh-min-sec) 
-	 */
 	public static String getTimedDirResult() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
-		int mounth = cal.get(Calendar.MONTH)+1;
+		int month = cal.get(Calendar.MONTH)+1;
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		int minute = cal.get(Calendar.MINUTE);
 		int second = cal.get(Calendar.SECOND);
 		
-		String data = day+"-"+mounth+"-"+year+"_"+hour+"."+minute+"."+second;
-		
+		String data = day + "-" + month + "-" + year + "_" + hour + "." + minute + "." + second;
 		return "/PdfTrick_"+data;
 	}
 	
 	public static Properties loadProperties() {
 		Properties prop = new Properties();
-		
 		try {
 			prop.load(FileLoader.loadAsStream(Constants.PROPERTY_FILE));
 		} catch (IOException e) {
@@ -50,22 +45,19 @@ public class Utils {
 	}
 	
 	public static String getNativeLibrary() {
-		String nativeLibPath = "";
-		
-		if (SetupUtils.isWindows()) {
-			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+ Constants.NATIVE_LIB_WIN_64;
-		} else if (SetupUtils.isMac()) {
-			nativeLibPath = factory.getHiddenHomeFolder()+File.separator+ Constants.NATIVE_LIB_MAC_64;
-		}
-		
-		return nativeLibPath;
+		if (SetupUtils.isWindows())
+			return factory.getHomeFolder() + File.separator + Constants.NATIVE_LIB_WIN_64;
+		else if (SetupUtils.isMac())
+			return  factory.getHomeFolder() + File.separator + Constants.NATIVE_LIB_MAC_64;
+		else
+			throw new IllegalStateException("Error selecting native library, should never get here");
 	}
 	
 	/**
 	 * Create img folder inside home hidden folder for store rendered images from native lib
 	 */
 	public static String createImgFolder() {
-		File imgFolder = new File (factory.getHiddenHomeFolder()+File.separator+"img");
+		File imgFolder = new File (factory.getHomeFolder() + File.separator+"img");
 		
 		if (imgFolder.exists()) {
 			File[] vetImg = imgFolder.listFiles();
@@ -109,7 +101,7 @@ public class Utils {
 	 * Delete img folder and imaged contained inside
 	 */
 	public static void deleteImgFolderAnDFile() {
-		File imgFolder = new File (factory.getHiddenHomeFolder()+File.separator+"img");
+		File imgFolder = new File (factory.getHomeFolder()+File.separator+"img");
 		
 		if (imgFolder.exists()) {
 			File[] vetImg = imgFolder.listFiles();
