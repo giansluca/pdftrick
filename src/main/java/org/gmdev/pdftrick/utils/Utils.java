@@ -46,18 +46,15 @@ public class Utils {
 	
 	public static String getNativeLibrary() {
 		if (SetupUtils.isWindows())
-			return factory.getHomeFolder() + File.separator + Constants.NATIVE_LIB_WIN_64;
+			return factory.getHomeFolderPath() + File.separator + Constants.NATIVE_LIB_WIN_64;
 		else if (SetupUtils.isMac())
-			return  factory.getHomeFolder() + File.separator + Constants.NATIVE_LIB_MAC_64;
+			return  factory.getHomeFolderPath() + File.separator + Constants.NATIVE_LIB_MAC_64;
 		else
 			throw new IllegalStateException("Error selecting native library, should never get here");
 	}
-	
-	/**
-	 * Create img folder inside home hidden folder for store rendered images from native lib
-	 */
+
 	public static String createImgFolder() {
-		File imgFolder = new File (factory.getHomeFolder() + File.separator+"img");
+		File imgFolder = new File (factory.getHomeFolderPath() + File.separator + "img");
 		
 		if (imgFolder.exists()) {
 			File[] vetImg = imgFolder.listFiles();
@@ -101,7 +98,7 @@ public class Utils {
 	 * Delete img folder and imaged contained inside
 	 */
 	public static void deleteImgFolderAnDFile() {
-		File imgFolder = new File (factory.getHomeFolder()+File.separator+"img");
+		File imgFolder = new File (factory.getHomeFolderPath() + File.separator+"img");
 		
 		if (imgFolder.exists()) {
 			File[] vetImg = imgFolder.listFiles();

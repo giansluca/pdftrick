@@ -33,17 +33,17 @@ public class SetupUtils {
 		return getSystemProperty("sun.arch.data.model").contains("64");
 	}
 
-	public static String setAndGetHomeFolder(String os) {
+	public static Path setAndGetHomeFolder(String os) {
 		String userHomePath = getSystemProperty("user.home");
 		File homeFolder = new File(userHomePath + File.separator + PDFTRICK_FOLDER);
 
 		if (homeFolder.exists())
-			return homeFolder.getPath();
+			return homeFolder.toPath();
 
 		return createHomeFolder(homeFolder, os);
 	}
 
-	private static String createHomeFolder(File homeFolder, String os) {
+	private static Path createHomeFolder(File homeFolder, String os) {
 		if (!homeFolder.mkdir())
 			throw new IllegalStateException("Error creating PdfTrick home folder");
 
@@ -56,10 +56,10 @@ public class SetupUtils {
 			}
 		}
 
-		return homeFolder.getPath();
+		return homeFolder.toPath();
 	}
 
-	public static Path setAndGetNativeLibrary(String homeFolder, String operatingSystem) {
+	public static Path setAndGetNativeLibrary(Path homeFolder, String operatingSystem) {
 		String libName;
 		if (operatingSystem.equals(WIN_OS))
 			libName = NATIVE_LIB_WIN_64;

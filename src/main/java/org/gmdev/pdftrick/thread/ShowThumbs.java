@@ -9,6 +9,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Properties;
@@ -53,7 +54,7 @@ public class ShowThumbs implements Runnable {
 	public void execute() {
 		final Properties messages = factory.getMessages();
 		final JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
-		final String hiddenHomeFolder = factory.getHomeFolder();
+		final Path hiddenHomeFolder = factory.getHomeFolderPath();
 		long time = System.currentTimeMillis();
 		long delta = 1000;
 		
@@ -158,9 +159,9 @@ public class ShowThumbs implements Runnable {
 		finished = true;
 	}
 	
-	public File[] getCoverImagesRendered(String hiddenHomeFolder) {
+	public File[] getCoverImagesRendered(Path hiddenHomeFolder) {
 		File[] imgVett = null;
-		File imgFolder = new File(hiddenHomeFolder+File.separator+"img"); 
+		File imgFolder = new File(hiddenHomeFolder + File.separator + "img");
 		
 		if (imgFolder.exists()) {
 			imgVett = imgFolder.listFiles(new FilenameFilter() {

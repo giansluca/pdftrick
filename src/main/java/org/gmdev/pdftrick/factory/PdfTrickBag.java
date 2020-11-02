@@ -19,7 +19,7 @@ public class PdfTrickBag {
 	
 	private UI2 userInterface;
 	private String os;
-	private String homeFolder;
+	private Path homeFolderPath;
 	private Path nativeLibraryPath;
 	private String resultFile;
 	private NativeObjectManager nativemanager;
@@ -47,11 +47,11 @@ public class PdfTrickBag {
 		return instance;
 	}
 
-	public void initialize(String os, String homeFolder, Path nativeLibraryPath) {
+	public void initialize(String os, Path homeFolderPath, Path nativeLibraryPath) {
 		this.os = os;
-		this.homeFolder = homeFolder;
+		this.homeFolderPath = homeFolderPath;
 		this.nativeLibraryPath = nativeLibraryPath;
-		resultFile = homeFolder + File.separator + Constants.RESULT_PDF_FILE;
+		resultFile = homeFolderPath + File.separator + Constants.RESULT_PDF_FILE;
 		nativemanager = new NativeObjectManager();
 		filesVett = new ArrayList<File>();
 		selected = "";
@@ -90,10 +90,14 @@ public class PdfTrickBag {
 		return os;
 	}
 	
-	public synchronized String getHomeFolder() {
-		return homeFolder;
+	public synchronized Path getHomeFolderPath() {
+		return homeFolderPath;
 	}
-	
+
+	public Path getNativeLibraryPath() {
+		return nativeLibraryPath;
+	}
+
 	public synchronized String getResultFile() {
 		return resultFile;
 	}

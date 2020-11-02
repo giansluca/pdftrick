@@ -149,7 +149,7 @@ class PdfTrickTest {
 
         MockedStatic<PdfTrickBag> pdfTrickBagMock = Mockito.mockStatic(PdfTrickBag.class);
         pdfTrickBagMock.when(PdfTrickBag::getPdfTrickBag).thenReturn(pdfTrickBag);
-        doNothing().when(pdfTrickBag).initialize(anyString(), anyString(), any());
+        doNothing().when(pdfTrickBag).initialize(anyString(), any(), any());
 
         // When
         // Then

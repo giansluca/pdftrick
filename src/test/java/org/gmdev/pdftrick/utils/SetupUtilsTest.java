@@ -1,16 +1,34 @@
 package org.gmdev.pdftrick.utils;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class SetupUtilsTest {
+
+    private static final String FOR_TEST_FOLDER = "src/test/resources/for-test";
+
+    MockedStatic<SystemProperty> systemPropertyMock;
+
+    @BeforeEach
+    void setUp() {
+        systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
+    }
+
+    @AfterEach
+    void tearDown() {
+        systemPropertyMock.close();
+    }
 
     @ParameterizedTest
     @CsvSource({
@@ -21,7 +39,6 @@ class SetupUtilsTest {
         // Given
         String property = "os.name";
 
-        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(osProperty);
 
         // When
@@ -29,9 +46,6 @@ class SetupUtilsTest {
 
         // Then
         assertThat(os).isEqualTo(expected);
-
-        // Finally
-        systemPropertyMock.close();
     }
 
     @Test
@@ -40,16 +54,12 @@ class SetupUtilsTest {
         String property = "os.name";
         String unknownOs = "unknown";
 
-        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(unknownOs);
 
         // When
         assertThatThrownBy(SetupUtils::getOs)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Unknown Operating system");
-
-        // Finally
-        systemPropertyMock.close();
     }
 
     @ParameterizedTest
@@ -61,7 +71,6 @@ class SetupUtilsTest {
         // Given
         String property = "sun.arch.data.model";
 
-        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(jvmArch);
 
         // When
@@ -69,85 +78,120 @@ class SetupUtilsTest {
 
         // Then
         assertThat(isJvm64).isEqualTo(expected);
-
-        // Finally
-        systemPropertyMock.close();
     }
 
     @Test
     void itShouldCreatePdfTrickHomeFolder() {
         // Given
-        String os = SetupUtils.getOs();
-        String property = "user.home";
-        String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
+        String propertyHome = "user.home";
+        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String propertyOs = "os.name";
 
-        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
-        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(propertyHome)).thenReturn(fakeHome);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(propertyOs))
+                .thenReturn(System.getProperty(propertyOs));
+
+        String os = SetupUtils.getOs();
+
+        File expectedHomeFolder = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
 
         // When
-        SetupUtils.setAndGetHomeFolder(os);
+        Path homeFolder = SetupUtils.setAndGetHomeFolder(os);
 
         // Then
-        File expectedFakeHome = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
-        assertThat(expectedFakeHome.exists()).isTrue();
+        assertThat(expectedHomeFolder.exists()).isTrue();
+        assertThat(homeFolder).isEqualTo(expectedHomeFolder.toPath());
 
         // Finally
-        assertThat(expectedFakeHome.delete()).isTrue();
-        systemPropertyMock.close();
+        assertThat(expectedHomeFolder.delete()).isTrue();
     }
 
     @Test
-    void itShouldReturnThePdfTrickHomeFolder() {
+    void itShouldReturnThePdfTrickHomeFolderPath() {
         // Given
-        String os = SetupUtils.getOs();
         String property = "user.home";
-        String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
+        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String propertyOs = "os.name";
 
-        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(propertyOs))
+                .thenReturn(System.getProperty(propertyOs));
 
-        File fakeHomeFolder = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
-        if(!fakeHomeFolder.mkdir())
+        String os = SetupUtils.getOs();
+
+        File expectedHomeFolder = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
+        if(!expectedHomeFolder.mkdir())
             fail();
 
         // When
-        String pdfTrickHome = SetupUtils.setAndGetHomeFolder(os);
+        Path homeFolderPath = SetupUtils.setAndGetHomeFolder(os);
 
         // Then
-        assertThat(pdfTrickHome).isEqualTo(fakeHomeFolder.getPath());
+        assertThat(homeFolderPath).isEqualTo(expectedHomeFolder.toPath());
 
         // Finally
-        assertThat(fakeHomeFolder.delete()).isTrue();
-        systemPropertyMock.close();
+        assertThat(expectedHomeFolder.delete()).isTrue();
     }
 
     @Test
     void itShouldExtractTheNativeLibrary() {
         // Given
         String property = "user.home";
-        String fakeHome = System.getProperty("user.dir") + File.separator + "src/test/resources";
+        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String propertyOs = "os.name";
+
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(propertyOs))
+                .thenReturn(System.getProperty(propertyOs));
 
         String os = SetupUtils.getOs();
-        String libName = null;
+        String libraryName = null;
         if (os.equals(SetupUtils.MAC_OS))
-            libName = "libpdftrick_native_1.7a_64.jnilib";
+            libraryName = Constants.NATIVE_LIB_MAC_64;
         else if(os.equals(SetupUtils.WIN_OS))
-            libName = "libpdftrick_native_1.7a_64.dll";
-
-        MockedStatic<SystemProperty> systemPropertyMock = Mockito.mockStatic(SystemProperty.class);
-        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
-
-        Path expectedLibPath = Path.of(fakeHome + File.separator + libName);
+            libraryName = Constants.NATIVE_LIB_WIN_64;
+        Path expectedLibraryPath = Path.of(fakeHome + File.separator + libraryName);
 
         // When
-        Path libPath = SetupUtils.setAndGetNativeLibrary(fakeHome, os);
+        Path libraryPath = SetupUtils.setAndGetNativeLibrary(Path.of(fakeHome), os);
 
         // Then
-        assertThat(expectedLibPath ).isEqualTo(libPath);
+        assertThat(libraryPath).isEqualTo(expectedLibraryPath);
 
         // Finally
-        assertThat(libPath.toFile().delete()).isTrue();
-        systemPropertyMock.close();
+        assertThat(libraryPath.toFile().delete()).isTrue();
+    }
+
+    @Test
+    void itShouldReturnTheNativeLibraryPath() throws IOException {
+        // Given
+        String property = "user.home";
+        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String propertyOs = "os.name";
+
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
+        systemPropertyMock.when(() -> SystemProperty.getSystemProperty(propertyOs))
+                .thenReturn(System.getProperty(propertyOs));
+
+        String os = SetupUtils.getOs();
+        String libraryName = null;
+        if (os.equals(SetupUtils.MAC_OS))
+            libraryName = Constants.NATIVE_LIB_MAC_64;
+        else if(os.equals(SetupUtils.WIN_OS))
+            libraryName = Constants.NATIVE_LIB_WIN_64;
+
+        File expectedLibraryFile = new File(fakeHome + File.separator + libraryName);
+        if(!expectedLibraryFile.createNewFile())
+            fail();
+
+        // When
+        Path libraryPath = SetupUtils.setAndGetNativeLibrary(Path.of(fakeHome), os);
+
+        // Then
+        assertThat(libraryPath).isEqualTo(expectedLibraryFile.toPath());
+
+        // Finally
+        assertThat(expectedLibraryFile.delete()).isTrue();
     }
 
 }

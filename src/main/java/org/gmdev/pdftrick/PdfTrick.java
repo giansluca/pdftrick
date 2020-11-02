@@ -16,7 +16,7 @@ import static org.gmdev.pdftrick.utils.SetupUtils.*;
 public class PdfTrick {
 
     private static String operatingSystem;
-    private static String homeFolder;
+    private static Path homeFolderPath;
     private static Path nativeLibraryPath;
 
     public static void main(String[] args) {
@@ -29,8 +29,8 @@ public class PdfTrick {
         if (operatingSystem.equals(MAC_OS))
             setMacPreferences();
 
-        homeFolder = setAndGetHomeFolder(operatingSystem);
-        nativeLibraryPath = setAndGetNativeLibrary(homeFolder, operatingSystem);
+        homeFolderPath = setAndGetHomeFolder(operatingSystem);
+        nativeLibraryPath = setAndGetNativeLibrary(homeFolderPath, operatingSystem);
         run();
     }
 
@@ -89,7 +89,7 @@ public class PdfTrick {
 
     private static void run() {
         var pdfTrickBag = PdfTrickBag.getPdfTrickBag();
-        pdfTrickBag.initialize(operatingSystem, homeFolder, nativeLibraryPath);
+        pdfTrickBag.initialize(operatingSystem, homeFolderPath, nativeLibraryPath);
     }
 
 
