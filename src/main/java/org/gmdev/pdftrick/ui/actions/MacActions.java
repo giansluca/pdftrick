@@ -23,36 +23,36 @@ public class MacActions {
 	public void handleQuitRequestWith() {
 		final Properties messages = factory.getMessages();
 		
-		if (factory.gettContainer().getDivisionThumbs() != null && !factory.gettContainer().getDivisionThumbs().isFinished()) {
-			factory.gettContainer().getDivisionThumbs().stop();
-			while (!factory.gettContainer().getDivisionThumbs().isFinished()) {
+		if (factory.getThreadContainer().getDivisionThumbs() != null && !factory.getThreadContainer().getDivisionThumbs().isFinished()) {
+			factory.getThreadContainer().getDivisionThumbs().stop();
+			while (!factory.getThreadContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
 			}
-			if (factory.gettContainer().getDivisionThumbsThread() != null) {
-				while (factory.gettContainer().getDivisionThumbsThread().isAlive()) {
+			if (factory.getThreadContainer().getDivisionThumbsThread() != null) {
+				while (factory.getThreadContainer().getDivisionThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.gettContainer().getExecPool() != null && !factory.gettContainer().getExecPool().isFinished()) {
-			factory.gettContainer().getExecPool().stop();
-			if (factory.gettContainer().getExecPoolThread() != null) {
-				while (factory.gettContainer().getExecPoolThread().isAlive()) {
+		if (factory.getThreadContainer().getExecPool() != null && !factory.getThreadContainer().getExecPool().isFinished()) {
+			factory.getThreadContainer().getExecPool().stop();
+			if (factory.getThreadContainer().getExecPoolThread() != null) {
+				while (factory.getThreadContainer().getExecPoolThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
-		if (factory.gettContainer().getExecutor() != null) {
-			factory.gettContainer().getExecutor().shutdownNow();
-			while (!factory.gettContainer().getExecutor().isTerminated()) {
+		if (factory.getThreadContainer().getExecutor() != null) {
+			factory.getThreadContainer().getExecutor().shutdownNow();
+			while (!factory.getThreadContainer().getExecutor().isTerminated()) {
 				//wait stop all threadPool task
 			}
 		}
 		
-		if (factory.gettContainer().getImgExtraction() !=null && !factory.gettContainer().getImgExtraction().isFinished()) {
-			factory.gettContainer().getImgExtraction().stop();
-			if (factory.gettContainer().getImgExtractionThread() !=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
+		if (factory.getThreadContainer().getImgExtraction() !=null && !factory.getThreadContainer().getImgExtraction().isFinished()) {
+			factory.getThreadContainer().getImgExtraction().stop();
+			if (factory.getThreadContainer().getImgExtractionThread() !=null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
 				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 				Messages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
 						JOptionPane.WARNING_MESSAGE, warningIcon);

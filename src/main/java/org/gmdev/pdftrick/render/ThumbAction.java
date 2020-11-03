@@ -70,10 +70,10 @@ public class ThumbAction implements MouseListener {
 			Utils.cleanCenterPanel();
 			
 			ImgThumb imgThumb = new ImgThumb(pageNumber);
-			bag.gettContainer().setImgThumb(imgThumb);
+			bag.getThreadContainer().setImgThumb(imgThumb);
 			
 			Thread imgThumbThread = new Thread(imgThumb, "imgThumbThread");
-			bag.gettContainer().setImgThumbThread(imgThumbThread);
+			bag.getThreadContainer().setImgThumbThread(imgThumbThread);
 			imgThumbThread.start();
 
 			// TODO Itext 7 migration

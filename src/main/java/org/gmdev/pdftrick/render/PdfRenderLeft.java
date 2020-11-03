@@ -44,27 +44,27 @@ public class PdfRenderLeft {
 		}
 		
 		DivisionThumb divisionThumbs = new DivisionThumb(division, imgPath);
-		factory.gettContainer().setDivisionThumbs(divisionThumbs);
+		factory.getThreadContainer().setDivisionThumbs(divisionThumbs);
 		
 		Thread divisionThumbsThread = new Thread(divisionThumbs, "divisionThumbsThread");
-		factory.gettContainer().setDivisionThumbsThread(divisionThumbsThread);
+		factory.getThreadContainer().setDivisionThumbsThread(divisionThumbsThread);
 		divisionThumbsThread.start();
 		
 		if (runPool) {
 			ExecPool execPool = new ExecPool(totPages, division, imgPath);
-			factory.gettContainer().setExecPool(execPool);
+			factory.getThreadContainer().setExecPool(execPool);
 			
 			Thread execPoolThread = new Thread(execPool, "execPoolThread");
-			factory.gettContainer().setExecPoolThread(execPoolThread);
+			factory.getThreadContainer().setExecPoolThread(execPoolThread);
 			execPoolThread.start();
 		}
 		
 		// thread that search and showing thumbnails 
 		ShowThumbs showThumbs = new ShowThumbs();
-		factory.gettContainer().setShowThumbs(showThumbs);
+		factory.getThreadContainer().setShowThumbs(showThumbs);
 				
 		Thread showThumbsThread = new Thread(showThumbs, "showThumbsThread");
-		factory.gettContainer().setShowThumbsThread(showThumbsThread);
+		factory.getThreadContainer().setShowThumbsThread(showThumbsThread);
 		showThumbsThread.start();
 	}
 

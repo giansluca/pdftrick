@@ -40,71 +40,71 @@ public class Cancel implements Runnable {
 		JTextField currentPageField = factory.getUserInterface().getRight().getCurrentPageField();
 		JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
 		
-		if (factory.gettContainer().getOpenFileChooser() != null) {
-			while (!factory.gettContainer().getOpenFileChooser().isFinished()) {
+		if (factory.getThreadContainer().getOpenFileChooser() != null) {
+			while (!factory.getThreadContainer().getOpenFileChooser().isFinished()) {
 				// wait thread stop
 			}
 			
-			if (factory.gettContainer().getOpenFileChooserThread() !=null) {
-				factory.gettContainer().getOpenFileChooserThread().join();
+			if (factory.getThreadContainer().getOpenFileChooserThread() !=null) {
+				factory.getThreadContainer().getOpenFileChooserThread().join();
 				
-				while (factory.gettContainer().getOpenFileChooserThread().isAlive()) {
+				while (factory.getThreadContainer().getOpenFileChooserThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.gettContainer().getDragAnDropFileChooser() != null) {
-			while (!factory.gettContainer().getDragAnDropFileChooser().isFinished()) {
+		if (factory.getThreadContainer().getDragAnDropFileChooser() != null) {
+			while (!factory.getThreadContainer().getDragAnDropFileChooser().isFinished()) {
 				// wait thread stop
 			}
 			
-			if (factory.gettContainer().getDragAnDropFileChooserThread() != null) {
-				factory.gettContainer().getDragAnDropFileChooserThread().join();
-				while (factory.gettContainer().getDragAnDropFileChooserThread().isAlive()) {
+			if (factory.getThreadContainer().getDragAnDropFileChooserThread() != null) {
+				factory.getThreadContainer().getDragAnDropFileChooserThread().join();
+				while (factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
 				// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.gettContainer().getDivisionThumbs() != null && !factory.gettContainer().getDivisionThumbs().isFinished()) {
-			factory.gettContainer().getDivisionThumbs().stop();
-			while (!factory.gettContainer().getDivisionThumbs().isFinished()) {
+		if (factory.getThreadContainer().getDivisionThumbs() != null && !factory.getThreadContainer().getDivisionThumbs().isFinished()) {
+			factory.getThreadContainer().getDivisionThumbs().stop();
+			while (!factory.getThreadContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
 			}
-			if (factory.gettContainer().getDivisionThumbsThread() != null) {
-				factory.gettContainer().getDivisionThumbsThread().join();
-				while (factory.gettContainer().getDivisionThumbsThread().isAlive()) {
+			if (factory.getThreadContainer().getDivisionThumbsThread() != null) {
+				factory.getThreadContainer().getDivisionThumbsThread().join();
+				while (factory.getThreadContainer().getDivisionThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.gettContainer().getShowThumbs() != null && !factory.gettContainer().getShowThumbs().isFinished()) {
-			factory.gettContainer().getShowThumbs().stop();
-			while (!factory.gettContainer().getShowThumbs().isFinished()) {
+		if (factory.getThreadContainer().getShowThumbs() != null && !factory.getThreadContainer().getShowThumbs().isFinished()) {
+			factory.getThreadContainer().getShowThumbs().stop();
+			while (!factory.getThreadContainer().getShowThumbs().isFinished()) {
 				// wait thread stop
 			}
-			if (factory.gettContainer().getShowThumbsThread() != null) {
-				factory.gettContainer().getShowThumbsThread().join();
-				while (factory.gettContainer().getShowThumbsThread().isAlive()) {
+			if (factory.getThreadContainer().getShowThumbsThread() != null) {
+				factory.getThreadContainer().getShowThumbsThread().join();
+				while (factory.getThreadContainer().getShowThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.gettContainer().getExecPool() != null && !factory.gettContainer().getExecPool().isFinished()) {
-			factory.gettContainer().getExecPool().stop();
-			if (factory.gettContainer().getExecPoolThread() != null) {
-				factory.gettContainer().getExecPoolThread().join();
-				while (factory.gettContainer().getExecPoolThread().isAlive()) {
+		if (factory.getThreadContainer().getExecPool() != null && !factory.getThreadContainer().getExecPool().isFinished()) {
+			factory.getThreadContainer().getExecPool().stop();
+			if (factory.getThreadContainer().getExecPoolThread() != null) {
+				factory.getThreadContainer().getExecPoolThread().join();
+				while (factory.getThreadContainer().getExecPoolThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
-		if (factory.gettContainer().getExecutor() != null) {
-			factory.gettContainer().getExecutor().shutdownNow();
-			while (!factory.gettContainer().getExecutor().isTerminated()) {
+		if (factory.getThreadContainer().getExecutor() != null) {
+			factory.getThreadContainer().getExecutor().shutdownNow();
+			while (!factory.getThreadContainer().getExecutor().isTerminated()) {
 				//wait stop all threadPool task
 			}
 		}

@@ -60,7 +60,7 @@ public class ShowThumbs implements Runnable {
 		
 		try {
 			Messages.appendNoNewLine("INFO", messages.getProperty("tmsg_08"));
-			int nPages = factory.getNumPages(); 
+			int nPages = factory.getNumberOfPages();
 			File[] imgVett = getCoverImagesRendered(hiddenHomeFolder);
 			
 			int i = 0;

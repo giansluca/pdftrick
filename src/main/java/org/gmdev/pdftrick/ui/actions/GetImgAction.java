@@ -34,19 +34,19 @@ public class GetImgAction extends AbstractAction  {
 		final Properties messages = factory.getMessages();
 		final Container contentPanel = factory.getUserInterface().getContentPane();
 		
-		if (factory.gettContainer().getImgExtractionThread() != null && factory.gettContainer().getImgExtractionThread().isAlive()) {
+		if (factory.getThreadContainer().getImgExtractionThread() != null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
-		if (factory.gettContainer().getOpenFileChooserThread() != null && factory.gettContainer().getOpenFileChooserThread().isAlive()) {
+		if (factory.getThreadContainer().getOpenFileChooserThread() != null && factory.getThreadContainer().getOpenFileChooserThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (factory.gettContainer().getDragAnDropFileChooserThread() != null && factory.gettContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (factory.getThreadContainer().getDragAnDropFileChooserThread() != null && factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
+		if (factory.getThreadContainer().getShowThumbsThread() != null && factory.getThreadContainer().getShowThumbsThread().isAlive()) {
 			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
@@ -85,10 +85,10 @@ public class GetImgAction extends AbstractAction  {
 		}
 		if (extract) {
 			ImgExtraction imgExtraction = new ImgExtraction();
-			factory.gettContainer().setImgExtraction(imgExtraction);
+			factory.getThreadContainer().setImgExtraction(imgExtraction);
 			
 			Thread imgExtractionThread = new Thread(imgExtraction, "imgExtractionThread");
-			factory.gettContainer().setImgExtractionThread(imgExtractionThread);
+			factory.getThreadContainer().setImgExtractionThread(imgExtractionThread);
 			
 			imgExtractionThread.start();
 		}

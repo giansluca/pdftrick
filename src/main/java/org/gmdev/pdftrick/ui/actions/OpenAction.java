@@ -47,14 +47,14 @@ public class OpenAction extends AbstractAction {
 		int ret = fileOpen.showOpenDialog(contentPanel);
 		
 		if (ret == JFileChooser.APPROVE_OPTION) {
-        	if ( (factory.gettContainer().getDragAnDropFileChooserThread() != null && factory.gettContainer().getDragAnDropFileChooserThread().isAlive()) ||
-        		(factory.gettContainer().getOpenFileChooserThread() != null &&	factory.gettContainer().getOpenFileChooserThread().isAlive())) {
+        	if ( (factory.getThreadContainer().getDragAnDropFileChooserThread() != null && factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) ||
+        		(factory.getThreadContainer().getOpenFileChooserThread() != null &&	factory.getThreadContainer().getOpenFileChooserThread().isAlive())) {
         		Utils.resetDropBorder();
     			Messages.append("WARNING", messages.getProperty("tmsg_01"));
     			return;
         	}
         	
-        	if (factory.gettContainer().getShowThumbsThread() != null && factory.gettContainer().getShowThumbsThread().isAlive()) {
+        	if (factory.getThreadContainer().getShowThumbsThread() != null && factory.getThreadContainer().getShowThumbsThread().isAlive()) {
     			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     			Utils.resetDropBorder();
     			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
@@ -62,7 +62,7 @@ public class OpenAction extends AbstractAction {
     			return;
         	}  
         	
-        	if (factory.gettContainer().getImgExtractionThread()!=null && factory.gettContainer().getImgExtractionThread().isAlive()) {
+        	if (factory.getThreadContainer().getImgExtractionThread()!=null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     		    Utils.resetDropBorder();
     		    Messages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
@@ -70,7 +70,7 @@ public class OpenAction extends AbstractAction {
     		    return;	
         	}
         	
-        	if (factory.gettContainer().getImgThumbThread()!=null && factory.gettContainer().getImgThumbThread().isAlive()) {
+        	if (factory.getThreadContainer().getImgThumbThread()!=null && factory.getThreadContainer().getImgThumbThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     			Utils.resetDropBorder();
     			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
@@ -81,10 +81,10 @@ public class OpenAction extends AbstractAction {
         	File[] files = fileOpen.getSelectedFiles();
         	
         	OpenFileChooser openFileChooser = new OpenFileChooser(files);
-        	factory.gettContainer().setOpenFileChooser(openFileChooser);
+        	factory.getThreadContainer().setOpenFileChooser(openFileChooser);
         	
         	Thread openFileChooserThread = new Thread(openFileChooser, "openFileChooserThread");
-        	factory.gettContainer().setOpenFileChooserThread(openFileChooserThread);
+        	factory.getThreadContainer().setOpenFileChooserThread(openFileChooserThread);
         	openFileChooserThread.start();
         }
         	

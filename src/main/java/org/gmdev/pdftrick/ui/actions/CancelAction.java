@@ -20,15 +20,15 @@ public class CancelAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (factory.gettContainer().getCancelThread() !=null && factory.gettContainer().getCancelThread().isAlive()) {
+		if (factory.getThreadContainer().getCancelThread() !=null && factory.getThreadContainer().getCancelThread().isAlive()) {
 			// wait thread stop Cancel already running
 			// this to prevent massive click on cancel button and instantiate lots of threads.
 		} else {
 			Cancel cancel = new Cancel();
-			factory.gettContainer().setCancel(cancel);
+			factory.getThreadContainer().setCancel(cancel);
 			
 			Thread newCalcelThread = new Thread(cancel, "cancelThread"); 
-			factory.gettContainer().setCancelThread(newCalcelThread);
+			factory.getThreadContainer().setCancelThread(newCalcelThread);
 			
 			newCalcelThread.start();
 		}
