@@ -27,7 +27,7 @@ public class PageThumb implements Runnable {
 	 * Render pdf cover calling native lib
 	 */
 	public void execute() {
-		NativeObjectManager nativeManager = factory.getNativemanager();
+		NativeObjectManager nativeManager = factory.getNativeManager();
 		
 		try {
 			nativeManager.runNativeLib_thumbs(factory.getResultFile(), imgPath, numPage, Constants.ZOOM_THUMB);

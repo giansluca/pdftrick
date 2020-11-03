@@ -33,7 +33,7 @@ public class DivisionThumb implements Runnable  {
 	 * for improve performance. Whitout this trick (using only threadpool) there is a little initial delay
 	 */
 	public void execute() {
-		NativeObjectManager nativeManager = factory.getNativemanager();
+		NativeObjectManager nativeManager = factory.getNativeManager();
 		int i = 1;
 		
 		while (i <= division && !finished) {

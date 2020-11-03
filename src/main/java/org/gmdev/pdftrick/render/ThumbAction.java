@@ -12,18 +12,20 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.render.tasks.RenderPageThumbnailsTask;
+import org.gmdev.pdftrick.serviceprocessor.ServiceScheduler;
 import org.gmdev.pdftrick.thread.ImgThumb;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.utils.Utils;
 
 public class ThumbAction implements MouseListener {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag bag = PdfTrickBag.getPdfTrickBag();
 	
-	private final int numberPage;
+	private final int pageNumber;
 	
-	public ThumbAction(int numberPage) {
-		this.numberPage = numberPage;
+	public ThumbAction(int pageNumber) {
+		this.pageNumber = pageNumber;
 	}
 	
 	/**
@@ -31,9 +33,9 @@ public class ThumbAction implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		final String selected = factory.getSelected();
-		final JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
-		final JTextField currentPageField = factory.getUserInterface().getRight().getCurrentPageField();
+		final String selected = bag.getSelected();
+		final JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
+		final JTextField currentPageField = bag.getUserInterface().getRight().getCurrentPageField();
 		
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Border borderGreen = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green);
@@ -43,12 +45,12 @@ public class ThumbAction implements MouseListener {
 			picLabelSelected.setBorder(borderGray);
 		}
 		
-		JLabel picLabel = (JLabel) leftPanel.getComponent(numberPage-1);
+		JLabel picLabel = (JLabel) leftPanel.getComponent(pageNumber - 1);
 		
 		// deselect page
-		if (selected.equalsIgnoreCase(String.valueOf(numberPage-1))) {
+		if (selected.equalsIgnoreCase(String.valueOf(pageNumber - 1))) {
 			picLabel.setBorder(borderGray);
-			factory.setSelected("");
+			bag.setSelected("");
 			currentPageField.setText("");
 			Utils.cleanCenterPanel();
 			
@@ -56,23 +58,27 @@ public class ThumbAction implements MouseListener {
 		} else {
 			// when previous page selected don't have images i need to reset the layout to FlowLayout 
 			// (the same layout with wait icon during pdf rendering)
-			final JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+			final JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 			
 			if (centerPanel.getLayout() instanceof GridBagLayout) {
 				centerPanel.setLayout(new WrapLayout());
 			}
 			
 			picLabel.setBorder(borderGreen);
-			factory.setSelected(String.valueOf(numberPage-1));
-			currentPageField.setText("Page "+numberPage);
+			bag.setSelected(String.valueOf(pageNumber - 1));
+			currentPageField.setText("Page " + pageNumber);
 			Utils.cleanCenterPanel();
 			
-			ImgThumb imgThumb = new ImgThumb(numberPage);
-			factory.gettContainer().setImgThumb(imgThumb);
+			ImgThumb imgThumb = new ImgThumb(pageNumber);
+			bag.gettContainer().setImgThumb(imgThumb);
 			
 			Thread imgThumbThread = new Thread(imgThumb, "imgThumbThread");
-			factory.gettContainer().setImgThumbThread(imgThumbThread);
+			bag.gettContainer().setImgThumbThread(imgThumbThread);
 			imgThumbThread.start();
+
+			// TODO Itext 7 migration
+			var renderPageThumbnailsTask = new RenderPageThumbnailsTask(pageNumber);
+			ServiceScheduler.getServiceScheduler().schedule(renderPageThumbnailsTask);
 		}
 	}
 

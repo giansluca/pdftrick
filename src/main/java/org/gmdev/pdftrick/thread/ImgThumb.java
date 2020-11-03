@@ -5,9 +5,7 @@ import java.awt.GridBagLayout;
 import java.text.MessageFormat;
 import java.util.Properties;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageListenerShowThumb;
@@ -20,7 +18,7 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 public class ImgThumb implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ImgThumb.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag bag = PdfTrickBag.getPdfTrickBag();
 	
 	private final int numberPage;
 	volatile boolean finished = false;
@@ -35,16 +33,12 @@ public class ImgThumb implements Runnable {
 	
 	@Override
 	public void run() {
-		execute();
-		System.gc();
+		renderPageThumbnails();
 	}
-	
-	/**
-	 * Render img thumbs contained in a page
-	 */
-	public void execute () {
-		final Properties messages = factory.getMessages();
-		final JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+
+	public void renderPageThumbnails () {
+		final Properties messages = bag.getMessages();
+		final JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 		
 		SwingUtilities.invokeLater(new ManagePanelWait("thumb", "thumb_show"));
 		
@@ -52,10 +46,10 @@ public class ImgThumb implements Runnable {
 			PdfReader reader = null;
 			ImageListenerShowThumb listener = null;
 			
-			reader = new PdfReader(factory.getResultFile());
+			reader = new PdfReader(bag.getResultFile());
 			PdfReaderContentParser parser = new PdfReaderContentParser(reader);
 			listener = new ImageListenerShowThumb(numberPage);
-			
+
 			parser.processContent(numberPage, listener);			
 			reader.close();
 			

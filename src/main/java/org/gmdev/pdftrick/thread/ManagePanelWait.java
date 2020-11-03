@@ -1,7 +1,7 @@
 package org.gmdev.pdftrick.thread;
 
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.ui.UI2;
+import org.gmdev.pdftrick.ui.UserInterface;
 
 public class ManagePanelWait implements Runnable {
 	
@@ -17,22 +17,22 @@ public class ManagePanelWait implements Runnable {
 	
 	@Override
 	public void run() {
-		final UI2 ui = factory.getUserInterface();
+		final UserInterface userInterface = factory.getUserInterface();
 		if (mode.equalsIgnoreCase("thumb")) {
 			if (key.equalsIgnoreCase("thumb_show")) {
 				// lock screen
-				ui.lockScreen(mode);
+				userInterface.lockScreen(mode);
 			} else if (key.equalsIgnoreCase("thumb_hide")) {
 				// unlock screen
-				ui.unlockScreen();
+				userInterface.unlockScreen();
 			}
 		} else if (mode.equalsIgnoreCase("extract")) {
 			if (key.equalsIgnoreCase("extract_show")) {
 				// lock screen
-				ui.lockScreen(mode);
+				userInterface.lockScreen(mode);
 			} else if (key.equalsIgnoreCase("extract_hide")) {
 				// unlock screen
-				ui.unlockScreen();
+				userInterface.unlockScreen();
 			}
 		}
 	}

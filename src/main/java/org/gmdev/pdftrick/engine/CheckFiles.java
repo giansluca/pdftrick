@@ -56,7 +56,7 @@ public class CheckFiles {
 	 */
 	public boolean check() {
 		final Properties messages = factory.getMessages();
-		final ArrayList<File> filesVett = factory.getFilesVett();
+		final ArrayList<File> filesVett = factory.getPdfFilesArray();
 		
 		boolean check = false;
 		boolean checkPdf = false;

@@ -68,7 +68,7 @@ public class WindowsActions implements WindowListener {
 			}
 		}
 		
-		NativeObjectManager nativeManager = factory.getNativemanager();
+		NativeObjectManager nativeManager = factory.getNativeManager();
 		nativeManager.unloadNativeLib();
 		Utils.deleteResultFile();
 		Utils.deleteImgFolderAnDFile();

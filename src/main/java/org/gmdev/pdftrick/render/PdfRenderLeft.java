@@ -28,7 +28,7 @@ public class PdfRenderLeft {
 		try {
 			PdfReader reader = new PdfReader(factory.getResultFile());
 			totPages = reader.getNumberOfPages();
-			factory.setNumPages(totPages);
+			factory.setNumberOfPages(totPages);
 			reader.close();
 		} catch (Exception e) {
 			logger.error("Exception", e);

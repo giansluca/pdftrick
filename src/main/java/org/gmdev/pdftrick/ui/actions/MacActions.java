@@ -59,7 +59,7 @@ public class MacActions {
 			}
 		}
 		
-		NativeObjectManager nativeManager = factory.getNativemanager();
+		NativeObjectManager nativeManager = factory.getNativeManager();
 		nativeManager.unloadNativeLib();
 		
 		Utils.deleteResultFile();

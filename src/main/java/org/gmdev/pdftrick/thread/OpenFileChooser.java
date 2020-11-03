@@ -41,7 +41,7 @@ public class OpenFileChooser implements Runnable {
 		final Properties messages = factory.getMessages();
 		final JTextField currentPageField = factory.getUserInterface().getRight().getCurrentPageField();
 		final JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
-		final ArrayList<File> filesVett = factory.getFilesVett();
+		final ArrayList<File> filesVett = factory.getPdfFilesArray();
 		
         SwingUtilities.invokeLater(new Runnable() {
 			@Override

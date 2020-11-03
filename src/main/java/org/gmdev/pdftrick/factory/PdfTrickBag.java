@@ -6,25 +6,23 @@ import java.util.*;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
-import org.gmdev.pdftrick.ui.UI2;
+import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.*;
 
 public class PdfTrickBag {
 	
-	private static final Logger logger = Logger.getLogger(PdfTrickBag.class);
 	private static PdfTrickBag instance;
 	
-	private UI2 userInterface;
+	private UserInterface userInterface;
 	private String os;
 	private Path homeFolderPath;
 	private Path nativeLibraryPath;
-	private String resultFile;
-	private NativeObjectManager nativemanager;
-	private int numPages;
-	private ArrayList<File> filesVett;
+	private String pdfFile;
+	private NativeObjectManager nativeManager;
+	private int numberOfPages;
+	private ArrayList<File> pdfFilesArray;
 	private String selected;
 	private String folderToSave;
 	private HashMap<Integer, String> rotationFromPages;
@@ -32,16 +30,15 @@ public class PdfTrickBag {
 	private HashMap<String, String> namePwd;
 	private HashMap<String, RenderedImageAttributes> imageSelected;
 	private HashMap<String, RenderedImageAttributes> inlineImgSelected;
-	private volatile ThreadContainer tContainer;
+	private ThreadContainer threadContainer;
 
-	private PdfTrickBag(){}
+	private PdfTrickBag() {}
 	
 	public static PdfTrickBag getPdfTrickBag() {
 		if (instance == null) {
-			synchronized(PdfTrickBag.class){
-				if (instance == null) {
+			synchronized(PdfTrickBag.class) {
+				if (instance == null)
 					instance = new PdfTrickBag();
-				}
 			}
 		}
 		return instance;
@@ -51,38 +48,34 @@ public class PdfTrickBag {
 		this.os = os;
 		this.homeFolderPath = homeFolderPath;
 		this.nativeLibraryPath = nativeLibraryPath;
-		resultFile = homeFolderPath + File.separator + Constants.RESULT_PDF_FILE;
-		nativemanager = new NativeObjectManager();
-		filesVett = new ArrayList<File>();
+		pdfFile = homeFolderPath + File.separator + Constants.RESULT_PDF_FILE;
+		nativeManager = new NativeObjectManager();
+		pdfFilesArray = new ArrayList<>();
 		selected = "";
 		folderToSave = "";
-		rotationFromPages = new HashMap<Integer, String>();
+		rotationFromPages = new HashMap<>();
 		messages = Utils.loadProperties();
-		namePwd = new HashMap<String, String>();
-		imageSelected = new HashMap<String, RenderedImageAttributes>();
-		inlineImgSelected = new HashMap<String, RenderedImageAttributes>();
-		tContainer = new ThreadContainer();
-		
-		// if result file exist (for example due to a previous exception and not deleted by PdfTrick), 
-		// for security i call the clean here on startUp
+		namePwd = new HashMap<>();
+		imageSelected = new HashMap<>();
+		inlineImgSelected = new HashMap<>();
+		threadContainer = new ThreadContainer();
+
 		Utils.deleteImgFolderAnDFile();
 		Utils.deleteResultFile();
 		
-		//inizialize UI
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					userInterface = new UI2();
-					Utils.welcomeMessage();
-					userInterface.setVisible(true);
-				} catch (Exception e) {
-					logger.error("Exception", e);
-				}
+		//initialize UI
+		SwingUtilities.invokeLater(() -> {
+			try {
+				userInterface = new UserInterface();
+				Utils.welcomeMessage();
+				userInterface.setVisible(true);
+			} catch (Exception e) {
+				throw new IllegalStateException(e);
 			}
 		});
 	}
 	
-	public synchronized UI2 getUserInterface() {
+	public synchronized UserInterface getUserInterface() {
 		return userInterface;
 	}
 
@@ -94,28 +87,28 @@ public class PdfTrickBag {
 		return homeFolderPath;
 	}
 
-	public Path getNativeLibraryPath() {
+	public synchronized Path getNativeLibraryPath() {
 		return nativeLibraryPath;
 	}
 
 	public synchronized String getResultFile() {
-		return resultFile;
+		return pdfFile;
 	}
 	
-	public synchronized NativeObjectManager getNativemanager() {
-		return nativemanager;
+	public synchronized NativeObjectManager getNativeManager() {
+		return nativeManager;
 	}
 	
-	public synchronized int getNumPages() {
-		return numPages;
+	public synchronized int getNumberOfPages() {
+		return numberOfPages;
 	}
 	
-	public synchronized void setNumPages(int numPages) {
-		this.numPages = numPages;
+	public synchronized void setNumberOfPages(int numberOfPages) {
+		this.numberOfPages = numberOfPages;
 	}
 	
-	public synchronized ArrayList<File> getFilesVett() {
-		return filesVett;
+	public synchronized ArrayList<File> getPdfFilesArray() {
+		return pdfFilesArray;
 	}
 	
 	public synchronized String getSelected() {
@@ -154,8 +147,8 @@ public class PdfTrickBag {
 		return inlineImgSelected;
 	}
 	
-	public synchronized ThreadContainer gettContainer() {
-		return tContainer;
+	public synchronized ThreadContainer getThreadContainer() {
+		return threadContainer;
 	}
 	
 	

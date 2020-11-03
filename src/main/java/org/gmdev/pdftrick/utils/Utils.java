@@ -281,7 +281,7 @@ public class Utils {
 	 * Reinitializes new filesVett, called on cancel button and open new pdf file
 	 */
 	public static void cleanFilevett(){
-		factory.getFilesVett().clear();
+		factory.getPdfFilesArray().clear();
 	}
 	
 	/**
