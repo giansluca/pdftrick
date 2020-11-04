@@ -32,9 +32,7 @@ public class PageThumbnailsDisplay implements IEventListener {
 
     private void display(ImageRenderInfo imageRenderInfo) {
         System.out.println("page: " + pageNumber);
-
         PdfImageXObject image = imageRenderInfo.getImage();
-        System.out.println(image.identifyImageType());
         System.out.println(image.identifyImageType());
     }
 

@@ -1,7 +1,7 @@
 package org.gmdev.pdftrick.validation;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.swingmanager.WarningPanel;
+import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
@@ -29,7 +29,7 @@ public class SingleInstanceValidator {
         try {
             serverSocket = new ServerSocket(SERVER_PORT);
         } catch (BindException e) {
-            WarningPanel.displayAlreadyRunningAndThrow();
+            ModalWarningPanel.displayAlreadyRunningAndThrow();
         } catch (IOException e) {
             logger.error(e);
         }

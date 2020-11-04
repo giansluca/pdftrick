@@ -7,7 +7,7 @@ import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
 import org.apache.log4j.*;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
-import org.gmdev.pdftrick.swingmanager.WarningPanel;
+import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.utils.*;
 import org.gmdev.pdftrick.validation.SingleInstanceValidator;
 
@@ -73,7 +73,7 @@ public class PdfTrick {
 
     private static void checkArchitecture() {
         if (!isJvm64())
-            WarningPanel.displayArchWarningAndThrow();
+            ModalWarningPanel.displayArchWarningAndThrow();
     }
 
     private static void setMacPreferences() {

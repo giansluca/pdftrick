@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImagesExtractor;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
+import org.gmdev.pdftrick.swingmanager.WaitPanel;
 import org.gmdev.pdftrick.utils.Utils;
 
 public class ImgExtraction implements Runnable {
@@ -42,12 +43,12 @@ public class ImgExtraction implements Runnable {
 	 * Extract images
 	 */
 	public void execute () {
-		SwingUtilities.invokeLater(new ManagePanelWait("extract", "extract_show"));
+		WaitPanel.setExtractingImagesWaitPanel();
 		
 		ImagesExtractor engine = new ImagesExtractor();
 		engine.getImages();
 		
-		SwingUtilities.invokeLater(new ManagePanelWait("extract", "extract_hide"));
+		WaitPanel.removeWaitPanel();
 		
 		if (!finished) {
 			try {
@@ -57,9 +58,7 @@ public class ImgExtraction implements Runnable {
 						cleanAfterGetImages();
 					}
 				});
-			} catch (InterruptedException e) {
-				logger.error("Exception", e);
-			} catch (InvocationTargetException e) {
+			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
 			}
 		}

@@ -5,7 +5,12 @@ import com.itextpdf.kernel.pdf.canvas.parser.PdfDocumentContentParser;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
 import org.gmdev.pdftrick.render.PageThumbnailsDisplay;
 import org.gmdev.pdftrick.serviceprocessor.ServiceRequest;
+import org.gmdev.pdftrick.swingmanager.SwingInvoker;
+import org.gmdev.pdftrick.swingmanager.WaitPanel;
 
+import javax.swing.*;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RenderPageThumbnailsTask implements ServiceRequest {
@@ -23,13 +28,26 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
     }
 
     @Override
-    public void process() throws Exception {
+    public void process() throws IOException {
+        Properties messages = bag.getMessages();
+        JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+
+        WaitPanel.setLoadingThumbnailsWaitPanel();
+
         PdfReader pdfReader = new PdfReader(pdfFilePath);
         PdfDocument pdfDocument = new PdfDocument(pdfReader);
         PdfDocumentContentParser contentParser = new PdfDocumentContentParser(pdfDocument);
 
         PageThumbnailsDisplay pageThumbnailsDisplay = new PageThumbnailsDisplay(pageNumber);
         contentParser.processContent(pageNumber, pageThumbnailsDisplay);
+
+        pdfReader.close();
+        pdfDocument.close();
+
+        // TODO other logic ....
+
+        WaitPanel.removeWaitPanel();
+        exited.set(true);
     }
 
     public void stop() {

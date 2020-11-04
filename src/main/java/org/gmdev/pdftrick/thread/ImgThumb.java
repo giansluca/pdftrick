@@ -10,6 +10,7 @@ import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageListenerShowThumb;
 import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.swingmanager.WaitPanel;
 import org.gmdev.pdftrick.utils.Messages;
 
 import com.itextpdf.text.pdf.PdfReader;
@@ -37,10 +38,10 @@ public class ImgThumb implements Runnable {
 	}
 
 	public void renderPageThumbnails () {
-		final Properties messages = bag.getMessages();
-		final JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+		Properties messages = bag.getMessages();
+		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 		
-		SwingUtilities.invokeLater(new ManagePanelWait("thumb", "thumb_show"));
+		WaitPanel.setLoadingThumbnailsWaitPanel();
 		
 		try {
 			PdfReader reader = null;
@@ -86,8 +87,7 @@ public class ImgThumb implements Runnable {
 			logger.error("Exception", e);
 		}
 		
-		SwingUtilities.invokeLater(new ManagePanelWait("thumb", "thumb_hide"));
-		
+		WaitPanel.removeWaitPanel();
 		finished = true;
 	}
 	

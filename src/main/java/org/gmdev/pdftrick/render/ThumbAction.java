@@ -77,8 +77,8 @@ public class ThumbAction implements MouseListener {
 			imgThumbThread.start();
 
 			// TODO Itext 7 migration
-			var renderPageThumbnailsTask = new RenderPageThumbnailsTask(pageNumber);
-			ServiceScheduler.getServiceScheduler().schedule(renderPageThumbnailsTask);
+			//var renderPageThumbnailsTask = new RenderPageThumbnailsTask(pageNumber);
+			//ServiceScheduler.getServiceScheduler().schedule(renderPageThumbnailsTask);
 		}
 	}
 
