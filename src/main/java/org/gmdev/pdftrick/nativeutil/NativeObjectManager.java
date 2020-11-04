@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.nativeutil;
 
 import java.lang.reflect.Method;
-
 import org.apache.log4j.Logger;
 
 public class NativeObjectManager {
@@ -17,11 +16,8 @@ public class NativeObjectManager {
 	public NativeObjectManager() {
 		loadNativeLib();
 	}
-	
-	/**
-	 * Load native library, using custom class loader
-	 */
-	public void loadNativeLib() {
+
+	private void loadNativeLib() {
 		try {
 			customClassLoader = new CustomClassLoader();
 			classNative = customClassLoader.findClass("org.gmdev.pdftrick.nativeutil.NativeLibCall");
@@ -32,15 +28,15 @@ public class NativeObjectManager {
 	}
 	
 	/**
-	 * Call native function in native library for render thumbs, using reflection 
-	 * (i used reflection to avoid some problems that may happen under windows OS)
+	 * Call native function in native library for render thumbs.
+	 * Reflection to avoid some problems that may happen under windows OS
 	 */
 	public void runNativeLib_thumbs(String resultFilePath, String imgPath, int nPage, int zoom) {
 		try {
-			if (methodNative_thumbs==null) {
-				methodNative_thumbs = classNative.getMethod("start", String.class, String.class, int.class, int.class);
-			}
-			
+			if (methodNative_thumbs == null)
+				methodNative_thumbs = classNative.getMethod(
+						"start", String.class, String.class, int.class, int.class);
+
 			methodNative_thumbs.invoke(instanceNative, resultFilePath, imgPath, nPage, zoom);
 		} catch (Exception e) {
 			logger.error("Exception", e);
@@ -52,19 +48,16 @@ public class NativeObjectManager {
 	 */
 	public void runNativeLib_cover(String resultFilePath, String imgPath, int nPage, int zoom) {
 		try {
-			if (methodNative_cover==null) {
-				methodNative_cover = classNative.getMethod("cover", String.class, String.class, int.class, int.class);
-			}
-			
+			if (methodNative_cover == null)
+				methodNative_cover = classNative.getMethod(
+						"cover", String.class, String.class, int.class, int.class);
+
 			methodNative_cover.invoke(instanceNative, resultFilePath, imgPath, nPage, zoom);
 		} catch (Exception e) {
 			logger.error("Exception", e);
 		}	
 	}
-	
-	/**
-	 * Unload native library
-	 */
+
 	public void unloadNativeLib() {
 		customClassLoader = null;
 		classNative = null;

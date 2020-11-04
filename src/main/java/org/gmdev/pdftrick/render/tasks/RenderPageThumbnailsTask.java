@@ -23,7 +23,7 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
     public RenderPageThumbnailsTask(int pageNumber) {
         this.pageNumber = pageNumber;
-        pdfFilePath = bag.getResultFile();
+        pdfFilePath = bag.getPdfFilePath();
         exited = new AtomicBoolean(false);
     }
 

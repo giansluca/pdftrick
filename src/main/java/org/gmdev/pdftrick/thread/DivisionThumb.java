@@ -38,7 +38,7 @@ public class DivisionThumb implements Runnable  {
 		
 		while (i <= division && !finished) {
 			try {
-				nativeManager.runNativeLib_thumbs(factory.getResultFile(), imgPath, i, Constants.ZOOM_THUMB);
+				nativeManager.runNativeLib_thumbs(factory.getPdfFilePath(), imgPath, i, Constants.ZOOM_THUMB);
 				i++;
 			} catch (Exception e) {
 				Thread.currentThread().interrupt();

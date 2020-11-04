@@ -94,7 +94,7 @@ public class DragAnDropFileChooser implements Runnable {
         	} else {
         		// merge pdf selection after check
         		MergeFiles engine = new MergeFiles();
-            	File resultFile = engine.mergePdf(filesVett, factory.getResultFile());
+            	File resultFile = engine.mergePdf(filesVett, factory.getPdfFilePath());
             	
             	if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
             		Messages.append("INFO", messages.getProperty("tmsg_12"));

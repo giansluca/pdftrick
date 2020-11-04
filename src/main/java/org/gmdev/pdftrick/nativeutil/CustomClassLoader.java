@@ -1,9 +1,7 @@
 package org.gmdev.pdftrick.nativeutil;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -12,7 +10,7 @@ public class CustomClassLoader extends ClassLoader {
 	
 	private static final Logger logger = Logger.getLogger(CustomClassLoader.class);
 
-    private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
+    private final Map<String, Class<?>> classes = new HashMap<>();
     
     @Override
     public String toString() {
@@ -20,24 +18,23 @@ public class CustomClassLoader extends ClassLoader {
     }
     
     @Override
-    public Class<?> findClass(String name) throws ClassNotFoundException {
-        if (classes.containsKey(name)) {
+    public Class<?> findClass(String name) {
+        if (classes.containsKey(name))
             return classes.get(name);
-        }
         
         byte[] classData;
-        Class<?> c=null;
+        Class<?> classObject = null;
         
         try {
             classData = loadClassData(name);
-            c = defineClass(name, classData, 0, classData.length);
-            resolveClass(c);
-            classes.put(name, c);
+            classObject = defineClass(name, classData, 0, classData.length);
+            resolveClass(classObject);
+            classes.put(name, classObject);
         } catch (IOException e) {
         	logger.error("Exception", e);
         }
         
-        return c;
+        return classObject;
     }
      
     private byte[] loadClassData(String name) throws IOException {
@@ -46,9 +43,8 @@ public class CustomClassLoader extends ClassLoader {
 
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
         int i;
-        while ((i = in.read()) != -1) {
+        while ((i = in.read()) != -1)
             out.write(i);
-        }
         
         in.close();
         byte[] classData = out.toByteArray();

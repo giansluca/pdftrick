@@ -6,7 +6,7 @@ public final class Constants {
 	public static final String APP_NAME = "PdfTrick";
 	public static final String PDFTRICK_FOLDER = ".pdftrick";
 	public static final String LICENSE_TITLE = "PdfTrick Licence";
-	public static final String RESULT_PDF_FILE = "resultfile.pdf";
+	public static final String PDF_FILE_NAME = "file.pdf";
 	public static final String JFC_EXTRACT_TITLE = "Folder to save";
 	public static final String JFC_OPEN_TITLE = "Open files";
 	public static final String PWD_DIALOG = "Password is required";
@@ -18,7 +18,7 @@ public final class Constants {
 	public static final String NATIVE_LIB_PATH = "nativelib";
 	public static final String NATIVE_LIB_WIN_64 ="libpdftrick_native_1.7a_64.dll";
 	public static final String NATIVE_LIB_MAC_64 ="libpdftrick_native_1.7a_64.jnilib";
-	public static final String PROPERTY_FILE = "properties/pdftrick.properties";
+	public static final String MESSAGES_PROPERTY_FILE = "properties/messages.properties";
 	public static final String PROPERTY_L4J_FILE = "properties/log4j.properties";
 	public static final String GENERIC_ICC_FILE = "Generic_CMYK_Profile.icc";
 	public static final String LICENSE_FILE = "license.txt";

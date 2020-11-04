@@ -54,7 +54,7 @@ public class GetImgAction extends AbstractAction  {
 		}
 		
 		boolean extract = true;
-		File resultFile = new File(factory.getResultFile());
+		File resultFile = new File(factory.getPdfFilePath());
 		if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
 			CustomFileChooser choosefolderToSave = new CustomFileChooser();
 			choosefolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

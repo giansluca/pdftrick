@@ -96,7 +96,7 @@ public class ImageListenerShowThumb implements RenderListener {
 					if (isInline) {
 						buffImg = null;
 					} else {
-						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), factory.getResultFile());
+						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), factory.getPdfFilePath());
 					}
 				} catch (Exception e) {
 					logger.error("Exception", e);

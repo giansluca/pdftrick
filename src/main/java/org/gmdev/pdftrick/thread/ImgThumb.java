@@ -47,7 +47,7 @@ public class ImgThumb implements Runnable {
 			PdfReader reader = null;
 			ImageListenerShowThumb listener = null;
 			
-			reader = new PdfReader(bag.getResultFile());
+			reader = new PdfReader(bag.getPdfFilePath());
 			PdfReaderContentParser parser = new PdfReaderContentParser(reader);
 			listener = new ImageListenerShowThumb(numberPage);
 

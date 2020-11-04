@@ -30,8 +30,7 @@ public class PageThumb implements Runnable {
 		NativeObjectManager nativeManager = factory.getNativeManager();
 		
 		try {
-			nativeManager.runNativeLib_thumbs(factory.getResultFile(), imgPath, numPage, Constants.ZOOM_THUMB);
-			//System.out.println(Thread.currentThread().getName() + " add image " + numPage);
+			nativeManager.runNativeLib_thumbs(factory.getPdfFilePath(), imgPath, numPage, Constants.ZOOM_THUMB);
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 			logger.error("Exception", e);

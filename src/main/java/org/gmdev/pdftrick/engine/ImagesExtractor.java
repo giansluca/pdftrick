@@ -43,7 +43,7 @@ public class ImagesExtractor {
 	public void getImages() {
 		final Properties messages = factory.getMessages();
 		final HashMap<String, RenderedImageAttributes> inlineImgSelected = factory.getInlineImgSelected();
-		final File resultFile = new File(factory.getResultFile());
+		final File resultFile = new File(factory.getPdfFilePath());
 		boolean getImgCheck = false;
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));

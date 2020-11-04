@@ -23,22 +23,22 @@ public class Utils {
 	public static String getTimedDirResult() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH)+1;
+		int month = cal.get(Calendar.MONTH) + 1;
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		int minute = cal.get(Calendar.MINUTE);
 		int second = cal.get(Calendar.SECOND);
-		
-		String data = day + "-" + month + "-" + year + "_" + hour + "." + minute + "." + second;
-		return "/PdfTrick_"+data;
+
+		String time = String.format("%d-%d-%d_%d.%d.%d", day, month, year, hour, minute, second);
+		return "/PdfTrick_" + time;
 	}
 	
-	public static Properties loadProperties() {
+	public static Properties loadMessageProperties() {
 		Properties prop = new Properties();
 		try {
-			prop.load(FileLoader.loadAsStream(Constants.PROPERTY_FILE));
+			prop.load(FileLoader.loadAsStream(Constants.MESSAGES_PROPERTY_FILE));
 		} catch (IOException e) {
-			logger.error("Exception", e);
+			throw new IllegalStateException(e);
 		}
 		
 		return prop;
@@ -76,7 +76,7 @@ public class Utils {
 	 * Delete merged file in hidden home folder
 	 */
 	public static void deleteResultFile() {
-		File resulFile = new File(factory.getResultFile());
+		File resulFile = new File(factory.getPdfFilePath());
 		
 		if (resulFile.exists()) {
 			resulFile.delete();

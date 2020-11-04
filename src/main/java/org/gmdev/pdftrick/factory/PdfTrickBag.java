@@ -4,10 +4,9 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import javax.swing.SwingUtilities;
-
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.swingmanager.UserInterfaceBuilder;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.*;
 
@@ -19,7 +18,7 @@ public class PdfTrickBag {
 	private String os;
 	private Path homeFolderPath;
 	private Path nativeLibraryPath;
-	private String pdfFile;
+	private String pdfFilePath;
 	private NativeObjectManager nativeManager;
 	private int numberOfPages;
 	private ArrayList<File> pdfFilesArray;
@@ -48,13 +47,13 @@ public class PdfTrickBag {
 		this.os = os;
 		this.homeFolderPath = homeFolderPath;
 		this.nativeLibraryPath = nativeLibraryPath;
-		pdfFile = homeFolderPath + File.separator + Constants.RESULT_PDF_FILE;
+		pdfFilePath = homeFolderPath + File.separator + Constants.PDF_FILE_NAME;
 		nativeManager = new NativeObjectManager();
 		pdfFilesArray = new ArrayList<>();
 		selected = "";
 		folderToSave = "";
 		rotationFromPages = new HashMap<>();
-		messages = Utils.loadProperties();
+		messages = Utils.loadMessageProperties();
 		namePwd = new HashMap<>();
 		imageSelected = new HashMap<>();
 		inlineImgSelected = new HashMap<>();
@@ -62,17 +61,9 @@ public class PdfTrickBag {
 
 		Utils.deleteImgFolderAnDFile();
 		Utils.deleteResultFile();
-		
-		//initialize UI
-		SwingUtilities.invokeLater(() -> {
-			try {
-				userInterface = new UserInterface();
-				Utils.welcomeMessage();
-				userInterface.setVisible(true);
-			} catch (Exception e) {
-				throw new IllegalStateException(e);
-			}
-		});
+
+		userInterface = UserInterfaceBuilder.build();
+		Utils.welcomeMessage();
 	}
 	
 	public synchronized UserInterface getUserInterface() {
@@ -91,8 +82,8 @@ public class PdfTrickBag {
 		return nativeLibraryPath;
 	}
 
-	public synchronized String getResultFile() {
-		return pdfFile;
+	public synchronized String getPdfFilePath() {
+		return pdfFilePath;
 	}
 	
 	public synchronized NativeObjectManager getNativeManager() {
@@ -131,9 +122,7 @@ public class PdfTrickBag {
 		return rotationFromPages;
 	}
 	
-	public synchronized Properties getMessages() {
-		return messages;
-	}
+	public synchronized Properties getMessages() { return messages; }
 	
 	public synchronized HashMap<String, String> getNamePwd() {
 		return namePwd;

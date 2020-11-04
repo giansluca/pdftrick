@@ -26,7 +26,7 @@ public class PdfRenderLeft {
 		
 		// get the page number of the new generated pdf
 		try {
-			PdfReader reader = new PdfReader(factory.getResultFile());
+			PdfReader reader = new PdfReader(factory.getPdfFilePath());
 			totPages = reader.getNumberOfPages();
 			factory.setNumberOfPages(totPages);
 			reader.close();
