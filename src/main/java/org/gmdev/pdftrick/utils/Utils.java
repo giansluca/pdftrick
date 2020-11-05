@@ -242,7 +242,7 @@ public class Utils {
 	/**
 	 * Print a welcome message on the text area
 	 */
-	public static void welcomeMessage() {
+	public static void printWelcomeMessage() {
 		Messages.append("INFO", MessageFormat.format(bag.getMessages().getProperty("dmsg_09"),
 	    		System.getProperty("os.name"),
 	    		System.getProperty("sun.arch.data.model"),

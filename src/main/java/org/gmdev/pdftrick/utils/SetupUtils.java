@@ -60,31 +60,29 @@ public class SetupUtils {
 	}
 
 	public static Path setAndGetNativeLibrary(Path homeFolder, String operatingSystem) {
-		String libName;
+		String libraryName;
 		if (operatingSystem.equals(WIN_OS))
-			libName = NATIVE_LIB_WIN_64;
+			libraryName = NATIVE_LIB_WIN_64;
 		else if (operatingSystem.equals(MAC_OS))
-			libName = NATIVE_LIB_MAC_64;
+			libraryName = NATIVE_LIB_MAC_64;
 		else
 			throw new IllegalStateException("Error selecting native library, should never get here");
 
-		Path libPath = Path.of(homeFolder + File.separator + libName);
-		if (libPath.toFile().exists())
-			return libPath;
+		Path libraryDestinationPath = Path.of(homeFolder + File.separator + libraryName);
+		String librarySource = NATIVE_LIB_PATH + "/" + libraryName;
+		if (!libraryDestinationPath.toFile().exists())
+			extractNativeLibrary(libraryDestinationPath, librarySource);
 
-		String libToCopy = NATIVE_LIB_PATH + "/" + libName;
-		return extractNativeLibrary(libPath, libToCopy);
+		return libraryDestinationPath;
 	}
 
-	private static Path extractNativeLibrary(Path to, String libToCopy) {
-		InputStream from = FileLoader.loadAsStream(libToCopy);
+	private static void extractNativeLibrary(Path to, String librarySource) {
+		InputStream from = FileLoader.loadAsStream(librarySource);
 		try {
 			Files.copy(from, to);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-
-		return to;
 	}
 
 }
