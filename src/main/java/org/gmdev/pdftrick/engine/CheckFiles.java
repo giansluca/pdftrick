@@ -27,7 +27,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.Messages;
 
@@ -40,7 +40,7 @@ import com.itextpdf.text.pdf.PdfStream;
 public class CheckFiles {
 	
 	private static final Logger logger = Logger.getLogger(CheckFiles.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	private boolean checkEncryption = false;
 	private final HashMap<String, String> namePwd;

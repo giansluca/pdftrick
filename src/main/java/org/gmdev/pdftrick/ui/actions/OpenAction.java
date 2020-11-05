@@ -12,14 +12,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.thread.OpenFileChooser;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
 
 public class OpenAction extends AbstractAction {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	private static final long serialVersionUID = 490332474672907971L;
 	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.OPEN_FILE_ICO));
 	

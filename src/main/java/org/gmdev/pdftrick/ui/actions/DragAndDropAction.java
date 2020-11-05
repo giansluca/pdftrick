@@ -6,7 +6,7 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.thread.DragAnDropFileChooser;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.Messages;
@@ -15,7 +15,7 @@ import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	public DragAndDropAction() {
 	}

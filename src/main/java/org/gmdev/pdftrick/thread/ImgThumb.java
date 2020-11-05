@@ -9,7 +9,7 @@ import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageListenerShowThumb;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
 import org.gmdev.pdftrick.utils.Messages;
 
@@ -19,7 +19,7 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 public class ImgThumb implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ImgThumb.class);
-	private static final PdfTrickBag bag = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag bag = PdfTrickBag.getBag();
 	
 	private final int numberPage;
 	volatile boolean finished = false;

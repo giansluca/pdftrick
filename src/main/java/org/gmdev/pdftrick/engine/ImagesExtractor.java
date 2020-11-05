@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.Utils;
@@ -35,7 +35,7 @@ import com.itextpdf.text.pdf.parser.PdfImageObject;
 public class ImagesExtractor {
 	
 	private static final Logger logger = Logger.getLogger(ImagesExtractor.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	/**
 	 * Prepare for the extraction and call images extractor

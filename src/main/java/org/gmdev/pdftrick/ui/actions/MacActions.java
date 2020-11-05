@@ -6,13 +6,13 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.utils.*;
 
 public class MacActions {
 
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	public MacActions() {
 	}
@@ -59,11 +59,11 @@ public class MacActions {
 			}
 		}
 		
-		NativeObjectManager nativeManager = factory.getNativeManager();
+		NativeObjectManager nativeManager = factory.getNativeObjectManager();
 		nativeManager.unloadNativeLib();
 		
-		Utils.deleteResultFile();
-		Utils.deleteImgFolderAnDFile();
+		Utils.deletePdfFile();
+		Utils.deleteImgFolderAnDFiles();
 		
 		System.exit(0);
 	}

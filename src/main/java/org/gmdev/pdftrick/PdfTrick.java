@@ -6,7 +6,7 @@ import javax.swing.*;
 import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
 import org.apache.log4j.*;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickStarter;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.utils.*;
 import org.gmdev.pdftrick.validation.SingleInstanceValidator;
@@ -88,8 +88,7 @@ public class PdfTrick {
     }
 
     private static void run() {
-        var pdfTrickBag = PdfTrickBag.getPdfTrickBag();
-        pdfTrickBag.initialize(operatingSystem, homeFolderPath, nativeLibraryPath);
+        PdfTrickStarter.start(operatingSystem, homeFolderPath, nativeLibraryPath);
     }
 
 

@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.factory;
+package org.gmdev.pdftrick.manager;
 
 import java.util.concurrent.ExecutorService;
 

@@ -1,22 +1,22 @@
 package org.gmdev.pdftrick.nativeutil;
 
-import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.utils.Utils;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
+
+import java.nio.file.Path;
 
 public class NativeLibCall {
-	
-	private static final Logger logger = Logger.getLogger(NativeLibCall.class);
-	
+
 	public native void start(String resultFile, String homeFolder, int nPage, int zoom);
 	public native void cover(String resultFile, String homeFolder, int nPage, int zoom);
 
-	static{
-		String nativeLibPath = Utils.getNativeLibrary();
+	private static final PdfTrickBag bag = PdfTrickBag.getBag();
 
+	static{
+		Path nativeLibraryPath = bag.getNativeLibraryPath();
 		try{
-			System.load(nativeLibPath);
-		} catch (UnsatisfiedLinkError e) {
-			logger.error("Exception", e);
+			System.load(nativeLibraryPath.toString());
+		} catch (SecurityException | UnsatisfiedLinkError e) {
+			throw new IllegalStateException(e);
 		}
 	}
 

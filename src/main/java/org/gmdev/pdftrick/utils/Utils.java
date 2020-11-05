@@ -8,8 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.DragAndDropAction;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.utils.external.FileDrop;
@@ -17,8 +16,7 @@ import org.imgscalr.Scalr;
 
 public class Utils {
 	
-	private static final Logger logger = Logger.getLogger(Utils.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag bag = PdfTrickBag.getBag();
 
 	public static String getTimedDirResult() {
 		Calendar cal = Calendar.getInstance();
@@ -43,73 +41,47 @@ public class Utils {
 		
 		return prop;
 	}
-	
-	public static String getNativeLibrary() {
-		if (SetupUtils.isWindows())
-			return factory.getHomeFolderPath() + File.separator + Constants.NATIVE_LIB_WIN_64;
-		else if (SetupUtils.isMac())
-			return  factory.getHomeFolderPath() + File.separator + Constants.NATIVE_LIB_MAC_64;
-		else
-			throw new IllegalStateException("Error selecting native library, should never get here");
-	}
 
 	public static String createImgFolder() {
-		File imgFolder = new File (factory.getHomeFolderPath() + File.separator + "img");
+		File imgFolder = new File (bag.getHomeFolderPath() + File.separator + "img");
 		
 		if (imgFolder.exists()) {
-			File[] vetImg = imgFolder.listFiles();
-			if (vetImg.length > 0) {
-				for (File item : vetImg) {
-					if (item != null && item.exists()) {
+			File[] imageFiles = imgFolder.listFiles();
+			if (imageFiles != null && imageFiles.length > 0)
+				for (File item : imageFiles)
+					if (item != null && item.exists())
 						item.delete();
-					}
-				}
-			}
-		} else {
+
+		} else
 			imgFolder.mkdir();
-		}
-		
+
 		return imgFolder.getPath()+File.separator;
 	}
 
-	/**
-	 * Delete merged file in hidden home folder
-	 */
-	public static void deleteResultFile() {
-		File resulFile = new File(factory.getPdfFilePath());
-		
-		if (resulFile.exists()) {
-			resulFile.delete();
-		}
+	public static void deletePdfFile() {
+		File pdfFile = new File(bag.getPdfFilePath());
+		if (pdfFile.exists())
+			if(!pdfFile.delete())
+				throw new IllegalStateException("Error deleting pdf file");
 	}
-	
-	/**
-	 * Delete native lib in hidden home folder
-	 */
-	public static void deleteNativeLibFile() {
-		File nativelibFile = new File(getNativeLibrary());
-		
-		if (nativelibFile.exists()) {
-			nativelibFile.delete();
-		}
+
+	public static void deleteNativeLibraryFile() {
+		File nativeLibraryFile = bag.getNativeLibraryPath().toFile();
+		if (nativeLibraryFile.exists())
+			if(nativeLibraryFile.delete())
+				throw new IllegalStateException("Error deleting native library file");
 	}
-	
-	/**
-	 * Delete img folder and imaged contained inside
-	 */
-	public static void deleteImgFolderAnDFile() {
-		File imgFolder = new File (factory.getHomeFolderPath() + File.separator+"img");
+
+	public static void deleteImgFolderAnDFiles() {
+		File imgFolder = new File (bag.getHomeFolderPath() + File.separator + "img");
 		
 		if (imgFolder.exists()) {
-			File[] vetImg = imgFolder.listFiles();
-			if (vetImg.length > 0) {
-				for (File item : vetImg) {
-					if (item != null && item.exists()) {
+			File[] imageFiles = imgFolder.listFiles();
+			if (imageFiles != null && imageFiles.length > 0)
+				for (File item : imageFiles)
+					if (item != null && item.exists())
 						item.delete();
-					}
-				}
-			}
-			
+
 			imgFolder.delete();
 		}
 	}
@@ -181,7 +153,7 @@ public class Utils {
 	 * Start wait icon in center panel
 	 */
 	public static void startWaitIconLoadPdf() {
-		JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 		
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.WAIT));
 		JLabel waitLabel = new JLabel(imageIcon);
@@ -198,7 +170,7 @@ public class Utils {
 	 * Stop wait Icon in center panel
 	 */
 	public static void stopWaitIcon() {
-		JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.setLayout(new WrapLayout());
 		centerPanel.removeAll();
 		centerPanel.revalidate();
@@ -209,7 +181,7 @@ public class Utils {
 	 * Clean the left panel
 	 */
 	public static void cleanLeftPanel() {
-		JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
+		JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
 		FileDrop.remove(leftPanel);
 		leftPanel.removeAll();
 		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -223,7 +195,7 @@ public class Utils {
 	 * Clean the center panel
 	 */
 	public static void cleanCenterPanel() {
-		JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.removeAll();
 		centerPanel.revalidate();
 		centerPanel.repaint();
@@ -233,7 +205,7 @@ public class Utils {
 	 * Remove the drop blue border, in some circumstances that happens only in windows OS and only at runtime
 	 */
 	public static void resetDropBorder() {
-		JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
+		JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
 		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0)); 
 	}
 	
@@ -271,7 +243,7 @@ public class Utils {
 	 * Print a welcome message on the text area
 	 */
 	public static void welcomeMessage() {
-		Messages.append("INFO", MessageFormat.format(factory.getMessages().getProperty("dmsg_09"),
+		Messages.append("INFO", MessageFormat.format(bag.getMessages().getProperty("dmsg_09"),
 	    		System.getProperty("os.name"),
 	    		System.getProperty("sun.arch.data.model"),
 	    		System.getProperty("java.version")));
@@ -281,28 +253,28 @@ public class Utils {
 	 * Reinitializes new filesVett, called on cancel button and open new pdf file
 	 */
 	public static void cleanFilevett(){
-		factory.getPdfFilesArray().clear();
+		bag.getPdfFilesArray().clear();
 	}
 	
 	/**
 	 * Reinitialize new ImageSelectedHashMap, called on cancel button, open new pdf file and after getImages
 	 */
 	public static void cleanImageSelectedHashMap() {
-		factory.getImageSelected().clear();
+		bag.getImageSelected().clear();
 	}
 	
 	/**
 	 * Reinitialize new RotationFromPagesHashMap, called on cancel button and open new pdf file
 	 */
 	public static void cleanRotationFromPagesHashMap() {
-		factory.getRotationFromPages().clear();
+		bag.getRotationFromPages().clear();
 	}
 	
 	/**
 	 * Clean InlineImgSelectedHashMap, called on cancel button, open new pdf file and after getImages
 	 */
 	public static void cleanInlineImgSelectedHashMap() {
-		factory.getInlineImgSelected().clear();
+		bag.getInlineImgSelected().clear();
 	}
 	
 	

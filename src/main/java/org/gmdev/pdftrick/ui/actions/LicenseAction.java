@@ -17,14 +17,14 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class LicenseAction extends AbstractAction {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	private static final Logger logger = Logger.getLogger(LicenseAction.class);
 	private static final long serialVersionUID = 6003243894996325087L;
 	private final ImageIcon license_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.LICENSE_ICO));

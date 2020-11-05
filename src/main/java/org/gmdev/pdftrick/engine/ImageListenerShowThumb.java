@@ -22,7 +22,7 @@ import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageInline;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageNormal;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 import org.gmdev.pdftrick.utils.Utils;
@@ -40,7 +40,7 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 public class ImageListenerShowThumb implements RenderListener {
 	
 	private static final Logger logger = Logger.getLogger(ImageListenerShowThumb.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	private int numImg;
 	private int unsupportedImage;

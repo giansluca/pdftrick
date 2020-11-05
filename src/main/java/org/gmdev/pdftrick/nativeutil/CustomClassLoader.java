@@ -2,13 +2,8 @@ package org.gmdev.pdftrick.nativeutil;
 
 import java.io.*;
 import java.util.*;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 public class CustomClassLoader extends ClassLoader {
-	
-	private static final Logger logger = Logger.getLogger(CustomClassLoader.class);
 
     private final Map<String, Class<?>> classes = new HashMap<>();
     
@@ -18,28 +13,31 @@ public class CustomClassLoader extends ClassLoader {
     }
     
     @Override
-    public Class<?> findClass(String name) {
-        if (classes.containsKey(name))
-            return classes.get(name);
+    public Class<?> findClass(String className) {
+        if (classes.containsKey(className))
+            return classes.get(className);
         
         byte[] classData;
-        Class<?> classObject = null;
+        Class<?> classObject;
         
         try {
-            classData = loadClassData(name);
-            classObject = defineClass(name, classData, 0, classData.length);
+            classData = loadClassData(className);
+            classObject = defineClass(className, classData, 0, classData.length);
             resolveClass(classObject);
-            classes.put(name, classObject);
+            classes.put(className, classObject);
         } catch (IOException e) {
-        	logger.error("Exception", e);
+            throw new IllegalStateException(e);
         }
         
         return classObject;
     }
      
-    private byte[] loadClassData(String name) throws IOException {
-    	BufferedInputStream in = new BufferedInputStream(CustomClassLoader.class.getResourceAsStream(
-    	        "/" + name.replace(".", "/")+ ".class"));
+    private byte[] loadClassData(String className) throws IOException {
+    	String slashedClassPath = className.replace(".", "/");
+        String classFilePath = String.format("/%s.class", slashedClassPath);
+
+        BufferedInputStream in = new BufferedInputStream(
+                CustomClassLoader.class.getResourceAsStream(classFilePath));
 
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
         int i;

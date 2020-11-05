@@ -3,11 +3,11 @@ package org.gmdev.pdftrick.thread;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 public class ExecPool implements Runnable {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	private final String imgPath;
 	private final int numPages;

@@ -6,11 +6,11 @@ import java.text.*;
 import java.util.Calendar;
 import javax.swing.*;
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 public class Messages {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	private static final Logger logger = Logger.getLogger(Messages.class);
 	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 	

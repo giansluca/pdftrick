@@ -9,14 +9,14 @@ import javax.swing.SwingUtilities;
 
 import org.gmdev.pdftrick.engine.CheckFiles;
 import org.gmdev.pdftrick.engine.MergeFiles;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
 import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.Utils;
 
 public class OpenFileChooser implements Runnable {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	private final File[] files;
 	volatile boolean finished = false;
@@ -63,8 +63,8 @@ public class OpenFileChooser implements Runnable {
         Utils.cleanInlineImgSelectedHashMap();
         Utils.cleanRotationFromPagesHashMap();
         		
-        Utils.deleteImgFolderAnDFile();
-        Utils.deleteResultFile();
+        Utils.deleteImgFolderAnDFiles();
+        Utils.deletePdfFile();
      	System.gc();
      	
 		for (int i = 0; i < files.length; i++) {

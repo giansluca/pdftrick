@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -25,7 +25,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class MergeFiles {
 	
 	private static final Logger logger = Logger.getLogger(MergeFiles.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	/**
 	 * Merge multiple pdf files

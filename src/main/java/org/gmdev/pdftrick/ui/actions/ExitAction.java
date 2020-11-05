@@ -9,14 +9,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.utils.*;
 
 public class ExitAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 4846729705239261046L;
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	private final ImageIcon exit_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.EXIT_ICO));
 	
 	public ExitAction() {
@@ -69,11 +69,11 @@ public class ExitAction extends AbstractAction {
 			}
 		}
 		
-		NativeObjectManager nativeManager = factory.getNativeManager();
+		NativeObjectManager nativeManager = factory.getNativeObjectManager();
 		nativeManager.unloadNativeLib();
 		
-		Utils.deleteResultFile();
-		Utils.deleteImgFolderAnDFile();
+		Utils.deletePdfFile();
+		Utils.deleteImgFolderAnDFiles();
 		
 		System.exit(0);
 	}

@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.thread.ImgExtraction;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.Constants;
@@ -21,7 +21,7 @@ import org.gmdev.pdftrick.utils.SetupUtils;
 public class GetImgAction extends AbstractAction  {
 	
 	private static final long serialVersionUID = 5066094189763059556L;
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	public GetImgAction() {
 	}

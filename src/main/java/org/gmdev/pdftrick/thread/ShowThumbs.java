@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ThumbAction;
 import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.Utils;
@@ -32,7 +32,7 @@ import org.gmdev.pdftrick.utils.Utils;
 public class ShowThumbs implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ShowThumbs.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	private volatile boolean finished = false;
 	

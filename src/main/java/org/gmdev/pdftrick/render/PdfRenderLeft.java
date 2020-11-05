@@ -1,7 +1,7 @@
 package org.gmdev.pdftrick.render;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.thread.DivisionThumb;
 import org.gmdev.pdftrick.thread.ExecPool;
 import org.gmdev.pdftrick.thread.ShowThumbs;
@@ -12,14 +12,11 @@ import com.itextpdf.text.pdf.PdfReader;
 public class PdfRenderLeft {
 	
 	private static final Logger logger = Logger.getLogger(PdfRenderLeft.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	public PdfRenderLeft() {
 	}
-	
-	/**
-	 * Render pdf resultfile thumbs in a left_panel, using threads pool
-	 */
+
 	public void pdfRender() {
 		String imgPath = Utils.createImgFolder();
 		int totPages = 0;

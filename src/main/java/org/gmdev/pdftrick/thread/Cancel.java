@@ -6,14 +6,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.Utils;
 
 public class Cancel implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(Cancel.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	volatile boolean finished = false;
 	
@@ -130,8 +130,8 @@ public class Cancel implements Runnable {
 		factory.setFolderToSave("");
 		Utils.cleanFilevett();
 		
-		Utils.deleteResultFile();
-		Utils.deleteImgFolderAnDFile();
+		Utils.deletePdfFile();
+		Utils.deleteImgFolderAnDFiles();
 		finished = true;
 	}
 	

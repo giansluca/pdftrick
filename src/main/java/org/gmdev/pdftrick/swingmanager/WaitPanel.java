@@ -1,6 +1,6 @@
 package org.gmdev.pdftrick.swingmanager;
 
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.UserInterface;
 
 import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.EXTRACTING_IMAGES;
@@ -8,7 +8,7 @@ import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.LOADING_TH
 
 public class WaitPanel {
 	
-	private static final UserInterface ui = PdfTrickBag.getPdfTrickBag().getUserInterface();
+	private static final UserInterface ui = PdfTrickBag.getBag().getUserInterface();
 
 	public static void setLoadingThumbnailsWaitPanel() {
 		SwingInvoker.invokeLater(

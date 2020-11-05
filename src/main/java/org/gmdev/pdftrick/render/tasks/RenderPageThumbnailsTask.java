@@ -2,10 +2,9 @@ package org.gmdev.pdftrick.render.tasks;
 
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfDocumentContentParser;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.PageThumbnailsDisplay;
 import org.gmdev.pdftrick.serviceprocessor.ServiceRequest;
-import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
 
 import javax.swing.*;
@@ -15,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RenderPageThumbnailsTask implements ServiceRequest {
 
-    private static final PdfTrickBag bag = PdfTrickBag.getPdfTrickBag();
+    private static final PdfTrickBag bag = PdfTrickBag.getBag();
 
     private final int pageNumber;
     private final String pdfFilePath;

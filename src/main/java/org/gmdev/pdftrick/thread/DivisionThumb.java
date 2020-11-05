@@ -1,14 +1,14 @@
 package org.gmdev.pdftrick.thread;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.factory.PdfTrickBag;
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 
 public class DivisionThumb implements Runnable  {
 	
 	private static final Logger logger = Logger.getLogger(DivisionThumb.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getPdfTrickBag();
+	private static final PdfTrickBag factory = PdfTrickBag.getBag();
 	
 	private final int division;
 	private final String imgPath;
@@ -33,12 +33,12 @@ public class DivisionThumb implements Runnable  {
 	 * for improve performance. Whitout this trick (using only threadpool) there is a little initial delay
 	 */
 	public void execute() {
-		NativeObjectManager nativeManager = factory.getNativeManager();
+		NativeObjectManager nativeManager = factory.getNativeObjectManager();
 		int i = 1;
 		
 		while (i <= division && !finished) {
 			try {
-				nativeManager.runNativeLib_thumbs(factory.getPdfFilePath(), imgPath, i, Constants.ZOOM_THUMB);
+				nativeManager.renderPdfPageThumbnail(factory.getPdfFilePath(), imgPath, i, Constants.ZOOM_THUMB);
 				i++;
 			} catch (Exception e) {
 				Thread.currentThread().interrupt();

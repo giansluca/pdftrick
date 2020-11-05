@@ -1,6 +1,6 @@
 package org.gmdev.pdftrick;
 
-import org.gmdev.pdftrick.factory.*;
+import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.SetupUtils;
 import org.gmdev.pdftrick.validation.SingleInstanceValidator;
@@ -147,9 +147,7 @@ class PdfTrickTest {
                 .thenReturn(singleInstanceValidator);
         doNothing().when(singleInstanceValidator).checkPdfTrickAlreadyRunning();
 
-        MockedStatic<PdfTrickBag> pdfTrickBagMock = Mockito.mockStatic(PdfTrickBag.class);
-        pdfTrickBagMock.when(PdfTrickBag::getPdfTrickBag).thenReturn(pdfTrickBag);
-        doNothing().when(pdfTrickBag).initialize(anyString(), any(), any());
+        MockedStatic<PdfTrickStarter> pdfTrickStarterMock = Mockito.mockStatic(PdfTrickStarter.class);
 
         // When
         // Then
@@ -158,6 +156,6 @@ class PdfTrickTest {
         // Finally
         setupUtilsMock.close();
         singleInstanceValidatorMock.close();
-        pdfTrickBagMock.close();
+        pdfTrickStarterMock.close();
     }
 }
