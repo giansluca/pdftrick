@@ -8,7 +8,7 @@ import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 public class PageThumb implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(PageThumb.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private final String imgPath;
 	private final int numPage;
@@ -27,10 +27,10 @@ public class PageThumb implements Runnable {
 	 * Render pdf cover calling native lib
 	 */
 	public void execute() {
-		NativeObjectManager nativeManager = factory.getNativeObjectManager();
+		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
 		
 		try {
-			nativeManager.renderPdfPageThumbnail(factory.getPdfFilePath(), imgPath, numPage, Constants.ZOOM_THUMB);
+			nativeManager.renderPdfPageThumbnail(BAG.getPdfFilePath(), imgPath, numPage, Constants.ZOOM_THUMBNAIL);
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 			logger.error("Exception", e);

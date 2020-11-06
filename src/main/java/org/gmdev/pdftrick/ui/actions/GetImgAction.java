@@ -21,7 +21,7 @@ import org.gmdev.pdftrick.utils.SetupUtils;
 public class GetImgAction extends AbstractAction  {
 	
 	private static final long serialVersionUID = 5066094189763059556L;
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	public GetImgAction() {
 	}
@@ -31,22 +31,22 @@ public class GetImgAction extends AbstractAction  {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final Properties messages = factory.getMessages();
-		final Container contentPanel = factory.getUserInterface().getContentPane();
+		final Properties messages = BAG.getMessages();
+		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		
-		if (factory.getThreadContainer().getImgExtractionThread() != null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
+		if (BAG.getThreadContainer().getImgExtractionThread() != null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
-		if (factory.getThreadContainer().getOpenFileChooserThread() != null && factory.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getOpenFileChooserThread() != null && BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (factory.getThreadContainer().getDragAnDropFileChooserThread() != null && factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (factory.getThreadContainer().getShowThumbsThread() != null && factory.getThreadContainer().getShowThumbsThread().isAlive()) {
+		if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
 					JOptionPane.WARNING_MESSAGE, warningIcon);
@@ -54,15 +54,15 @@ public class GetImgAction extends AbstractAction  {
 		}
 		
 		boolean extract = true;
-		File resultFile = new File(factory.getPdfFilePath());
+		File resultFile = new File(BAG.getPdfFilePath());
 		if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
 			CustomFileChooser choosefolderToSave = new CustomFileChooser();
 			choosefolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			choosefolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
 			
 			String selectedFolderToSave = "";
-			Set<String> keys = factory.getImageSelected().keySet();
-			Set<String> kk = factory.getInlineImgSelected().keySet();
+			Set<String> keys = BAG.getImageSelected().keySet();
+			Set<String> kk = BAG.getInlineImgSelected().keySet();
 			
 			if (keys.size() > 0 || kk.size() > 0) {
 				if (choosefolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) { 
@@ -71,7 +71,7 @@ public class GetImgAction extends AbstractAction  {
 					} else if (SetupUtils.isMac()) {
 						selectedFolderToSave = choosefolderToSave.getCurrentDirectory().getAbsolutePath();
 					}
-					factory.setFolderToSave(selectedFolderToSave);
+					BAG.setFolderToSave(selectedFolderToSave);
 				} else {
 					extract = false;
 				}
@@ -85,10 +85,10 @@ public class GetImgAction extends AbstractAction  {
 		}
 		if (extract) {
 			ImgExtraction imgExtraction = new ImgExtraction();
-			factory.getThreadContainer().setImgExtraction(imgExtraction);
+			BAG.getThreadContainer().setImgExtraction(imgExtraction);
 			
 			Thread imgExtractionThread = new Thread(imgExtraction, "imgExtractionThread");
-			factory.getThreadContainer().setImgExtractionThread(imgExtractionThread);
+			BAG.getThreadContainer().setImgExtractionThread(imgExtractionThread);
 			
 			imgExtractionThread.start();
 		}

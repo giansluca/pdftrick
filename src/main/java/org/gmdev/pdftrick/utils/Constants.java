@@ -11,10 +11,11 @@ public final class Constants {
 	public static final String JFC_OPEN_TITLE = "Open files";
 	public static final String PWD_DIALOG = "Password is required";
 	
-	// cover images
-	public static final int ZOOM_THUMB = 30;
+	// pdf page zoom
+	public static final int ZOOM_THUMBNAIL = 30;
+	public static final int ZOOM_FULL = 100;
 
-	// files
+	// resource files
 	public static final String NATIVE_LIB_PATH = "nativelib";
 	public static final String NATIVE_LIB_WIN_64 ="libpdftrick_native_1.7a_64.dll";
 	public static final String NATIVE_LIB_MAC_64 ="libpdftrick_native_1.7a_64.jnilib";

@@ -22,7 +22,7 @@ import org.gmdev.pdftrick.utils.Utils;
 public class ImgExtraction implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ImgExtraction.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	volatile boolean finished = false;
 	
@@ -70,8 +70,8 @@ public class ImgExtraction implements Runnable {
 	 * Deselect images after extraction and clean imageselected HashMap
 	 */
 	public void cleanAfterGetImages() {
-		final JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
-		final JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
+		final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Component[] comps =  centerPanel.getComponents();

@@ -9,38 +9,25 @@ import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.*;
 
-public class PdfTrickBag {
-	
-	private static PdfTrickBag instance;
+public enum PdfTrickBag {
+	INSTANCE;
 
-	private String os;
-	private Path homeFolderPath;
-	private Path nativeLibraryPath;
-	private String pdfFilePath;
-	private int numberOfPages;
-	private ArrayList<File> pdfFilesArray;
-	private String selected;
-	private String folderToSave;
-	private HashMap<Integer, String> rotationFromPages;
-	private HashMap<String, String> namePwd;
-	private HashMap<String, RenderedImageAttributes> imageSelected;
-	private HashMap<String, RenderedImageAttributes> inlineImgSelected;
-	private ThreadContainer threadContainer;
-	private Properties messages;
-	private NativeObjectManager nativeObjectManager;
-	private UserInterface userInterface;
-
-	private PdfTrickBag() {}
-	
-	public static PdfTrickBag getBag() {
-		if (instance == null) {
-			synchronized(PdfTrickBag.class) {
-				if (instance == null)
-					instance = new PdfTrickBag();
-			}
-		}
-		return instance;
-	}
+	String os;
+	Path homeFolderPath;
+	Path nativeLibraryPath;
+	String pdfFilePath;
+	int numberOfPages;
+	ArrayList<File> pdfFilesArray;
+	String selected;
+	String folderToSave;
+	HashMap<Integer, String> rotationFromPages;
+	HashMap<String, String> namePwd;
+	HashMap<String, RenderedImageAttributes> imageSelected;
+	HashMap<String, RenderedImageAttributes> inlineImgSelected;
+	ThreadContainer threadContainer;
+	Properties messages;
+	NativeObjectManager nativeObjectManager;
+	UserInterface userInterface;
 
 	public void build(String os, Path homeFolderPath, Path nativeLibraryPath) {
 		this.os = os;
@@ -60,7 +47,7 @@ public class PdfTrickBag {
 	public String getOs() {
 		return os;
 	}
-	
+
 	public Path getHomeFolderPath() {
 		return homeFolderPath;
 	}
@@ -76,31 +63,31 @@ public class PdfTrickBag {
 	public int getNumberOfPages() {
 		return numberOfPages;
 	}
-	
+
 	public void setNumberOfPages(int numberOfPages) {
 		this.numberOfPages = numberOfPages;
 	}
-	
+
 	public ArrayList<File> getPdfFilesArray() {
 		return pdfFilesArray;
 	}
-	
+
 	public String getSelected() {
 		return selected;
 	}
-	
+
 	public void setSelected(String selected) {
 		this.selected = selected;
 	}
-	
+
 	public String getFolderToSave() {
 		return folderToSave;
 	}
-	
+
 	public void setFolderToSave(String folderToSave) {
 		this.folderToSave = folderToSave;
 	}
-	
+
 	public HashMap<Integer, String> getRotationFromPages() {
 		return rotationFromPages;
 	}
@@ -108,15 +95,15 @@ public class PdfTrickBag {
 	public HashMap<String, String> getNamePwd() {
 		return namePwd;
 	}
-	
+
 	public HashMap<String, RenderedImageAttributes> getImageSelected() {
 		return imageSelected;
 	}
-	
+
 	public HashMap<String, RenderedImageAttributes> getInlineImgSelected() {
 		return inlineImgSelected;
 	}
-	
+
 	public ThreadContainer getThreadContainer() {
 		return threadContainer;
 	}
@@ -142,6 +129,6 @@ public class PdfTrickBag {
 	protected void setUserInterface(UserInterface userInterface) {
 		this.userInterface = userInterface;
 	}
-	
-	
+
+
 }

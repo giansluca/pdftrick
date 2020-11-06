@@ -32,7 +32,7 @@ import org.gmdev.pdftrick.utils.Utils;
 public class ShowThumbs implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ShowThumbs.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private volatile boolean finished = false;
 	
@@ -52,15 +52,15 @@ public class ShowThumbs implements Runnable {
 	 * Check img folder, and show images in a left panel, last image written by render thread
 	 */
 	public void execute() {
-		final Properties messages = factory.getMessages();
-		final JPanel leftPanel = factory.getUserInterface().getLeft().getLeftPanel();
-		final Path hiddenHomeFolder = factory.getHomeFolderPath();
+		final Properties messages = BAG.getMessages();
+		final JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
+		final Path hiddenHomeFolder = BAG.getHomeFolderPath();
 		long time = System.currentTimeMillis();
 		long delta = 1000;
 		
 		try {
 			Messages.appendNoNewLine("INFO", messages.getProperty("tmsg_08"));
-			int nPages = factory.getNumberOfPages();
+			int nPages = BAG.getNumberOfPages();
 			File[] imgVett = getCoverImagesRendered(hiddenHomeFolder);
 			
 			int i = 0;

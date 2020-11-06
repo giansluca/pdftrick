@@ -8,21 +8,21 @@ import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.LOADING_TH
 
 public class WaitPanel {
 	
-	private static final UserInterface ui = PdfTrickBag.getBag().getUserInterface();
+	private static final UserInterface userInterface = PdfTrickBag.INSTANCE.getUserInterface();
 
 	public static void setLoadingThumbnailsWaitPanel() {
 		SwingInvoker.invokeLater(
-				() -> ui.lockScreen(LOADING_THUMBNAILS));
+				() -> userInterface.lockScreen(LOADING_THUMBNAILS));
 	}
 
 	public static void setExtractingImagesWaitPanel() {
 		SwingInvoker.invokeLater(
-				() -> ui.lockScreen(EXTRACTING_IMAGES));
+				() -> userInterface.lockScreen(EXTRACTING_IMAGES));
 	}
 
 	public static void removeWaitPanel() {
 		SwingInvoker.invokeLater(
-				ui::unlockScreen);
+				userInterface::unlockScreen);
 	}
 
 	public enum WaitPanelMode {

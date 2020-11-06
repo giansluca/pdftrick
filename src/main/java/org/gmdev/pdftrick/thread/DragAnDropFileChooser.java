@@ -16,7 +16,7 @@ import org.gmdev.pdftrick.utils.Utils;
 
 public class DragAnDropFileChooser implements Runnable {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private final File[] fileDrop;
 	volatile boolean finished = false;
@@ -38,10 +38,10 @@ public class DragAnDropFileChooser implements Runnable {
 	 * Called after pdf file dropped in  
 	 */
 	public void execute() {
-		final Properties messages = factory.getMessages();
-		final JTextField currentPageField = factory.getUserInterface().getRight().getCurrentPageField();
-		final JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
-		final ArrayList<File> filesVett = factory.getPdfFilesArray();
+		final Properties messages = BAG.getMessages();
+		final JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
+		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		final ArrayList<File> filesVett = BAG.getPdfFilesArray();
 		
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
@@ -56,8 +56,8 @@ public class DragAnDropFileChooser implements Runnable {
 		});
     	
     	// clean areatext fileVett resultFile imageSelected imageselected in case of reopen jfilechooser 
-    	factory.setSelected("");
-    	factory.setFolderToSave("");
+    	BAG.setSelected("");
+    	BAG.setFolderToSave("");
     	Utils.cleanFilevett();
     	Utils.cleanImageSelectedHashMap();
     	Utils.cleanInlineImgSelectedHashMap();
@@ -94,7 +94,7 @@ public class DragAnDropFileChooser implements Runnable {
         	} else {
         		// merge pdf selection after check
         		MergeFiles engine = new MergeFiles();
-            	File resultFile = engine.mergePdf(filesVett, factory.getPdfFilePath());
+            	File resultFile = engine.mergePdf(filesVett, BAG.getPdfFilePath());
             	
             	if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
             		Messages.append("INFO", messages.getProperty("tmsg_12"));

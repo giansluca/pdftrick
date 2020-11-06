@@ -40,7 +40,7 @@ import com.itextpdf.text.pdf.PdfStream;
 public class CheckFiles {
 	
 	private static final Logger logger = Logger.getLogger(CheckFiles.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private boolean checkEncryption = false;
 	private final HashMap<String, String> namePwd;
@@ -48,15 +48,15 @@ public class CheckFiles {
 	private boolean ownerProtection = false;
 	
 	public CheckFiles() {
-		this.namePwd = factory.getNamePwd();
+		this.namePwd = BAG.getNamePwd();
 	}
 	
 	/**
 	 * Check files selected (pdf integrity, images inside, protection).
 	 */
 	public boolean check() {
-		final Properties messages = factory.getMessages();
-		final ArrayList<File> filesVett = factory.getPdfFilesArray();
+		final Properties messages = BAG.getMessages();
+		final ArrayList<File> filesVett = BAG.getPdfFilesArray();
 		
 		boolean check = false;
 		boolean checkPdf = false;

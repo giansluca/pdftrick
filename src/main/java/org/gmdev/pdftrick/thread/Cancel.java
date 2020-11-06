@@ -13,7 +13,7 @@ import org.gmdev.pdftrick.utils.Utils;
 public class Cancel implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(Cancel.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	volatile boolean finished = false;
 	
@@ -37,74 +37,74 @@ public class Cancel implements Runnable {
 	 * Clean the interface and all objects
 	 */
 	public void execute () throws InterruptedException {
-		JTextField currentPageField = factory.getUserInterface().getRight().getCurrentPageField();
-		JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
+		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
+		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		
-		if (factory.getThreadContainer().getOpenFileChooser() != null) {
-			while (!factory.getThreadContainer().getOpenFileChooser().isFinished()) {
+		if (BAG.getThreadContainer().getOpenFileChooser() != null) {
+			while (!BAG.getThreadContainer().getOpenFileChooser().isFinished()) {
 				// wait thread stop
 			}
 			
-			if (factory.getThreadContainer().getOpenFileChooserThread() !=null) {
-				factory.getThreadContainer().getOpenFileChooserThread().join();
+			if (BAG.getThreadContainer().getOpenFileChooserThread() !=null) {
+				BAG.getThreadContainer().getOpenFileChooserThread().join();
 				
-				while (factory.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+				while (BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.getThreadContainer().getDragAnDropFileChooser() != null) {
-			while (!factory.getThreadContainer().getDragAnDropFileChooser().isFinished()) {
+		if (BAG.getThreadContainer().getDragAnDropFileChooser() != null) {
+			while (!BAG.getThreadContainer().getDragAnDropFileChooser().isFinished()) {
 				// wait thread stop
 			}
 			
-			if (factory.getThreadContainer().getDragAnDropFileChooserThread() != null) {
-				factory.getThreadContainer().getDragAnDropFileChooserThread().join();
-				while (factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+			if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null) {
+				BAG.getThreadContainer().getDragAnDropFileChooserThread().join();
+				while (BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
 				// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.getThreadContainer().getDivisionThumbs() != null && !factory.getThreadContainer().getDivisionThumbs().isFinished()) {
-			factory.getThreadContainer().getDivisionThumbs().stop();
-			while (!factory.getThreadContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+			BAG.getThreadContainer().getDivisionThumbs().stop();
+			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
 			}
-			if (factory.getThreadContainer().getDivisionThumbsThread() != null) {
-				factory.getThreadContainer().getDivisionThumbsThread().join();
-				while (factory.getThreadContainer().getDivisionThumbsThread().isAlive()) {
+			if (BAG.getThreadContainer().getDivisionThumbsThread() != null) {
+				BAG.getThreadContainer().getDivisionThumbsThread().join();
+				while (BAG.getThreadContainer().getDivisionThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.getThreadContainer().getShowThumbs() != null && !factory.getThreadContainer().getShowThumbs().isFinished()) {
-			factory.getThreadContainer().getShowThumbs().stop();
-			while (!factory.getThreadContainer().getShowThumbs().isFinished()) {
+		if (BAG.getThreadContainer().getShowThumbs() != null && !BAG.getThreadContainer().getShowThumbs().isFinished()) {
+			BAG.getThreadContainer().getShowThumbs().stop();
+			while (!BAG.getThreadContainer().getShowThumbs().isFinished()) {
 				// wait thread stop
 			}
-			if (factory.getThreadContainer().getShowThumbsThread() != null) {
-				factory.getThreadContainer().getShowThumbsThread().join();
-				while (factory.getThreadContainer().getShowThumbsThread().isAlive()) {
+			if (BAG.getThreadContainer().getShowThumbsThread() != null) {
+				BAG.getThreadContainer().getShowThumbsThread().join();
+				while (BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.getThreadContainer().getExecPool() != null && !factory.getThreadContainer().getExecPool().isFinished()) {
-			factory.getThreadContainer().getExecPool().stop();
-			if (factory.getThreadContainer().getExecPoolThread() != null) {
-				factory.getThreadContainer().getExecPoolThread().join();
-				while (factory.getThreadContainer().getExecPoolThread().isAlive()) {
+		if (BAG.getThreadContainer().getExecPool() != null && !BAG.getThreadContainer().getExecPool().isFinished()) {
+			BAG.getThreadContainer().getExecPool().stop();
+			if (BAG.getThreadContainer().getExecPoolThread() != null) {
+				BAG.getThreadContainer().getExecPoolThread().join();
+				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
-		if (factory.getThreadContainer().getExecutor() != null) {
-			factory.getThreadContainer().getExecutor().shutdownNow();
-			while (!factory.getThreadContainer().getExecutor().isTerminated()) {
+		if (BAG.getThreadContainer().getExecutor() != null) {
+			BAG.getThreadContainer().getExecutor().shutdownNow();
+			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
 				//wait stop all threadPool task
 			}
 		}
@@ -126,8 +126,8 @@ public class Cancel implements Runnable {
 		Utils.cleanImageSelectedHashMap();
 		Utils.cleanInlineImgSelectedHashMap();
 		Utils.cleanRotationFromPagesHashMap();
-		factory.setSelected("");
-		factory.setFolderToSave("");
+		BAG.setSelected("");
+		BAG.setFolderToSave("");
 		Utils.cleanFilevett();
 		
 		Utils.deletePdfFile();

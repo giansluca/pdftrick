@@ -14,8 +14,8 @@ public class RenderedImageInline extends RenderedImageAttributes {
 		this.image = image;
 		this.numPage = numPage;
 		this.flip = flip;
-		this.rotate = flip;
-		this.key = numPage+"_"+inlineImageCounter;
+		this.rotate = rotate;
+		this.key = numPage + "_" + inlineImageCounter;
 	}
 	
 	@Override

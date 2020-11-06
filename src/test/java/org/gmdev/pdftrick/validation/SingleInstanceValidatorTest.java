@@ -25,7 +25,7 @@ class SingleInstanceValidatorTest {
         // Given
         MockedStatic<SwingInvoker> swingInvokerMock = Mockito.mockStatic(SwingInvoker.class);
 
-        underTest = new SingleInstanceValidator();
+        underTest = SingleInstanceValidator.getInstance();
         underTest.checkPdfTrickAlreadyRunning();
 
         // When

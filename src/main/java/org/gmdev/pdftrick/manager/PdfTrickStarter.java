@@ -11,7 +11,7 @@ import static org.gmdev.pdftrick.utils.Utils.*;
 public class PdfTrickStarter {
 
     public static void start(String operatingSystem, Path homeFolderPath, Path nativeLibraryPath) {
-        PdfTrickBag pdfTrickBag = PdfTrickBag.getBag();
+        PdfTrickBag pdfTrickBag = PdfTrickBag.INSTANCE;
         pdfTrickBag.build(operatingSystem, homeFolderPath, nativeLibraryPath);
 
         deleteImgFolderAnDFiles();

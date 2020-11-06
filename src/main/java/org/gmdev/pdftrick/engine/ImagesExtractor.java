@@ -29,30 +29,27 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStream;
 import com.itextpdf.text.pdf.parser.PdfImageObject;
 
-/**
- * @author Gian Luca Mori
- */
 public class ImagesExtractor {
 	
 	private static final Logger logger = Logger.getLogger(ImagesExtractor.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	/**
 	 * Prepare for the extraction and call images extractor
 	 */
 	public void getImages() {
-		final Properties messages = factory.getMessages();
-		final HashMap<String, RenderedImageAttributes> inlineImgSelected = factory.getInlineImgSelected();
-		final File resultFile = new File(factory.getPdfFilePath());
+		final Properties messages = BAG.getMessages();
+		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
+		final File resultFile = new File(BAG.getPdfFilePath());
 		boolean getImgCheck = false;
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
-		String finalFolderTosave = factory.getFolderToSave()+ Utils.getTimedDirResult();
+		String finalFolderTosave = BAG.getFolderToSave()+ Utils.getTimedDirResult();
 		File fileFinalFolderTosave = new File(finalFolderTosave);
 		fileFinalFolderTosave.mkdir();
 			
-		getImgCheck = extractImgSel(finalFolderTosave, resultFile.getPath(), factory.getImageSelected(), inlineImgSelected);
+		getImgCheck = extractImgSel(finalFolderTosave, resultFile.getPath(), BAG.getImageSelected(), inlineImgSelected);
 		
 		// if extraction breaks ...
 		if (!getImgCheck) { 
@@ -106,7 +103,7 @@ public class ImagesExtractor {
 	private boolean extractImgSel (String timeDirResult, String resultFilePath, HashMap<String, RenderedImageAttributes> imageSelected, 
 			HashMap<String, RenderedImageAttributes> inlineImgSelected) {
 		
-		final Properties messages = factory.getMessages();
+		final Properties messages = BAG.getMessages();
 		String result = timeDirResult+ "/"+ "Img_%s.%s";
 		PdfReader reader = null;
 		boolean retExtract = true;

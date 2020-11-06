@@ -23,7 +23,7 @@ import org.gmdev.pdftrick.utils.Utils;
 public class CleanSelectionAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 1827086419763590961L;
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	public CleanSelectionAction() {
 	}
@@ -33,34 +33,34 @@ public class CleanSelectionAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		final Properties messages = factory.getMessages();
-		final JPanel centerPanel = factory.getUserInterface().getCenter().getCenterPanel();
-		final JTextField numImgSelectedField = factory.getUserInterface().getRight().getNumImgSelectedField();
-		final HashMap<String, RenderedImageAttributes> inlineImgSelected = factory.getInlineImgSelected();
+		final Properties messages = BAG.getMessages();
+		final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
 		
-		if (factory.getThreadContainer().getImgExtractionThread() != null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
+		if (BAG.getThreadContainer().getImgExtractionThread() != null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
 		
-		if (factory.getThreadContainer().getImgThumbThread() !=null && factory.getThreadContainer().getImgThumbThread().isAlive()) {
+		if (BAG.getThreadContainer().getImgThumbThread() !=null && BAG.getThreadContainer().getImgThumbThread().isAlive()) {
 			Messages.append("WARNING", messages.getProperty("tmsg_23"));
 			return;
 		}
 		
-		if (factory.getThreadContainer().getOpenFileChooserThread() != null && factory.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getOpenFileChooserThread() != null && BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (factory.getThreadContainer().getDragAnDropFileChooserThread() != null && factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (factory.getThreadContainer().getShowThumbsThread() != null && factory.getThreadContainer().getShowThumbsThread().isAlive()) {
+		if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 			return;
 		}
 		
-		if (factory.getImageSelected().size() == 0 && inlineImgSelected.size() == 0) {
+		if (BAG.getImageSelected().size() == 0 && inlineImgSelected.size() == 0) {
 			Messages.append("INFO", messages.getProperty("tmsg_24"));
 		} else {
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);

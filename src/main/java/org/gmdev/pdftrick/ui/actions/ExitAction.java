@@ -16,7 +16,7 @@ import org.gmdev.pdftrick.utils.*;
 public class ExitAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 4846729705239261046L;
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private final ImageIcon exit_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.EXIT_ICO));
 	
 	public ExitAction() {
@@ -30,46 +30,46 @@ public class ExitAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final Properties messages = factory.getMessages();
+		final Properties messages = BAG.getMessages();
 		
-		if (factory.getThreadContainer().getDivisionThumbs() != null && !factory.getThreadContainer().getDivisionThumbs().isFinished()) {
-			factory.getThreadContainer().getDivisionThumbs().stop();
-			while (!factory.getThreadContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+			BAG.getThreadContainer().getDivisionThumbs().stop();
+			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
 			}
 			
-			if (factory.getThreadContainer().getDivisionThumbsThread() != null) {
-				while (factory.getThreadContainer().getDivisionThumbsThread().isAlive()) {
+			if (BAG.getThreadContainer().getDivisionThumbsThread() != null) {
+				while (BAG.getThreadContainer().getDivisionThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (factory.getThreadContainer().getExecPool() != null && !factory.getThreadContainer().getExecPool().isFinished()) {
-			factory.getThreadContainer().getExecPool().stop();
-			if (factory.getThreadContainer().getExecPoolThread() != null) {
-				while (factory.getThreadContainer().getExecPoolThread().isAlive()) {
+		if (BAG.getThreadContainer().getExecPool() != null && !BAG.getThreadContainer().getExecPool().isFinished()) {
+			BAG.getThreadContainer().getExecPool().stop();
+			if (BAG.getThreadContainer().getExecPoolThread() != null) {
+				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
-		if (factory.getThreadContainer().getExecutor() != null) {
-			factory.getThreadContainer().getExecutor().shutdownNow();
-			while (!factory.getThreadContainer().getExecutor().isTerminated()) {
+		if (BAG.getThreadContainer().getExecutor() != null) {
+			BAG.getThreadContainer().getExecutor().shutdownNow();
+			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
 				//wait stop all threadPool task
 			}
 		}
 		
-		if (factory.getThreadContainer().getImgExtraction() !=null && !factory.getThreadContainer().getImgExtraction().isFinished()) {
-			factory.getThreadContainer().getImgExtraction().stop();
-			if (factory.getThreadContainer().getImgExtractionThread() !=null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
+		if (BAG.getThreadContainer().getImgExtraction() !=null && !BAG.getThreadContainer().getImgExtraction().isFinished()) {
+			BAG.getThreadContainer().getImgExtraction().stop();
+			if (BAG.getThreadContainer().getImgExtractionThread() !=null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
 				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 				Messages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
 						JOptionPane.WARNING_MESSAGE, warningIcon);
 			}
 		}
 		
-		NativeObjectManager nativeManager = factory.getNativeObjectManager();
+		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
 		nativeManager.unloadNativeLib();
 		
 		Utils.deletePdfFile();

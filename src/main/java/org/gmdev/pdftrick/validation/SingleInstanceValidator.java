@@ -1,6 +1,5 @@
 package org.gmdev.pdftrick.validation;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import java.io.IOException;
 import java.net.BindException;
@@ -8,17 +7,15 @@ import java.net.ServerSocket;
 
 public class SingleInstanceValidator {
 
-    private static final Logger logger = Logger.getLogger(SingleInstanceValidator.class);
+    private static final SingleInstanceValidator INSTANCE = new SingleInstanceValidator();
     private static final int SERVER_PORT = 12345;
-    private static SingleInstanceValidator singleInstanceValidator;
 
     private ServerSocket serverSocket;
 
-    public static SingleInstanceValidator getInstance() {
-        if (singleInstanceValidator == null)
-            singleInstanceValidator = new SingleInstanceValidator();
+    private SingleInstanceValidator() {}
 
-        return singleInstanceValidator;
+    public static SingleInstanceValidator getInstance() {
+        return INSTANCE;
     }
 
     public void checkPdfTrickAlreadyRunning() {
@@ -31,7 +28,7 @@ public class SingleInstanceValidator {
         } catch (BindException e) {
             ModalWarningPanel.displayAlreadyRunningAndThrow();
         } catch (IOException e) {
-            logger.error(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -40,7 +37,7 @@ public class SingleInstanceValidator {
             try {
                 serverSocket.close();
             } catch (IOException e) {
-                logger.error(e);
+                throw new IllegalStateException(e);
             }
         }
     }

@@ -19,7 +19,7 @@ import org.gmdev.pdftrick.utils.*;
 
 public class OpenAction extends AbstractAction {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final long serialVersionUID = 490332474672907971L;
 	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.OPEN_FILE_ICO));
 	
@@ -38,8 +38,8 @@ public class OpenAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final Properties messages = factory.getMessages();
-		final Container contentPanel = factory.getUserInterface().getContentPane();
+		final Properties messages = BAG.getMessages();
+		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		
 		CustomFileChooser fileOpen = new CustomFileChooser();
 		fileOpen.setMultiSelectionEnabled(true);
@@ -47,14 +47,14 @@ public class OpenAction extends AbstractAction {
 		int ret = fileOpen.showOpenDialog(contentPanel);
 		
 		if (ret == JFileChooser.APPROVE_OPTION) {
-        	if ( (factory.getThreadContainer().getDragAnDropFileChooserThread() != null && factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) ||
-        		(factory.getThreadContainer().getOpenFileChooserThread() != null &&	factory.getThreadContainer().getOpenFileChooserThread().isAlive())) {
+        	if ( (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) ||
+        		(BAG.getThreadContainer().getOpenFileChooserThread() != null &&	BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
         		Utils.resetDropBorder();
     			Messages.append("WARNING", messages.getProperty("tmsg_01"));
     			return;
         	}
         	
-        	if (factory.getThreadContainer().getShowThumbsThread() != null && factory.getThreadContainer().getShowThumbsThread().isAlive()) {
+        	if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
     			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     			Utils.resetDropBorder();
     			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
@@ -62,7 +62,7 @@ public class OpenAction extends AbstractAction {
     			return;
         	}  
         	
-        	if (factory.getThreadContainer().getImgExtractionThread()!=null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
+        	if (BAG.getThreadContainer().getImgExtractionThread()!=null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     		    Utils.resetDropBorder();
     		    Messages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
@@ -70,7 +70,7 @@ public class OpenAction extends AbstractAction {
     		    return;	
         	}
         	
-        	if (factory.getThreadContainer().getImgThumbThread()!=null && factory.getThreadContainer().getImgThumbThread().isAlive()) {
+        	if (BAG.getThreadContainer().getImgThumbThread()!=null && BAG.getThreadContainer().getImgThumbThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
     			Utils.resetDropBorder();
     			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
@@ -81,10 +81,10 @@ public class OpenAction extends AbstractAction {
         	File[] files = fileOpen.getSelectedFiles();
         	
         	OpenFileChooser openFileChooser = new OpenFileChooser(files);
-        	factory.getThreadContainer().setOpenFileChooser(openFileChooser);
+        	BAG.getThreadContainer().setOpenFileChooser(openFileChooser);
         	
         	Thread openFileChooserThread = new Thread(openFileChooser, "openFileChooserThread");
-        	factory.getThreadContainer().setOpenFileChooserThread(openFileChooserThread);
+        	BAG.getThreadContainer().setOpenFileChooserThread(openFileChooserThread);
         	openFileChooserThread.start();
         }
         	

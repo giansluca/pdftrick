@@ -15,7 +15,7 @@ import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	public DragAndDropAction() {
 	}
@@ -25,16 +25,16 @@ public class DragAndDropAction implements FileDrop.Listener {
 	 */
 	@Override
 	public void filesDropped(File[] fileVett) {
-		final Properties messages = factory.getMessages();
+		final Properties messages = BAG.getMessages();
 		
-		if ( (factory.getThreadContainer().getDragAnDropFileChooserThread() != null && factory.getThreadContainer().getDragAnDropFileChooserThread().isAlive() ) ||
-			(factory.getThreadContainer().getOpenFileChooserThread() != null &&	factory.getThreadContainer().getOpenFileChooserThread().isAlive())) {
+		if ( (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive() ) ||
+			(BAG.getThreadContainer().getOpenFileChooserThread() != null &&	BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
 			Utils.resetDropBorder();
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			
 			return;
 		}
-		if (factory.getThreadContainer().getShowThumbsThread() != null && factory.getThreadContainer().getShowThumbsThread().isAlive()) {
+		if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 			Utils.resetDropBorder();
 			Messages.displayMessage(null,messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
@@ -42,7 +42,7 @@ public class DragAndDropAction implements FileDrop.Listener {
     		
 			return;
     	}  
-    	if (factory.getThreadContainer().getImgExtractionThread()!=null && factory.getThreadContainer().getImgExtractionThread().isAlive()) {
+    	if (BAG.getThreadContainer().getImgExtractionThread()!=null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
     		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 		    Utils.resetDropBorder();
 		    Messages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
@@ -50,7 +50,7 @@ public class DragAndDropAction implements FileDrop.Listener {
     		
 		    return;	
     	}
-    	if (factory.getThreadContainer().getImgThumbThread()!=null && factory.getThreadContainer().getImgThumbThread().isAlive()) {
+    	if (BAG.getThreadContainer().getImgThumbThread()!=null && BAG.getThreadContainer().getImgThumbThread().isAlive()) {
     		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
 			Utils.resetDropBorder();
 			Messages.displayMessage(null, messages.getProperty("jmsg_04"), messages.getProperty("jmsg_01"),
@@ -60,10 +60,10 @@ public class DragAndDropAction implements FileDrop.Listener {
     	}
 		
 		DragAnDropFileChooser dropFileChooser = new DragAnDropFileChooser(fileVett);
-		factory.getThreadContainer().setDragAnDropFileChooser(dropFileChooser);
+		BAG.getThreadContainer().setDragAnDropFileChooser(dropFileChooser);
 		
 		Thread dragAnDropFileChooserThread = new Thread(dropFileChooser, "dragAnDropFileChooserThread");
-		factory.getThreadContainer().setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
+		BAG.getThreadContainer().setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
 		dragAnDropFileChooserThread.start();
 		
 	}

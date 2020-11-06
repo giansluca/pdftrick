@@ -51,7 +51,7 @@ class PdfTrickStarterTest {
         PdfTrickStarter.start(os, fakeHomeFolderPath, fakeNativeLibraryPath);
 
         // Then
-        PdfTrickBag bag = PdfTrickBag.getBag();
+        PdfTrickBag bag = PdfTrickBag.INSTANCE;
         assertThat(bag.getNativeLibraryPath()).isEqualTo(fakeNativeLibraryPath);
         assertThat(bag.getNativeObjectManager()).isNotNull();
 

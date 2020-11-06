@@ -7,7 +7,7 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 public class ExecPool implements Runnable {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private final String imgPath;
 	private final int numPages;
@@ -27,7 +27,7 @@ public class ExecPool implements Runnable {
 	@Override
 	public void run() {
 		ExecutorService executor = Executors.newFixedThreadPool(2);
-		factory.getThreadContainer().setExecutor(executor);
+		BAG.getThreadContainer().setExecutor(executor);
 		
 		int i = division + 1;
 		

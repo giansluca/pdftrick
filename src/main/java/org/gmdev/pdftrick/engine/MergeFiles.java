@@ -25,13 +25,13 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class MergeFiles {
 	
 	private static final Logger logger = Logger.getLogger(MergeFiles.class);
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	/**
 	 * Merge multiple pdf files
 	 */
 	public File mergePdf (ArrayList<File> filesVett, String resultFilePath) {
-		final HashMap<String, String> namePwd = factory.getNamePwd();
+		final HashMap<String, String> namePwd = BAG.getNamePwd();
 		
 		File mergedFile = new File(resultFilePath);
 		List<StreamPwdContainer> list = new ArrayList<StreamPwdContainer>();
@@ -63,7 +63,7 @@ public class MergeFiles {
 	}
 	
 	private void doMerge(List<StreamPwdContainer> list, OutputStream outputStream) throws DocumentException, IOException {
-		HashMap<Integer, String> rotationFromPages = factory.getRotationFromPages();
+		HashMap<Integer, String> rotationFromPages = BAG.getRotationFromPages();
 		Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, outputStream);
         document.open();

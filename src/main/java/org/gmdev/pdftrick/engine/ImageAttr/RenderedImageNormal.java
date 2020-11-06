@@ -12,8 +12,8 @@ public class RenderedImageNormal extends RenderedImageAttributes {
 		this.imageRefNumber = imageRefNumber;
 		this.numPage = numPage;
 		this.flip = flip;
-		this.rotate = flip;
-		this.key = numPage+"_"+imageRefNumber;
+		this.rotate = rotate;
+		this.key = numPage + "_" + imageRefNumber;
 	}
 	
 	@Override

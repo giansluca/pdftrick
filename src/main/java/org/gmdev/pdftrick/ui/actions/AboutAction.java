@@ -16,7 +16,7 @@ import org.gmdev.pdftrick.utils.Messages;
 
 public class AboutAction extends AbstractAction {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final long serialVersionUID = -9051815693784339746L;
 	private final ImageIcon about_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.ABOUT_ICO));
 	
@@ -31,11 +31,11 @@ public class AboutAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final Properties messages = factory.getMessages();
-		final String os = factory.getOs();
+		final Properties messages = BAG.getMessages();
+		final String os = BAG.getOs();
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
 		
-		Messages.displayMessage(factory.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os),
+		Messages.displayMessage(BAG.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os),
 				messages.getProperty("jmsg_07"), 1, imageIcon);
 	}
 	

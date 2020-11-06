@@ -18,7 +18,7 @@ import org.gmdev.pdftrick.utils.Utils;
 
 public class ThumbAction implements MouseListener {
 	
-	private static final PdfTrickBag bag = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private final int pageNumber;
 	
@@ -31,9 +31,9 @@ public class ThumbAction implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		final String selected = bag.getSelected();
-		final JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
-		final JTextField currentPageField = bag.getUserInterface().getRight().getCurrentPageField();
+		final String selected = BAG.getSelected();
+		final JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
+		final JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Border borderGreen = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green);
@@ -48,7 +48,7 @@ public class ThumbAction implements MouseListener {
 		// deselect page
 		if (selected.equalsIgnoreCase(String.valueOf(pageNumber - 1))) {
 			picLabel.setBorder(borderGray);
-			bag.setSelected("");
+			BAG.setSelected("");
 			currentPageField.setText("");
 			Utils.cleanCenterPanel();
 			
@@ -56,22 +56,22 @@ public class ThumbAction implements MouseListener {
 		} else {
 			// when previous page selected don't have images i need to reset the layout to FlowLayout 
 			// (the same layout with wait icon during pdf rendering)
-			final JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+			final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 			
 			if (centerPanel.getLayout() instanceof GridBagLayout) {
 				centerPanel.setLayout(new WrapLayout());
 			}
 			
 			picLabel.setBorder(borderGreen);
-			bag.setSelected(String.valueOf(pageNumber - 1));
+			BAG.setSelected(String.valueOf(pageNumber - 1));
 			currentPageField.setText("Page " + pageNumber);
 			Utils.cleanCenterPanel();
 			
 			ImgThumb imgThumb = new ImgThumb(pageNumber);
-			bag.getThreadContainer().setImgThumb(imgThumb);
+			BAG.getThreadContainer().setImgThumb(imgThumb);
 			
 			Thread imgThumbThread = new Thread(imgThumb, "imgThumbThread");
-			bag.getThreadContainer().setImgThumbThread(imgThumbThread);
+			BAG.getThreadContainer().setImgThumbThread(imgThumbThread);
 			imgThumbThread.start();
 
 			// TODO Itext 7 migration

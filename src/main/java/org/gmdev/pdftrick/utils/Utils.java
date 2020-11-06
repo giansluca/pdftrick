@@ -16,7 +16,7 @@ import org.imgscalr.Scalr;
 
 public class Utils {
 	
-	private static final PdfTrickBag bag = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
 	public static String getTimedDirResult() {
 		Calendar cal = Calendar.getInstance();
@@ -43,7 +43,7 @@ public class Utils {
 	}
 
 	public static String createImgFolder() {
-		File imgFolder = new File (bag.getHomeFolderPath() + File.separator + "img");
+		File imgFolder = new File (BAG.getHomeFolderPath() + File.separator + "img");
 		
 		if (imgFolder.exists()) {
 			File[] imageFiles = imgFolder.listFiles();
@@ -59,21 +59,21 @@ public class Utils {
 	}
 
 	public static void deletePdfFile() {
-		File pdfFile = new File(bag.getPdfFilePath());
+		File pdfFile = new File(BAG.getPdfFilePath());
 		if (pdfFile.exists())
 			if(!pdfFile.delete())
 				throw new IllegalStateException("Error deleting pdf file");
 	}
 
 	public static void deleteNativeLibraryFile() {
-		File nativeLibraryFile = bag.getNativeLibraryPath().toFile();
+		File nativeLibraryFile = BAG.getNativeLibraryPath().toFile();
 		if (nativeLibraryFile.exists())
 			if(nativeLibraryFile.delete())
 				throw new IllegalStateException("Error deleting native library file");
 	}
 
 	public static void deleteImgFolderAnDFiles() {
-		File imgFolder = new File (bag.getHomeFolderPath() + File.separator + "img");
+		File imgFolder = new File (BAG.getHomeFolderPath() + File.separator + "img");
 		
 		if (imgFolder.exists()) {
 			File[] imageFiles = imgFolder.listFiles();
@@ -153,7 +153,7 @@ public class Utils {
 	 * Start wait icon in center panel
 	 */
 	public static void startWaitIconLoadPdf() {
-		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.WAIT));
 		JLabel waitLabel = new JLabel(imageIcon);
@@ -170,7 +170,7 @@ public class Utils {
 	 * Stop wait Icon in center panel
 	 */
 	public static void stopWaitIcon() {
-		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.setLayout(new WrapLayout());
 		centerPanel.removeAll();
 		centerPanel.revalidate();
@@ -181,7 +181,7 @@ public class Utils {
 	 * Clean the left panel
 	 */
 	public static void cleanLeftPanel() {
-		JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
+		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
 		FileDrop.remove(leftPanel);
 		leftPanel.removeAll();
 		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -195,7 +195,7 @@ public class Utils {
 	 * Clean the center panel
 	 */
 	public static void cleanCenterPanel() {
-		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.removeAll();
 		centerPanel.revalidate();
 		centerPanel.repaint();
@@ -205,7 +205,7 @@ public class Utils {
 	 * Remove the drop blue border, in some circumstances that happens only in windows OS and only at runtime
 	 */
 	public static void resetDropBorder() {
-		JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
+		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
 		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0)); 
 	}
 	
@@ -243,7 +243,7 @@ public class Utils {
 	 * Print a welcome message on the text area
 	 */
 	public static void printWelcomeMessage() {
-		Messages.append("INFO", MessageFormat.format(bag.getMessages().getProperty("dmsg_09"),
+		Messages.append("INFO", MessageFormat.format(BAG.getMessages().getProperty("dmsg_09"),
 	    		System.getProperty("os.name"),
 	    		System.getProperty("sun.arch.data.model"),
 	    		System.getProperty("java.version")));
@@ -253,28 +253,28 @@ public class Utils {
 	 * Reinitializes new filesVett, called on cancel button and open new pdf file
 	 */
 	public static void cleanFilevett(){
-		bag.getPdfFilesArray().clear();
+		BAG.getPdfFilesArray().clear();
 	}
 	
 	/**
 	 * Reinitialize new ImageSelectedHashMap, called on cancel button, open new pdf file and after getImages
 	 */
 	public static void cleanImageSelectedHashMap() {
-		bag.getImageSelected().clear();
+		BAG.getImageSelected().clear();
 	}
 	
 	/**
 	 * Reinitialize new RotationFromPagesHashMap, called on cancel button and open new pdf file
 	 */
 	public static void cleanRotationFromPagesHashMap() {
-		bag.getRotationFromPages().clear();
+		BAG.getRotationFromPages().clear();
 	}
 	
 	/**
 	 * Clean InlineImgSelectedHashMap, called on cancel button, open new pdf file and after getImages
 	 */
 	public static void cleanInlineImgSelectedHashMap() {
-		bag.getInlineImgSelected().clear();
+		BAG.getInlineImgSelected().clear();
 	}
 	
 	

@@ -9,10 +9,10 @@ public class NativeLibCall {
 	public native void start(String resultFile, String homeFolder, int nPage, int zoom);
 	public native void cover(String resultFile, String homeFolder, int nPage, int zoom);
 
-	private static final PdfTrickBag bag = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
 	static{
-		Path nativeLibraryPath = bag.getNativeLibraryPath();
+		Path nativeLibraryPath = BAG.getNativeLibraryPath();
 		try{
 			System.load(nativeLibraryPath.toString());
 		} catch (SecurityException | UnsatisfiedLinkError e) {

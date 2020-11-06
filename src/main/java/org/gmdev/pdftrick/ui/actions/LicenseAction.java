@@ -24,7 +24,7 @@ import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class LicenseAction extends AbstractAction {
 	
-	private static final PdfTrickBag factory = PdfTrickBag.getBag();
+	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final Logger logger = Logger.getLogger(LicenseAction.class);
 	private static final long serialVersionUID = 6003243894996325087L;
 	private final ImageIcon license_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.LICENSE_ICO));
@@ -40,7 +40,7 @@ public class LicenseAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		boolean win = SetupUtils.isWindows();
-		JDialog dialog = new JDialog(factory.getUserInterface(), true);
+		JDialog dialog = new JDialog(BAG.getUserInterface(), true);
 		
 		// box
 		dialog.setTitle(Constants.LICENSE_TITLE);

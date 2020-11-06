@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.swingmanager;
 
 import org.gmdev.pdftrick.ui.UserInterface;
-import org.gmdev.pdftrick.utils.Utils;
 
 public class UserInterfaceBuilder {
 

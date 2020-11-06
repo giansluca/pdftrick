@@ -6,21 +6,18 @@ import java.util.concurrent.Executors;
 public class ServiceScheduler {
 	
 	private static final int NUMBER_OF_THREADS = 5;
-	
-	private static ServiceScheduler serviceScheduler;
+	private static ServiceScheduler serviceScheduler = new ServiceScheduler(NUMBER_OF_THREADS);
+
 	private final ExecutorService executorService;
-	
-	public static ServiceScheduler getServiceScheduler() {
-		if (serviceScheduler == null)
-			serviceScheduler = new ServiceScheduler(NUMBER_OF_THREADS);
-		
-		return serviceScheduler;
-	}
 
 	private ServiceScheduler(int numberOfThreads) {
 		this.executorService = Executors.newFixedThreadPool(numberOfThreads);
 	}
-	
+
+	public static ServiceScheduler getServiceScheduler() {
+		return serviceScheduler;
+	}
+
 	public void schedule(ServiceRequest serviceRequest) {
 		Runnable task = () -> {
 			try {
