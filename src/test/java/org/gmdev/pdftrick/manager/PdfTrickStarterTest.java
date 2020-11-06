@@ -14,35 +14,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.gmdev.pdftrick.utils.Constants.NATIVE_LIB_PATH;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class PdfTrickStarterTest {
 
-    private static final String FOR_TEST_FOLDER = "src/test/resources/for-test";
+    private static final String HOME_FOR_TEST = "src/test/resources/for-test";
 
     @Test
     void isShouldBuildPdfBag() {
         // Given
-        String os = SetupUtils.getOs();
-        String libraryName = null;
-        if (os.equals(SetupUtils.MAC_OS))
-            libraryName = Constants.NATIVE_LIB_MAC_64;
-        else if(os.equals(SetupUtils.WIN_OS))
-            libraryName = Constants.NATIVE_LIB_WIN_64;
 
         Path fakeHomeFolderPath = Path.
-                of(System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER);
-        Path fakeNativeLibraryPath = Path
-                .of(System.getProperty("user.dir") +
-                        File.separator +
-                        FOR_TEST_FOLDER +
-                        File.separator +
-                        libraryName);
+                of(System.getProperty("user.dir") + File.separator + HOME_FOR_TEST);
 
-        String libToCopy = NATIVE_LIB_PATH + "/" + libraryName;
-        extractNativeLibrary(fakeNativeLibraryPath, libToCopy);
+        String os = SetupUtils.getOs();
+        Path fakeNativeLibraryPath = SetupUtils.setAndGetNativeLibrary(fakeHomeFolderPath, os);
 
         MockedStatic<Utils> utilsMock = Mockito.mockStatic(Utils.class);
         MockedStatic<UserInterfaceBuilder> userInterfaceBuilderMock = Mockito.mockStatic(UserInterfaceBuilder.class);
@@ -58,16 +48,9 @@ class PdfTrickStarterTest {
         // Finally
         userInterfaceBuilderMock.close();
         utilsMock.close();
+
+        bag.getNativeObjectManager().unloadNativeLib();
         assertThat(fakeNativeLibraryPath.toFile().delete()).isTrue();
     }
 
-    private static void extractNativeLibrary(Path to, String libToCopy) {
-        if(to.toFile().exists()) return;
-        InputStream from = FileLoader.loadAsStream(libToCopy);
-        try {
-            Files.copy(from, to);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
 }

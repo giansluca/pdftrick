@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class SetupUtilsTest {
 
-    private static final String FOR_TEST_FOLDER = "src/test/resources/for-test";
+    private static final String HOME_FOR_TEST = "src/test/resources/for-test";
 
     MockedStatic<SystemProperty> systemPropertyMock;
 
@@ -83,7 +83,7 @@ class SetupUtilsTest {
     void itShouldCreatePdfTrickHomeFolder() {
         // Given
         String propertyHome = "user.home";
-        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String fakeHome = System.getProperty("user.dir") + File.separator + HOME_FOR_TEST;
         String propertyOs = "os.name";
 
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(propertyHome)).thenReturn(fakeHome);
@@ -109,7 +109,7 @@ class SetupUtilsTest {
     void itShouldReturnThePdfTrickHomeFolderPath() {
         // Given
         String property = "user.home";
-        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String fakeHome = System.getProperty("user.dir") + File.separator + HOME_FOR_TEST;
         String propertyOs = "os.name";
 
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
@@ -136,7 +136,7 @@ class SetupUtilsTest {
     void itShouldExtractTheNativeLibrary() {
         // Given
         String property = "user.home";
-        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String fakeHome = System.getProperty("user.dir") + File.separator + HOME_FOR_TEST;
         String propertyOs = "os.name";
 
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
@@ -162,10 +162,10 @@ class SetupUtilsTest {
     }
 
     @Test
-    void itShouldReturnTheNativeLibraryPath() throws IOException {
+    void itShouldReturnTheNativeLibraryPath() {
         // Given
         String property = "user.home";
-        String fakeHome = System.getProperty("user.dir") + File.separator + FOR_TEST_FOLDER;
+        String fakeHome = System.getProperty("user.dir") + File.separator + HOME_FOR_TEST;
         String propertyOs = "os.name";
 
         systemPropertyMock.when(() -> SystemProperty.getSystemProperty(property)).thenReturn(fakeHome);
@@ -176,12 +176,10 @@ class SetupUtilsTest {
         String libraryName = null;
         if (os.equals(SetupUtils.MAC_OS))
             libraryName = Constants.NATIVE_LIB_MAC_64;
-        else if(os.equals(SetupUtils.WIN_OS))
+        else if (os.equals(SetupUtils.WIN_OS))
             libraryName = Constants.NATIVE_LIB_WIN_64;
 
-        File expectedLibraryFile = new File(fakeHome + File.separator + libraryName);
-        if(!expectedLibraryFile.createNewFile())
-            fail();
+        File expectedLibraryFile = createExpectedLibraryFile(fakeHome, libraryName);
 
         // When
         Path libraryPath = SetupUtils.setAndGetNativeLibrary(Path.of(fakeHome), os);
@@ -191,6 +189,20 @@ class SetupUtilsTest {
 
         // Finally
         assertThat(expectedLibraryFile.delete()).isTrue();
+    }
+
+    private File createExpectedLibraryFile(String fakeHome, String libraryName) {
+        File expectedLibraryFile = new File(fakeHome + File.separator + libraryName);
+        if (!expectedLibraryFile.exists()) {
+            try {
+                if (!expectedLibraryFile.createNewFile())
+                    fail();
+            } catch (IOException e) {
+                fail();
+            }
+        }
+
+        return expectedLibraryFile;
     }
 
 }
