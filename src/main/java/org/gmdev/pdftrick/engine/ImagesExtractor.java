@@ -45,16 +45,16 @@ public class ImagesExtractor {
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
-		String finalFolderTosave = BAG.getFolderToSave()+ Utils.getTimeForExtractionFolder();
-		File fileFinalFolderTosave = new File(finalFolderTosave);
-		fileFinalFolderTosave.mkdir();
+		String finalFolderToSave = BAG.getFolderToSave() + Utils.getTimeForExtractionFolder();
+		File fileFinalFolderToSave = new File(finalFolderToSave);
+		fileFinalFolderToSave.mkdir();
 			
-		getImgCheck = extractImgSel(finalFolderTosave, resultFile.getPath(), BAG.getImageSelected(), inlineImgSelected);
+		getImgCheck = extractImgSel(finalFolderToSave, resultFile.getPath(), BAG.getImageSelected(), inlineImgSelected);
 		
 		// if extraction breaks ...
 		if (!getImgCheck) { 
 			Messages.append("WARNING", messages.getProperty("tmsg_18"));
-			Utils.deleteSelectedFolderToSave(finalFolderTosave);
+			Utils.deleteSelectedFolderToSave(finalFolderToSave);
 		}			
 	}
 	

@@ -7,18 +7,15 @@ import java.net.ServerSocket;
 
 public class SingleInstanceValidator {
 
-    private static final SingleInstanceValidator INSTANCE = new SingleInstanceValidator();
     private static final int SERVER_PORT = 12345;
 
     private ServerSocket serverSocket;
 
-    private SingleInstanceValidator() {}
-
     public static SingleInstanceValidator getInstance() {
-        return INSTANCE;
+        return new SingleInstanceValidator();
     }
 
-    public void checkPdfTrickAlreadyRunning() {
+    public void checkAlreadyRunning() {
         startFlagServerSocket();
     }
 

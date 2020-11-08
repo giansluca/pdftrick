@@ -84,7 +84,7 @@ public class PdfTrick {
 
     private static void checkSingleInstanceRunning() {
         var singleInstanceValidator = SingleInstanceValidator.getInstance();
-        singleInstanceValidator.checkPdfTrickAlreadyRunning();
+        singleInstanceValidator.checkAlreadyRunning();
     }
 
     private static void run() {

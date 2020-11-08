@@ -58,7 +58,7 @@ class PdfTrickTest {
                 Mockito.mockStatic(SingleInstanceValidator.class);
         singleInstanceValidatorMock.when(SingleInstanceValidator::getInstance)
                 .thenReturn(singleInstanceValidator);
-        doNothing().when(singleInstanceValidator).checkPdfTrickAlreadyRunning();
+        doNothing().when(singleInstanceValidator).checkAlreadyRunning();
 
         // When
         // Then
@@ -86,7 +86,7 @@ class PdfTrickTest {
                 Mockito.mockStatic(SingleInstanceValidator.class);
         singleInstanceValidatorMock.when(SingleInstanceValidator::getInstance)
                 .thenReturn(singleInstanceValidator);
-        doNothing().when(singleInstanceValidator).checkPdfTrickAlreadyRunning();
+        doNothing().when(singleInstanceValidator).checkAlreadyRunning();
 
         MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class);
         setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
@@ -113,7 +113,7 @@ class PdfTrickTest {
                 Mockito.mockStatic(SingleInstanceValidator.class);
         singleInstanceValidatorMock.when(SingleInstanceValidator::getInstance)
                 .thenReturn(singleInstanceValidator);
-        doNothing().when(singleInstanceValidator).checkPdfTrickAlreadyRunning();
+        doNothing().when(singleInstanceValidator).checkAlreadyRunning();
 
         MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class);
             setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
@@ -144,7 +144,7 @@ class PdfTrickTest {
                 Mockito.mockStatic(SingleInstanceValidator.class);
         singleInstanceValidatorMock.when(SingleInstanceValidator::getInstance)
                 .thenReturn(singleInstanceValidator);
-        doNothing().when(singleInstanceValidator).checkPdfTrickAlreadyRunning();
+        doNothing().when(singleInstanceValidator).checkAlreadyRunning();
 
         MockedStatic<PdfTrickStarter> pdfTrickStarterMock = Mockito.mockStatic(PdfTrickStarter.class);
 

@@ -3,7 +3,6 @@ package org.gmdev.pdftrick.utils;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
-import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.*;
 import javax.swing.*;
@@ -48,32 +47,27 @@ public class Utils {
 		return prop;
 	}
 
-	public static Path createOrCleanUpThumbnailsFolder() {
-		File thumbnailsFolder = BAG.getThumbnailsFolderPath().toFile();
-		if (!thumbnailsFolder.exists()) {
-			if (!thumbnailsFolder.mkdir())
-				throw new IllegalStateException("Error creating thumbnails folder");
-
-			return thumbnailsFolder.toPath();
-		}
-
-		File[] thumbnailFiles = thumbnailsFolder.listFiles();
-		if (thumbnailFiles != null && thumbnailFiles.length == 0)
-			deleteFileArray(thumbnailFiles);
-
-		return thumbnailsFolder.toPath();
+	public static void cleanUp() {
+		createIfNotExistsThumbnailsFolder();
+		deleteThumbnailsFiles();
+		deletePdfFile();
 	}
 
-	public static void deleteThumbnailsFolderAnDFiles() {
+	public static void createIfNotExistsThumbnailsFolder() {
+		File thumbnailsFolder = BAG.getThumbnailsFolderPath().toFile();
+		if (!thumbnailsFolder.exists())
+			if (!thumbnailsFolder.mkdir())
+				throw new IllegalStateException("Error creating thumbnails folder");
+	}
+
+	public static void deleteThumbnailsFiles() {
 		File thumbnailsFolder = BAG.getThumbnailsFolderPath().toFile();
 		if (!thumbnailsFolder.exists()) return;
 
 		File[] thumbnailFiles = thumbnailsFolder.listFiles();
 		if (thumbnailFiles == null || thumbnailFiles.length == 0) return;
-		deleteFileArray(thumbnailFiles);
 
-		if (!thumbnailsFolder.delete())
-			throw new IllegalStateException("Error deleting pdf images folder");
+		deleteFileArray(thumbnailFiles);
 	}
 
 	private static void deleteFileArray(File[] files) {
@@ -86,29 +80,33 @@ public class Utils {
 	public static void deletePdfFile() {
 		File pdfFile = new File(BAG.getPdfFilePath());
 		if (!pdfFile.exists()) return;
+
 		if (!pdfFile.delete())
 			throw new IllegalStateException("Error deleting pdf file");
 	}
 
-	public static void deleteSelectedFolderToSave(String folder) {
-		File fileFinalFolderToSave = new File(folder);
-		
-		if (fileFinalFolderToSave.exists()) {
-			File[] vetImg = fileFinalFolderToSave.listFiles();
-			if (vetImg.length > 0) {
-				for (File item : vetImg) {
-					if (item != null && item.exists()) {
-						item.delete();
-					}
-				}
-			}
+	public static void deleteSelectedFolderToSave(String extractionFolderPath) {
+		File extractionFolder = new File(extractionFolderPath);
+		if (!extractionFolder.exists()) return;
 
-			fileFinalFolderToSave.delete();
-		}
+		File[] imagesArray = extractionFolder.listFiles();
+		if (imagesArray == null || imagesArray.length == 0) return;
+
+		for (File file : imagesArray)
+			if (!file.delete())
+				throw new IllegalStateException(
+						String.format("Error deleting extracted image file %s", file.getName()));
+
+		if (!extractionFolder.delete())
+			throw new IllegalStateException(
+					String.format("Error deleting extraction folder %s", extractionFolder.getName()));
 	}
 	
 	public static BufferedImage getScaledImage(BufferedImage srcImg, int w, int h){
-	    BufferedImage resizedImg = new BufferedImage(w, h, srcImg.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : srcImg.getType() );
+	    BufferedImage resizedImg = new BufferedImage(w, h, srcImg.getType() == 0
+				? BufferedImage.TYPE_INT_ARGB :
+				srcImg.getType() );
+
 	    Graphics2D g2 = resizedImg.createGraphics();
 	    
 	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -123,36 +121,24 @@ public class Utils {
 	public static BufferedImage getScaledImagWithScalr(BufferedImage srcImg, int w, int h) {
 	    return Scalr.resize(srcImg, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, w, h, Scalr.OP_ANTIALIAS); 
 	}
-	
-	/**
-	 * Adjust the image, called on visualization and on extraction (flip and rotation)
-	 */
+
 	public static BufferedImage adjustImage(BufferedImage srcImg, String flip, String angle) {
 		BufferedImage buffImg = srcImg;
-		if (flip.equalsIgnoreCase("fh")) {
+		if (flip.equalsIgnoreCase("fh"))
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.FLIP_HORZ);
-		}
-		else if (flip.equalsIgnoreCase("fv")) {
+		else if (flip.equalsIgnoreCase("fv"))
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.FLIP_VERT);
-		}
-		if (angle.equalsIgnoreCase("270")) {
+		if (angle.equalsIgnoreCase("270"))
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_270);
-		}
-		else if (angle.equalsIgnoreCase("180")) {
+		else if (angle.equalsIgnoreCase("180"))
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_180);
-		}
-		else if (angle.equalsIgnoreCase("90")) {
+		else if (angle.equalsIgnoreCase("90"))
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_90);
-		}
 		
 		srcImg.flush();
-		
 		return buffImg;
 	}
-	
-	/**
-	 * Start wait icon in center panel
-	 */
+
 	public static void startWaitIconLoadPdf() {
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		
@@ -166,10 +152,7 @@ public class Utils {
 		centerPanel.revalidate();
 		centerPanel.repaint();
 	}
-	
-	/**
-	 * Stop wait Icon in center panel
-	 */
+
 	public static void stopWaitIcon() {
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.setLayout(new WrapLayout());
@@ -177,10 +160,7 @@ public class Utils {
 		centerPanel.revalidate();
 		centerPanel.repaint();
 	}
-	
-	/**
-	 * Clean the left panel
-	 */
+
 	public static void cleanLeftPanel() {
 		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
 		FileDrop.remove(leftPanel);
@@ -191,10 +171,7 @@ public class Utils {
 		leftPanel.revalidate();
 		leftPanel.repaint();
 	}
-	
-	/**
-	 * Clean the center panel
-	 */
+
 	public static void cleanCenterPanel() {
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		centerPanel.removeAll();
@@ -203,7 +180,7 @@ public class Utils {
 	}
 	
 	/**
-	 * Remove the drop blue border, in some circumstances that happens only in windows OS and only at runtime
+	 * Remove the drop blue border, in some circumstances that happens only in windows OS
 	 */
 	public static void resetDropBorder() {
 		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
@@ -219,7 +196,6 @@ public class Utils {
 	            return (rgb << 8) & 0xFF000000;
 	        }
 	    };
-	    
 	    ImageProducer ip = new FilteredImageSource(image.getSource(), filter);
 	    return Toolkit.getDefaultToolkit().createImage(ip);
 	}
@@ -240,40 +216,25 @@ public class Utils {
 	    return dest;
 	}
 
-	/**
-	 * Print a welcome message on the text area
-	 */
 	public static void printWelcomeMessage() {
 		Messages.append("INFO", MessageFormat.format(BAG.getMessages().getProperty("dmsg_09"),
 	    		System.getProperty("os.name"),
 	    		System.getProperty("sun.arch.data.model"),
 	    		System.getProperty("java.version")));
 	}
-	
-	/**
-	 * Reinitializes new filesVett, called on cancel button and open new pdf file
-	 */
-	public static void cleanFilevett(){
+
+	public static void cleanPdfFilesArray(){
 		BAG.getPdfFilesArray().clear();
 	}
-	
-	/**
-	 * Reinitialize new ImageSelectedHashMap, called on cancel button, open new pdf file and after getImages
-	 */
+
 	public static void cleanImageSelectedHashMap() {
 		BAG.getImageSelected().clear();
 	}
-	
-	/**
-	 * Reinitialize new RotationFromPagesHashMap, called on cancel button and open new pdf file
-	 */
+
 	public static void cleanRotationFromPagesHashMap() {
 		BAG.getRotationFromPages().clear();
 	}
-	
-	/**
-	 * Clean InlineImgSelectedHashMap, called on cancel button, open new pdf file and after getImages
-	 */
+
 	public static void cleanInlineImgSelectedHashMap() {
 		BAG.getInlineImgSelected().clear();
 	}

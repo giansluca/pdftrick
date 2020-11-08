@@ -3,9 +3,11 @@ package org.gmdev.pdftrick.swingmanager;
 import org.gmdev.pdftrick.utils.*;
 import javax.swing.*;
 
+import static org.gmdev.pdftrick.utils.Constants.WARNING_ICO;
+
 public class ModalWarningPanel {
 
-    private static final ImageIcon WARNING_ICON = new ImageIcon(FileLoader.loadAsUrl(Constants.WARNING_ICO));
+    private static final ImageIcon WARNING_ICON = new ImageIcon(FileLoader.loadAsUrl(WARNING_ICO));
     private static final String WARNING_TITLE = "Warning";
 
     public static void displayArchWarningAndThrow() {

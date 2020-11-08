@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 public class ServiceScheduler {
 	
 	private static final int NUMBER_OF_THREADS = 5;
-	private static ServiceScheduler serviceScheduler = new ServiceScheduler(NUMBER_OF_THREADS);
+	private static final ServiceScheduler INSTANCE = new ServiceScheduler(NUMBER_OF_THREADS);
 
 	private final ExecutorService executorService;
 
@@ -15,7 +15,7 @@ public class ServiceScheduler {
 	}
 
 	public static ServiceScheduler getServiceScheduler() {
-		return serviceScheduler;
+		return INSTANCE;
 	}
 
 	public void schedule(ServiceRequest serviceRequest) {
@@ -31,7 +31,6 @@ public class ServiceScheduler {
 	
 	public void shutdown() {
 		executorService.shutdown();
-		serviceScheduler = null;
 	}
 
 

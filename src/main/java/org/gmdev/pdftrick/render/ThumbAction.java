@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.render.tasks.RenderPageThumbnailsTask;
+import org.gmdev.pdftrick.serviceprocessor.ServiceScheduler;
 import org.gmdev.pdftrick.thread.ImgThumb;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.utils.Utils;

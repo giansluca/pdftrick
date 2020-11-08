@@ -7,7 +7,6 @@ import java.util.*;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
-import org.gmdev.pdftrick.utils.*;
 
 import static org.gmdev.pdftrick.utils.Constants.*;
 

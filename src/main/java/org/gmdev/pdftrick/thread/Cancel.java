@@ -128,10 +128,10 @@ public class Cancel implements Runnable {
 		Utils.cleanRotationFromPagesHashMap();
 		BAG.setSelected("");
 		BAG.setFolderToSave("");
-		Utils.cleanFilevett();
+		Utils.cleanPdfFilesArray();
 		
 		Utils.deletePdfFile();
-		Utils.deleteThumbnailsFolderAnDFiles();
+		Utils.deleteThumbnailsFiles();
 		finished = true;
 	}
 	

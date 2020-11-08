@@ -58,12 +58,12 @@ public class OpenFileChooser implements Runnable {
         // clean areatext fileVett resultFile imageSelected imageselected in case of reopen jfilechooser 
         BAG.setSelected("");
         BAG.setFolderToSave("");
-        Utils.cleanFilevett();
+        Utils.cleanPdfFilesArray();
         Utils.cleanImageSelectedHashMap();
         Utils.cleanInlineImgSelectedHashMap();
         Utils.cleanRotationFromPagesHashMap();
         		
-        Utils.deleteThumbnailsFolderAnDFiles();
+        Utils.deleteThumbnailsFiles();
         Utils.deletePdfFile();
      	System.gc();
      	

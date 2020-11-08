@@ -14,8 +14,7 @@ public class PdfTrickStarter {
         PdfTrickBag pdfTrickBag = PdfTrickBag.INSTANCE;
         pdfTrickBag.build(operatingSystem, homeFolderPath, nativeLibraryPath);
 
-        deleteThumbnailsFolderAnDFiles();
-        deletePdfFile();
+        cleanUp();
 
         Properties messages = loadMessageProperties();
         pdfTrickBag.setMessages(messages);

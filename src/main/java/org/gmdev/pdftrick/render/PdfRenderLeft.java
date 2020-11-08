@@ -20,7 +20,7 @@ public class PdfRenderLeft {
 	}
 
 	public void pdfRender() {
-		String imgPath = Utils.createOrCleanUpThumbnailsFolder() + File.separator;
+		String imgPath = BAG.getThumbnailsFolderPath() + File.separator;
 		int totPages = 0;
 		
 		// get the page number of the new generated pdf
@@ -33,7 +33,7 @@ public class PdfRenderLeft {
 			logger.error("Exception", e);
 		}
 		
-		// system of thread that call native function and renderizing pdf cover in png images 
+		// call native function and rendering pdf cover in png images
 		boolean runPool = true;
 		int division = totPages / 3;
 		
