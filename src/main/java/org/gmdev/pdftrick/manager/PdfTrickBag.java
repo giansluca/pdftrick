@@ -9,6 +9,8 @@ import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.*;
 
+import static org.gmdev.pdftrick.utils.Constants.*;
+
 public enum PdfTrickBag {
 	INSTANCE;
 
@@ -16,6 +18,7 @@ public enum PdfTrickBag {
 	Path homeFolderPath;
 	Path nativeLibraryPath;
 	String pdfFilePath;
+	Path thumbnailsFolderPath;
 	int numberOfPages;
 	ArrayList<File> pdfFilesArray;
 	String selected;
@@ -33,7 +36,8 @@ public enum PdfTrickBag {
 		this.os = os;
 		this.homeFolderPath = homeFolderPath;
 		this.nativeLibraryPath = nativeLibraryPath;
-		pdfFilePath = homeFolderPath + File.separator + Constants.PDF_FILE_NAME;
+		pdfFilePath = homeFolderPath + File.separator + PDF_FILE_NAME;
+		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);
 		pdfFilesArray = new ArrayList<>();
 		selected = "";
 		folderToSave = "";
@@ -58,6 +62,10 @@ public enum PdfTrickBag {
 
 	public String getPdfFilePath() {
 		return pdfFilePath;
+	}
+
+	public Path getThumbnailsFolderPath() {
+		return thumbnailsFolderPath;
 	}
 
 	public int getNumberOfPages() {

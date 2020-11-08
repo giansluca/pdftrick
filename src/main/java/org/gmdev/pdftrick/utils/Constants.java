@@ -4,9 +4,10 @@ public final class Constants {
 
 	// general
 	public static final String APP_NAME = "PdfTrick";
-	public static final String PDFTRICK_FOLDER = ".pdftrick";
-	public static final String LICENSE_TITLE = "PdfTrick Licence";
+	public static final String PDFTRICK_HOME_FOLDER = ".pdftrick";
 	public static final String PDF_FILE_NAME = "file.pdf";
+	public static final String PAGES_THUMBNAIL_FOLDER = "pages-thumbnails";
+	public static final String LICENSE_TITLE = "PdfTrick Licence";
 	public static final String JFC_EXTRACT_TITLE = "Folder to save";
 	public static final String JFC_OPEN_TITLE = "Open files";
 	public static final String PWD_DIALOG = "Password is required";

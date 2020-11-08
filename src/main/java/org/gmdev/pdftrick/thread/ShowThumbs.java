@@ -55,6 +55,8 @@ public class ShowThumbs implements Runnable {
 		final Properties messages = BAG.getMessages();
 		final JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
 		final Path hiddenHomeFolder = BAG.getHomeFolderPath();
+		Path thumbnailsFolderPath = BAG.getThumbnailsFolderPath();
+
 		long time = System.currentTimeMillis();
 		long delta = 1000;
 		
@@ -70,14 +72,15 @@ public class ShowThumbs implements Runnable {
 					Messages.appendIline(messages.getProperty("tmsg_09"));
 					delta = delta + 1000;
 				}
-				imgVett = getCoverImagesRendered(hiddenHomeFolder);
+				imgVett = getCoverImagesRendered(thumbnailsFolderPath);
 				if (imgVett !=null && imgVett.length > i) {
 					
 					// check is next file has arrived
 					if (imgVett[i] != null && imgVett[i].getName().endsWith("_" + (i + 1) + ".png")) {
 								
 						// check if file look has gone (native function finished to write)
-						File look = new File(hiddenHomeFolder+File.separator+"img"+File.separator+"image_"+(i+1)+".png.look");
+						File look = new File(thumbnailsFolderPath +
+								File.separator + "image_" + (i + 1) + ".png.look");
 							
 						if (!look.exists()) {
 							BufferedImage bufImg = null;
@@ -87,17 +90,11 @@ public class ShowThumbs implements Runnable {
 									bufImg = ImageIO.read(fin);
 									fin.close();
 								}
-							} catch (EOFException e) {
+							}
+							catch (Exception e) {
 								logger.error("Exception", e);
-								// no message for user here .. 
-							} catch (IIOException e) {
-								logger.error("Exception", e);
-								// no message for user here ... 
-							} catch (Exception e) {
-								logger.error("Exception", e);
-								// no message for user here ...
-							} 
-						
+							}
+
 							if (bufImg != null) {
 								int w = bufImg.getWidth();
 								int h = bufImg.getHeight();
@@ -159,9 +156,9 @@ public class ShowThumbs implements Runnable {
 		finished = true;
 	}
 	
-	public File[] getCoverImagesRendered(Path hiddenHomeFolder) {
+	public File[] getCoverImagesRendered(Path thumbnailsFolderPath) {
 		File[] imgVett = null;
-		File imgFolder = new File(hiddenHomeFolder + File.separator + "img");
+		File imgFolder = thumbnailsFolderPath.toFile();
 		
 		if (imgFolder.exists()) {
 			imgVett = imgFolder.listFiles(new FilenameFilter() {

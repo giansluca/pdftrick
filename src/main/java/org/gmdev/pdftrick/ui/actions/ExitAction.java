@@ -73,7 +73,7 @@ public class ExitAction extends AbstractAction {
 		nativeManager.unloadNativeLib();
 		
 		Utils.deletePdfFile();
-		Utils.deleteImgFolderAnDFiles();
+		Utils.deleteThumbnailsFolderAnDFiles();
 		
 		System.exit(0);
 	}

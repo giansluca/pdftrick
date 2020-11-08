@@ -3,6 +3,7 @@ package org.gmdev.pdftrick.utils;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.*;
 import javax.swing.*;
@@ -14,11 +15,17 @@ import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.utils.external.FileDrop;
 import org.imgscalr.Scalr;
 
+import static org.gmdev.pdftrick.utils.Constants.*;
+
 public class Utils {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
-	public static String getTimedDirResult() {
+	private Utils() {
+		throw new AssertionError("Utils should never be instantiated");
+	}
+
+	public static String getTimeForExtractionFolder() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH) + 1;
@@ -34,66 +41,60 @@ public class Utils {
 	public static Properties loadMessageProperties() {
 		Properties prop = new Properties();
 		try {
-			prop.load(FileLoader.loadAsStream(Constants.MESSAGES_PROPERTY_FILE));
+			prop.load(FileLoader.loadAsStream(MESSAGES_PROPERTY_FILE));
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-		
 		return prop;
 	}
 
-	public static String createImgFolder() {
-		File imgFolder = new File (BAG.getHomeFolderPath() + File.separator + "img");
-		
-		if (imgFolder.exists()) {
-			File[] imageFiles = imgFolder.listFiles();
-			if (imageFiles != null && imageFiles.length > 0)
-				for (File item : imageFiles)
-					if (item != null && item.exists())
-						item.delete();
+	public static Path createOrCleanUpThumbnailsFolder() {
+		File thumbnailsFolder = BAG.getThumbnailsFolderPath().toFile();
+		if (!thumbnailsFolder.exists()) {
+			if (!thumbnailsFolder.mkdir())
+				throw new IllegalStateException("Error creating thumbnails folder");
 
-		} else
-			imgFolder.mkdir();
+			return thumbnailsFolder.toPath();
+		}
 
-		return imgFolder.getPath()+File.separator;
+		File[] thumbnailFiles = thumbnailsFolder.listFiles();
+		if (thumbnailFiles != null && thumbnailFiles.length == 0)
+			deleteFileArray(thumbnailFiles);
+
+		return thumbnailsFolder.toPath();
+	}
+
+	public static void deleteThumbnailsFolderAnDFiles() {
+		File thumbnailsFolder = BAG.getThumbnailsFolderPath().toFile();
+		if (!thumbnailsFolder.exists()) return;
+
+		File[] thumbnailFiles = thumbnailsFolder.listFiles();
+		if (thumbnailFiles == null || thumbnailFiles.length == 0) return;
+		deleteFileArray(thumbnailFiles);
+
+		if (!thumbnailsFolder.delete())
+			throw new IllegalStateException("Error deleting pdf images folder");
+	}
+
+	private static void deleteFileArray(File[] files) {
+		for (File file : files)
+			if(!file.delete())
+				throw new IllegalStateException(
+						String.format("Error deleting image file %s", file.getName()));
 	}
 
 	public static void deletePdfFile() {
 		File pdfFile = new File(BAG.getPdfFilePath());
-		if (pdfFile.exists())
-			if(!pdfFile.delete())
-				throw new IllegalStateException("Error deleting pdf file");
+		if (!pdfFile.exists()) return;
+		if (!pdfFile.delete())
+			throw new IllegalStateException("Error deleting pdf file");
 	}
 
-	public static void deleteNativeLibraryFile() {
-		File nativeLibraryFile = BAG.getNativeLibraryPath().toFile();
-		if (nativeLibraryFile.exists())
-			if(nativeLibraryFile.delete())
-				throw new IllegalStateException("Error deleting native library file");
-	}
-
-	public static void deleteImgFolderAnDFiles() {
-		File imgFolder = new File (BAG.getHomeFolderPath() + File.separator + "img");
-		
-		if (imgFolder.exists()) {
-			File[] imageFiles = imgFolder.listFiles();
-			if (imageFiles != null && imageFiles.length > 0)
-				for (File item : imageFiles)
-					if (item != null && item.exists())
-						item.delete();
-
-			imgFolder.delete();
-		}
-	}
-	
-	/**
-	 * Delete the final folder to save image extracted
-	 */
 	public static void deleteSelectedFolderToSave(String folder) {
-		File fileFinalFolderTosave = new File(folder);
+		File fileFinalFolderToSave = new File(folder);
 		
-		if (fileFinalFolderTosave.exists()) {
-			File[] vetImg = fileFinalFolderTosave.listFiles();
+		if (fileFinalFolderToSave.exists()) {
+			File[] vetImg = fileFinalFolderToSave.listFiles();
 			if (vetImg.length > 0) {
 				for (File item : vetImg) {
 					if (item != null && item.exists()) {
@@ -101,8 +102,8 @@ public class Utils {
 					}
 				}
 			}
-			
-			fileFinalFolderTosave.delete();
+
+			fileFinalFolderToSave.delete();
 		}
 	}
 	

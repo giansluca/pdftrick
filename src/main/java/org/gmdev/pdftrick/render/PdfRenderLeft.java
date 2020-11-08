@@ -9,6 +9,8 @@ import org.gmdev.pdftrick.utils.Utils;
 
 import com.itextpdf.text.pdf.PdfReader;
 
+import java.io.File;
+
 public class PdfRenderLeft {
 	
 	private static final Logger logger = Logger.getLogger(PdfRenderLeft.class);
@@ -18,7 +20,7 @@ public class PdfRenderLeft {
 	}
 
 	public void pdfRender() {
-		String imgPath = Utils.createImgFolder();
+		String imgPath = Utils.createOrCleanUpThumbnailsFolder() + File.separator;
 		int totPages = 0;
 		
 		// get the page number of the new generated pdf

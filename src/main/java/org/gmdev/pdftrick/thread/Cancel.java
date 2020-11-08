@@ -131,7 +131,7 @@ public class Cancel implements Runnable {
 		Utils.cleanFilevett();
 		
 		Utils.deletePdfFile();
-		Utils.deleteImgFolderAnDFiles();
+		Utils.deleteThumbnailsFolderAnDFiles();
 		finished = true;
 	}
 	

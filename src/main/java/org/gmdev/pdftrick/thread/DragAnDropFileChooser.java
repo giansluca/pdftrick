@@ -63,7 +63,7 @@ public class DragAnDropFileChooser implements Runnable {
     	Utils.cleanInlineImgSelectedHashMap();
     	Utils.cleanRotationFromPagesHashMap();
     		
-    	Utils.deleteImgFolderAnDFiles();
+    	Utils.deleteThumbnailsFolderAnDFiles();
     	Utils.deletePdfFile();
     	System.gc();
     	

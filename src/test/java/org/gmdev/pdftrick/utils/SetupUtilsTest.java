@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class SetupUtilsTest {
 
-    private static final String HOME_FOR_TEST = "src/test/resources/for-test";
+    private static final String HOME_FOR_TEST = "src/test/resources/home-for-test";
 
     MockedStatic<SystemProperty> systemPropertyMock;
 
@@ -92,7 +92,8 @@ class SetupUtilsTest {
 
         String os = SetupUtils.getOs();
 
-        File expectedHomeFolder = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
+        File expectedHomeFolder = new File(
+                fakeHome + File.separator + Constants.PDFTRICK_HOME_FOLDER);
 
         // When
         Path homeFolder = SetupUtils.setAndGetHomeFolder(os);
@@ -118,7 +119,8 @@ class SetupUtilsTest {
 
         String os = SetupUtils.getOs();
 
-        File expectedHomeFolder = new File(fakeHome + File.separator + Constants.PDFTRICK_FOLDER);
+        File expectedHomeFolder = new File(
+                fakeHome + File.separator + Constants.PDFTRICK_HOME_FOLDER);
         if(!expectedHomeFolder.mkdir())
             fail();
 

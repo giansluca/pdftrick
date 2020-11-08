@@ -11,6 +11,10 @@ public class SetupUtils {
 	public static final String WIN_OS = "win";
 	public static final String MAC_OS = "mac";
 
+	private SetupUtils() {
+		throw new AssertionError("SetupUtils should never be instantiated");
+	}
+
 	public static String getOs() {
 		String os = getSystemProperty("os.name");
 		if (os.toLowerCase().contains(WIN_OS))
@@ -35,7 +39,7 @@ public class SetupUtils {
 
 	public static Path setAndGetHomeFolder(String os) {
 		String userHomePath = getSystemProperty("user.home");
-		File homeFolder = new File(userHomePath + File.separator + PDFTRICK_FOLDER);
+		File homeFolder = new File(userHomePath + File.separator + PDFTRICK_HOME_FOLDER);
 
 		if (homeFolder.exists())
 			return homeFolder.toPath();
