@@ -12,19 +12,19 @@ import static org.gmdev.pdftrick.utils.Utils.*;
 public class PdfTrickStarter {
 
     public static void start(String operatingSystem, Path homeFolderPath, Path nativeLibraryPath) {
-        PdfTrickBag pdfTrickBag = PdfTrickBag.INSTANCE;
-        pdfTrickBag.build(operatingSystem, homeFolderPath, nativeLibraryPath);
+        PdfTrickBag bag = PdfTrickBag.INSTANCE;
+        bag.init(operatingSystem, homeFolderPath, nativeLibraryPath);
 
-        cleanUp();
+        cleanUp(bag.getThumbnailsFolderPath(), bag.getPdfFilePath());
 
         Properties messages = loadMessageProperties();
-        pdfTrickBag.setMessages(messages);
+        bag.setMessages(messages);
 
         NativeObjectManager nativeObjectManager = new NativeObjectManager();
-        pdfTrickBag.setNativeObjectManager(nativeObjectManager);
+        bag.setNativeObjectManager(nativeObjectManager);
 
         UserInterface userInterface = UserInterfaceBuilder.build();
-        pdfTrickBag.setUserInterface(userInterface);
+        bag.setUserInterface(userInterface);
 
         printWelcomeMessage();
     }

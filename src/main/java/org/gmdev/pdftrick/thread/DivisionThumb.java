@@ -38,7 +38,8 @@ public class DivisionThumb implements Runnable  {
 		
 		while (i <= division && !finished) {
 			try {
-				nativeManager.renderPdfPageThumbnail(BAG.getPdfFilePath(), imgPath, i, Constants.ZOOM_THUMBNAIL);
+				nativeManager.renderPdfPageThumbnail(
+						BAG.getPdfFilePath().toString(), imgPath, i, Constants.ZOOM_THUMBNAIL);
 				i++;
 			} catch (Exception e) {
 				Thread.currentThread().interrupt();

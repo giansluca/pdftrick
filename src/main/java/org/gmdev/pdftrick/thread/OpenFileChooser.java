@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.thread;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -63,8 +64,8 @@ public class OpenFileChooser implements Runnable {
         Utils.cleanInlineImgSelectedHashMap();
         Utils.cleanRotationFromPagesHashMap();
         		
-        Utils.deleteThumbnailsFiles();
-        Utils.deletePdfFile();
+        Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
+        Utils.deletePdfFile(BAG.getPdfFilePath());
      	
 		for (int i = 0; i < files.length; i++) {
 			File item = files[i];

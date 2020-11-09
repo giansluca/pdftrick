@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -40,7 +41,7 @@ public class ImagesExtractor {
 	public void getImages() {
 		final Properties messages = BAG.getMessages();
 		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
-		final File resultFile = new File(BAG.getPdfFilePath());
+		final Path pdfFile = BAG.getPdfFilePath();
 		boolean getImgCheck = false;
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
@@ -49,7 +50,7 @@ public class ImagesExtractor {
 		File fileFinalFolderToSave = new File(finalFolderToSave);
 		fileFinalFolderToSave.mkdir();
 			
-		getImgCheck = extractImgSel(finalFolderToSave, resultFile.getPath(), BAG.getImageSelected(), inlineImgSelected);
+		getImgCheck = extractImgSel(finalFolderToSave, pdfFile, BAG.getImageSelected(), inlineImgSelected);
 		
 		// if extraction breaks ...
 		if (!getImgCheck) { 
@@ -100,8 +101,8 @@ public class ImagesExtractor {
 		}
 	}
 	
-	private boolean extractImgSel (String timeDirResult, String resultFilePath, HashMap<String, RenderedImageAttributes> imageSelected, 
-			HashMap<String, RenderedImageAttributes> inlineImgSelected) {
+	private boolean extractImgSel (String timeDirResult, Path pdfFile, HashMap<String, RenderedImageAttributes> imageSelected,
+								   HashMap<String, RenderedImageAttributes> inlineImgSelected) {
 		
 		final Properties messages = BAG.getMessages();
 		String result = timeDirResult+ "/"+ "Img_%s.%s";
@@ -109,7 +110,7 @@ public class ImagesExtractor {
 		boolean retExtract = true;
 		
 		try {
-			reader = new PdfReader(resultFilePath);
+			reader = new PdfReader(pdfFile.toString());
 			Set<String> keys = imageSelected.keySet();
 			Iterator<String> i = keys.iterator();
 			int z = 1;
@@ -130,7 +131,7 @@ public class ImagesExtractor {
 					io = new PdfImageObject((PRStream) stream);
 				} catch (UnsupportedPdfException updfe) {
 					try {
-						buff = CustomExtraImgReader.readIndexedPNG(ref, resultFilePath);
+						buff = CustomExtraImgReader.readIndexedPNG(ref, pdfFile);
 						buff = Utils.adjustImage(buff, flip, rotate);
 						String type = "png";
 						String filename = String.format(result, z, type);

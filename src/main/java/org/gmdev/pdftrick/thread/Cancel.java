@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.thread;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
 
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -117,9 +118,7 @@ public class Cancel implements Runnable {
 				currentPageField.setText("");
 				numImgSelectedField.setText("");
 			});
-		} catch (InterruptedException e) {
-			logger.error("Exception", e);
-		} catch (InvocationTargetException e) {
+		} catch (InterruptedException | InvocationTargetException e) {
 			logger.error("Exception", e);
 		}
 
@@ -130,8 +129,8 @@ public class Cancel implements Runnable {
 		BAG.setFolderToSave("");
 		Utils.cleanPdfFilesArray();
 		
-		Utils.deletePdfFile();
-		Utils.deleteThumbnailsFiles();
+		Utils.deletePdfFile(BAG.getPdfFilePath());
+		Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
 
 		finished = true;
 	}

@@ -9,6 +9,7 @@ import org.gmdev.pdftrick.swingmanager.WaitPanel;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -17,7 +18,7 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
     private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
     private final int pageNumber;
-    private final String pdfFilePath;
+    private final Path pdfFilePath;
     private final AtomicBoolean exited;
 
     public RenderPageThumbnailsTask(int pageNumber) {
@@ -33,7 +34,7 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
         WaitPanel.setLoadingThumbnailsWaitPanel();
 
-        PdfReader pdfReader = new PdfReader(pdfFilePath);
+        PdfReader pdfReader = new PdfReader(pdfFilePath.toString());
         PdfDocument pdfDocument = new PdfDocument(pdfReader);
         PdfDocumentContentParser contentParser = new PdfDocumentContentParser(pdfDocument);
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
@@ -16,7 +17,7 @@ public enum PdfTrickBag {
 	String os;
 	Path homeFolderPath;
 	Path nativeLibraryPath;
-	String pdfFilePath;
+	Path pdfFilePath;
 	Path thumbnailsFolderPath;
 	int numberOfPages;
 	ArrayList<File> pdfFilesArray;
@@ -31,11 +32,16 @@ public enum PdfTrickBag {
 	NativeObjectManager nativeObjectManager;
 	UserInterface userInterface;
 
-	public void build(String os, Path homeFolderPath, Path nativeLibraryPath) {
+	@CanIgnoreReturnValue
+	public static PdfTrickBag getInstance() {
+		return INSTANCE;
+	}
+
+	protected void init(String os, Path homeFolderPath, Path nativeLibraryPath) {
 		this.os = os;
 		this.homeFolderPath = homeFolderPath;
 		this.nativeLibraryPath = nativeLibraryPath;
-		pdfFilePath = homeFolderPath + File.separator + PDF_FILE_NAME;
+		pdfFilePath = Path.of(homeFolderPath + File.separator + PDF_FILE_NAME);
 		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);
 		numberOfPages = 0;
 		pdfFilesArray = new ArrayList<>();
@@ -60,7 +66,7 @@ public enum PdfTrickBag {
 		return nativeLibraryPath;
 	}
 
-	public String getPdfFilePath() {
+	public Path getPdfFilePath() {
 		return pdfFilePath;
 	}
 

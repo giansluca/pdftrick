@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -94,8 +95,8 @@ public class CustomExtraImgReader {
     /**
      * Read a png image with if all other method fails
      */
-    public static BufferedImage readIndexedPNG(int ref, String resultFile) throws IOException, ImageReadException {
-    	PdfReader reader = new PdfReader(resultFile);
+    public static BufferedImage readIndexedPNG(int ref, Path pdfFile) throws IOException, ImageReadException {
+    	PdfReader reader = new PdfReader(pdfFile.toString());
 		PRStream stream = (PRStream) reader.getPdfObject(ref);
 		PdfDictionary dic = stream;
 		byte[] content = PdfReader.getStreamBytesRaw(stream);

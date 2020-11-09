@@ -3,6 +3,7 @@ package org.gmdev.pdftrick.utils;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
+import java.nio.file.Path;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,21 +24,23 @@ public class Utils {
 		throw new AssertionError("Utils should never be instantiated");
 	}
 
-	public static void cleanUp() {
-		createIfNotExistsThumbnailsFolder();
-		deleteThumbnailsFiles();
-		deletePdfFile();
+	public static void cleanUp(Path thumbnailsFolderPath, Path pdfFilePath) {
+		deletePdfFile(pdfFilePath);
+		if (createIfNotExistsThumbnailsFolder(thumbnailsFolderPath)) return;
+		deleteThumbnailsFiles(thumbnailsFolderPath);
 	}
 
-	public static void createIfNotExistsThumbnailsFolder() {
-		File thumbnailsFolder = BAG.getThumbnailsFolderPath().toFile();
-		if (thumbnailsFolder.exists()) return;
+	public static boolean createIfNotExistsThumbnailsFolder(Path thumbnailsFolderPath) {
+		File thumbnailsFolder = thumbnailsFolderPath.toFile();
+		if (thumbnailsFolder.exists()) return false;
+
 		if (!thumbnailsFolder.mkdir())
 				throw new IllegalStateException("Error creating thumbnails folder");
+		return true;
 	}
 
-	public static void deleteThumbnailsFiles() {
-		File thumbnailsFolder = BAG.getThumbnailsFolderPath().toFile();
+	public static void deleteThumbnailsFiles(Path thumbnailsFolderPath) {
+		File thumbnailsFolder = thumbnailsFolderPath.toFile();
 		if (!thumbnailsFolder.exists()) return;
 
 		File[] thumbnailFiles = thumbnailsFolder.listFiles();
@@ -53,8 +56,8 @@ public class Utils {
 						String.format("Error deleting image file %s", file.getName()));
 	}
 
-	public static void deletePdfFile() {
-		File pdfFile = new File(BAG.getPdfFilePath());
+	public static void deletePdfFile(Path pdfFilePath) {
+		File pdfFile = pdfFilePath.toFile();
 		if (!pdfFile.exists()) return;
 		if (!pdfFile.delete())
 			throw new IllegalStateException("Error deleting pdf file");

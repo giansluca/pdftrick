@@ -1,5 +1,6 @@
 package org.gmdev.pdftrick.validation;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import java.io.IOException;
 import java.net.BindException;
@@ -11,6 +12,7 @@ public class SingleInstanceValidator {
 
     private ServerSocket serverSocket;
 
+    @CanIgnoreReturnValue
     public static SingleInstanceValidator getInstance() {
         return new SingleInstanceValidator();
     }

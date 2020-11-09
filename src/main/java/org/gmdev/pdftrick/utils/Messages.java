@@ -18,18 +18,20 @@ public class Messages {
 	private static final Logger logger = Logger.getLogger(Messages.class);
 	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
+	private static Properties props;
+
 	public static Properties loadMessageProperties() {
-		Properties prop = new Properties();
+		props = new Properties();
 		try {
-			prop.load(FileLoader.loadAsStream(MESSAGES_PROPERTY_FILE));
-			return prop;
+			props.load(FileLoader.loadAsStream(MESSAGES_PROPERTY_FILE));
+			return props;
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
 	public static void printWelcomeMessage() {
-		append("INFO", MessageFormat.format(BAG.getMessages().getProperty("dmsg_09"),
+		append("INFO", MessageFormat.format(props.getProperty("dmsg_09"),
 				System.getProperty("os.name"),
 				System.getProperty("sun.arch.data.model"),
 				System.getProperty("java.version")));

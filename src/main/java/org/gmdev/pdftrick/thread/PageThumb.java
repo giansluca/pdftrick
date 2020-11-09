@@ -30,7 +30,8 @@ public class PageThumb implements Runnable {
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
 		
 		try {
-			nativeManager.renderPdfPageThumbnail(BAG.getPdfFilePath(), imgPath, numPage, Constants.ZOOM_THUMBNAIL);
+			nativeManager.renderPdfPageThumbnail(
+					BAG.getPdfFilePath().toString(), imgPath, numPage, Constants.ZOOM_THUMBNAIL);
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 			logger.error("Exception", e);

@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.thread;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -63,8 +64,8 @@ public class DragAnDropFileChooser implements Runnable {
     	Utils.cleanInlineImgSelectedHashMap();
     	Utils.cleanRotationFromPagesHashMap();
     		
-    	Utils.deleteThumbnailsFiles();
-    	Utils.deletePdfFile();
+    	Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
+    	Utils.deletePdfFile(BAG.getPdfFilePath());
     	
 		for (int i = 0; i < fileDrop.length; i++) {
 			File item = fileDrop[i];
@@ -92,8 +93,8 @@ public class DragAnDropFileChooser implements Runnable {
 				});
         	} else {
         		// merge pdf selection after check
-        		MergeFiles engine = new MergeFiles();
-            	File resultFile = engine.mergePdf(filesVett, BAG.getPdfFilePath());
+        		MergeFiles mergeFiles = new MergeFiles();
+            	File resultFile = mergeFiles.mergePdf(filesVett, BAG.getPdfFilePath());
             	
             	if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
             		Messages.append("INFO", messages.getProperty("tmsg_12"));

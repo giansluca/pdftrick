@@ -39,6 +39,7 @@ class PdfTrickStarterTest {
         // Finally
         userInterfaceBuilderMock.close();
         utilsMock.close();
+        messagesMock.close();
 
         bag.getNativeObjectManager().unloadNativeLib();
         assertThat(fakeNativeLibraryPath.toFile().delete()).isTrue();

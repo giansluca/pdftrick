@@ -10,13 +10,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.*;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
 class PdfTrickTest {
-
-    @Mock
-    PdfTrickBag pdfTrickBag;
 
     @Mock
     SingleInstanceValidator singleInstanceValidator;
