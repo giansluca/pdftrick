@@ -37,6 +37,7 @@ public enum PdfTrickBag {
 		this.nativeLibraryPath = nativeLibraryPath;
 		pdfFilePath = homeFolderPath + File.separator + PDF_FILE_NAME;
 		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);
+		numberOfPages = 0;
 		pdfFilesArray = new ArrayList<>();
 		selected = "";
 		folderToSave = "";

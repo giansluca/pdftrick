@@ -1,37 +1,51 @@
 package org.gmdev.pdftrick.utils;
 
 import java.awt.Component;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.*;
 import java.util.Calendar;
+import java.util.Properties;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+
+import static org.gmdev.pdftrick.utils.Constants.MESSAGES_PROPERTY_FILE;
 
 public class Messages {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final Logger logger = Logger.getLogger(Messages.class);
 	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-	
-	/**
-	 * Clean the text area
-	 */
+
+	public static Properties loadMessageProperties() {
+		Properties prop = new Properties();
+		try {
+			prop.load(FileLoader.loadAsStream(MESSAGES_PROPERTY_FILE));
+			return prop;
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	public static void printWelcomeMessage() {
+		append("INFO", MessageFormat.format(BAG.getMessages().getProperty("dmsg_09"),
+				System.getProperty("os.name"),
+				System.getProperty("sun.arch.data.model"),
+				System.getProperty("java.version")));
+	}
+
 	public static void cleanTextArea() {
 		final JTextArea textArea = BAG.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					textArea.setText("");
-				}
-			});
+			SwingUtilities.invokeLater(() -> textArea.setText(""));
 		} else {
 			textArea.setText("");
 		}
 	}
 
 	/**
-	 * Append messages and errors to text area
+	 * Append messages to text area
 	 */
 	public static void append(String level, String message) {
 		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
@@ -47,12 +61,7 @@ public class Messages {
 		
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						txtArea.append(builder.toString());
-					}
-				});
+				SwingUtilities.invokeAndWait(() -> txtArea.append(builder.toString()));
 			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
 			}
@@ -62,7 +71,7 @@ public class Messages {
 	}
 	
 	/**
-	 * Append messages and errors to text area using invokeLater
+	 * Append messages to text area using invokeLater
 	 */
 	public static void appendLater(String level, String message) {
 		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
@@ -77,17 +86,12 @@ public class Messages {
 		builder.append("\n");
 		
 		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					txtArea.append(builder.toString());
-				}
-			});
+			SwingUtilities.invokeLater(() -> txtArea.append(builder.toString()));
 		}
 	}
 	
 	/**
-	 * Append messages and errors to text area without newline character
+	 * Append messages to text area without newline character
 	 */
 	public static void appendNoNewLine(String level, String message) {
 		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
@@ -102,15 +106,8 @@ public class Messages {
 		
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						txtArea.append(builder.toString());
-					}
-				});
-			} catch (InterruptedException e) {
-				logger.error("Exception", e);
-			} catch (InvocationTargetException e) {
+				SwingUtilities.invokeAndWait(() -> txtArea.append(builder.toString()));
+			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
 			}
 		} else {
@@ -121,20 +118,13 @@ public class Messages {
 	/**
 	 * Append in line message without date and level
 	 */
-	public static void appendIline(String message) {
+	public static void appendInline(String message) {
 		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
 		final String mess = message;
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						txtArea.append(mess);
-					}
-				});
-			} catch (InterruptedException e) {
-				logger.error("Exception", e);
-			} catch (InvocationTargetException e) {
+				SwingUtilities.invokeAndWait(() -> txtArea.append(mess));
+			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
 			}
 		} else {
@@ -149,15 +139,8 @@ public class Messages {
 		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						txtArea.append("\n");
-					}
-				});
-			} catch (InterruptedException e) {
-				logger.error("Exception", e);
-			} catch (InvocationTargetException e) {
+				SwingUtilities.invokeAndWait(() -> txtArea.append("\n"));
+			} catch (InterruptedException | InvocationTargetException e) {
 				logger.error("Exception", e);
 			}
 		} else {
@@ -170,11 +153,7 @@ public class Messages {
 	 */
 	public static void displayMessage(Component parent, String message, String title, int type, ImageIcon icon) {
 		try {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					JOptionPane.showMessageDialog(parent, message, title, type, icon);
-				}
-			});
+			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(parent, message, title, type, icon));
 		} catch (Exception e) {
 			logger.error("Exception", e);
 		}

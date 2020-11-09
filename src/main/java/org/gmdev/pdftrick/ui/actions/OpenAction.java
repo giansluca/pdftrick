@@ -49,14 +49,14 @@ public class OpenAction extends AbstractAction {
 		if (ret == JFileChooser.APPROVE_OPTION) {
         	if ( (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) ||
         		(BAG.getThreadContainer().getOpenFileChooserThread() != null &&	BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
-        		Utils.resetDropBorder();
+        		Utils.resetLeftPanelFileDropBorder();
     			Messages.append("WARNING", messages.getProperty("tmsg_01"));
     			return;
         	}
         	
         	if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
     			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    			Utils.resetDropBorder();
+    			Utils.resetLeftPanelFileDropBorder();
     			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
     			return;
@@ -64,7 +64,7 @@ public class OpenAction extends AbstractAction {
         	
         	if (BAG.getThreadContainer().getImgExtractionThread()!=null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    		    Utils.resetDropBorder();
+    		    Utils.resetLeftPanelFileDropBorder();
     		    Messages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
     		    return;	
@@ -72,7 +72,7 @@ public class OpenAction extends AbstractAction {
         	
         	if (BAG.getThreadContainer().getImgThumbThread()!=null && BAG.getThreadContainer().getImgThumbThread().isAlive()) {
         		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    			Utils.resetDropBorder();
+    			Utils.resetLeftPanelFileDropBorder();
     			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
     					JOptionPane.WARNING_MESSAGE, warningIcon);
     			return;	

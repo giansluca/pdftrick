@@ -204,13 +204,13 @@ public class ImageListenerShowThumb implements RenderListener {
 						faktor = 160 / (double)w;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = Utils.getScaledImagWithScalr(buffImg, scaledW, scaledH);
+						buffImg = Utils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
 					
 					} else {
 						faktor = 160 / (double)h;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = Utils.getScaledImagWithScalr(buffImg, scaledW, scaledH);
+						buffImg = Utils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
 					}
 				}
 				

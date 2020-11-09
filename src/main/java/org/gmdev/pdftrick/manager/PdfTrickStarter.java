@@ -6,6 +6,7 @@ import org.gmdev.pdftrick.ui.UserInterface;
 import java.nio.file.Path;
 import java.util.Properties;
 
+import static org.gmdev.pdftrick.utils.Messages.*;
 import static org.gmdev.pdftrick.utils.Utils.*;
 
 public class PdfTrickStarter {

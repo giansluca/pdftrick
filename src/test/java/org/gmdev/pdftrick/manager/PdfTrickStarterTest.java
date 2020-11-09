@@ -26,6 +26,7 @@ class PdfTrickStarterTest {
 
         MockedStatic<Utils> utilsMock = Mockito.mockStatic(Utils.class);
         MockedStatic<UserInterfaceBuilder> userInterfaceBuilderMock = Mockito.mockStatic(UserInterfaceBuilder.class);
+        MockedStatic<Messages> messagesMock = Mockito.mockStatic(Messages.class);
 
         // When
         PdfTrickStarter.start(os, fakeHomeFolderPath, fakeNativeLibraryPath);

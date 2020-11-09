@@ -65,7 +65,6 @@ public class DragAnDropFileChooser implements Runnable {
     		
     	Utils.deleteThumbnailsFiles();
     	Utils.deletePdfFile();
-    	System.gc();
     	
 		for (int i = 0; i < fileDrop.length; i++) {
 			File item = fileDrop[i];

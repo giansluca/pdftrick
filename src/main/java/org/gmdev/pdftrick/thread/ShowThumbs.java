@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -14,7 +13,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Properties;
 
-import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -69,7 +67,7 @@ public class ShowThumbs implements Runnable {
 			while (i < nPages && !finished) {
 				long timeLoop = System.currentTimeMillis();
 				if (timeLoop > time + delta) {
-					Messages.appendIline(messages.getProperty("tmsg_09"));
+					Messages.appendInline(messages.getProperty("tmsg_09"));
 					delta = delta + 1000;
 				}
 				imgVett = getCoverImagesRendered(thumbnailsFolderPath);

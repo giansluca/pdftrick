@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.swingmanager.WaitPanel;
 import org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode;
 import org.gmdev.pdftrick.ui.actions.WindowsActions;
 import org.gmdev.pdftrick.ui.custom.GlassPane;
@@ -25,7 +24,7 @@ import org.gmdev.pdftrick.utils.FileLoader;
 import org.gmdev.pdftrick.utils.SetupUtils;
 import net.miginfocom.swing.MigLayout;
 
-import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.LOADING_THUMBNAILS;
+import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.PAGE_LOADING_THUMBNAILS;
 
 public class UserInterface extends JFrame {
 	
@@ -102,11 +101,10 @@ public class UserInterface extends JFrame {
 	}
 
 	public void lockScreen(WaitPanelMode mode) {
-		if (mode.equals(LOADING_THUMBNAILS)) {
+		if (mode.equals(PAGE_LOADING_THUMBNAILS))
 			right.getRightBottomPanel().add(glassPanel.getThumbSpinner(), "gaptop 10, center, wrap");
-		} else {
+		else
 			right.getRightBottomPanel().add(glassPanel.getExtractSpinner(), "gaptop 10, center, wrap");
-		}
 		
 		right.getRightBottomPanel().revalidate();
 		right.getRightBottomPanel().repaint();
@@ -115,7 +113,7 @@ public class UserInterface extends JFrame {
 
 	public void unlockScreen() {
 		// the spinner is the last component added in that panel, because it is dynamically added whit the glass pane
-		int spinnerIndex = right.getRightBottomPanel().getComponents().length -1;
+		int spinnerIndex = right.getRightBottomPanel().getComponents().length - 1;
 		right.getRightBottomPanel().remove(spinnerIndex);
 		right.getRightBottomPanel().revalidate();
 		right.getRightBottomPanel().repaint();

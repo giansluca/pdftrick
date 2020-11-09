@@ -4,7 +4,7 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.UserInterface;
 
 import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.EXTRACTING_IMAGES;
-import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.LOADING_THUMBNAILS;
+import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.PAGE_LOADING_THUMBNAILS;
 
 public class WaitPanel {
 	
@@ -12,7 +12,7 @@ public class WaitPanel {
 
 	public static void setLoadingThumbnailsWaitPanel() {
 		SwingInvoker.invokeLater(
-				() -> userInterface.lockScreen(LOADING_THUMBNAILS));
+				() -> userInterface.lockScreen(PAGE_LOADING_THUMBNAILS));
 	}
 
 	public static void setExtractingImagesWaitPanel() {
@@ -26,7 +26,7 @@ public class WaitPanel {
 	}
 
 	public enum WaitPanelMode {
-		LOADING_THUMBNAILS, EXTRACTING_IMAGES
+		PAGE_LOADING_THUMBNAILS, EXTRACTING_IMAGES
 	}
 	
 	

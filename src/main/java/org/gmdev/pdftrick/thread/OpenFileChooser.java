@@ -65,7 +65,6 @@ public class OpenFileChooser implements Runnable {
         		
         Utils.deleteThumbnailsFiles();
         Utils.deletePdfFile();
-     	System.gc();
      	
 		for (int i = 0; i < files.length; i++) {
 			File item = files[i];
