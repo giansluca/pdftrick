@@ -1,6 +1,5 @@
 package org.gmdev.pdftrick.ui.actions;
 
-import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Properties;
 
@@ -64,7 +63,7 @@ public class MacActions {
 		nativeManager.unloadNativeLib();
 		
 		Utils.deletePdfFile(BAG.getPdfFilePath());
-		Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
+		Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 		
 		System.exit(0);
 	}

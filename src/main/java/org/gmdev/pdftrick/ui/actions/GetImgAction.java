@@ -3,6 +3,7 @@ package org.gmdev.pdftrick.ui.actions;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Properties;
 import java.util.Set;
 
@@ -60,18 +61,18 @@ public class GetImgAction extends AbstractAction  {
 			choosefolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			choosefolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
 			
-			String selectedFolderToSave = "";
+			String extractionFolder = null;
 			Set<String> keys = BAG.getImageSelected().keySet();
 			Set<String> kk = BAG.getInlineImgSelected().keySet();
 			
 			if (keys.size() > 0 || kk.size() > 0) {
 				if (choosefolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) { 
 					if (SetupUtils.isWindows()) {
-						selectedFolderToSave = choosefolderToSave.getSelectedFile().getAbsolutePath();
+						extractionFolder = choosefolderToSave.getSelectedFile().getAbsolutePath();
 					} else if (SetupUtils.isMac()) {
-						selectedFolderToSave = choosefolderToSave.getCurrentDirectory().getAbsolutePath();
+						extractionFolder = choosefolderToSave.getCurrentDirectory().getAbsolutePath();
 					}
-					BAG.setFolderToSave(selectedFolderToSave);
+					BAG.setExtractionFolder(Path.of(extractionFolder));
 				} else {
 					extract = false;
 				}

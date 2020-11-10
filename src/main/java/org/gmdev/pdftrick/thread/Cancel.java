@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.thread;
 
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Path;
 
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -126,11 +125,11 @@ public class Cancel implements Runnable {
 		Utils.cleanInlineImgSelectedHashMap();
 		Utils.cleanRotationFromPagesHashMap();
 		BAG.setSelected("");
-		BAG.setFolderToSave("");
+		BAG.setExtractionFolder(null);
 		Utils.cleanPdfFilesArray();
 		
 		Utils.deletePdfFile(BAG.getPdfFilePath());
-		Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
+		Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 
 		finished = true;
 	}

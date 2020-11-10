@@ -22,7 +22,7 @@ public enum PdfTrickBag {
 	int numberOfPages;
 	ArrayList<File> pdfFilesArray;
 	String selected;
-	String folderToSave;
+	Path extractionFolder;
 	HashMap<Integer, String> rotationFromPages;
 	HashMap<String, String> namePwd;
 	HashMap<String, RenderedImageAttributes> imageSelected;
@@ -46,7 +46,7 @@ public enum PdfTrickBag {
 		numberOfPages = 0;
 		pdfFilesArray = new ArrayList<>();
 		selected = "";
-		folderToSave = "";
+		extractionFolder = null;
 		rotationFromPages = new HashMap<>();
 		namePwd = new HashMap<>();
 		imageSelected = new HashMap<>();
@@ -94,12 +94,12 @@ public enum PdfTrickBag {
 		this.selected = selected;
 	}
 
-	public String getFolderToSave() {
-		return folderToSave;
+	public Path getExtractionFolder() {
+		return extractionFolder;
 	}
 
-	public void setFolderToSave(String folderToSave) {
-		this.folderToSave = folderToSave;
+	public void setExtractionFolder(Path extractionFolder) {
+		this.extractionFolder = extractionFolder;
 	}
 
 	public HashMap<Integer, String> getRotationFromPages() {

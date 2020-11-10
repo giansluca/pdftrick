@@ -12,7 +12,7 @@ public class SetupUtils {
 	public static final String MAC_OS = "mac";
 
 	private SetupUtils() {
-		throw new AssertionError("SetupUtils should never be instantiated");
+		throw new AssertionError("SetupUtils class should never be instantiated");
 	}
 
 	public static String getOs() {

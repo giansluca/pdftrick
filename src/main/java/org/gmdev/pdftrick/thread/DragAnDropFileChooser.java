@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.thread;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -56,15 +55,15 @@ public class DragAnDropFileChooser implements Runnable {
 			}
 		});
     	
-    	// clean areatext fileVett resultFile imageSelected imageselected in case of reopen jfilechooser 
+    	// clean up
     	BAG.setSelected("");
-    	BAG.setFolderToSave("");
+    	BAG.setExtractionFolder(null);
     	Utils.cleanPdfFilesArray();
     	Utils.cleanImageSelectedHashMap();
     	Utils.cleanInlineImgSelectedHashMap();
     	Utils.cleanRotationFromPagesHashMap();
     		
-    	Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
+    	Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
     	Utils.deletePdfFile(BAG.getPdfFilePath());
     	
 		for (int i = 0; i < fileDrop.length; i++) {

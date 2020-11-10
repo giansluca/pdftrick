@@ -2,7 +2,6 @@ package org.gmdev.pdftrick.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.nio.file.Path;
 import java.util.Properties;
 
 import javax.swing.AbstractAction;
@@ -74,7 +73,7 @@ public class ExitAction extends AbstractAction {
 		nativeManager.unloadNativeLib();
 		
 		Utils.deletePdfFile(BAG.getPdfFilePath());
-		Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
+		Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 		
 		System.exit(0);
 	}

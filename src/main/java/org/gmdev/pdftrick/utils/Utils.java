@@ -21,13 +21,13 @@ public class Utils {
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
 	private Utils() {
-		throw new AssertionError("Utils should never be instantiated");
+		throw new AssertionError("Utils class should never be instantiated");
 	}
 
 	public static void cleanUp(Path thumbnailsFolderPath, Path pdfFilePath) {
 		deletePdfFile(pdfFilePath);
 		if (createIfNotExistsThumbnailsFolder(thumbnailsFolderPath)) return;
-		deleteThumbnailsFiles(thumbnailsFolderPath);
+		deleteThumbnailFiles(thumbnailsFolderPath);
 	}
 
 	public static boolean createIfNotExistsThumbnailsFolder(Path thumbnailsFolderPath) {
@@ -39,7 +39,7 @@ public class Utils {
 		return true;
 	}
 
-	public static void deleteThumbnailsFiles(Path thumbnailsFolderPath) {
+	public static void deleteThumbnailFiles(Path thumbnailsFolderPath) {
 		File thumbnailsFolder = thumbnailsFolderPath.toFile();
 		if (!thumbnailsFolder.exists()) return;
 
@@ -49,35 +49,40 @@ public class Utils {
 		deleteFileArray(thumbnailFiles);
 	}
 
+	public static void deletePdfFile(Path pdfFilePath) {
+		File pdfFile = pdfFilePath.toFile();
+		if (!pdfFile.exists()) return;
+		deleteFile(pdfFile);
+	}
+
+	public static void deleteExtractionFolderAndImages(Path extractionFolderPath) {
+		File extractionFolder = extractionFolderPath.toFile();
+		if (!extractionFolder.exists()) return;
+
+		File[] imageFiles = extractionFolder.listFiles();
+		if (imageFiles != null && imageFiles.length > 0)
+			deleteFileArray(imageFiles);
+
+		deleteFolder(extractionFolder);
+	}
+
+	private static void deleteFile(File file) {
+		if (!file.delete())
+			throw new IllegalStateException(
+					String.format("Error deleting file %s", file.getName()));
+	}
+
+	private static void deleteFolder(File folder) {
+		if (!folder.delete())
+			throw new IllegalStateException(
+					String.format("Error deleting folder %s", folder.getName()));
+	}
+
 	private static void deleteFileArray(File[] files) {
 		for (File file : files)
 			if (!file.delete())
 				throw new IllegalStateException(
-						String.format("Error deleting image file %s", file.getName()));
-	}
-
-	public static void deletePdfFile(Path pdfFilePath) {
-		File pdfFile = pdfFilePath.toFile();
-		if (!pdfFile.exists()) return;
-		if (!pdfFile.delete())
-			throw new IllegalStateException("Error deleting pdf file");
-	}
-
-	public static void deleteSelectedFolderToSave(String extractionFolderPath) {
-		File extractionFolder = new File(extractionFolderPath);
-		if (!extractionFolder.exists()) return;
-
-		File[] imagesArray = extractionFolder.listFiles();
-		if (imagesArray == null || imagesArray.length == 0) return;
-
-		for (File file : imagesArray)
-			if (!file.delete())
-				throw new IllegalStateException(
-						String.format("Error deleting extracted image file %s", file.getName()));
-
-		if (!extractionFolder.delete())
-			throw new IllegalStateException(
-					String.format("Error deleting extraction folder %s", extractionFolder.getName()));
+						String.format("Error deleting file %s", file.getName()));
 	}
 
 	public static String getTimeForExtractionFolder() {
@@ -119,8 +124,8 @@ public class Utils {
 				Scalr.OP_ANTIALIAS);
 	}
 
-	public static BufferedImage adjustImage(BufferedImage srcImg, String flip, String angle) {
-		BufferedImage buffImg = srcImg;
+	public static BufferedImage adjustImage(BufferedImage sourceImage, String flip, String angle) {
+		BufferedImage buffImg = sourceImage;
 		if (flip.equalsIgnoreCase("fh"))
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.FLIP_HORZ);
 		else if (flip.equalsIgnoreCase("fv"))
@@ -131,8 +136,8 @@ public class Utils {
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_180);
 		else if (angle.equalsIgnoreCase("90"))
 			buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_90);
-		
-		srcImg.flush();
+
+		sourceImage.flush();
 		return buffImg;
 	}
 
@@ -150,17 +155,18 @@ public class Utils {
 	/**
 	 * Apply mask (alpha channel to an image)
 	 */
-	public static BufferedImage ApplyTransparency(BufferedImage image, Image mask) {
-		BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(),BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = dest.createGraphics();
+	public static BufferedImage ApplyTransparency(BufferedImage sourceImage, Image mask) {
+		BufferedImage destImage = new BufferedImage(
+				sourceImage.getWidth(), sourceImage.getHeight(),BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = destImage.createGraphics();
 
-		graphics.drawImage(image, 0, 0, null);
+		graphics.drawImage(sourceImage, 0, 0, null);
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.DST_IN, 1.0F);
 		graphics.setComposite(ac);
 		graphics.drawImage(mask, 0, 0, null);
 		graphics.dispose();
 
-		return dest;
+		return destImage;
 	}
 
 	public static void startWaitIconLoadPdf() {

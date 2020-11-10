@@ -46,24 +46,33 @@ public class ImagesExtractor {
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
-		String finalFolderToSave = BAG.getFolderToSave() + Utils.getTimeForExtractionFolder();
-		File fileFinalFolderToSave = new File(finalFolderToSave);
+		Path extractionFolderWithTimePath =
+				Path.of(BAG.getExtractionFolder() + Utils.getTimeForExtractionFolder());
+
+		File fileFinalFolderToSave = extractionFolderWithTimePath.toFile();
 		fileFinalFolderToSave.mkdir();
 			
-		getImgCheck = extractImgSel(finalFolderToSave, pdfFile, BAG.getImageSelected(), inlineImgSelected);
+		getImgCheck = extractImgSel(
+				extractionFolderWithTimePath.toString(),
+				pdfFile,
+				BAG.getImageSelected(),
+				inlineImgSelected);
 		
 		// if extraction breaks ...
 		if (!getImgCheck) { 
 			Messages.append("WARNING", messages.getProperty("tmsg_18"));
-			Utils.deleteSelectedFolderToSave(finalFolderToSave);
+			Utils.deleteExtractionFolderAndImages(extractionFolderWithTimePath);
 		}			
 	}
 	
 	/**
 	 * Extract in line images after selected after normal images extraction 
 	 */
-	private void extractInlineImgSel(String timeDirResult, HashMap<String, RenderedImageAttributes> inlineImgSelected, int counter) {
-		String result = timeDirResult+ "/"+ "Img_%s.%s";
+	private void extractInlineImgSel(String destFolder,
+									 HashMap<String, RenderedImageAttributes> inlineImgSelected,
+									 int counter) {
+
+		String result = destFolder + "/" + "Img_%s.%s";
 		Set<String> keys = inlineImgSelected.keySet();
 		Iterator<String> i = keys.iterator();
 		
@@ -101,11 +110,13 @@ public class ImagesExtractor {
 		}
 	}
 	
-	private boolean extractImgSel (String timeDirResult, Path pdfFile, HashMap<String, RenderedImageAttributes> imageSelected,
+	private boolean extractImgSel (String destFolder,
+								   Path pdfFile,
+								   HashMap<String, RenderedImageAttributes> imageSelected,
 								   HashMap<String, RenderedImageAttributes> inlineImgSelected) {
 		
 		final Properties messages = BAG.getMessages();
-		String result = timeDirResult+ "/"+ "Img_%s.%s";
+		String result = destFolder + "/" + "Img_%s.%s";
 		PdfReader reader = null;
 		boolean retExtract = true;
 		
@@ -210,7 +221,7 @@ public class ImagesExtractor {
 			
 			reader.close();
 			if (inlineImgSelected.size() > 0) {
-				extractInlineImgSel(timeDirResult, inlineImgSelected, z);
+				extractInlineImgSel(destFolder, inlineImgSelected, z);
 			}
 			
 			Messages.append("INFO", messages.getProperty("tmsg_19"));

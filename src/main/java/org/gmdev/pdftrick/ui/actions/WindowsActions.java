@@ -2,7 +2,6 @@ package org.gmdev.pdftrick.ui.actions;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.nio.file.Path;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -73,7 +72,7 @@ public class WindowsActions implements WindowListener {
 		nativeManager.unloadNativeLib();
 
 		Utils.deletePdfFile(BAG.getPdfFilePath());
-		Utils.deleteThumbnailsFiles(BAG.getThumbnailsFolderPath());
+		Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 		
 		System.exit(0);	
 	}
