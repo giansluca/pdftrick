@@ -19,7 +19,7 @@ public class CancelAction extends AbstractAction {
 	 * Called from the CANCEL SELECTION button, clean everything
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		if (BAG.getThreadContainer().getCancelThread() !=null && BAG.getThreadContainer().getCancelThread().isAlive()) {
 			// wait thread stop Cancel already running
 			// this to prevent massive click on cancel button and instantiate lots of threads.

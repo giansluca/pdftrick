@@ -1,8 +1,12 @@
 package org.gmdev.pdftrick;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Properties;
 import javax.swing.*;
+
+import com.itextpdf.layout.property.Property;
 import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
 import org.apache.log4j.*;
@@ -11,6 +15,7 @@ import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.utils.*;
 import org.gmdev.pdftrick.validation.SingleInstanceValidator;
 
+import static org.gmdev.pdftrick.utils.Constants.*;
 import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
 public class PdfTrick {
@@ -35,7 +40,8 @@ public class PdfTrick {
     }
 
     private static void configureLogger() {
-        PropertyConfigurator.configure(FileLoader.loadAsStream(Constants.PROPERTY_L4J_FILE));
+        Properties loggerProperty = PropertyLoader.loadPropertyFile(PROPERTY_L4J_FILE);
+        PropertyConfigurator.configure(loggerProperty);
     }
 
     private static void setLocale() {

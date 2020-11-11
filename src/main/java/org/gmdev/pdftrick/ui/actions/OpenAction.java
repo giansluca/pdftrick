@@ -37,7 +37,7 @@ public class OpenAction extends AbstractAction {
 	 * Open files menu'
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		final Properties messages = BAG.getMessages();
 		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		

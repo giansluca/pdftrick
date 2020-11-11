@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.utils;
 
 import java.awt.Component;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.*;
 import java.util.Calendar;
@@ -21,13 +20,8 @@ public class Messages {
 	private static Properties props;
 
 	public static Properties loadMessageProperties() {
-		props = new Properties();
-		try {
-			props.load(FileLoader.loadAsStream(MESSAGES_PROPERTY_FILE));
-			return props;
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		props = PropertyLoader.loadPropertyFile(MESSAGES_PROPERTY_FILE);
+		return props;
 	}
 
 	public static void printWelcomeMessage() {

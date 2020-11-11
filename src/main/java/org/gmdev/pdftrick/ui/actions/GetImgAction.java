@@ -31,7 +31,7 @@ public class GetImgAction extends AbstractAction  {
 	 * Called from the GET IMG button, extract images
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		final Properties messages = BAG.getMessages();
 		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		

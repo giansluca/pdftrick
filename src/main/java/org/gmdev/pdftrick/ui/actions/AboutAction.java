@@ -30,7 +30,7 @@ public class AboutAction extends AbstractAction {
 	 * Called from the ABOUT menu', show a small panel with credits - for Windows only
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		final Properties messages = BAG.getMessages();
 		final String os = BAG.getOs();
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));

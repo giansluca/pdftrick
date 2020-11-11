@@ -29,7 +29,7 @@ public class ExitAction extends AbstractAction {
 	 * Called from the EXIT menu', exit the application
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		final Properties messages = BAG.getMessages();
 		
 		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {

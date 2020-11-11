@@ -32,7 +32,7 @@ public class CleanSelectionAction extends AbstractAction {
 	 * Called from the CLEAN SELECTION button, clean image selection
 	 */
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent event) {
 		final Properties messages = BAG.getMessages();
 		final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();

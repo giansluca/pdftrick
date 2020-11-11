@@ -28,7 +28,7 @@ public class WindowsActions implements WindowListener {
 	 * Called on closing window frame, exit application
 	 */
 	@Override
-	public void windowClosing(WindowEvent e) {
+	public void windowClosing(WindowEvent event) {
 		final Properties messages = BAG.getMessages();
 		
 		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
