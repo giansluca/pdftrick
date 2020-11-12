@@ -57,15 +57,16 @@ public class NativeObjectManager {
 	}
 
 	public void unloadNativeLib() {
-		classLoader.removeClass(NATIVE_LIB_CALL);
 		classLoader = null;
 		nativeLibCallClass = null;
 		nativeLibCallInstance = null;
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {}
 		System.runFinalization();
 		System.gc();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }

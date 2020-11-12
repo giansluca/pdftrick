@@ -40,9 +40,5 @@ public class CustomClassLoader extends ClassLoader {
         return classDataBytes;
     }
 
-    public void removeClass(String className) {
-        classes.remove(className);
-    }
-
 
 }
