@@ -7,7 +7,7 @@ import java.util.Properties;
 public class PropertyLoader {
 
     public static Properties loadPropertyFile(String propertyFile) {
-        try (InputStream in = FileLoader.loadAsStream(propertyFile)) {
+        try (InputStream in = FileLoader.loadFileAsStream(propertyFile)) {
             Properties props = new Properties();
             props.load(in);
             return props;

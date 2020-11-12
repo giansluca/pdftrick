@@ -27,9 +27,9 @@ import org.gmdev.pdftrick.utils.SetupUtils;
 public class CustomFileChooser extends JFileChooser {
 	
 	private static final long serialVersionUID = -5896368165854589643L;
-	private final ImageIcon up_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.UP_ICO));
-	private final ImageIcon home_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.HOME_ICO));
-	private final ImageIcon desktop_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.DESKTOP_ICO));
+	private final ImageIcon up_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.UP_ICO));
+	private final ImageIcon home_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.HOME_ICO));
+	private final ImageIcon desktop_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.DESKTOP_ICO));
 	
 	public CustomFileChooser() {
 		if (SetupUtils.isMac()) {

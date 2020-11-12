@@ -19,7 +19,7 @@ public class NativeObjectManager {
 	}
 
 	/**
-	 * Reflection and a Custom class loader are used to avoid some problems
+	 * Reflection and Custom class loader are used to avoid some problems
 	 * that may happen under windows OS
 	 */
 	private void loadNativeLibrary() {
@@ -57,11 +57,15 @@ public class NativeObjectManager {
 	}
 
 	public void unloadNativeLib() {
+		classLoader.removeClass(NATIVE_LIB_CALL);
 		classLoader = null;
 		nativeLibCallClass = null;
 		nativeLibCallInstance = null;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {}
 		System.runFinalization();
 		System.gc();
 	}
-	
+
 }

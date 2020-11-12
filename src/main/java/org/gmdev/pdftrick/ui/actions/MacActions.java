@@ -74,7 +74,7 @@ public class MacActions {
 	public void handleAbout() { 
 		Properties messages = BAG.getMessages();
 		String os = BAG.getOs();
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.MAIN_ICO));
 		
 		Messages.displayMessage(BAG.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_m"), os),
 				messages.getProperty("jmsg_07"), 1, imageIcon);

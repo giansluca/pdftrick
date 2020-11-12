@@ -17,7 +17,7 @@ public class LicenseAction extends AbstractAction {
     private static final long serialVersionUID = 6003243894996325087L;
 
     public LicenseAction() {
-        ImageIcon licenseIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.LICENSE_ICO));
+        ImageIcon licenseIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.LICENSE_ICO));
         super.putValue(NAME, "License");
         super.putValue(SMALL_ICON, licenseIcon);
     }
@@ -41,7 +41,7 @@ public class LicenseAction extends AbstractAction {
 
         // text area
         JTextArea licenseArea = new JTextArea();
-        try (InputStream in = FileLoader.loadAsStream(LICENSE_FILE);
+        try (InputStream in = FileLoader.loadFileAsStream(LICENSE_FILE);
              InputStreamReader inReader = new InputStreamReader(in)) {
             licenseArea.read(inReader, LICENSE_TITLE);
         } catch (IOException e) {
@@ -64,7 +64,7 @@ public class LicenseAction extends AbstractAction {
         scrollPaneLicenseArea.setViewportView(licenseArea);
 
         // logo
-        ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.GPL3_ICO));
+        ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.GPL3_ICO));
         JLabel logo = new JLabel();
         logo.setIcon(imageIcon);
         logo.setBounds(20, 610, imageIcon.getIconWidth(), imageIcon.getIconHeight());

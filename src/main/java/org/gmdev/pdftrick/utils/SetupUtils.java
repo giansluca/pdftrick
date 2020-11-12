@@ -81,7 +81,7 @@ public class SetupUtils {
 	}
 
 	private static void extractNativeLibrary(Path to, String librarySource) {
-		try (InputStream in = FileLoader.loadAsStream(librarySource)) {
+		try (InputStream in = FileLoader.loadFileAsStream(librarySource)) {
 			Files.copy(in, to);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);

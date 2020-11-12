@@ -21,7 +21,7 @@ public class OpenAction extends AbstractAction {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final long serialVersionUID = 490332474672907971L;
-	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.OPEN_FILE_ICO));
+	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.OPEN_FILE_ICO));
 	
 	public OpenAction() {
 		super.putValue(NAME, "Open");

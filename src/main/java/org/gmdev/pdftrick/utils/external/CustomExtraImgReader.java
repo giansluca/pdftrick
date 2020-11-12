@@ -273,7 +273,7 @@ public class CustomExtraImgReader {
      */
     private static BufferedImage convertCmykToRgb(Raster cmykRaster, ICC_Profile cmykProfile) {
         if (cmykProfile == null) {
-            try (InputStream in = FileLoader.loadAsStream(GENERIC_ICC_FILE)) {
+            try (InputStream in = FileLoader.loadFileAsStream(GENERIC_ICC_FILE)) {
                 cmykProfile = ICC_Profile.getInstance(in);
             } catch (IOException e) {
                 throw new IllegalStateException(e);

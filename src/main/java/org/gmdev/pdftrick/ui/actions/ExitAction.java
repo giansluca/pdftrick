@@ -17,7 +17,7 @@ public class ExitAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 4846729705239261046L;
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	private final ImageIcon exit_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.EXIT_ICO));
+	private final ImageIcon exit_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.EXIT_ICO));
 	
 	public ExitAction() {
 		super.putValue(NAME, "Exit");

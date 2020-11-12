@@ -172,7 +172,7 @@ public class Utils {
 	public static void startWaitIconLoadPdf() {
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(WAIT));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(WAIT));
 		JLabel waitLabel = new JLabel(imageIcon);
 		
 		waitLabel.setHorizontalAlignment(JLabel.CENTER);

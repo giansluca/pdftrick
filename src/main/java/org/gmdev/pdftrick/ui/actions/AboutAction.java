@@ -18,7 +18,7 @@ public class AboutAction extends AbstractAction {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final long serialVersionUID = -9051815693784339746L;
-	private final ImageIcon about_icon = new ImageIcon(FileLoader.loadAsUrl(Constants.ABOUT_ICO));
+	private final ImageIcon about_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.ABOUT_ICO));
 	
 	public AboutAction() {
 		super.putValue(NAME, "About");
@@ -33,7 +33,7 @@ public class AboutAction extends AbstractAction {
 	public void actionPerformed(ActionEvent event) {
 		final Properties messages = BAG.getMessages();
 		final String os = BAG.getOs();
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadAsUrl(Constants.MAIN_ICO));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.MAIN_ICO));
 		
 		Messages.displayMessage(BAG.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_w"), os),
 				messages.getProperty("jmsg_07"), 1, imageIcon);
