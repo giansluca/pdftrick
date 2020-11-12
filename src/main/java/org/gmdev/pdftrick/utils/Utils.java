@@ -66,6 +66,11 @@ public class Utils {
 		deleteFolder(extractionFolder);
 	}
 
+	private static void deleteFileArray(File[] files) {
+		for (File file : files)
+			deleteFile(file);
+	}
+
 	private static void deleteFile(File file) {
 		if (!file.delete())
 			throw new IllegalStateException(
@@ -78,13 +83,6 @@ public class Utils {
 					String.format("Error deleting folder %s", folder.getName()));
 	}
 
-	private static void deleteFileArray(File[] files) {
-		for (File file : files)
-			if (!file.delete())
-				throw new IllegalStateException(
-						String.format("Error deleting file %s", file.getName()));
-	}
-
 	public static String getTimeForExtractionFolder() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
@@ -95,7 +93,7 @@ public class Utils {
 		int second = cal.get(Calendar.SECOND);
 
 		String time = String.format("%d-%d-%d_%d.%d.%d", day, month, year, hour, minute, second);
-		return "/PdfTrick_" + time;
+		return "PdfTrick_" + time;
 	}
 	
 	public static BufferedImage getScaledImage(BufferedImage sourceImage, int w, int h) {

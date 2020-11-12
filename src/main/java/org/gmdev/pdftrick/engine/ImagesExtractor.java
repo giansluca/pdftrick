@@ -47,7 +47,9 @@ public class ImagesExtractor {
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
 		Path extractionFolderWithTimePath =
-				Path.of(BAG.getExtractionFolder() + Utils.getTimeForExtractionFolder());
+				Path.of(BAG.getExtractionFolder() +
+						File.separator +
+						Utils.getTimeForExtractionFolder());
 
 		File fileFinalFolderToSave = extractionFolderWithTimePath.toFile();
 		fileFinalFolderToSave.mkdir();

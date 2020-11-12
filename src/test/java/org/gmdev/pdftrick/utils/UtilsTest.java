@@ -37,6 +37,7 @@ class UtilsTest {
         Path fakeThumbnailsFolder = Path.of(
                 HOME_FOR_TEST + File.separator + Constants.PAGES_THUMBNAIL_FOLDER);
 
+        // create home folder
         Utils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolder);
         assertThat(fakeThumbnailsFolder.toFile().exists()).isTrue();
 
@@ -56,11 +57,13 @@ class UtilsTest {
         Path fakeThumbnailsFolderPath = Path.of(
                 HOME_FOR_TEST + File.separator + Constants.PAGES_THUMBNAIL_FOLDER);
 
+        // create home folder
         Utils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolderPath);
         File fakeThumbnailsFolder = fakeThumbnailsFolderPath.toFile();
 
+        // create some fake thumbnail files
         int numberOfFiles = 3;
-        createSomeFakeThumbnailFileS(fakeThumbnailsFolderPath, numberOfFiles);
+        createSomeFakeFileS(fakeThumbnailsFolderPath, numberOfFiles);
 
         File[] fakeFiles = fakeThumbnailsFolder.listFiles();
         assertThat(fakeFiles).isNotNull();
@@ -78,10 +81,37 @@ class UtilsTest {
         assertThat(fakeThumbnailsFolderPath.toFile().delete()).isTrue();
     }
 
-    public void createSomeFakeThumbnailFileS(Path fakeThumbnailsFolder,
+    @Test
+    void isShouldDeleteExtractionFolderAndImages() throws IOException {
+        // Given
+        Path fakeExtractionFolderPath = Path.of(
+                HOME_FOR_TEST + File.separator + Utils.getTimeForExtractionFolder());
+
+        // create home folder
+        Utils.createIfNotExistsThumbnailsFolder(fakeExtractionFolderPath);
+        File fakeExtractionFolder = fakeExtractionFolderPath.toFile();
+
+        // create some fake thumbnail files
+        int numberOfFiles = 5;
+        createSomeFakeFileS(fakeExtractionFolderPath, numberOfFiles);
+
+        File[] fakeFiles = fakeExtractionFolder.listFiles();
+        assertThat(fakeFiles).isNotNull();
+        assertThat(fakeFiles.length).isEqualTo(numberOfFiles);
+
+        // When
+        Utils.deleteExtractionFolderAndImages(fakeExtractionFolderPath);
+
+        // Then
+        fakeFiles = fakeExtractionFolder.listFiles();
+        assertThat(fakeFiles).isNull();
+    }
+
+    public void createSomeFakeFileS(Path fakeFolder,
                                              int numberOfFiles) throws IOException {
+        
         for (int i = 0; i < numberOfFiles; i++)
-            if (!new File(fakeThumbnailsFolder + File.separator + "img" + i).createNewFile())
+            if (!new File(fakeFolder + File.separator + "img-" + i).createNewFile())
                 throw new IllegalStateException("Error creating fake thumbnail file");
     }
 }
