@@ -38,7 +38,7 @@ public class OpenFileChooser implements Runnable {
 	 * Called after choosing pdf file upload  
 	 */
 	public void execute() {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		final JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		final ArrayList<File> filesVett = BAG.getPdfFilesArray();

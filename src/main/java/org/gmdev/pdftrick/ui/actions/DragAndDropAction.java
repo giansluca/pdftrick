@@ -25,7 +25,7 @@ public class DragAndDropAction implements FileDrop.Listener {
 	 */
 	@Override
 	public void filesDropped(File[] fileVett) {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		
 		if ( (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive() ) ||
 			(BAG.getThreadContainer().getOpenFileChooserThread() != null &&	BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {

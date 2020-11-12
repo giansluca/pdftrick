@@ -29,7 +29,7 @@ public class WindowsActions implements WindowListener {
 	 */
 	@Override
 	public void windowClosing(WindowEvent event) {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		
 		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 			BAG.getThreadContainer().getDivisionThumbs().stop();

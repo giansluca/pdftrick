@@ -3,11 +3,11 @@ package org.gmdev.pdftrick.ui.actions;
 import java.text.MessageFormat;
 import java.util.Properties;
 
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.swingmanager.ModalInfoPanel;
 import org.gmdev.pdftrick.utils.*;
 
 public class MacActions {
@@ -21,7 +21,7 @@ public class MacActions {
 	 * Called on mac OS when the application exit
 	 */
 	public void handleQuitRequestWith() {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		
 		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 			BAG.getThreadContainer().getDivisionThumbs().stop();
@@ -64,7 +64,6 @@ public class MacActions {
 		
 		Utils.deletePdfFile(BAG.getPdfFilePath());
 		Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
-		
 		System.exit(0);
 	}
 	
@@ -72,12 +71,13 @@ public class MacActions {
 	 * About menu on OSX
 	 */
 	public void handleAbout() { 
-		Properties messages = BAG.getMessages();
+		Properties messagesProps = BAG.getMessagesProps();
 		String os = BAG.getOs();
 		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.MAIN_ICO));
-		
-		Messages.displayMessage(BAG.getUserInterface(), MessageFormat.format(messages.getProperty("dmsg_01_m"), os),
-				messages.getProperty("jmsg_07"), 1, imageIcon);
+
+		String message = MessageFormat.format(messagesProps.getProperty("dmsg_01_m"), os);
+		String title = messagesProps.getProperty("jmsg_07");
+		ModalInfoPanel.displayAboutPanel(BAG.getUserInterface(), message, title, imageIcon);
 	}
 
 

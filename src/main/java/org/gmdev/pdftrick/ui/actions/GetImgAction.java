@@ -32,7 +32,7 @@ public class GetImgAction extends AbstractAction  {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		
 		if (BAG.getThreadContainer().getImgExtractionThread() != null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {

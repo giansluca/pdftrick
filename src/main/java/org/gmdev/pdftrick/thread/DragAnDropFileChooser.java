@@ -38,11 +38,11 @@ public class DragAnDropFileChooser implements Runnable {
 	 * Called after pdf file dropped in  
 	 */
 	public void execute() {
-		final Properties messages = BAG.getMessages();
-		final JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
-		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
-		final ArrayList<File> filesVett = BAG.getPdfFilesArray();
-		
+		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
+		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		ArrayList<File> filesVett = BAG.getPdfFilesArray();
+		Properties messages = BAG.getMessagesProps();
+
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
 			public void run() {

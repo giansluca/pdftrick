@@ -10,14 +10,14 @@ public class ModalWarningPanel {
     private static final ImageIcon WARNING_ICON = new ImageIcon(FileLoader.loadFileAsUrl(WARNING_ICO));
     private static final String WARNING_TITLE = "Warning";
 
-    public static void displayArchWarningAndThrow() {
+    public static void displayArchWarningPanelAndThrow() {
         String message = "PdfTrick can run only on a 64 bit Jvm";
 
         SwingInvoker.invokeAndWait(() -> displayWarningPanel(message));
         throw new IllegalStateException(message);
     }
 
-    public static void displayAlreadyRunningAndThrow() {
+    public static void displayAlreadyRunningPanelAndThrow() {
         String message = "PdfTrick is already running";
 
         SwingInvoker.invokeAndWait(() -> displayWarningPanel(message));

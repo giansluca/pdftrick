@@ -38,7 +38,7 @@ public class ImgThumb implements Runnable {
 	}
 
 	public void renderPageThumbnails () {
-		Properties messages = BAG.getMessages();
+		Properties messages = BAG.getMessagesProps();
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		
 		WaitPanel.setLoadingThumbnailsWaitPanel();

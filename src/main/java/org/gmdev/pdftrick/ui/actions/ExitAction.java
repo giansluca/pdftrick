@@ -30,7 +30,7 @@ public class ExitAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		
 		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 			BAG.getThreadContainer().getDivisionThumbs().stop();

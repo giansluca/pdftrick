@@ -50,7 +50,7 @@ public class ShowThumbs implements Runnable {
 	 * Check img folder, and show images in a left panel, last image written by render thread
 	 */
 	public void execute() {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		final JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
 		final Path hiddenHomeFolder = BAG.getHomeFolderPath();
 		Path thumbnailsFolderPath = BAG.getThumbnailsFolderPath();

@@ -4,31 +4,22 @@ import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.text.*;
 import java.util.Calendar;
-import java.util.Properties;
 import javax.swing.*;
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 
-import static org.gmdev.pdftrick.utils.Constants.MESSAGES_PROPERTY_FILE;
+import static org.gmdev.pdftrick.utils.SystemProperty.getSystemProperty;
 
 public class Messages {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	private static final Logger logger = Logger.getLogger(Messages.class);
 	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
-	private static Properties props;
-
-	public static Properties loadMessageProperties() {
-		props = PropertyLoader.loadPropertyFile(MESSAGES_PROPERTY_FILE);
-		return props;
-	}
-
 	public static void printWelcomeMessage() {
-		append("INFO", MessageFormat.format(props.getProperty("dmsg_09"),
-				System.getProperty("os.name"),
-				System.getProperty("sun.arch.data.model"),
-				System.getProperty("java.version")));
+		String message = BAG.getMessagesProps().getProperty("dmsg_09");
+		append("INFO", MessageFormat.format(message,
+				getSystemProperty("os.name"),
+				getSystemProperty("sun.arch.data.model"),
+				getSystemProperty("java.version")));
 	}
 
 	public static void cleanTextArea() {
@@ -59,7 +50,7 @@ public class Messages {
 			try {
 				SwingUtilities.invokeAndWait(() -> txtArea.append(builder.toString()));
 			} catch (InterruptedException | InvocationTargetException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 		} else {
 			txtArea.append(builder.toString());
@@ -104,7 +95,7 @@ public class Messages {
 			try {
 				SwingUtilities.invokeAndWait(() -> txtArea.append(builder.toString()));
 			} catch (InterruptedException | InvocationTargetException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 		} else {
 			txtArea.append(builder.toString());
@@ -121,7 +112,7 @@ public class Messages {
 			try {
 				SwingUtilities.invokeAndWait(() -> txtArea.append(mess));
 			} catch (InterruptedException | InvocationTargetException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 		} else {
 			txtArea.append(mess);
@@ -137,21 +128,18 @@ public class Messages {
 			try {
 				SwingUtilities.invokeAndWait(() -> txtArea.append("\n"));
 			} catch (InterruptedException | InvocationTargetException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 		} else {
 			txtArea.append("\n");
 		}
 	}
-	
-	/**
-	 * display modal windows message
-	 */
+
 	public static void displayMessage(Component parent, String message, String title, int type, ImageIcon icon) {
 		try {
 			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(parent, message, title, type, icon));
 		} catch (Exception e) {
-			logger.error("Exception", e);
+			throw new IllegalStateException(e);
 		}
 	}
 

@@ -4,16 +4,16 @@ import java.lang.reflect.*;
 
 public class NativeObjectManager {
 
+	private static final String NATIVE_LIB_CALL = "org.gmdev.pdftrick.nativeutil.NativeLibCall";
+	private static final String RENDER_THUMBNAIL_FUNCTION = "start";
+	private static final String RENDER_FULL_FUNCTION = "cover";
+
 	private CustomClassLoader classLoader;
 	private Class<?> nativeLibCallClass;
 	private Object nativeLibCallInstance;
 	private Method pageThumbnailMethod;
 	private Method pageFullMethod;
 
-	private static final String NATIVE_LIB_CALL = "org.gmdev.pdftrick.nativeutil.NativeLibCall";
-	private static final String RENDER_THUMBNAIL_FUNCTION = "start";
-	private static final String RENDER_FULL_FUNCTION = "cover";
-	
 	public NativeObjectManager() {
 		loadNativeLibrary();
 	}

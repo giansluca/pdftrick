@@ -33,7 +33,7 @@ public class CleanSelectionAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();

@@ -29,7 +29,7 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
     @Override
     public void process() throws IOException {
-        Properties messages = BAG.getMessages();
+        Properties messages = BAG.getMessagesProps();
         JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 
         WaitPanel.setLoadingThumbnailsWaitPanel();

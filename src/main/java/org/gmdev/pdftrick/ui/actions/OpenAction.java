@@ -38,7 +38,7 @@ public class OpenAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		
 		CustomFileChooser fileOpen = new CustomFileChooser();

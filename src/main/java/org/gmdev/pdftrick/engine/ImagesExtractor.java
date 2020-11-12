@@ -39,7 +39,7 @@ public class ImagesExtractor {
 	 * Prepare for the extraction and call images extractor
 	 */
 	public void getImages() {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
 		final Path pdfFile = BAG.getPdfFilePath();
 		boolean getImgCheck = false;
@@ -115,7 +115,7 @@ public class ImagesExtractor {
 								   HashMap<String, RenderedImageAttributes> imageSelected,
 								   HashMap<String, RenderedImageAttributes> inlineImgSelected) {
 		
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		String result = destFolder + "/" + "Img_%s.%s";
 		PdfReader reader = null;
 		boolean retExtract = true;

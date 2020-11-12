@@ -55,7 +55,7 @@ public class CheckFiles {
 	 * Check files selected (pdf integrity, images inside, protection).
 	 */
 	public boolean check() {
-		final Properties messages = BAG.getMessages();
+		final Properties messages = BAG.getMessagesProps();
 		final ArrayList<File> filesVett = BAG.getPdfFilesArray();
 		
 		boolean check = false;

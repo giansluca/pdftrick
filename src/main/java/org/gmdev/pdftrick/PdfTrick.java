@@ -1,12 +1,10 @@
 package org.gmdev.pdftrick;
 
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Properties;
 import javax.swing.*;
 
-import com.itextpdf.layout.property.Property;
 import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
 import org.apache.log4j.*;
@@ -79,7 +77,7 @@ public class PdfTrick {
 
     private static void checkArchitecture() {
         if (!isJvm64())
-            ModalWarningPanel.displayArchWarningAndThrow();
+            ModalWarningPanel.displayArchWarningPanelAndThrow();
     }
 
     private static void setMacPreferences() {

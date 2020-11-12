@@ -8,6 +8,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
+import org.gmdev.pdftrick.utils.Messages;
 
 import static org.gmdev.pdftrick.utils.Constants.*;
 
@@ -28,7 +29,7 @@ public enum PdfTrickBag {
 	HashMap<String, RenderedImageAttributes> imageSelected;
 	HashMap<String, RenderedImageAttributes> inlineImgSelected;
 	ThreadContainer threadContainer;
-	Properties messages;
+	Properties messagesProps;
 	NativeObjectManager nativeObjectManager;
 	UserInterface userInterface;
 
@@ -122,10 +123,10 @@ public enum PdfTrickBag {
 		return threadContainer;
 	}
 
-	public Properties getMessages() { return messages; }
+	public Properties getMessagesProps() { return messagesProps; }
 
-	protected void setMessages(Properties messages) {
-		this.messages = messages;
+	protected void setMessagesProps(Properties messagesProps) {
+		this.messagesProps = messagesProps;
 	}
 
 	public NativeObjectManager getNativeObjectManager() {
