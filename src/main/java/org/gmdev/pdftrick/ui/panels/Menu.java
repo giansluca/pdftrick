@@ -2,38 +2,24 @@ package org.gmdev.pdftrick.ui.panels;
 
 import java.awt.Desktop;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
-import org.gmdev.pdftrick.ui.actions.AboutAction;
-import org.gmdev.pdftrick.ui.actions.ExitAction;
-import org.gmdev.pdftrick.ui.actions.LicenseAction;
-import org.gmdev.pdftrick.ui.actions.MacActions;
-import org.gmdev.pdftrick.ui.actions.OpenAction;
+import org.gmdev.pdftrick.ui.actions.*;
 import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class Menu {
 	
-	private final JMenuBar menubar;
+	private final JMenuBar menuBar;
 	
 	public Menu() {
 		if (SetupUtils.isMac()) {
 			MacActions macActions = new MacActions();
 			Desktop desktop = Desktop.getDesktop();
-
-	        desktop.setAboutHandler(e -> {
-	        		macActions.handleAbout();
-	        	}
-	        );
-	        
-	        desktop.setQuitHandler((e, r) -> {
-	        		macActions.handleQuitRequestWith();
-	            }
-	        );
+	        desktop.setAboutHandler(e -> macActions.handleAbout());
+	        desktop.setQuitHandler((e, r) -> macActions.handleQuitRequestWith());
 		}
 		
-		menubar = new JMenuBar();
+		menuBar = new JMenuBar();
         if (SetupUtils.isWindows()) {
         	JMenu pdftrick = new JMenu("PdfTrick");
         	
@@ -45,7 +31,7 @@ public class Menu {
         	
         	pdftrick.add(aboutMenuItem);
         	pdftrick.add(exitMenuItem);
-        	menubar.add(pdftrick);
+        	menuBar.add(pdftrick);
         }
         
         JMenu file = new JMenu("File");
@@ -59,12 +45,12 @@ public class Menu {
     	licence.setAction(new LicenseAction());
 
     	help.add(licence);
-    	menubar.add(file);
-    	menubar.add(help);
+    	menuBar.add(file);
+    	menuBar.add(help);
 	}
 	
-	public JMenuBar getMenubar() {
-		return menubar;
+	public JMenuBar getMenuBar() {
+		return menuBar;
 	}
 	
 	

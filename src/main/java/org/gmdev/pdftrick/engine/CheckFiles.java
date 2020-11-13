@@ -254,7 +254,7 @@ public class CheckFiles {
 	 * Show dialog to get the User password and check it.
 	 */
 	private String askAndChekPwd(File file, Properties messages, int n) {
-		ImageIcon imageIcon = new ImageIcon(getClass().getResource(Constants.MAIN_ICO));
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource(Constants.PDFTRICK_ICO));
 		
 		final JDialog userPwdDialog = new JDialog((JDialog)null, true);
 		userPwdDialog.setTitle(Constants.PWD_DIALOG);

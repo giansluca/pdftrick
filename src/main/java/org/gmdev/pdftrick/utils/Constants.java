@@ -26,7 +26,7 @@ public final class Constants {
 	public static final String LICENSE_FILE = "license.txt";
 
 	// icons
-	public static final String MAIN_ICO = "icons/main_icon.png";
+	public static final String PDFTRICK_ICO = "icons/pdftrick_icon.png";
 	public static final String WARNING_ICO = "icons/warning.png";
 	public static final String ABOUT_ICO = "icons/about_icon.png";
 	public static final String EXIT_ICO = "icons/exit_icon.png";

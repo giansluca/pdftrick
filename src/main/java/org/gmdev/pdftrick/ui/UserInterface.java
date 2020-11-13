@@ -50,7 +50,7 @@ public class UserInterface extends JFrame {
 		// Set icon image in windows and osx system
 	    if (SetupUtils.isWindows()) {
 	    	int loadingDone = MediaTracker.ABORTED | MediaTracker.ERRORED | MediaTracker.COMPLETE;
-	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.MAIN_ICO));
+	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.PDFTRICK_ICO));
 	    	
 	    	while ((imageIcon.getImageLoadStatus() & loadingDone) == 0) {
 	    		// look a bit ...
@@ -61,7 +61,7 @@ public class UserInterface extends JFrame {
 	    	}	
 	    } else if (SetupUtils.isMac()) {
 	    	int loadingDone = MediaTracker.ABORTED | MediaTracker.ERRORED | MediaTracker.COMPLETE;
-	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.MAIN_ICO));
+	    	ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.PDFTRICK_ICO));
 	    	
 	    	while ((imageIcon.getImageLoadStatus() & loadingDone) == 0) {
 	    		// look a bit ...
@@ -82,7 +82,7 @@ public class UserInterface extends JFrame {
         
         setTitle(Constants.APP_NAME);
         addWindowListener(new WindowsActions());
-        setJMenuBar(menu.getMenubar());
+        setJMenuBar(menu.getMenuBar());
         getRootPane().setGlassPane(glassPanel);
         setContentPane(contentPanelSetUp());
         pack();

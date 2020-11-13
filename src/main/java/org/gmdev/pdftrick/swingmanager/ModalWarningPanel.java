@@ -13,18 +13,18 @@ public class ModalWarningPanel {
     public static void displayArchWarningPanelAndThrow() {
         String message = "PdfTrick can run only on a 64 bit Jvm";
 
-        SwingInvoker.invokeAndWait(() -> displayWarningPanel(message));
+        SwingInvoker.invokeAndWait(() -> displayGenericWarningPanel(message));
         throw new IllegalStateException(message);
     }
 
     public static void displayAlreadyRunningPanelAndThrow() {
         String message = "PdfTrick is already running";
 
-        SwingInvoker.invokeAndWait(() -> displayWarningPanel(message));
+        SwingInvoker.invokeAndWait(() -> displayGenericWarningPanel(message));
         throw new IllegalStateException(message);
     }
 
-    public static void displayWarningPanel(String message) {
+    private static void displayGenericWarningPanel(String message) {
         JOptionPane.showMessageDialog(
                 null,
                 message,

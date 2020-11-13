@@ -1,6 +1,5 @@
 package org.gmdev.pdftrick.ui.actions;
 
-import java.text.MessageFormat;
 import java.util.Properties;
 
 import javax.swing.*;
@@ -21,7 +20,7 @@ public class MacActions {
 	 * Called on mac OS when the application exit
 	 */
 	public void handleQuitRequestWith() {
-		final Properties messages = BAG.getMessagesProps();
+		Properties messages = BAG.getMessagesProps();
 		
 		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 			BAG.getThreadContainer().getDivisionThumbs().stop();
@@ -68,16 +67,10 @@ public class MacActions {
 	}
 	
 	/**
-	 * About menu on OSX
+	 * About menu Mac
 	 */
 	public void handleAbout() { 
-		Properties messagesProps = BAG.getMessagesProps();
-		String os = BAG.getOs();
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.MAIN_ICO));
-
-		String message = MessageFormat.format(messagesProps.getProperty("dmsg_01_m"), os);
-		String title = messagesProps.getProperty("jmsg_07");
-		ModalInfoPanel.displayAboutPanel(BAG.getUserInterface(), message, title, imageIcon);
+		ModalInfoPanel.displayAboutPanel();
 	}
 
 
