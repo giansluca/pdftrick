@@ -9,8 +9,7 @@ env:
     - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
     - GRAVIS="$HOME/gravis"
   matrix:
-    - JDK="openjdk@1.11-2"
-    - MAVEN_VERSION="3.6.3"
+    - JDK="openjdk@1.11.0-2"
 
 before_install:
   - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
