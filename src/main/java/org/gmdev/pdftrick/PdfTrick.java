@@ -77,7 +77,7 @@ public class PdfTrick {
 
     private static void checkArchitecture() {
         if (!isJvm64())
-            ModalWarningPanel.displayArchWarningPanelAndThrow();
+            ModalWarningPanel.displayArchWarningAndThrow();
     }
 
     private static void setMacPreferences() {

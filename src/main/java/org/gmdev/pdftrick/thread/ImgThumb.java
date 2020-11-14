@@ -80,9 +80,9 @@ public class ImgThumb implements Runnable {
 				infoAvailable = MessageFormat.format(messages.getProperty("dmsg_03"), numberPage);
 			} else {
 				String t = listener.getNumImg() > 1 ? messages.getProperty("tmsg_15") : messages.getProperty("tmsg_16");
-				infoAvailable = listener.getNumImg()+" "+t;
+				infoAvailable = listener.getNumImg() + " " + t;
 			}
-			Messages.append("INFO", infoUnsupported+infoAvailable);
+			Messages.append("INFO", infoUnsupported + " " + infoAvailable);
 		} catch(Exception e) {
 			logger.error("Exception", e);
 		}

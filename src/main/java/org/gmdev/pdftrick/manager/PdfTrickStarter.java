@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.manager;
 
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.swingmanager.UserInterfaceBuilder;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.Messages;

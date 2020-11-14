@@ -26,9 +26,12 @@ public class ModalInfoPanel {
                 () -> displayGenericInfoPanel(userInterface, aboutMessage, aboutTitle, pdfTrickIcon));
     }
 
-    private static void displayGenericInfoPanel(Component parent, String message, String title, ImageIcon icon) {
+    private static void displayGenericInfoPanel(Component parentComponent,
+                                                String message,
+                                                String title,
+                                                ImageIcon icon) {
         JOptionPane.showMessageDialog(
-                parent,
+                parentComponent,
                 message,
                 title,
                 JOptionPane.INFORMATION_MESSAGE ,
