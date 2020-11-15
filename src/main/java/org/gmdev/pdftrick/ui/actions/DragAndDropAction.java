@@ -18,40 +18,40 @@ public class DragAndDropAction implements FileDrop.Listener {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
-	public DragAndDropAction() {
-	}
-	
 	/**
 	 * Called when user upload file with drop action in a panel left
 	 */
 	@Override
 	public void filesDropped(File[] fileVett) {
-		final Properties messages = BAG.getMessagesProps();
+		final Properties messagesProps = BAG.getMessagesProps();
 		
-		if ( (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
+		if ((BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
 				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive() ) ||
 			(BAG.getThreadContainer().getOpenFileChooserThread() != null &&
 					BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
 
 			Utils.resetLeftPanelFileDropBorder();
-			Messages.append("WARNING", messages.getProperty("tmsg_01"));
+			Messages.append("WARNING", messagesProps.getProperty("tmsg_01"));
 			return;
 		}
+
 		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
 				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 
 			Utils.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
-    	}  
-    	if (BAG.getThreadContainer().getImgExtractionThread()!=null &&
+    	}
+
+    	if (BAG.getThreadContainer().getImgExtractionThread() != null &&
 				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
 
 		    Utils.resetLeftPanelFileDropBorder();
 		    ModalWarningPanel.displayExtractingImagesWarning();
 		    return;	
     	}
-    	if (BAG.getThreadContainer().getImgThumbThread()!=null &&
+
+    	if (BAG.getThreadContainer().getImgThumbThread() != null &&
 				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
 
     		Utils.resetLeftPanelFileDropBorder();

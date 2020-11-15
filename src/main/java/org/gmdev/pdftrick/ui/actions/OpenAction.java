@@ -1,18 +1,14 @@
 package org.gmdev.pdftrick.ui.actions;
 
 import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.Properties;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.thread.OpenFileChooser;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
@@ -20,26 +16,25 @@ import org.gmdev.pdftrick.utils.*;
 public class OpenAction extends AbstractAction {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	private static final long serialVersionUID = 490332474672907971L;
-	private final ImageIcon open_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.OPEN_FILE_ICO));
-	
+	private static final String ACTION_NAME = "Open";
+
 	public OpenAction() {
-		super.putValue(NAME, "Open");
+		ImageIcon open_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.OPEN_FILE_ICO));
+		super.putValue(NAME, ACTION_NAME);
 		super.putValue(SMALL_ICON, open_icon);
-		if (SetupUtils.isWindows()) {
-			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-		} else if (SetupUtils.isMac()) {
-			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
-		}
+		if (SetupUtils.isWindows())
+			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+		else
+			super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_DOWN_MASK));
 	}
 
 	/**
-	 * Open files menu'
+	 * Open files menu
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessagesProps();
-		final Container contentPanel = BAG.getUserInterface().getContentPane();
+		Properties messagesProps = BAG.getMessagesProps();
+		Container contentPanel = BAG.getUserInterface().getContentPane();
 		
 		CustomFileChooser fileOpen = new CustomFileChooser();
 		fileOpen.setMultiSelectionEnabled(true);
@@ -47,34 +42,34 @@ public class OpenAction extends AbstractAction {
 		int ret = fileOpen.showOpenDialog(contentPanel);
 		
 		if (ret == JFileChooser.APPROVE_OPTION) {
-        	if ( (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) ||
-        		(BAG.getThreadContainer().getOpenFileChooserThread() != null &&	BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
+        	if ((BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
+					BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) ||
+        		(BAG.getThreadContainer().getOpenFileChooserThread() != null &&
+						BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
+
         		Utils.resetLeftPanelFileDropBorder();
-    			Messages.append("WARNING", messages.getProperty("tmsg_01"));
+    			Messages.append("WARNING", messagesProps.getProperty("tmsg_01"));
     			return;
         	}
         	
-        	if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
-    			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
+        	if (BAG.getThreadContainer().getShowThumbsThread() != null &&
+					BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
     			Utils.resetLeftPanelFileDropBorder();
-    			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
-    					JOptionPane.WARNING_MESSAGE, warningIcon);
+				ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
     			return;
         	}  
         	
-        	if (BAG.getThreadContainer().getImgExtractionThread()!=null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
-        		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    		    Utils.resetLeftPanelFileDropBorder();
-    		    Messages.displayMessage(null, messages.getProperty("jmsg_03"), messages.getProperty("jmsg_01"),
-    					JOptionPane.WARNING_MESSAGE, warningIcon);
+        	if (BAG.getThreadContainer().getImgExtractionThread()!=null &&
+					BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+        		Utils.resetLeftPanelFileDropBorder();
+				ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
     		    return;	
         	}
         	
-        	if (BAG.getThreadContainer().getImgThumbThread()!=null && BAG.getThreadContainer().getImgThumbThread().isAlive()) {
-        		ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-    			Utils.resetLeftPanelFileDropBorder();
-    			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
-    					JOptionPane.WARNING_MESSAGE, warningIcon);
+        	if (BAG.getThreadContainer().getImgThumbThread()!=null &&
+					BAG.getThreadContainer().getImgThumbThread().isAlive()) {
+        		Utils.resetLeftPanelFileDropBorder();
+				ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
     			return;	
         	}
         	
@@ -87,7 +82,6 @@ public class OpenAction extends AbstractAction {
         	BAG.getThreadContainer().setOpenFileChooserThread(openFileChooserThread);
         	openFileChooserThread.start();
         }
-        	
 	}
 	
 	

@@ -14,7 +14,6 @@ import static org.gmdev.pdftrick.utils.Constants.*;
 public class LicenseAction extends AbstractAction {
 
     private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-    private static final long serialVersionUID = 6003243894996325087L;
 
     public LicenseAction() {
         ImageIcon licenseIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.LICENSE_ICO));

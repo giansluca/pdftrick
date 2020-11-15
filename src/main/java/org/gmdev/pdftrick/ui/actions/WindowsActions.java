@@ -2,23 +2,15 @@ package org.gmdev.pdftrick.ui.actions;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Properties;
-
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.utils.Constants;
+import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
-import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.Utils;
 
 public class WindowsActions implements WindowListener {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
-	public WindowsActions() {
-	}
 	
 	@Override
 	public void windowOpened(WindowEvent e) {
@@ -29,9 +21,9 @@ public class WindowsActions implements WindowListener {
 	 */
 	@Override
 	public void windowClosing(WindowEvent event) {
-		final Properties messages = BAG.getMessagesProps();
-		
-		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getThreadContainer().getDivisionThumbs() != null &&
+				!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+
 			BAG.getThreadContainer().getDivisionThumbs().stop();
 			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
@@ -44,7 +36,9 @@ public class WindowsActions implements WindowListener {
 			}
 		}
 		
-		if (BAG.getThreadContainer().getExecPool() != null && !BAG.getThreadContainer().getExecPool().isFinished()) {
+		if (BAG.getThreadContainer().getExecPool() != null &&
+				!BAG.getThreadContainer().getExecPool().isFinished()) {
+
 			BAG.getThreadContainer().getExecPool().stop();
 			if (BAG.getThreadContainer().getExecPoolThread() != null) {
 				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
@@ -52,6 +46,7 @@ public class WindowsActions implements WindowListener {
 				}
 			}
 		}
+
 		if (BAG.getThreadContainer().getExecutor() != null) {
 			BAG.getThreadContainer().getExecutor().shutdownNow();
 			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
@@ -59,12 +54,13 @@ public class WindowsActions implements WindowListener {
 			}
 		}
 		
-		if (BAG.getThreadContainer().getImgExtraction() !=null && !BAG.getThreadContainer().getImgExtraction().isFinished()) {
+		if (BAG.getThreadContainer().getImgExtraction() !=null &&
+				!BAG.getThreadContainer().getImgExtraction().isFinished()) {
+
 			BAG.getThreadContainer().getImgExtraction().stop();
-			if (BAG.getThreadContainer().getImgExtractionThread() !=null && BAG.getThreadContainer().getImgExtractionThread() .isAlive()) {
-				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-				Messages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
-						JOptionPane.WARNING_MESSAGE, warningIcon);
+			if (BAG.getThreadContainer().getImgExtractionThread() !=null &&
+					BAG.getThreadContainer().getImgExtractionThread() .isAlive()) {
+				ModalWarningPanel.displayClosingDuringExtractionWarning();
 			}
 		}
 		

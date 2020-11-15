@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.thread.ImgExtraction;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.Constants;
@@ -21,11 +22,7 @@ import org.gmdev.pdftrick.utils.SetupUtils;
 
 public class GetImgAction extends AbstractAction  {
 	
-	private static final long serialVersionUID = 5066094189763059556L;
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
-	public GetImgAction() {
-	}
 	
 	/**
 	 * Called from the GET IMG button, extract images
@@ -35,22 +32,28 @@ public class GetImgAction extends AbstractAction  {
 		final Properties messages = BAG.getMessagesProps();
 		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		
-		if (BAG.getThreadContainer().getImgExtractionThread() != null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+		if (BAG.getThreadContainer().getImgExtractionThread() != null &&
+				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+
 			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
-		if (BAG.getThreadContainer().getOpenFileChooserThread() != null && BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getOpenFileChooserThread() != null &&
+				BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
+				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
-			ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-			Messages.displayMessage(null, messages.getProperty("jmsg_02"), messages.getProperty("jmsg_01"),
-					JOptionPane.WARNING_MESSAGE, warningIcon);
+		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
+				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
+
+			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
 		}
 		

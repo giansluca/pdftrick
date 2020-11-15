@@ -14,7 +14,6 @@ public class ModalInfoPanel {
     private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
     public static void displayAboutPanel() {
-        UserInterface userInterface = BAG.getUserInterface();
         String os = BAG.getOs();
         ImageIcon pdfTrickIcon = new ImageIcon(FileLoader.loadFileAsUrl(PDFTRICK_ICO));
 
@@ -23,7 +22,7 @@ public class ModalInfoPanel {
                 "PdfTrick\nAuthor: Gian Luca Mori\nVersion: 1.3 %s \nLicense: gnu Gpl3", os);
 
         SwingInvoker.invokeLater(
-                () -> displayGenericInfoPanel(userInterface, aboutMessage, aboutTitle, pdfTrickIcon));
+                () -> displayGenericInfoPanel(BAG.getUserInterface(), aboutMessage, aboutTitle, pdfTrickIcon));
     }
 
     private static void displayGenericInfoPanel(Component parentComponent,

@@ -135,12 +135,4 @@ public class Messages {
 		}
 	}
 
-	public static void displayMessage(Component parent, String message, String title, int type, ImageIcon icon) {
-		try {
-			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(parent, message, title, type, icon));
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
 }

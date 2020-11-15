@@ -22,69 +22,72 @@ import org.gmdev.pdftrick.utils.Utils;
 
 public class CleanSelectionAction extends AbstractAction {
 	
-	private static final long serialVersionUID = 1827086419763590961L;
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
-	public CleanSelectionAction() {
-	}
 	
 	/**
 	 * Called from the CLEAN SELECTION button, clean image selection
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessagesProps();
-		final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
-		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
-		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
+		Properties messagesProps = BAG.getMessagesProps();
+		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
 		
-		if (BAG.getThreadContainer().getImgExtractionThread() != null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
-			Messages.append("WARNING", messages.getProperty("tmsg_02"));
+		if (BAG.getThreadContainer().getImgExtractionThread() != null &&
+				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+
+			Messages.append("WARNING", messagesProps.getProperty("tmsg_02"));
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getImgThumbThread() !=null && BAG.getThreadContainer().getImgThumbThread().isAlive()) {
-			Messages.append("WARNING", messages.getProperty("tmsg_23"));
+		if (BAG.getThreadContainer().getImgThumbThread() !=null &&
+				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
+
+			Messages.append("WARNING", messagesProps.getProperty("tmsg_23"));
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getOpenFileChooserThread() != null && BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getOpenFileChooserThread() != null &&
+				BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null && BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
+				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getShowThumbsThread() != null && BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
+		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
+				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 			return;
 		}
 		
 		if (BAG.getImageSelected().size() == 0 && inlineImgSelected.size() == 0) {
-			Messages.append("INFO", messages.getProperty("tmsg_24"));
+			Messages.append("INFO", messagesProps.getProperty("tmsg_24"));
 		} else {
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);
 			Component[] comps =  centerPanel.getComponents();
-			Component component = null;
-		
-			for (int z = 0; z < comps.length; z++) {
-				component = comps[z];
-				
+			Component component;
+
+			for (Component comp : comps) {
+				component = comp;
+
 				if (component instanceof JLabel) {
-					JLabel picLabel = (JLabel) comps[z];
-					String name = ""+picLabel.getName();
-					
+					JLabel picLabel = (JLabel) comp;
+					String name = "" + picLabel.getName();
+
 					if (!name.equalsIgnoreCase("NoPicsImg")) {
 						picLabel.setBorder(borderGray);
 						picLabel.setOpaque(true);
 						picLabel.setBackground(Color.WHITE);
 						MouseListener[] mls = (picLabel.getListeners(MouseListener.class));
-						
+
 						if (mls.length > 0) {
 							ImageAction act = (ImageAction) mls[0];
 							act.setSelected(false);
 						}
-					}	
+					}
 				}
 			}
 			
