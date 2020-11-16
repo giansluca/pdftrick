@@ -1,12 +1,13 @@
 package org.gmdev.pdftrick.ui.panels;
 
-import java.awt.Color;
+import java.awt.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
+import org.gmdev.pdftrick.utils.FileLoader;
+
+import static org.gmdev.pdftrick.utils.Constants.WAIT;
 
 public class CenterPanel {
 	

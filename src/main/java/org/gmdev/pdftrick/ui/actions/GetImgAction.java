@@ -8,9 +8,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
@@ -75,7 +73,7 @@ public class GetImgAction extends AbstractAction  {
 					} else if (SetupUtils.isMac()) {
 						extractionFolder = choosefolderToSave.getCurrentDirectory().getAbsolutePath();
 					}
-					BAG.setExtractionFolder(Path.of(extractionFolder));
+					BAG.setExtractionFolderPath(Path.of(extractionFolder));
 				} else {
 					extract = false;
 				}

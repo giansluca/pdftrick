@@ -6,7 +6,7 @@ import java.awt.event.WindowListener;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
-import org.gmdev.pdftrick.utils.Utils;
+import org.gmdev.pdftrick.utils.FileUtils;
 
 public class WindowsActions implements WindowListener {
 	
@@ -67,8 +67,8 @@ public class WindowsActions implements WindowListener {
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
 		nativeManager.unloadNativeLib();
 
-		Utils.deletePdfFile(BAG.getPdfFilePath());
-		Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
+		FileUtils.deletePdfFile(BAG.getPdfFilePath());
+		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 		
 		System.exit(0);	
 	}

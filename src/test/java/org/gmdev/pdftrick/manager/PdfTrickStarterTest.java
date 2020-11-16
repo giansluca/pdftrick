@@ -24,7 +24,7 @@ class PdfTrickStarterTest {
         String os = SetupUtils.getOs();
         Path fakeNativeLibraryPath = SetupUtils.setAndGetNativeLibrary(fakeHomeFolderPath, os);
 
-        MockedStatic<Utils> utilsMock = Mockito.mockStatic(Utils.class);
+        MockedStatic<FileUtils> utilsMock = Mockito.mockStatic(FileUtils.class);
         MockedStatic<UserInterfaceBuilder> userInterfaceBuilderMock = Mockito.mockStatic(UserInterfaceBuilder.class);
         MockedStatic<Messages> messagesMock = Mockito.mockStatic(Messages.class);
 

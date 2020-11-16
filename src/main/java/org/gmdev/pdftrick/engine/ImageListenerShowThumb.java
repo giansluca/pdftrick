@@ -1,41 +1,25 @@
 package org.gmdev.pdftrick.engine;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import javax.imageio.IIOException;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageInline;
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageNormal;
+import org.gmdev.pdftrick.engine.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
+import org.gmdev.pdftrick.utils.*;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
-import org.gmdev.pdftrick.utils.Utils;
 
 import com.itextpdf.text.exceptions.UnsupportedPdfException;
-import com.itextpdf.text.pdf.PRStream;
-import com.itextpdf.text.pdf.PdfDictionary;
-import com.itextpdf.text.pdf.PdfName;
-import com.itextpdf.text.pdf.parser.ImageRenderInfo;
-import com.itextpdf.text.pdf.parser.Matrix;
-import com.itextpdf.text.pdf.parser.PdfImageObject;
-import com.itextpdf.text.pdf.parser.RenderListener;
-import com.itextpdf.text.pdf.parser.TextRenderInfo;
+import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.parser.*;
 
 public class ImageListenerShowThumb implements RenderListener {
 	
@@ -142,8 +126,8 @@ public class ImageListenerShowThumb implements RenderListener {
 			        if (!image.getFileType().equalsIgnoreCase("jpg") && buffPic != null) {
 			        	PdfImageObject maskImage = new PdfImageObject(maskStream);
 			        	buffMask = maskImage.getBufferedImage();
-			        	Image img = Utils.TransformGrayToTransparency(buffMask);
-			        	buffImg = Utils.ApplyTransparency(buffPic, img);
+			        	Image img = ImageUtils.TransformGrayToTransparency(buffMask);
+			        	buffImg = ImageUtils.ApplyTransparency(buffPic, img);
 			        } else {
 			        	buffImg = buffPic;
 			        }
@@ -182,7 +166,7 @@ public class ImageListenerShowThumb implements RenderListener {
 			}
 			
 			if (buffImg != null) {
-				buffImg = Utils.adjustImage(buffImg, flip, rotate);
+				buffImg = ImageUtils.adjustImage(buffImg, flip, rotate);
 				RenderedImageAttributes imageAttrs = null;
 				
 				if (isInline) {
@@ -204,13 +188,13 @@ public class ImageListenerShowThumb implements RenderListener {
 						faktor = 160 / (double)w;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = Utils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
+						buffImg = ImageUtils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
 					
 					} else {
 						faktor = 160 / (double)h;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = Utils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
+						buffImg = ImageUtils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
 					}
 				}
 				

@@ -3,15 +3,11 @@ package org.gmdev.pdftrick.ui.actions;
 import java.io.File;
 import java.util.Properties;
 
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.thread.DragAnDropFileChooser;
-import org.gmdev.pdftrick.utils.Constants;
+import org.gmdev.pdftrick.utils.FileUtils;
 import org.gmdev.pdftrick.utils.Messages;
-import org.gmdev.pdftrick.utils.Utils;
 import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener {
@@ -30,7 +26,7 @@ public class DragAndDropAction implements FileDrop.Listener {
 			(BAG.getThreadContainer().getOpenFileChooserThread() != null &&
 					BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
 
-			Utils.resetLeftPanelFileDropBorder();
+			FileUtils.resetLeftPanelFileDropBorder();
 			Messages.append("WARNING", messagesProps.getProperty("tmsg_01"));
 			return;
 		}
@@ -38,7 +34,7 @@ public class DragAndDropAction implements FileDrop.Listener {
 		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
 				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 
-			Utils.resetLeftPanelFileDropBorder();
+			FileUtils.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
     	}
@@ -46,7 +42,7 @@ public class DragAndDropAction implements FileDrop.Listener {
     	if (BAG.getThreadContainer().getImgExtractionThread() != null &&
 				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
 
-		    Utils.resetLeftPanelFileDropBorder();
+		    FileUtils.resetLeftPanelFileDropBorder();
 		    ModalWarningPanel.displayExtractingImagesWarning();
 		    return;	
     	}
@@ -54,7 +50,7 @@ public class DragAndDropAction implements FileDrop.Listener {
     	if (BAG.getThreadContainer().getImgThumbThread() != null &&
 				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
 
-    		Utils.resetLeftPanelFileDropBorder();
+    		FileUtils.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
 			return;	
     	}

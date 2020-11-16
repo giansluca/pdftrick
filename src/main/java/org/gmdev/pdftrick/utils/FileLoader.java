@@ -5,6 +5,10 @@ import java.net.URL;
 
 public class FileLoader {
 
+    private FileLoader() {
+        throw new AssertionError("FileLoader class should never be instantiated");
+    }
+
     public static InputStream loadFileAsStream(String filePath) {
         InputStream in = FileLoader.class.getClassLoader().getResourceAsStream(filePath);
         if (in == null)

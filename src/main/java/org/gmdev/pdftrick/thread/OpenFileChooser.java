@@ -11,8 +11,8 @@ import org.gmdev.pdftrick.engine.CheckFiles;
 import org.gmdev.pdftrick.engine.MergeFiles;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
+import org.gmdev.pdftrick.utils.FileUtils;
 import org.gmdev.pdftrick.utils.Messages;
-import org.gmdev.pdftrick.utils.Utils;
 
 public class OpenFileChooser implements Runnable {
 	
@@ -43,28 +43,25 @@ public class OpenFileChooser implements Runnable {
 		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		final ArrayList<File> filesVett = BAG.getPdfFilesArray();
 		
-        SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Utils.cleanLeftPanel();
-				Utils.cleanCenterPanel();
-				Messages.cleanTextArea();
-				currentPageField.setText("");
-				numImgSelectedField.setText("");
-				Utils.startWaitIconLoadPdf();
-			}
+        SwingUtilities.invokeLater(() -> {
+			FileUtils.cleanLeftPanel();
+			FileUtils.cleanCenterPanel();
+			Messages.cleanTextArea();
+			currentPageField.setText("");
+			numImgSelectedField.setText("");
+			FileUtils.startWaitIconLoadPdf();
 		});
         		
         // clean up
         BAG.setSelected("");
-        BAG.setExtractionFolder(null);
-        Utils.cleanPdfFilesArray();
-        Utils.cleanImageSelectedHashMap();
-        Utils.cleanInlineImgSelectedHashMap();
-        Utils.cleanRotationFromPagesHashMap();
+        BAG.setExtractionFolderPath(null);
+        FileUtils.cleanPdfFilesArray();
+        FileUtils.cleanImageSelectedHashMap();
+        FileUtils.cleanInlineImgSelectedHashMap();
+        FileUtils.cleanRotationFromPagesHashMap();
         		
-        Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
-        Utils.deletePdfFile(BAG.getPdfFilePath());
+        FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
+        FileUtils.deletePdfFile(BAG.getPdfFilePath());
      	
 		for (int i = 0; i < files.length; i++) {
 			File item = files[i];
@@ -83,12 +80,9 @@ public class OpenFileChooser implements Runnable {
         		// (vector, hasmap, resultpdf was cleaned on approve open filechooser)
         		Messages.append("WARNING", messages.getProperty("tmsg_11"));
         		
-        		SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						Utils.cleanLeftPanel();
-						Utils.cleanCenterPanel();
-					}
+        		SwingUtilities.invokeLater(() -> {
+					FileUtils.cleanLeftPanel();
+					FileUtils.cleanCenterPanel();
 				});
         	} else {
         		// merge pdf selection after check

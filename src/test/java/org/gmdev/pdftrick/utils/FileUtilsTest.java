@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UtilsTest {
+class FileUtilsTest {
 
     private static final String HOME_FOR_TEST = "src/test/resources/home-for-test";
 
@@ -21,7 +21,7 @@ class UtilsTest {
         assertThat(fakeThumbnailsFolder.toFile().exists()).isFalse();
 
         // When
-        boolean created = Utils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolder);
+        boolean created = FileUtils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolder);
 
         // Then
         assertThat(created).isTrue();
@@ -38,11 +38,11 @@ class UtilsTest {
                 HOME_FOR_TEST + File.separator + Constants.PAGES_THUMBNAIL_FOLDER);
 
         // create home folder
-        Utils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolder);
+        FileUtils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolder);
         assertThat(fakeThumbnailsFolder.toFile().exists()).isTrue();
 
         // When
-        boolean created = Utils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolder);
+        boolean created = FileUtils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolder);
 
         // Then
         assertThat(created).isFalse();
@@ -58,19 +58,19 @@ class UtilsTest {
                 HOME_FOR_TEST + File.separator + Constants.PAGES_THUMBNAIL_FOLDER);
 
         // create home folder
-        Utils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolderPath);
+        FileUtils.createIfNotExistsThumbnailsFolder(fakeThumbnailsFolderPath);
         File fakeThumbnailsFolder = fakeThumbnailsFolderPath.toFile();
 
         // create some fake thumbnail files
         int numberOfFiles = 3;
-        createSomeFakeFileS(fakeThumbnailsFolderPath, numberOfFiles);
+        createSomeFakeFiles(fakeThumbnailsFolderPath, numberOfFiles);
 
         File[] fakeFiles = fakeThumbnailsFolder.listFiles();
         assertThat(fakeFiles).isNotNull();
         assertThat(fakeFiles.length).isEqualTo(numberOfFiles);
 
         // When
-        Utils.deleteThumbnailFiles(fakeThumbnailsFolderPath);
+        FileUtils.deleteThumbnailFiles(fakeThumbnailsFolderPath);
 
         // Then
         fakeFiles = fakeThumbnailsFolder.listFiles();
@@ -85,30 +85,48 @@ class UtilsTest {
     void isShouldDeleteExtractionFolderAndImages() throws IOException {
         // Given
         Path fakeExtractionFolderPath = Path.of(
-                HOME_FOR_TEST + File.separator + Utils.getTimeForExtractionFolder());
+                HOME_FOR_TEST + File.separator + FileUtils.getTimeForExtractionFolder());
 
         // create home folder
-        Utils.createIfNotExistsThumbnailsFolder(fakeExtractionFolderPath);
+        FileUtils.createIfNotExistsThumbnailsFolder(fakeExtractionFolderPath);
         File fakeExtractionFolder = fakeExtractionFolderPath.toFile();
 
         // create some fake thumbnail files
         int numberOfFiles = 5;
-        createSomeFakeFileS(fakeExtractionFolderPath, numberOfFiles);
+        createSomeFakeFiles(fakeExtractionFolderPath, numberOfFiles);
 
         File[] fakeFiles = fakeExtractionFolder.listFiles();
         assertThat(fakeFiles).isNotNull();
         assertThat(fakeFiles.length).isEqualTo(numberOfFiles);
 
         // When
-        Utils.deleteExtractionFolderAndImages(fakeExtractionFolderPath);
+        FileUtils.deleteExtractionFolderAndImages(fakeExtractionFolderPath);
 
         // Then
         fakeFiles = fakeExtractionFolder.listFiles();
         assertThat(fakeFiles).isNull();
     }
 
-    public void createSomeFakeFileS(Path fakeFolder,
-                                             int numberOfFiles) throws IOException {
+    @Test
+    void isShouldDeletePdfFile() throws IOException {
+        // Given
+        Path fakePdfPath = Path.of(
+                HOME_FOR_TEST + File.separator + "fake.pdf");
+
+        // create fake pdf file
+        File fakePdfFile = fakePdfPath.toFile();
+        assertThat(fakePdfFile.createNewFile()).isTrue();
+        assertThat(fakePdfFile.exists()).isTrue();
+
+        // When
+        FileUtils.deletePdfFile(fakePdfPath);
+
+        // Then
+        assertThat(fakePdfFile.exists()).isFalse();
+    }
+
+    public void createSomeFakeFiles(Path fakeFolder,
+                                    int numberOfFiles) throws IOException {
         
         for (int i = 0; i < numberOfFiles; i++)
             if (!new File(fakeFolder + File.separator + "img-" + i).createNewFile())

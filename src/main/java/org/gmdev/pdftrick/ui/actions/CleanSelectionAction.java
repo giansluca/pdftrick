@@ -17,8 +17,8 @@ import javax.swing.border.Border;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
+import org.gmdev.pdftrick.utils.FileUtils;
 import org.gmdev.pdftrick.utils.Messages;
-import org.gmdev.pdftrick.utils.Utils;
 
 public class CleanSelectionAction extends AbstractAction {
 	
@@ -91,8 +91,8 @@ public class CleanSelectionAction extends AbstractAction {
 				}
 			}
 			
-			Utils.cleanImageSelectedHashMap();
-			Utils.cleanInlineImgSelectedHashMap();
+			FileUtils.cleanImageSelectedHashMap();
+			FileUtils.cleanInlineImgSelectedHashMap();
 			numImgSelectedField.setText("");
 		}
 		

@@ -47,28 +47,28 @@ public class OpenAction extends AbstractAction {
         		(BAG.getThreadContainer().getOpenFileChooserThread() != null &&
 						BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
 
-        		Utils.resetLeftPanelFileDropBorder();
+        		FileUtils.resetLeftPanelFileDropBorder();
     			Messages.append("WARNING", messagesProps.getProperty("tmsg_01"));
     			return;
         	}
         	
         	if (BAG.getThreadContainer().getShowThumbsThread() != null &&
 					BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
-    			Utils.resetLeftPanelFileDropBorder();
+    			FileUtils.resetLeftPanelFileDropBorder();
 				ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
     			return;
         	}  
         	
         	if (BAG.getThreadContainer().getImgExtractionThread()!=null &&
 					BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
-        		Utils.resetLeftPanelFileDropBorder();
+        		FileUtils.resetLeftPanelFileDropBorder();
 				ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
     		    return;	
         	}
         	
         	if (BAG.getThreadContainer().getImgThumbThread()!=null &&
 					BAG.getThreadContainer().getImgThumbThread().isAlive()) {
-        		Utils.resetLeftPanelFileDropBorder();
+        		FileUtils.resetLeftPanelFileDropBorder();
 				ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
     			return;	
         	}

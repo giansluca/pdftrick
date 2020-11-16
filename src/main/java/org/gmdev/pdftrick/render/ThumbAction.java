@@ -12,11 +12,9 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.render.tasks.RenderPageThumbnailsTask;
-import org.gmdev.pdftrick.serviceprocessor.ServiceScheduler;
 import org.gmdev.pdftrick.thread.ImgThumb;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
-import org.gmdev.pdftrick.utils.Utils;
+import org.gmdev.pdftrick.utils.FileUtils;
 
 public class ThumbAction implements MouseListener {
 	
@@ -52,7 +50,7 @@ public class ThumbAction implements MouseListener {
 			picLabel.setBorder(borderGray);
 			BAG.setSelected("");
 			currentPageField.setText("");
-			Utils.cleanCenterPanel();
+			FileUtils.cleanCenterPanel();
 			
 		// select page	
 		} else {
@@ -67,7 +65,7 @@ public class ThumbAction implements MouseListener {
 			picLabel.setBorder(borderGreen);
 			BAG.setSelected(String.valueOf(pageNumber - 1));
 			currentPageField.setText("Page " + pageNumber);
-			Utils.cleanCenterPanel();
+			FileUtils.cleanCenterPanel();
 			
 			ImgThumb imgThumb = new ImgThumb(pageNumber);
 			BAG.getThreadContainer().setImgThumb(imgThumb);

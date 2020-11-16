@@ -1,6 +1,5 @@
 package org.gmdev.pdftrick.utils;
 
-import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.text.*;
 import java.util.Calendar;
@@ -13,6 +12,10 @@ public class Messages {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
+	private Messages() {
+		throw new AssertionError("Messages class should never be instantiated");
+	}
 
 	public static void printWelcomeMessage() {
 		String message = BAG.getMessagesProps().getProperty("dmsg_09");
