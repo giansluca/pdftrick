@@ -121,10 +121,10 @@ public class Cancel implements Runnable {
 			logger.error("Exception", e);
 		}
 
-		BAG.cleanImageSelectedHashMap();
-		BAG.cleanInlineImgSelectedHashMap();
+		BAG.cleanSelectedImagesHashMap();
+		BAG.cleanInlineSelectedImagesHashMap();
 		BAG.cleanRotationFromPagesHashMap();
-		BAG.setSelected("");
+		BAG.setSelectedPage(0);
 		BAG.setExtractionFolderPath(null);
 		BAG.cleanPdfFilesArray();
 		

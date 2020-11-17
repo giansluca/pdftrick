@@ -57,11 +57,11 @@ public class OpenFileChooser implements Runnable {
 		});
         		
         // clean up
-        BAG.setSelected("");
+        BAG.setSelectedPage(0);
         BAG.setExtractionFolderPath(null);
         BAG.cleanPdfFilesArray();
-        BAG.cleanImageSelectedHashMap();
-        BAG.cleanInlineImgSelectedHashMap();
+        BAG.cleanSelectedImagesHashMap();
+        BAG.cleanInlineSelectedImagesHashMap();
         BAG.cleanRotationFromPagesHashMap();
         		
         FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());

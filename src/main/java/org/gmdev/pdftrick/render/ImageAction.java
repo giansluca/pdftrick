@@ -35,8 +35,8 @@ public class ImageAction implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (enabled) {
 			final JTextField numImgSelected = BAG.getUserInterface().getRight().getNumImgSelectedField();
-			final HashMap<String, RenderedImageAttributes> imageSelected = BAG.getImageSelected();
-			final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
+			final HashMap<String, RenderedImageAttributes> imageSelected = BAG.getSelectedImages();
+			final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
 		
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);
 			Border borderOrange = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.orange);

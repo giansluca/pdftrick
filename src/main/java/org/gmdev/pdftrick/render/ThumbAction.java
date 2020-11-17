@@ -32,7 +32,7 @@ public class ThumbAction implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		String selected = BAG.getSelected();
+		int selectedPage = BAG.getSelectedPage();
 		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
@@ -40,17 +40,17 @@ public class ThumbAction implements MouseListener {
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Border borderGreen = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green);
 		
-		if (!selected.equalsIgnoreCase("")) {
-			JLabel picLabelSelected = (JLabel) leftPanel.getComponent(Integer.parseInt(selected));
+		if (selectedPage != 0) {
+			JLabel picLabelSelected = (JLabel) leftPanel.getComponent(selectedPage);
 			picLabelSelected.setBorder(borderGray);
 		}
 		
 		JLabel picLabel = (JLabel) leftPanel.getComponent(pageNumber - 1);
 		
 		// deselect page
-		if (selected.equalsIgnoreCase(String.valueOf(pageNumber - 1))) {
+		if (selectedPage == pageNumber - 1) {
 			picLabel.setBorder(borderGray);
-			BAG.setSelected("");
+			BAG.setSelectedPage(0);
 			currentPageField.setText("");
 			centerPanel.clean();
 			
@@ -65,7 +65,7 @@ public class ThumbAction implements MouseListener {
 			}
 			
 			picLabel.setBorder(borderGreen);
-			BAG.setSelected(String.valueOf(pageNumber - 1));
+			BAG.setSelectedPage(pageNumber - 1);
 			currentPageField.setText("Page " + pageNumber);
 			centerPanel.clean();
 			

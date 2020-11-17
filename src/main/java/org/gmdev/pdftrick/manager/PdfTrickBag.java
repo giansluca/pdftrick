@@ -21,12 +21,12 @@ public enum PdfTrickBag {
 	Path thumbnailsFolderPath;
 	int numberOfPages;
 	ArrayList<File> pdfFilesArray;
-	String selected;
+	int selectedPage;
 	Path extractionFolderPath;
 	HashMap<Integer, String> rotationFromPages;
 	HashMap<String, String> namePwd;
-	HashMap<String, RenderedImageAttributes> imageSelected;
-	HashMap<String, RenderedImageAttributes> inlineImgSelected;
+	HashMap<String, RenderedImageAttributes> selectedImages;
+	HashMap<String, RenderedImageAttributes> inlineSelectedImages;
 	ThreadContainer threadContainer;
 	Properties messagesProps;
 	NativeObjectManager nativeObjectManager;
@@ -45,11 +45,11 @@ public enum PdfTrickBag {
 		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);
 		numberOfPages = 0;
 		pdfFilesArray = new ArrayList<>();
-		selected = "";
+		selectedPage = 0;
 		rotationFromPages = new HashMap<>();
 		namePwd = new HashMap<>();
-		imageSelected = new HashMap<>();
-		inlineImgSelected = new HashMap<>();
+		selectedImages = new HashMap<>();
+		inlineSelectedImages = new HashMap<>();
 		threadContainer = new ThreadContainer();
 	}
 
@@ -57,12 +57,12 @@ public enum PdfTrickBag {
 		pdfFilesArray.clear();
 	}
 
-	public void cleanImageSelectedHashMap() {
-		imageSelected.clear();
+	public void cleanSelectedImagesHashMap() {
+		selectedImages.clear();
 	}
 
-	public void cleanInlineImgSelectedHashMap() {
-		inlineImgSelected.clear();
+	public void cleanInlineSelectedImagesHashMap() {
+		inlineSelectedImages.clear();
 	}
 
 	public void cleanRotationFromPagesHashMap() {
@@ -97,12 +97,12 @@ public enum PdfTrickBag {
 		return pdfFilesArray;
 	}
 
-	public String getSelected() {
-		return selected;
+	public int getSelectedPage() {
+		return selectedPage;
 	}
 
-	public void setSelected(String selected) {
-		this.selected = selected;
+	public void setSelectedPage(int selectedPage) {
+		this.selectedPage = selectedPage;
 	}
 
 	public Path getExtractionFolderPath() {
@@ -121,12 +121,12 @@ public enum PdfTrickBag {
 		return namePwd;
 	}
 
-	public HashMap<String, RenderedImageAttributes> getImageSelected() {
-		return imageSelected;
+	public HashMap<String, RenderedImageAttributes> getSelectedImages() {
+		return selectedImages;
 	}
 
-	public HashMap<String, RenderedImageAttributes> getInlineImgSelected() {
-		return inlineImgSelected;
+	public HashMap<String, RenderedImageAttributes> getInlineSelectedImages() {
+		return inlineSelectedImages;
 	}
 
 	public ThreadContainer getThreadContainer() {

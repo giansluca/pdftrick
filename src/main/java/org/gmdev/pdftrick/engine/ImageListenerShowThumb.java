@@ -254,8 +254,8 @@ public class ImageListenerShowThumb implements RenderListener {
 		private RenderedImageAttributes imageAttrs;
 		
 		public UpdatePanelCenter() {
-			this.imageSelected = BAG.getImageSelected();
-			this.inlineImgSelected = BAG.getInlineImgSelected();
+			this.imageSelected = BAG.getSelectedImages();
+			this.inlineImgSelected = BAG.getInlineSelectedImages();
 			this.centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		}
 		

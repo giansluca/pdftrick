@@ -63,8 +63,8 @@ public class GetImgAction extends AbstractAction  {
 			choosefolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
 			
 			String extractionFolder = null;
-			Set<String> keys = BAG.getImageSelected().keySet();
-			Set<String> kk = BAG.getInlineImgSelected().keySet();
+			Set<String> keys = BAG.getSelectedImages().keySet();
+			Set<String> kk = BAG.getInlineSelectedImages().keySet();
 			
 			if (keys.size() > 0 || kk.size() > 0) {
 				if (choosefolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) { 
