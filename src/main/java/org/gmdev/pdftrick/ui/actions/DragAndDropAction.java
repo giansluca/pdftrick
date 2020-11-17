@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.thread.DragAnDropFileChooser;
+import org.gmdev.pdftrick.ui.panels.LeftPanel;
 import org.gmdev.pdftrick.utils.FileUtils;
 import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.external.FileDrop;
@@ -19,14 +20,15 @@ public class DragAndDropAction implements FileDrop.Listener {
 	 */
 	@Override
 	public void filesDropped(File[] fileVett) {
-		final Properties messagesProps = BAG.getMessagesProps();
+		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
+		Properties messagesProps = BAG.getMessagesProps();
 		
 		if ((BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
 				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive() ) ||
 			(BAG.getThreadContainer().getOpenFileChooserThread() != null &&
 					BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
 
-			FileUtils.resetLeftPanelFileDropBorder();
+			leftPanel.resetLeftPanelFileDropBorder();
 			Messages.append("WARNING", messagesProps.getProperty("tmsg_01"));
 			return;
 		}
@@ -34,7 +36,7 @@ public class DragAndDropAction implements FileDrop.Listener {
 		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
 				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
 
-			FileUtils.resetLeftPanelFileDropBorder();
+			leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
     	}
@@ -42,7 +44,7 @@ public class DragAndDropAction implements FileDrop.Listener {
     	if (BAG.getThreadContainer().getImgExtractionThread() != null &&
 				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
 
-		    FileUtils.resetLeftPanelFileDropBorder();
+		    leftPanel.resetLeftPanelFileDropBorder();
 		    ModalWarningPanel.displayExtractingImagesWarning();
 		    return;	
     	}
@@ -50,7 +52,7 @@ public class DragAndDropAction implements FileDrop.Listener {
     	if (BAG.getThreadContainer().getImgThumbThread() != null &&
 				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
 
-    		FileUtils.resetLeftPanelFileDropBorder();
+    		leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
 			return;	
     	}

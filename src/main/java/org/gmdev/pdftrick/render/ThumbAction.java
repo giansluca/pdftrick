@@ -14,6 +14,7 @@ import javax.swing.border.Border;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.thread.ImgThumb;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
+import org.gmdev.pdftrick.ui.panels.CenterPanel;
 import org.gmdev.pdftrick.utils.FileUtils;
 
 public class ThumbAction implements MouseListener {
@@ -31,9 +32,10 @@ public class ThumbAction implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		final String selected = BAG.getSelected();
-		final JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
-		final JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
+		String selected = BAG.getSelected();
+		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
+		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
+		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
 		
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Border borderGreen = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green);
@@ -50,22 +52,22 @@ public class ThumbAction implements MouseListener {
 			picLabel.setBorder(borderGray);
 			BAG.setSelected("");
 			currentPageField.setText("");
-			FileUtils.cleanCenterPanel();
+			centerPanel.clean();
 			
 		// select page	
 		} else {
 			// when previous page selected don't have images i need to reset the layout to FlowLayout 
 			// (the same layout with wait icon during pdf rendering)
-			final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+			JPanel jCenterPanel = centerPanel.getCenterPanel();
 			
-			if (centerPanel.getLayout() instanceof GridBagLayout) {
-				centerPanel.setLayout(new WrapLayout());
+			if (jCenterPanel.getLayout() instanceof GridBagLayout) {
+				jCenterPanel.setLayout(new WrapLayout());
 			}
 			
 			picLabel.setBorder(borderGreen);
 			BAG.setSelected(String.valueOf(pageNumber - 1));
 			currentPageField.setText("Page " + pageNumber);
-			FileUtils.cleanCenterPanel();
+			centerPanel.clean();
 			
 			ImgThumb imgThumb = new ImgThumb(pageNumber);
 			BAG.getThreadContainer().setImgThumb(imgThumb);

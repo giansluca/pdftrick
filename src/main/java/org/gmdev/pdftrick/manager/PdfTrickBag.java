@@ -53,12 +53,24 @@ public enum PdfTrickBag {
 		threadContainer = new ThreadContainer();
 	}
 
-	public String getOs() {
-		return os;
+	public void cleanPdfFilesArray(){
+		pdfFilesArray.clear();
 	}
 
-	public Path getHomeFolderPath() {
-		return homeFolderPath;
+	public void cleanImageSelectedHashMap() {
+		imageSelected.clear();
+	}
+
+	public void cleanInlineImgSelectedHashMap() {
+		inlineImgSelected.clear();
+	}
+
+	public void cleanRotationFromPagesHashMap() {
+		rotationFromPages.clear();
+	}
+
+	public String getOs() {
+		return os;
 	}
 
 	public Path getNativeLibraryPath() {

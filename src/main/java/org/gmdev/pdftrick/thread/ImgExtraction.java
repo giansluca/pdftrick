@@ -98,8 +98,8 @@ public class ImgExtraction implements Runnable {
 			}
 		}
 		
-		FileUtils.cleanImageSelectedHashMap();
-		FileUtils.cleanInlineImgSelectedHashMap();
+		BAG.cleanImageSelectedHashMap();
+		BAG.cleanInlineImgSelectedHashMap();
 		numImgSelectedField.setText("");
 		
 		System.gc();

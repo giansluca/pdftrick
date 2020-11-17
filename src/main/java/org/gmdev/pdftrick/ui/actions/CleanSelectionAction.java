@@ -91,8 +91,8 @@ public class CleanSelectionAction extends AbstractAction {
 				}
 			}
 			
-			FileUtils.cleanImageSelectedHashMap();
-			FileUtils.cleanInlineImgSelectedHashMap();
+			BAG.cleanImageSelectedHashMap();
+			BAG.cleanInlineImgSelectedHashMap();
 			numImgSelectedField.setText("");
 		}
 		

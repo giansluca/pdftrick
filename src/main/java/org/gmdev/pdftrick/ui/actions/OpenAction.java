@@ -11,6 +11,7 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.thread.OpenFileChooser;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
+import org.gmdev.pdftrick.ui.panels.LeftPanel;
 import org.gmdev.pdftrick.utils.*;
 
 public class OpenAction extends AbstractAction {
@@ -33,6 +34,7 @@ public class OpenAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
 		Properties messagesProps = BAG.getMessagesProps();
 		Container contentPanel = BAG.getUserInterface().getContentPane();
 		
@@ -47,28 +49,28 @@ public class OpenAction extends AbstractAction {
         		(BAG.getThreadContainer().getOpenFileChooserThread() != null &&
 						BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
 
-        		FileUtils.resetLeftPanelFileDropBorder();
+        		leftPanel.resetLeftPanelFileDropBorder();
     			Messages.append("WARNING", messagesProps.getProperty("tmsg_01"));
     			return;
         	}
         	
         	if (BAG.getThreadContainer().getShowThumbsThread() != null &&
 					BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
-    			FileUtils.resetLeftPanelFileDropBorder();
+    			leftPanel.resetLeftPanelFileDropBorder();
 				ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
     			return;
         	}  
         	
         	if (BAG.getThreadContainer().getImgExtractionThread()!=null &&
 					BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
-        		FileUtils.resetLeftPanelFileDropBorder();
+        		leftPanel.resetLeftPanelFileDropBorder();
 				ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
     		    return;	
         	}
         	
         	if (BAG.getThreadContainer().getImgThumbThread()!=null &&
 					BAG.getThreadContainer().getImgThumbThread().isAlive()) {
-        		FileUtils.resetLeftPanelFileDropBorder();
+        		leftPanel.resetLeftPanelFileDropBorder();
 				ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
     			return;	
         	}

@@ -23,6 +23,31 @@ public class CenterPanel {
         centerScrollPanel.setViewportView(centerPanel);
         centerScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
 	}
+
+	public void startWaitIconLoadPdf() {
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(WAIT));
+		JLabel waitLabel = new JLabel(imageIcon);
+
+		waitLabel.setHorizontalAlignment(JLabel.CENTER);
+		waitLabel.setVerticalAlignment(JLabel.CENTER);
+		centerPanel.setLayout(new GridBagLayout());
+		centerPanel.add(waitLabel);
+		centerPanel.revalidate();
+		centerPanel.repaint();
+	}
+
+	public void stopWaitIcon() {
+		centerPanel.setLayout(new WrapLayout());
+		centerPanel.removeAll();
+		centerPanel.revalidate();
+		centerPanel.repaint();
+	}
+
+	public void clean() {
+		centerPanel.removeAll();
+		centerPanel.revalidate();
+		centerPanel.repaint();
+	}
 	
 	public JPanel getCenterPanel() {
 		return centerPanel;

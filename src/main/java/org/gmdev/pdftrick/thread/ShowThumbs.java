@@ -122,7 +122,7 @@ public class ShowThumbs implements Runnable {
 						picLabel.addMouseListener(new ThumbAction(z + 1));
 						picLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 					}
-					FileUtils.stopWaitIcon();
+					BAG.getUserInterface().getCenter().stopWaitIcon();
 				});
 			}
 		} catch (Exception e) {

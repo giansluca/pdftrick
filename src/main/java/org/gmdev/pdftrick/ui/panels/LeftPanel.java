@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 import org.gmdev.pdftrick.ui.actions.DragAndDropAction;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
@@ -25,6 +26,23 @@ public class LeftPanel {
         leftScrollPanel.getVerticalScrollBar().setUnitIncrement(10);
         
         new FileDrop(leftPanel, new DragAndDropAction());
+	}
+
+	public void clean() {
+		FileDrop.remove(leftPanel);
+		leftPanel.removeAll();
+		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+		new FileDrop(leftPanel, new DragAndDropAction());
+		leftPanel.revalidate();
+		leftPanel.repaint();
+	}
+
+	/**
+	 * Remove the file drop blue border, in some circumstances it is needed under windows OS
+	 */
+	public void resetLeftPanelFileDropBorder() {
+		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 	}
     
     public JPanel getLeftPanel() {

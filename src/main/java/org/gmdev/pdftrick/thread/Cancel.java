@@ -111,8 +111,8 @@ public class Cancel implements Runnable {
 		
 		try {
 			SwingUtilities.invokeAndWait(() -> {
-				FileUtils.cleanLeftPanel();
-				FileUtils.cleanCenterPanel();
+				BAG.getUserInterface().getLeft().clean();
+				BAG.getUserInterface().getCenter().clean();
 				Messages.cleanTextArea();
 				currentPageField.setText("");
 				numImgSelectedField.setText("");
@@ -121,12 +121,12 @@ public class Cancel implements Runnable {
 			logger.error("Exception", e);
 		}
 
-		FileUtils.cleanImageSelectedHashMap();
-		FileUtils.cleanInlineImgSelectedHashMap();
-		FileUtils.cleanRotationFromPagesHashMap();
+		BAG.cleanImageSelectedHashMap();
+		BAG.cleanInlineImgSelectedHashMap();
+		BAG.cleanRotationFromPagesHashMap();
 		BAG.setSelected("");
 		BAG.setExtractionFolderPath(null);
-		FileUtils.cleanPdfFilesArray();
+		BAG.cleanPdfFilesArray();
 		
 		FileUtils.deletePdfFile(BAG.getPdfFilePath());
 		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
