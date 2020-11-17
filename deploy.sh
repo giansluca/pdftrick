@@ -4,4 +4,3 @@ else
   mvn clean package -DskipTests -P win -B
 fi
 
-echo "DONE"

@@ -9,7 +9,7 @@ import org.gmdev.pdftrick.utils.PropertyLoader;
 import java.nio.file.Path;
 import java.util.Properties;
 
-import static org.gmdev.pdftrick.utils.Utils.*;
+import static org.gmdev.pdftrick.utils.FileUtils.*;
 
 public class PdfTrickStarter {
 
@@ -17,7 +17,7 @@ public class PdfTrickStarter {
         PdfTrickBag bag = PdfTrickBag.INSTANCE;
         bag.init(operatingSystem, homeFolderPath, nativeLibraryPath);
 
-        cleanUp(bag.getThumbnailsFolderPath(), bag.getPdfFilePath());
+        cleanUpPdfTrickHome(bag.getThumbnailsFolderPath(), bag.getPdfFilePath());
 
         Properties messagesProps = PropertyLoader.loadMessagesPropertyFile();
         bag.setMessagesProps(messagesProps);

@@ -25,7 +25,7 @@ public class SingleInstanceValidator {
         try {
             serverSocket = new ServerSocket(SERVER_PORT);
         } catch (BindException e) {
-            ModalWarningPanel.displayAlreadyRunningPanelAndThrow();
+            ModalWarningPanel.displayAlreadyRunningWaningAndThrow();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

@@ -1,18 +1,16 @@
 package org.gmdev.pdftrick.thread;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
 
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import org.gmdev.pdftrick.engine.CheckFiles;
-import org.gmdev.pdftrick.engine.MergeFiles;
+import org.gmdev.pdftrick.engine.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
-import org.gmdev.pdftrick.utils.Messages;
-import org.gmdev.pdftrick.utils.Utils;
+import org.gmdev.pdftrick.ui.panels.CenterPanel;
+import org.gmdev.pdftrick.ui.panels.LeftPanel;
+import org.gmdev.pdftrick.utils.*;
 
 public class DragAnDropFileChooser implements Runnable {
 	
@@ -40,31 +38,30 @@ public class DragAnDropFileChooser implements Runnable {
 	public void execute() {
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
+		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
 		ArrayList<File> filesVett = BAG.getPdfFilesArray();
 		Properties messages = BAG.getMessagesProps();
 
-    	SwingUtilities.invokeLater(new Runnable() {
-    		@Override
-			public void run() {
-				Utils.cleanLeftPanel();
-				Utils.cleanCenterPanel();
-				Messages.cleanTextArea();
-				currentPageField.setText("");
-				numImgSelectedField.setText("");
-				Utils.startWaitIconLoadPdf();
-			}
+    	SwingUtilities.invokeLater(() -> {
+			leftPanel.clean();
+			centerPanel.clean();
+			Messages.cleanTextArea();
+			currentPageField.setText("");
+			numImgSelectedField.setText("");
+			centerPanel.startWaitIconLoadPdf();
 		});
     	
     	// clean up
     	BAG.setSelected("");
-    	BAG.setExtractionFolder(null);
-    	Utils.cleanPdfFilesArray();
-    	Utils.cleanImageSelectedHashMap();
-    	Utils.cleanInlineImgSelectedHashMap();
-    	Utils.cleanRotationFromPagesHashMap();
+    	BAG.setExtractionFolderPath(null);
+    	BAG.cleanPdfFilesArray();
+    	BAG.cleanImageSelectedHashMap();
+    	BAG.cleanInlineImgSelectedHashMap();
+    	BAG.cleanRotationFromPagesHashMap();
     		
-    	Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
-    	Utils.deletePdfFile(BAG.getPdfFilePath());
+    	FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
+    	FileUtils.deletePdfFile(BAG.getPdfFilePath());
     	
 		for (int i = 0; i < fileDrop.length; i++) {
 			File item = fileDrop[i];
@@ -83,12 +80,9 @@ public class DragAnDropFileChooser implements Runnable {
         		// in case of check failed i clean panel left and center, other stuff 
         		// (vector, hasmap, resultpdf was cleaned on approve open filechooser)
         		Messages.append("WARNING", messages.getProperty("tmsg_11"));
-        		SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						Utils.cleanLeftPanel();
-						Utils.cleanCenterPanel();
-					}
+        		SwingUtilities.invokeLater(() -> {
+					leftPanel.clean();
+					centerPanel.clean();
 				});
         	} else {
         		// merge pdf selection after check
@@ -104,12 +98,9 @@ public class DragAnDropFileChooser implements Runnable {
             	}
         	}
         } else {
-        	SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					Utils.stopWaitIcon();
-					Utils.cleanCenterPanel();
-				}
+        	SwingUtilities.invokeLater(() -> {
+				BAG.getUserInterface().getCenter().stopWaitIcon();
+				centerPanel.clean();
 			});
         	Messages.append("WARNING", messages.getProperty("tmsg_14"));
         }

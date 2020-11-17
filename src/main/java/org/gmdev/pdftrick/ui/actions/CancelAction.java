@@ -9,11 +9,7 @@ import org.gmdev.pdftrick.thread.Cancel;
 
 public class CancelAction extends AbstractAction {
 	
-	private static final long serialVersionUID = 5288882061002308348L;
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
-	public CancelAction() {
-	}
 	
 	/**
 	 * Called from the CANCEL SELECTION button, clean everything

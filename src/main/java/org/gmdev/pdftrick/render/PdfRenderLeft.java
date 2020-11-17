@@ -5,7 +5,6 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.thread.DivisionThumb;
 import org.gmdev.pdftrick.thread.ExecPool;
 import org.gmdev.pdftrick.thread.ShowThumbs;
-import org.gmdev.pdftrick.utils.Utils;
 
 import com.itextpdf.text.pdf.PdfReader;
 

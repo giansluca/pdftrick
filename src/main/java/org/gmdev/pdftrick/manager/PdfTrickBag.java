@@ -8,7 +8,6 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
-import org.gmdev.pdftrick.utils.Messages;
 
 import static org.gmdev.pdftrick.utils.Constants.*;
 
@@ -23,7 +22,7 @@ public enum PdfTrickBag {
 	int numberOfPages;
 	ArrayList<File> pdfFilesArray;
 	String selected;
-	Path extractionFolder;
+	Path extractionFolderPath;
 	HashMap<Integer, String> rotationFromPages;
 	HashMap<String, String> namePwd;
 	HashMap<String, RenderedImageAttributes> imageSelected;
@@ -47,7 +46,6 @@ public enum PdfTrickBag {
 		numberOfPages = 0;
 		pdfFilesArray = new ArrayList<>();
 		selected = "";
-		extractionFolder = null;
 		rotationFromPages = new HashMap<>();
 		namePwd = new HashMap<>();
 		imageSelected = new HashMap<>();
@@ -55,12 +53,24 @@ public enum PdfTrickBag {
 		threadContainer = new ThreadContainer();
 	}
 
-	public String getOs() {
-		return os;
+	public void cleanPdfFilesArray(){
+		pdfFilesArray.clear();
 	}
 
-	public Path getHomeFolderPath() {
-		return homeFolderPath;
+	public void cleanImageSelectedHashMap() {
+		imageSelected.clear();
+	}
+
+	public void cleanInlineImgSelectedHashMap() {
+		inlineImgSelected.clear();
+	}
+
+	public void cleanRotationFromPagesHashMap() {
+		rotationFromPages.clear();
+	}
+
+	public String getOs() {
+		return os;
 	}
 
 	public Path getNativeLibraryPath() {
@@ -95,12 +105,12 @@ public enum PdfTrickBag {
 		this.selected = selected;
 	}
 
-	public Path getExtractionFolder() {
-		return extractionFolder;
+	public Path getExtractionFolderPath() {
+		return extractionFolderPath;
 	}
 
-	public void setExtractionFolder(Path extractionFolder) {
-		this.extractionFolder = extractionFolder;
+	public void setExtractionFolderPath(Path extractionFolderPath) {
+		this.extractionFolderPath = extractionFolderPath;
 	}
 
 	public HashMap<Integer, String> getRotationFromPages() {

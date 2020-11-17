@@ -1,38 +1,34 @@
 package org.gmdev.pdftrick.ui.actions;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.Properties;
+import java.awt.event.*;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.utils.*;
 
 public class ExitAction extends AbstractAction {
 	
-	private static final long serialVersionUID = 4846729705239261046L;
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	private final ImageIcon exit_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.EXIT_ICO));
-	
+	private static final String ACTION_NAME = "Exit";
+
 	public ExitAction() {
-		super.putValue(NAME, "Exit");
-		super.putValue(SMALL_ICON, exit_icon);
-		super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+		ImageIcon exitIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.EXIT_ICO));
+		super.putValue(NAME, ACTION_NAME);
+		super.putValue(SMALL_ICON, exitIcon);
+		super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
 	}
 	
 	/**
-	 * Called from the EXIT menu', exit the application
+	 * Called from the EXIT menu, exit the application
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessagesProps();
-		
-		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getThreadContainer().getDivisionThumbs() != null &&
+				!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+
 			BAG.getThreadContainer().getDivisionThumbs().stop();
 			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
@@ -45,7 +41,9 @@ public class ExitAction extends AbstractAction {
 			}
 		}
 		
-		if (BAG.getThreadContainer().getExecPool() != null && !BAG.getThreadContainer().getExecPool().isFinished()) {
+		if (BAG.getThreadContainer().getExecPool() != null &&
+				!BAG.getThreadContainer().getExecPool().isFinished()) {
+
 			BAG.getThreadContainer().getExecPool().stop();
 			if (BAG.getThreadContainer().getExecPoolThread() != null) {
 				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
@@ -53,6 +51,7 @@ public class ExitAction extends AbstractAction {
 				}
 			}
 		}
+
 		if (BAG.getThreadContainer().getExecutor() != null) {
 			BAG.getThreadContainer().getExecutor().shutdownNow();
 			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
@@ -60,20 +59,21 @@ public class ExitAction extends AbstractAction {
 			}
 		}
 		
-		if (BAG.getThreadContainer().getImgExtraction() !=null && !BAG.getThreadContainer().getImgExtraction().isFinished()) {
+		if (BAG.getThreadContainer().getImgExtraction() !=null &&
+				!BAG.getThreadContainer().getImgExtraction().isFinished()) {
+
 			BAG.getThreadContainer().getImgExtraction().stop();
-			if (BAG.getThreadContainer().getImgExtractionThread() !=null && BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
-				ImageIcon warningIcon = new ImageIcon(getClass().getResource(Constants.WARNING_ICO));
-				Messages.displayMessage(null, messages.getProperty("jmsg_05"), messages.getProperty("jmsg_06"),
-						JOptionPane.WARNING_MESSAGE, warningIcon);
+			if (BAG.getThreadContainer().getImgExtractionThread() !=null &&
+					BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+				ModalWarningPanel.displayClosingDuringExtractionWarning();
 			}
 		}
 		
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
 		nativeManager.unloadNativeLib();
 		
-		Utils.deletePdfFile(BAG.getPdfFilePath());
-		Utils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
+		FileUtils.deletePdfFile(BAG.getPdfFilePath());
+		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 		
 		System.exit(0);
 	}

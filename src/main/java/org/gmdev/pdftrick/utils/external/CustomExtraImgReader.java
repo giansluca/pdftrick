@@ -139,8 +139,8 @@ public class CustomExtraImgReader {
             PdfImageObject maskImage = new PdfImageObject(maskStream);
             buffMask = maskImage.getBufferedImage();
 
-            Image img = Utils.TransformGrayToTransparency(buffMask);
-            buffImg = Utils.ApplyTransparency(buffPic, img);
+            Image img = ImageUtils.TransformGrayToTransparency(buffMask);
+            buffImg = ImageUtils.ApplyTransparency(buffPic, img);
         } else {
             buffImg = buffPic;
         }

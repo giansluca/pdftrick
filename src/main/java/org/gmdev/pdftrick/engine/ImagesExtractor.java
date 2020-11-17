@@ -1,34 +1,23 @@
 package org.gmdev.pdftrick.engine;
 
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
-import javax.imageio.IIOException;
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 
 import org.apache.log4j.Logger;
-import org.gmdev.pdftrick.engine.ImageAttr.InlineImage;
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.engine.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
-import org.gmdev.pdftrick.utils.Messages;
-import org.gmdev.pdftrick.utils.Utils;
+import org.gmdev.pdftrick.utils.*;
 
 import com.itextpdf.text.exceptions.UnsupportedPdfException;
-import com.itextpdf.text.pdf.PRStream;
-import com.itextpdf.text.pdf.PdfDictionary;
-import com.itextpdf.text.pdf.PdfName;
-import com.itextpdf.text.pdf.PdfObject;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStream;
+import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfImageObject;
+import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 
 public class ImagesExtractor {
 	
@@ -47,9 +36,9 @@ public class ImagesExtractor {
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
 		Path extractionFolderWithTimePath =
-				Path.of(BAG.getExtractionFolder() +
+				Path.of(BAG.getExtractionFolderPath() +
 						File.separator +
-						Utils.getTimeForExtractionFolder());
+						FileUtils.getTimeForExtractionFolder());
 
 		File fileFinalFolderToSave = extractionFolderWithTimePath.toFile();
 		fileFinalFolderToSave.mkdir();
@@ -63,7 +52,7 @@ public class ImagesExtractor {
 		// if extraction breaks ...
 		if (!getImgCheck) { 
 			Messages.append("WARNING", messages.getProperty("tmsg_18"));
-			Utils.deleteExtractionFolderAndImages(extractionFolderWithTimePath);
+			FileUtils.deleteExtractionFolderAndImages(extractionFolderWithTimePath);
 		}			
 	}
 	
@@ -145,7 +134,7 @@ public class ImagesExtractor {
 				} catch (UnsupportedPdfException updfe) {
 					try {
 						buff = CustomExtraImgReader.readIndexedPNG(ref, pdfFile);
-						buff = Utils.adjustImage(buff, flip, rotate);
+						buff = ImageUtils.adjustImage(buff, flip, rotate);
 						String type = "png";
 						String filename = String.format(result, z, type);
 						
@@ -189,8 +178,8 @@ public class ImagesExtractor {
 				    		PdfImageObject maskImage = new PdfImageObject(maskStream);
 				    		buffMask = maskImage.getBufferedImage();
 				    
-				    		Image img = Utils.TransformGrayToTransparency(buffMask);
-				    		buff = Utils.ApplyTransparency(buffPic, img);
+				    		Image img = ImageUtils.TransformGrayToTransparency(buffMask);
+				    		buff = ImageUtils.ApplyTransparency(buffPic, img);
 				    	} else {
 				        	buff = buffPic;
 				        }
@@ -199,7 +188,7 @@ public class ImagesExtractor {
 				    }	
 				    
 					if (buff != null) {
-						buff = Utils.adjustImage(buff, flip, rotate);
+						buff = ImageUtils.adjustImage(buff, flip, rotate);
 						
 						//particular cases of encoding
 						String encode ="";

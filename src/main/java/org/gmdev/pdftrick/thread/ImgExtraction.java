@@ -17,7 +17,7 @@ import org.gmdev.pdftrick.engine.ImagesExtractor;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
-import org.gmdev.pdftrick.utils.Utils;
+import org.gmdev.pdftrick.utils.FileUtils;
 
 public class ImgExtraction implements Runnable {
 	
@@ -98,8 +98,8 @@ public class ImgExtraction implements Runnable {
 			}
 		}
 		
-		Utils.cleanImageSelectedHashMap();
-		Utils.cleanInlineImgSelectedHashMap();
+		BAG.cleanImageSelectedHashMap();
+		BAG.cleanInlineImgSelectedHashMap();
 		numImgSelectedField.setText("");
 		
 		System.gc();

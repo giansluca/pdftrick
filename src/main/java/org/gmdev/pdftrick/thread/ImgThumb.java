@@ -44,8 +44,8 @@ public class ImgThumb implements Runnable {
 		WaitPanel.setLoadingThumbnailsWaitPanel();
 		
 		try {
-			PdfReader reader = null;
-			ImageListenerShowThumb listener = null;
+			PdfReader reader;
+			ImageListenerShowThumb listener;
 			
 			reader = new PdfReader(BAG.getPdfFilePath().toString());
 			PdfReaderContentParser parser = new PdfReaderContentParser(reader);
@@ -62,14 +62,14 @@ public class ImgThumb implements Runnable {
 			}
 			
 			if (listener.getNumImg() == 0) {
-				final String noImgTitle = messages.getProperty("jmsg_08");
+				String noImgTitle = messages.getProperty("tmsg_07");
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						JLabel noImageLabel = new JLabel(noImgTitle);
 						noImageLabel.setHorizontalAlignment(JLabel.CENTER);
 						noImageLabel.setVerticalAlignment(JLabel.CENTER);
-						noImageLabel.setFont(new Font("Verdana",1,20));
+						noImageLabel.setFont(new Font("Verdana", Font.BOLD,20));
 						noImageLabel.setName("NoPicsImg");
 						centerPanel.setLayout(new GridBagLayout());
 						centerPanel.add(noImageLabel);
@@ -80,9 +80,9 @@ public class ImgThumb implements Runnable {
 				infoAvailable = MessageFormat.format(messages.getProperty("dmsg_03"), numberPage);
 			} else {
 				String t = listener.getNumImg() > 1 ? messages.getProperty("tmsg_15") : messages.getProperty("tmsg_16");
-				infoAvailable = listener.getNumImg()+" "+t;
+				infoAvailable = listener.getNumImg() + " " + t;
 			}
-			Messages.append("INFO", infoUnsupported+infoAvailable);
+			Messages.append("INFO", infoUnsupported + " " + infoAvailable);
 		} catch(Exception e) {
 			logger.error("Exception", e);
 		}

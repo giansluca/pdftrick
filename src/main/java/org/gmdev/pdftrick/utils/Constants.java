@@ -2,6 +2,10 @@ package org.gmdev.pdftrick.utils;
 
 public final class Constants {
 
+	private Constants() {
+		throw new AssertionError("Constants class should never be instantiated");
+	}
+
 	// general
 	public static final String APP_NAME = "PdfTrick";
 	public static final String PDFTRICK_HOME_FOLDER = ".pdftrick";
