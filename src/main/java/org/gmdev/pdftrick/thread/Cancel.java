@@ -123,7 +123,7 @@ public class Cancel implements Runnable {
 
 		BAG.cleanSelectedImagesHashMap();
 		BAG.cleanInlineSelectedImagesHashMap();
-		BAG.cleanRotationFromPagesHashMap();
+		BAG.cleanPagesRotationHashMap();
 		BAG.setSelectedPage(0);
 		BAG.setExtractionFolderPath(null);
 		BAG.cleanPdfFilesArray();
