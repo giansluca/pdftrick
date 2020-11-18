@@ -8,6 +8,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
+import org.gmdev.pdftrick.utils.PropertyLoader;
 
 import static org.gmdev.pdftrick.utils.Constants.*;
 
@@ -37,10 +38,11 @@ public enum PdfTrickBag {
 		return INSTANCE;
 	}
 
-	protected void init(String os, Path homeFolderPath, Path nativeLibraryPath) {
-		this.os = os;
-		this.homeFolderPath = homeFolderPath;
-		this.nativeLibraryPath = nativeLibraryPath;
+	private PdfTrickBag init(Builder builder) {
+		this.os = builder.os;
+		this.homeFolderPath = builder.homeFolderPath;
+		this.nativeLibraryPath = builder.nativeLibraryPath;
+
 		pdfFilePath = Path.of(homeFolderPath + File.separator + PDF_FILE_NAME);
 		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);
 		numberOfPages = 0;
@@ -51,6 +53,28 @@ public enum PdfTrickBag {
 		selectedImages = new HashMap<>();
 		inlineSelectedImages = new HashMap<>();
 		threadContainer = new ThreadContainer();
+		messagesProps = PropertyLoader.loadMessagesPropertyFile();
+		nativeObjectManager = new NativeObjectManager();
+
+		return INSTANCE;
+	}
+
+	public static Builder getBuilder() {
+		return new Builder();
+	}
+
+	protected static class Builder {
+		private String os;
+		private Path homeFolderPath;
+		private Path nativeLibraryPath;
+
+		public Builder os(String val) { os = val; return this; }
+		public Builder homeFolderPath(Path val) { homeFolderPath = val; return this; }
+		public Builder nativeLibraryPath(Path val) { nativeLibraryPath = val; return this; }
+
+		public PdfTrickBag build() {
+			return INSTANCE.init(this);
+		}
 	}
 
 	public void cleanPdfFilesArray(){
@@ -135,16 +159,8 @@ public enum PdfTrickBag {
 
 	public Properties getMessagesProps() { return messagesProps; }
 
-	protected void setMessagesProps(Properties messagesProps) {
-		this.messagesProps = messagesProps;
-	}
-
 	public NativeObjectManager getNativeObjectManager() {
 		return nativeObjectManager;
-	}
-
-	protected void setNativeObjectManager(NativeObjectManager nativeObjectManager) {
-		this.nativeObjectManager = nativeObjectManager;
 	}
 
 	public UserInterface getUserInterface() {
@@ -154,6 +170,5 @@ public enum PdfTrickBag {
 	protected void setUserInterface(UserInterface userInterface) {
 		this.userInterface = userInterface;
 	}
-
 
 }

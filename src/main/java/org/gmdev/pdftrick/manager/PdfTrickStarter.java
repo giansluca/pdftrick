@@ -1,29 +1,23 @@
 package org.gmdev.pdftrick.manager;
 
-import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.swingmanager.UserInterfaceBuilder;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.Messages;
-import org.gmdev.pdftrick.utils.PropertyLoader;
 
 import java.nio.file.Path;
-import java.util.Properties;
 
 import static org.gmdev.pdftrick.utils.FileUtils.*;
 
 public class PdfTrickStarter {
 
     public static void start(String operatingSystem, Path homeFolderPath, Path nativeLibraryPath) {
-        PdfTrickBag bag = PdfTrickBag.INSTANCE;
-        bag.init(operatingSystem, homeFolderPath, nativeLibraryPath);
+        PdfTrickBag bag = PdfTrickBag.getBuilder()
+                .os(operatingSystem)
+                .homeFolderPath(homeFolderPath)
+                .nativeLibraryPath(nativeLibraryPath)
+                .build();
 
         cleanUpPdfTrickHome(bag.getThumbnailsFolderPath(), bag.getPdfFilePath());
-
-        Properties messagesProps = PropertyLoader.loadMessagesPropertyFile();
-        bag.setMessagesProps(messagesProps);
-
-        NativeObjectManager nativeObjectManager = new NativeObjectManager();
-        bag.setNativeObjectManager(nativeObjectManager);
 
         UserInterface userInterface = UserInterfaceBuilder.build();
         bag.setUserInterface(userInterface);
