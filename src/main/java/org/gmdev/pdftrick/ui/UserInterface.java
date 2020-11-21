@@ -16,12 +16,12 @@ import net.miginfocom.swing.MigLayout;
 
 import static org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode.PAGE_LOADING_THUMBNAILS;
 import static org.gmdev.pdftrick.utils.Constants.*;
+import static org.gmdev.pdftrick.utils.SetupUtils.WIN_OS;
 
 public class UserInterface extends JFrame {
 
 	private final static PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
-	private final JPanel contentPane;
 	private final LeftPanel left;
     private final CenterPanel center;
     private final RightPanel right;
@@ -32,15 +32,10 @@ public class UserInterface extends JFrame {
 	public UserInterface() {
 		super();
 		setLookAndFeel();
+		setAppIcon();
+        setTitle(APP_NAME);
 
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(PDFTRICK_ICO));
-		if (imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE)
-			throw new IllegalStateException("Image icon non loaded");
-
-		if (BAG.getOs().equals(SetupUtils.WIN_OS))
-			super.setIconImage(imageIcon.getImage());
-		else
-			Taskbar.getTaskbar().setIconImage(imageIcon.getImage());
+        addWindowListener(new WindowsActions());
 
 		left = new LeftPanel();
 		center = new CenterPanel();
@@ -48,16 +43,10 @@ public class UserInterface extends JFrame {
         bottom = new BottomPanel();
         glassPanel = new GlassPane();
         menu = new Menu();
-        
-        setTitle(Constants.APP_NAME);
-        addWindowListener(new WindowsActions());
 
         setJMenuBar(menu.getMenuBar());
         getRootPane().setGlassPane(glassPanel);
-
-		contentPane = new JPanel();
-		contentPanelSetUp();
-        setContentPane(contentPane);
+        setContentPane(contentPanelSetUp());
         pack();
 	}
 
@@ -68,8 +57,20 @@ public class UserInterface extends JFrame {
 			throw new IllegalStateException(e);
 		}
 	}
+
+	private void setAppIcon() {
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(PDFTRICK_ICO));
+		if (imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE)
+			throw new IllegalStateException("Image icon non loaded");
+
+		if (BAG.getOs().equals(WIN_OS))
+			super.setIconImage(imageIcon.getImage());
+		else
+			Taskbar.getTaskbar().setIconImage(imageIcon.getImage());
+	}
 	
-	private void contentPanelSetUp() {
+	private JPanel contentPanelSetUp() {
+		JPanel contentPane = new JPanel();
         contentPane.setLayout(new MigLayout());
         contentPane.setPreferredSize(new Dimension(1250, 800));
         contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -77,13 +78,16 @@ public class UserInterface extends JFrame {
         contentPane.add(center.getCenterScrollPanel(), "h 77%, w 68%");
         contentPane.add(right.getRightPanel(), "h 77%, w 12%, wrap");
         contentPane.add(bottom.getBottomPanel(), "h 23%, w 82%, span 2 1");
+        return contentPane;
 	}
 
 	public void lockScreen(WaitPanelMode mode) {
 		if (mode.equals(PAGE_LOADING_THUMBNAILS))
-			right.getRightBottomPanel().add(glassPanel.getThumbSpinner(), "gaptop 10, center, wrap");
+			right.getRightBottomPanel().add(
+					glassPanel.getThumbSpinner(), "gaptop 10, center, wrap");
 		else
-			right.getRightBottomPanel().add(glassPanel.getExtractSpinner(), "gaptop 10, center, wrap");
+			right.getRightBottomPanel().add(
+					glassPanel.getExtractSpinner(), "gaptop 10, center, wrap");
 		
 		right.getRightBottomPanel().revalidate();
 		right.getRightBottomPanel().repaint();
