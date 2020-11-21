@@ -15,23 +15,22 @@ import static org.gmdev.pdftrick.utils.Constants.*;
 public enum PdfTrickBag {
 	INSTANCE;
 
-	String os;
-	Path homeFolderPath;
-	Path nativeLibraryPath;
-	Path pdfFilePath;
-	Path thumbnailsFolderPath;
-	int numberOfPages;
-	ArrayList<File> pdfFilesArray;
-	int selectedPage;
-	Path extractionFolderPath;
-	HashMap<Integer, String> pagesRotation;
-	HashMap<String, String> pfdPasswords;
-	HashMap<String, RenderedImageAttributes> selectedImages;
-	HashMap<String, RenderedImageAttributes> inlineSelectedImages;
-	ThreadContainer threadContainer;
-	Properties messagesProps;
-	NativeObjectManager nativeObjectManager;
-	UserInterface userInterface;
+	private String os;
+	private Path nativeLibraryPath;
+	private Path pdfFilePath;
+	private Path thumbnailsFolderPath;
+	private int numberOfPages;
+	private ArrayList<File> pdfFilesArray;
+	private int selectedPage;
+	private Path extractionFolderPath;
+	private HashMap<Integer, String> pagesRotation;
+	private HashMap<String, String> pfdPasswords;
+	private HashMap<String, RenderedImageAttributes> selectedImages;
+	private HashMap<String, RenderedImageAttributes> inlineSelectedImages;
+	private ThreadContainer threadContainer;
+	private Properties messagesProps;
+	private NativeObjectManager nativeObjectManager;
+	private UserInterface userInterface;
 
 	@CanIgnoreReturnValue
 	public static PdfTrickBag getInstance() {
@@ -40,8 +39,8 @@ public enum PdfTrickBag {
 
 	private PdfTrickBag init(Builder builder) {
 		this.os = builder.os;
-		this.homeFolderPath = builder.homeFolderPath;
 		this.nativeLibraryPath = builder.nativeLibraryPath;
+		Path homeFolderPath = builder.homeFolderPath;
 
 		pdfFilePath = Path.of(homeFolderPath + File.separator + PDF_FILE_NAME);
 		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);

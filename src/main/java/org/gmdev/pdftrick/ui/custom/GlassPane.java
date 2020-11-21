@@ -41,7 +41,7 @@ public class GlassPane extends JPanel implements MouseListener, KeyListener {
 		thumbSpinner.setHorizontalAlignment(JLabel.CENTER);
 		thumbSpinner.setHorizontalTextPosition(JLabel.CENTER);
 		thumbSpinner.setVerticalTextPosition(JLabel.BOTTOM);
-		thumbSpinner.setFont(new Font("loading", Font.TRUETYPE_FONT, 13));
+		thumbSpinner.setFont(new Font("loading", Font.PLAIN, 13));
 		thumbSpinner.setForeground(Color.decode("#506D00"));
 		thumbSpinner.setIcon(imageIcon);
 		thumbSpinner.setText("loading");	
@@ -57,7 +57,7 @@ public class GlassPane extends JPanel implements MouseListener, KeyListener {
 		extractSpinner.setHorizontalAlignment(JLabel.CENTER);
 		extractSpinner.setHorizontalTextPosition(JLabel.CENTER);
 		extractSpinner.setVerticalTextPosition(JLabel.BOTTOM);
-		extractSpinner.setFont(new Font("loading", Font.TRUETYPE_FONT, 13));
+		extractSpinner.setFont(new Font("loading", Font.PLAIN, 13));
 		extractSpinner.setForeground(Color.decode("#D62828"));
 		extractSpinner.setIcon(imageIcon);
 		extractSpinner.setText("extracting");

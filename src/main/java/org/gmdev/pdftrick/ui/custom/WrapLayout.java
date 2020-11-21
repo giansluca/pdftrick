@@ -1,13 +1,10 @@
 package org.gmdev.pdftrick.ui.custom;
 
 import java.awt.*;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class WrapLayout extends FlowLayout {
-	
-	private static final long serialVersionUID = 5781288850559617500L;
-	
+
 	/**
 	* Constructs a new WrapLayout with a left
 	* alignment and a default 5-unit horizontal and vertical gap.
