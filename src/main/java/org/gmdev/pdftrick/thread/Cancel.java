@@ -40,8 +40,8 @@ public class Cancel implements Runnable {
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		
-		if (BAG.getThreadContainer().getOpenFileChooser() != null) {
-			while (!BAG.getThreadContainer().getOpenFileChooser().isFinished()) {
+		if (BAG.getThreadContainer().getFileChooserTask() != null) {
+			while (BAG.getThreadContainer().getFileChooserTask().isRunning()) {
 				// wait thread stop
 			}
 			
@@ -54,8 +54,8 @@ public class Cancel implements Runnable {
 			}
 		}
 		
-		if (BAG.getThreadContainer().getDragAnDropFileChooser() != null) {
-			while (!BAG.getThreadContainer().getDragAnDropFileChooser().isFinished()) {
+		if (BAG.getThreadContainer().getDragAndDropTask() != null) {
+			while (BAG.getThreadContainer().getDragAndDropTask().isRunning()) {
 				// wait thread stop
 			}
 			

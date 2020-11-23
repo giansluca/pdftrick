@@ -1,51 +1,47 @@
 package org.gmdev.pdftrick.thread;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.gmdev.pdftrick.engine.CheckFiles;
-import org.gmdev.pdftrick.engine.MergeFiles;
+import org.gmdev.pdftrick.engine.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
-import org.gmdev.pdftrick.ui.panels.CenterPanel;
-import org.gmdev.pdftrick.ui.panels.LeftPanel;
-import org.gmdev.pdftrick.utils.FileUtils;
-import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.ui.panels.*;
+import org.gmdev.pdftrick.utils.*;
 
-public class OpenFileChooser implements Runnable {
+public class FileChooserTask implements Runnable {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
-	private final File[] files;
-	volatile boolean finished = false;
+	private final File[] openedFiles;
+	private final AtomicBoolean running = new AtomicBoolean(false);
 	
-	public OpenFileChooser(File[] files) {
-		this.files = files;
+	public FileChooserTask(File[] openedFiles) {
+		this.openedFiles = openedFiles;
 	}
 	
 	public void stop() {
-	    finished = true;
-	 }
-	
+		running.set(false);
+	}
+
+	public boolean isRunning() {
+		return running.get();
+	}
+
 	@Override
 	public void run() {
-		execute();
-	}
-	
-	/**
-	 * Called after choosing pdf file upload  
-	 */
-	public void execute() {
+		running.set(true);
+
 		Properties messages = BAG.getMessagesProps();
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
 		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
-		ArrayList<File> filesVett = BAG.getPdfFilesArray();
+		ArrayList<File> filesArray = BAG.getPdfFilesArray();
 		
         SwingUtilities.invokeLater(() -> {
 			leftPanel.clean();
@@ -66,18 +62,15 @@ public class OpenFileChooser implements Runnable {
         		
         FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
         FileUtils.deletePdfFile(BAG.getPdfFilePath());
-     	
-		for (int i = 0; i < files.length; i++) {
-			File item = files[i];
-			if (!item.isDirectory()) {
-				filesVett.add(item);
-			}
-		}
+
+		for (File item : openedFiles)
+			if (!item.isDirectory())
+				filesArray.add(item);
         
         // call check class control files after selection
-        boolean fileCheck = false;
+        boolean fileCheck;
         CheckFiles checkFiles = new CheckFiles();
-        if (filesVett.size() > 0) {
+        if (filesArray.size() > 0) {
         	fileCheck = checkFiles.check();
         	if (!fileCheck) {
         		// in case of check failed i clean panel left and center, other stuff 
@@ -91,7 +84,7 @@ public class OpenFileChooser implements Runnable {
         	} else {
         		// merge pdf selection after check
         		MergeFiles engine = new MergeFiles();
-        		File resultFile = engine.mergePdf(filesVett, BAG.getPdfFilePath());
+        		File resultFile = engine.mergePdf(filesArray, BAG.getPdfFilePath());
         		
         		if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
         			Messages.append("INFO", messages.getProperty("tmsg_12"));
@@ -102,13 +95,8 @@ public class OpenFileChooser implements Runnable {
         		}
         	}
         } 
-        
-        finished = true;
+
+        running.set(false);
 	}
-	
-	public boolean isFinished() {
-		return finished;
-	}
-	
 
 }

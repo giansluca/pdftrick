@@ -41,7 +41,7 @@ public class Menu {
         JMenu help = new JMenu("Help");
   
 		JMenuItem openMenuItem = new JMenuItem();
-		openMenuItem.setAction(new OpenAction());
+		openMenuItem.setAction(new FileChooserAction());
     	file.add(openMenuItem);
     	
     	JMenuItem licence = new JMenuItem();
