@@ -46,5 +46,6 @@ deploy:
   provider: script
   skip_cleanup: true
   script: bash ./deploy.sh
-  #on:
+  on:
+    all_branches: true
     #tags: true
