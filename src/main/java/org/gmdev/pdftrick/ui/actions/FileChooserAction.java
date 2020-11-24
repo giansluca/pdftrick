@@ -39,7 +39,7 @@ public class FileChooserAction extends AbstractAction {
         LeftPanel leftPanel = BAG.getUserInterface().getLeft();
         Container contentPanel = BAG.getUserInterface().getContentPane();
         Properties messagesProps = BAG.getMessagesProps();
-        ThreadContainer threadContainer = BAG.getThreadContainer();
+        TasksContainer tasksContainer = BAG.getTasksContainer();
 
         CustomFileChooser fileOpen = new CustomFileChooser();
         fileOpen.setMultiSelectionEnabled(true);
@@ -48,8 +48,8 @@ public class FileChooserAction extends AbstractAction {
         int ret = fileOpen.showOpenDialog(contentPanel);
         if (ret != JFileChooser.APPROVE_OPTION) return;
 
-        var dragAndDropTask = threadContainer.getDragAndDropTask();
-        var fileChooserTask = threadContainer.getFileChooserTask();
+        var dragAndDropTask = tasksContainer.getDragAndDropTask();
+        var fileChooserTask = tasksContainer.getFileChooserTask();
         if ((dragAndDropTask != null && dragAndDropTask.isRunning()) ||
                 (fileChooserTask != null && fileChooserTask.isRunning())) {
 
@@ -58,19 +58,22 @@ public class FileChooserAction extends AbstractAction {
             return;
         }
 
-        if (threadContainer.getShowThumbsThread() != null && threadContainer.getShowThumbsThread().isAlive()) {
+        var showPdfCoverThumbnailsTask = tasksContainer.getShowPdfCoverThumbnailsTask();
+        if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
+
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
             return;
         }
 
-        if (threadContainer.getImgExtractionThread() != null && threadContainer.getImgExtractionThread().isAlive()) {
+
+        if (tasksContainer.getImgExtractionThread() != null && tasksContainer.getImgExtractionThread().isAlive()) {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
             return;
         }
 
-        if (threadContainer.getImgThumbThread() != null && threadContainer.getImgThumbThread().isAlive()) {
+        if (tasksContainer.getImgThumbThread() != null && tasksContainer.getImgThumbThread().isAlive()) {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
             return;
@@ -79,10 +82,10 @@ public class FileChooserAction extends AbstractAction {
         File[] files = fileOpen.getSelectedFiles();
 
         FileChooserTask newFileChooserTask = new FileChooserTask(files);
-        BAG.getThreadContainer().setFileChooserTask(newFileChooserTask);
+        BAG.getTasksContainer().setFileChooserTask(newFileChooserTask);
 
         Thread openFileChooserThread = new Thread(newFileChooserTask, "openFileChooserThread");
-        BAG.getThreadContainer().setOpenFileChooserThread(openFileChooserThread);
+        BAG.getTasksContainer().setOpenFileChooserThread(openFileChooserThread);
         openFileChooserThread.start();
     }
 

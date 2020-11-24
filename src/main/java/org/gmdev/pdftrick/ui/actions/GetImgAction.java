@@ -30,26 +30,26 @@ public class GetImgAction extends AbstractAction  {
 		final Properties messages = BAG.getMessagesProps();
 		final Container contentPanel = BAG.getUserInterface().getContentPane();
 		
-		if (BAG.getThreadContainer().getImgExtractionThread() != null &&
-				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+		if (BAG.getTasksContainer().getImgExtractionThread() != null &&
+				BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
 
 			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
-		if (BAG.getThreadContainer().getOpenFileChooserThread() != null &&
-				BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+		if (BAG.getTasksContainer().getOpenFileChooserThread() != null &&
+				BAG.getTasksContainer().getOpenFileChooserThread().isAlive()) {
 
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
-				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (BAG.getTasksContainer().getDragAnDropFileChooserThread() != null &&
+				BAG.getTasksContainer().getDragAnDropFileChooserThread().isAlive()) {
 
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
-				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
+		if (BAG.getTasksContainer().getShowThumbsThread() != null &&
+				BAG.getTasksContainer().getShowThumbsThread().isAlive()) {
 
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
@@ -58,20 +58,20 @@ public class GetImgAction extends AbstractAction  {
 		boolean extract = true;
 		File resultFile = BAG.getPdfFilePath().toFile();
 		if (resultFile != null && resultFile.exists() && resultFile.length() > 0) {
-			CustomFileChooser choosefolderToSave = new CustomFileChooser();
-			choosefolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			choosefolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
+			CustomFileChooser chooseFolderToSave = new CustomFileChooser();
+			chooseFolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooseFolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
 			
 			String extractionFolder = null;
 			Set<String> keys = BAG.getSelectedImages().keySet();
 			Set<String> kk = BAG.getInlineSelectedImages().keySet();
 			
 			if (keys.size() > 0 || kk.size() > 0) {
-				if (choosefolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) { 
+				if (chooseFolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) {
 					if (SetupUtils.isWindows()) {
-						extractionFolder = choosefolderToSave.getSelectedFile().getAbsolutePath();
+						extractionFolder = chooseFolderToSave.getSelectedFile().getAbsolutePath();
 					} else if (SetupUtils.isMac()) {
-						extractionFolder = choosefolderToSave.getCurrentDirectory().getAbsolutePath();
+						extractionFolder = chooseFolderToSave.getCurrentDirectory().getAbsolutePath();
 					}
 					BAG.setExtractionFolderPath(Path.of(extractionFolder));
 				} else {
@@ -87,10 +87,10 @@ public class GetImgAction extends AbstractAction  {
 		}
 		if (extract) {
 			ImgExtraction imgExtraction = new ImgExtraction();
-			BAG.getThreadContainer().setImgExtraction(imgExtraction);
+			BAG.getTasksContainer().setImgExtraction(imgExtraction);
 			
 			Thread imgExtractionThread = new Thread(imgExtraction, "imgExtractionThread");
-			BAG.getThreadContainer().setImgExtractionThread(imgExtractionThread);
+			BAG.getTasksContainer().setImgExtractionThread(imgExtractionThread);
 			
 			imgExtractionThread.start();
 		}

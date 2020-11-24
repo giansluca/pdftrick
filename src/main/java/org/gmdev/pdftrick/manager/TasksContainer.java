@@ -4,12 +4,12 @@ import java.util.concurrent.ExecutorService;
 
 import org.gmdev.pdftrick.thread.*;
 
-public class ThreadContainer {
+public class TasksContainer {
 	
 	private volatile DragAndDropTask dragAndDropTask = null;
 	private volatile FileChooserTask fileChooserTask = null;
 
-	private volatile ShowThumbs showThumbs = null;
+	private volatile ShowPdfCoverThumbnailsTask showPdfCoverThumbnailsTask = null;
 	private volatile DivisionThumb divisionThumbs = null;
 	private volatile ExecPool execPool = null;
 	private volatile ExecutorService executor = null;
@@ -26,12 +26,13 @@ public class ThreadContainer {
 	private volatile Thread imgExtractionThread = null;
 	private volatile Thread cancelThread = null;
 
-	public synchronized ShowThumbs getShowThumbs() {
-		return showThumbs;
+	public synchronized ShowPdfCoverThumbnailsTask getShowPdfCoverThumbnailsTask() {
+		return showPdfCoverThumbnailsTask;
 	}
 	
-	public synchronized void setShowThumbs(ShowThumbs showThumbs) {
-		this.showThumbs = showThumbs;
+	public synchronized void setShowPdfCoverThumbnailsTask(
+			ShowPdfCoverThumbnailsTask showPdfCoverThumbnailsTask) {
+		this.showPdfCoverThumbnailsTask = showPdfCoverThumbnailsTask;
 	}
 
 	public FileChooserTask getFileChooserTask() {

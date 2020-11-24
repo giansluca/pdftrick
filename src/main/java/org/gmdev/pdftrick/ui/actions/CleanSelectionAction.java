@@ -33,32 +33,32 @@ public class CleanSelectionAction extends AbstractAction {
 		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
 		
-		if (BAG.getThreadContainer().getImgExtractionThread() != null &&
-				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+		if (BAG.getTasksContainer().getImgExtractionThread() != null &&
+				BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
 
 			Messages.append("WARNING", messagesProps.getProperty("tmsg_02"));
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getImgThumbThread() !=null &&
-				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
+		if (BAG.getTasksContainer().getImgThumbThread() !=null &&
+				BAG.getTasksContainer().getImgThumbThread().isAlive()) {
 
 			Messages.append("WARNING", messagesProps.getProperty("tmsg_23"));
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getOpenFileChooserThread() != null &&
-				BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+		if (BAG.getTasksContainer().getOpenFileChooserThread() != null &&
+				BAG.getTasksContainer().getOpenFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
-				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (BAG.getTasksContainer().getDragAnDropFileChooserThread() != null &&
+				BAG.getTasksContainer().getDragAnDropFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
-				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
+		if (BAG.getTasksContainer().getShowThumbsThread() != null &&
+				BAG.getTasksContainer().getShowThumbsThread().isAlive()) {
 			return;
 		}
 		

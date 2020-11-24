@@ -40,71 +40,75 @@ public class Cancel implements Runnable {
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
 		
-		if (BAG.getThreadContainer().getFileChooserTask() != null) {
-			while (BAG.getThreadContainer().getFileChooserTask().isRunning()) {
+		if (BAG.getTasksContainer().getFileChooserTask() != null) {
+			while (BAG.getTasksContainer().getFileChooserTask().isRunning()) {
 				// wait thread stop
 			}
 			
-			if (BAG.getThreadContainer().getOpenFileChooserThread() !=null) {
-				BAG.getThreadContainer().getOpenFileChooserThread().join();
+			if (BAG.getTasksContainer().getOpenFileChooserThread() !=null) {
+				BAG.getTasksContainer().getOpenFileChooserThread().join();
 				
-				while (BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+				while (BAG.getTasksContainer().getOpenFileChooserThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (BAG.getThreadContainer().getDragAndDropTask() != null) {
-			while (BAG.getThreadContainer().getDragAndDropTask().isRunning()) {
+		if (BAG.getTasksContainer().getDragAndDropTask() != null) {
+			while (BAG.getTasksContainer().getDragAndDropTask().isRunning()) {
 				// wait thread stop
 			}
 			
-			if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null) {
-				BAG.getThreadContainer().getDragAnDropFileChooserThread().join();
-				while (BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+			if (BAG.getTasksContainer().getDragAnDropFileChooserThread() != null) {
+				BAG.getTasksContainer().getDragAnDropFileChooserThread().join();
+				while (BAG.getTasksContainer().getDragAnDropFileChooserThread().isAlive()) {
 				// wait thread stop
 				}
 			}
 		}
 		
-		if (BAG.getThreadContainer().getDivisionThumbs() != null && !BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
-			BAG.getThreadContainer().getDivisionThumbs().stop();
-			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getTasksContainer().getDivisionThumbs() != null &&
+				!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
+
+			BAG.getTasksContainer().getDivisionThumbs().stop();
+			while (!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
 			}
-			if (BAG.getThreadContainer().getDivisionThumbsThread() != null) {
-				BAG.getThreadContainer().getDivisionThumbsThread().join();
-				while (BAG.getThreadContainer().getDivisionThumbsThread().isAlive()) {
+			if (BAG.getTasksContainer().getDivisionThumbsThread() != null) {
+				BAG.getTasksContainer().getDivisionThumbsThread().join();
+				while (BAG.getTasksContainer().getDivisionThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (BAG.getThreadContainer().getShowThumbs() != null && !BAG.getThreadContainer().getShowThumbs().isFinished()) {
-			BAG.getThreadContainer().getShowThumbs().stop();
-			while (!BAG.getThreadContainer().getShowThumbs().isFinished()) {
+		if (BAG.getTasksContainer().getShowPdfCoverThumbnailsTask() != null &&
+				!BAG.getTasksContainer().getShowPdfCoverThumbnailsTask().isRunning()) {
+
+			BAG.getTasksContainer().getShowPdfCoverThumbnailsTask().stop();
+			while (BAG.getTasksContainer().getShowPdfCoverThumbnailsTask().isRunning()) {
 				// wait thread stop
 			}
-			if (BAG.getThreadContainer().getShowThumbsThread() != null) {
-				BAG.getThreadContainer().getShowThumbsThread().join();
-				while (BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
+			if (BAG.getTasksContainer().getShowThumbsThread() != null) {
+				BAG.getTasksContainer().getShowThumbsThread().join();
+				while (BAG.getTasksContainer().getShowThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (BAG.getThreadContainer().getExecPool() != null && !BAG.getThreadContainer().getExecPool().isFinished()) {
-			BAG.getThreadContainer().getExecPool().stop();
-			if (BAG.getThreadContainer().getExecPoolThread() != null) {
-				BAG.getThreadContainer().getExecPoolThread().join();
-				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
+		if (BAG.getTasksContainer().getExecPool() != null && !BAG.getTasksContainer().getExecPool().isFinished()) {
+			BAG.getTasksContainer().getExecPool().stop();
+			if (BAG.getTasksContainer().getExecPoolThread() != null) {
+				BAG.getTasksContainer().getExecPoolThread().join();
+				while (BAG.getTasksContainer().getExecPoolThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
-		if (BAG.getThreadContainer().getExecutor() != null) {
-			BAG.getThreadContainer().getExecutor().shutdownNow();
-			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
+		if (BAG.getTasksContainer().getExecutor() != null) {
+			BAG.getTasksContainer().getExecutor().shutdownNow();
+			while (!BAG.getTasksContainer().getExecutor().isTerminated()) {
 				//wait stop all threadPool task
 			}
 		}

@@ -3,8 +3,7 @@ package org.gmdev.pdftrick.ui.actions;
 import java.io.File;
 import java.util.Properties;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.manager.ThreadContainer;
+import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.thread.DragAndDropTask;
 import org.gmdev.pdftrick.ui.panels.LeftPanel;
@@ -19,10 +18,10 @@ public class DragAndDropAction implements FileDrop.Listener {
 	public void filesDropped(File[] files) {
 		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
 		Properties messagesProps = BAG.getMessagesProps();
-		ThreadContainer threadContainer = BAG.getThreadContainer();
+		TasksContainer tasksContainer = BAG.getTasksContainer();
 
-		var dragAndDropTask = threadContainer.getDragAndDropTask();
-		var fileChooserTask = threadContainer.getFileChooserTask();
+		var dragAndDropTask = tasksContainer.getDragAndDropTask();
+		var fileChooserTask = tasksContainer.getFileChooserTask();
 		if ( (dragAndDropTask != null && dragAndDropTask.isRunning()) ||
 				(fileChooserTask != null && fileChooserTask.isRunning()) ) {
 
@@ -31,24 +30,24 @@ public class DragAndDropAction implements FileDrop.Listener {
 			return;
 		}
 
-		if (threadContainer.getShowThumbsThread() != null &&
-				threadContainer.getShowThumbsThread().isAlive()) {
+		var showPdfCoverThumbnailsTask = tasksContainer.getShowPdfCoverThumbnailsTask();
+		if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
 
 			leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
     	}
 
-    	if (threadContainer.getImgExtractionThread() != null &&
-				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+    	if (tasksContainer.getImgExtractionThread() != null &&
+				BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
 
 		    leftPanel.resetLeftPanelFileDropBorder();
 		    ModalWarningPanel.displayExtractingImagesWarning();
 		    return;	
     	}
 
-    	if (threadContainer.getImgThumbThread() != null &&
-				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
+    	if (tasksContainer.getImgThumbThread() != null &&
+				BAG.getTasksContainer().getImgThumbThread().isAlive()) {
 
     		leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
@@ -56,10 +55,10 @@ public class DragAndDropAction implements FileDrop.Listener {
     	}
 		
 		DragAndDropTask newDragAndDropTask = new DragAndDropTask(files);
-		BAG.getThreadContainer().setDragAndDropTask(newDragAndDropTask);
+		BAG.getTasksContainer().setDragAndDropTask(newDragAndDropTask);
 		
 		Thread dragAnDropFileChooserThread = new Thread(newDragAndDropTask, "dragAnDropFileChooserThread");
-		BAG.getThreadContainer().setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
+		BAG.getTasksContainer().setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
 		dragAnDropFileChooserThread.start();
 	}
 	

@@ -15,7 +15,6 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.thread.ImgThumb;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.ui.panels.CenterPanel;
-import org.gmdev.pdftrick.utils.FileUtils;
 
 public class ThumbAction implements MouseListener {
 	
@@ -70,10 +69,10 @@ public class ThumbAction implements MouseListener {
 			centerPanel.clean();
 			
 			ImgThumb imgThumb = new ImgThumb(pageNumber);
-			BAG.getThreadContainer().setImgThumb(imgThumb);
+			BAG.getTasksContainer().setImgThumb(imgThumb);
 			
 			Thread imgThumbThread = new Thread(imgThumb, "imgThumbThread");
-			BAG.getThreadContainer().setImgThumbThread(imgThumbThread);
+			BAG.getTasksContainer().setImgThumbThread(imgThumbThread);
 			imgThumbThread.start();
 
 			// TODO Itext 7 migration

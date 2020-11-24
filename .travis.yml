@@ -1,28 +1,47 @@
 branches:
   only:
-    - master
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 language: minimal
-os:
-  - windows
-  - osx
-env:
-  global:
-    - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
-    - GRAVIS="$HOME/gravis"
-  matrix:
-    - JDK="openjdk@1.11.0-2"
-before_install:
-  - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
-  - source $GRAVIS/install-jdk
-  - source $GRAVIS/install-maven
-cache:
-  directories:
-    - $HOME/.m2
-    - $HOME/.jabba/
+jobs:
+  include:
+    - os: osx
+      osx_image: xcode12.2
+      install:
+        - brew tap adoptopenjdk/openjdk
+        - brew cask install adoptopenjdk11
+        - brew install maven
+        - brew install esolitos/ipa/sshpass
+    - os: windows
+      install:
+        - choco install adoptopenjdk11openj9
+        - choco install maven
+        - choco install putty
+#
+  #os:
+  #- windows
+#- osx
+  #env:
+  #global:
+  # - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
+  # - GRAVIS="$HOME/gravis"
+  #matrix:
+#  - JDK="openjdk@1.11.0-2"
+  #before_install:
+  #- travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
+  #- source $GRAVIS/install-jdk
+#- source $GRAVIS/install-maven
+  #cache:
+  #directories:
+  # - $HOME/.m2
+# - $HOME/.jabba/
+
 install:
   - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V
 script:
   - mvn test -B
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mvn clean package -DskipTests -P mac -B      ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then mvn clean package -DskipTests -P win -B  ; fi
+
 deploy:
   provider: script
   skip_cleanup: true

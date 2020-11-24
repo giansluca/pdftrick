@@ -27,7 +27,7 @@ public class ExecPool implements Runnable {
 	@Override
 	public void run() {
 		ExecutorService executor = Executors.newFixedThreadPool(2);
-		BAG.getThreadContainer().setExecutor(executor);
+		BAG.getTasksContainer().setExecutor(executor);
 		
 		int i = division + 1;
 		

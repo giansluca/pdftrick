@@ -26,45 +26,45 @@ public class ExitAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if (BAG.getThreadContainer().getDivisionThumbs() != null &&
-				!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getTasksContainer().getDivisionThumbs() != null &&
+				!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
 
-			BAG.getThreadContainer().getDivisionThumbs().stop();
-			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+			BAG.getTasksContainer().getDivisionThumbs().stop();
+			while (!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
 				// wait thread stop
 			}
 			
-			if (BAG.getThreadContainer().getDivisionThumbsThread() != null) {
-				while (BAG.getThreadContainer().getDivisionThumbsThread().isAlive()) {
+			if (BAG.getTasksContainer().getDivisionThumbsThread() != null) {
+				while (BAG.getTasksContainer().getDivisionThumbsThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 		
-		if (BAG.getThreadContainer().getExecPool() != null &&
-				!BAG.getThreadContainer().getExecPool().isFinished()) {
+		if (BAG.getTasksContainer().getExecPool() != null &&
+				!BAG.getTasksContainer().getExecPool().isFinished()) {
 
-			BAG.getThreadContainer().getExecPool().stop();
-			if (BAG.getThreadContainer().getExecPoolThread() != null) {
-				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
+			BAG.getTasksContainer().getExecPool().stop();
+			if (BAG.getTasksContainer().getExecPoolThread() != null) {
+				while (BAG.getTasksContainer().getExecPoolThread().isAlive()) {
 					// wait thread stop
 				}
 			}
 		}
 
-		if (BAG.getThreadContainer().getExecutor() != null) {
-			BAG.getThreadContainer().getExecutor().shutdownNow();
-			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
+		if (BAG.getTasksContainer().getExecutor() != null) {
+			BAG.getTasksContainer().getExecutor().shutdownNow();
+			while (!BAG.getTasksContainer().getExecutor().isTerminated()) {
 				//wait stop all threadPool task
 			}
 		}
 		
-		if (BAG.getThreadContainer().getImgExtraction() !=null &&
-				!BAG.getThreadContainer().getImgExtraction().isFinished()) {
+		if (BAG.getTasksContainer().getImgExtraction() !=null &&
+				!BAG.getTasksContainer().getImgExtraction().isFinished()) {
 
-			BAG.getThreadContainer().getImgExtraction().stop();
-			if (BAG.getThreadContainer().getImgExtractionThread() !=null &&
-					BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+			BAG.getTasksContainer().getImgExtraction().stop();
+			if (BAG.getTasksContainer().getImgExtractionThread() !=null &&
+					BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
 				ModalWarningPanel.displayClosingDuringExtractionWarning();
 			}
 		}

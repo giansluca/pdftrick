@@ -27,7 +27,7 @@ public enum PdfTrickBag {
 	private HashMap<String, String> pfdPasswords;
 	private HashMap<String, RenderedImageAttributes> selectedImages;
 	private HashMap<String, RenderedImageAttributes> inlineSelectedImages;
-	private ThreadContainer threadContainer;
+	private TasksContainer tasksContainer;
 	private Properties messagesProps;
 	private NativeObjectManager nativeObjectManager;
 	private UserInterface userInterface;
@@ -51,7 +51,7 @@ public enum PdfTrickBag {
 		pfdPasswords = new HashMap<>();
 		selectedImages = new HashMap<>();
 		inlineSelectedImages = new HashMap<>();
-		threadContainer = new ThreadContainer();
+		tasksContainer = new TasksContainer();
 		messagesProps = PropertyLoader.loadMessagesPropertyFile();
 		nativeObjectManager = new NativeObjectManager();
 
@@ -152,8 +152,8 @@ public enum PdfTrickBag {
 		return inlineSelectedImages;
 	}
 
-	public ThreadContainer getThreadContainer() {
-		return threadContainer;
+	public TasksContainer getTasksContainer() {
+		return tasksContainer;
 	}
 
 	public Properties getMessagesProps() { return messagesProps; }
