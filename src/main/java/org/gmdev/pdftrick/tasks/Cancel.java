@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.thread;
+package org.gmdev.pdftrick.tasks;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -82,11 +82,11 @@ public class Cancel implements Runnable {
 			}
 		}
 		
-		if (BAG.getTasksContainer().getShowPdfCoverThumbnailsTask() != null &&
-				!BAG.getTasksContainer().getShowPdfCoverThumbnailsTask().isRunning()) {
+		if (BAG.getTasksContainer().getPdfCoverThumbnailsDisplayTask() != null &&
+				!BAG.getTasksContainer().getPdfCoverThumbnailsDisplayTask().isRunning()) {
 
-			BAG.getTasksContainer().getShowPdfCoverThumbnailsTask().stop();
-			while (BAG.getTasksContainer().getShowPdfCoverThumbnailsTask().isRunning()) {
+			BAG.getTasksContainer().getPdfCoverThumbnailsDisplayTask().stop();
+			while (BAG.getTasksContainer().getPdfCoverThumbnailsDisplayTask().isRunning()) {
 				// wait thread stop
 			}
 			if (BAG.getTasksContainer().getShowThumbsThread() != null) {

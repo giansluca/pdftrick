@@ -2,9 +2,9 @@ package org.gmdev.pdftrick.render;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.thread.DivisionThumb;
-import org.gmdev.pdftrick.thread.ExecPool;
-import org.gmdev.pdftrick.thread.ShowPdfCoverThumbnailsTask;
+import org.gmdev.pdftrick.tasks.DivisionThumb;
+import org.gmdev.pdftrick.tasks.ExecPool;
+import org.gmdev.pdftrick.tasks.PdfCoverThumbnailsDisplayTask;
 
 import com.itextpdf.text.pdf.PdfReader;
 
@@ -58,10 +58,10 @@ public class PdfRenderLeft {
 		}
 		
 		// thread that search and showing thumbnails 
-		ShowPdfCoverThumbnailsTask showPdfCoverThumbnailsTask = new ShowPdfCoverThumbnailsTask();
-		BAG.getTasksContainer().setShowPdfCoverThumbnailsTask(showPdfCoverThumbnailsTask);
+		PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = new PdfCoverThumbnailsDisplayTask();
+		BAG.getTasksContainer().setPdfCoverThumbnailsDisplayTask(pdfCoverThumbnailsDisplayTask);
 				
-		Thread showThumbsThread = new Thread(showPdfCoverThumbnailsTask, "showThumbsThread");
+		Thread showThumbsThread = new Thread(pdfCoverThumbnailsDisplayTask, "showThumbsThread");
 		BAG.getTasksContainer().setShowThumbsThread(showThumbsThread);
 		showThumbsThread.start();
 	}

@@ -9,7 +9,8 @@ import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.thread.FileChooserTask;
+import org.gmdev.pdftrick.tasks.FileChooserTask;
+import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.ui.panels.LeftPanel;
 import org.gmdev.pdftrick.utils.*;
@@ -58,22 +59,22 @@ public class FileChooserAction extends AbstractAction {
             return;
         }
 
-        var showPdfCoverThumbnailsTask = tasksContainer.getShowPdfCoverThumbnailsTask();
+        var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
         if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
-
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
             return;
         }
 
-
-        if (tasksContainer.getImgExtractionThread() != null && tasksContainer.getImgExtractionThread().isAlive()) {
+        var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+        if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
             leftPanel.resetLeftPanelFileDropBorder();
-            ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
+            ModalWarningPanel.displayExtractingImagesWarning();
             return;
         }
 
-        if (tasksContainer.getImgThumbThread() != null && tasksContainer.getImgThumbThread().isAlive()) {
+        PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
+        if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
             return;
@@ -82,10 +83,10 @@ public class FileChooserAction extends AbstractAction {
         File[] files = fileOpen.getSelectedFiles();
 
         FileChooserTask newFileChooserTask = new FileChooserTask(files);
-        BAG.getTasksContainer().setFileChooserTask(newFileChooserTask);
+        tasksContainer.setFileChooserTask(newFileChooserTask);
 
-        Thread openFileChooserThread = new Thread(newFileChooserTask, "openFileChooserThread");
-        BAG.getTasksContainer().setOpenFileChooserThread(openFileChooserThread);
+        Thread openFileChooserThread = new Thread(newFileChooserTask);
+        tasksContainer.setOpenFileChooserThread(openFileChooserThread);
         openFileChooserThread.start();
     }
 

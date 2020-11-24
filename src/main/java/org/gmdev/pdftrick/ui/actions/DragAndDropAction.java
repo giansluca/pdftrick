@@ -5,7 +5,8 @@ import java.util.Properties;
 
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.thread.DragAndDropTask;
+import org.gmdev.pdftrick.tasks.DragAndDropTask;
+import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.ui.panels.LeftPanel;
 import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.external.FileDrop;
@@ -30,38 +31,33 @@ public class DragAndDropAction implements FileDrop.Listener {
 			return;
 		}
 
-		var showPdfCoverThumbnailsTask = tasksContainer.getShowPdfCoverThumbnailsTask();
+		var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
 		if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
-
 			leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
     	}
 
-    	if (tasksContainer.getImgExtractionThread() != null &&
-				BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
+		var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+		if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
+			leftPanel.resetLeftPanelFileDropBorder();
+			ModalWarningPanel.displayExtractingImagesWarning();
+			return;
+		}
 
-		    leftPanel.resetLeftPanelFileDropBorder();
-		    ModalWarningPanel.displayExtractingImagesWarning();
-		    return;	
-    	}
-
-    	if (tasksContainer.getImgThumbThread() != null &&
-				BAG.getTasksContainer().getImgThumbThread().isAlive()) {
-
+		PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
+    	if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
     		leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
 			return;	
     	}
 		
 		DragAndDropTask newDragAndDropTask = new DragAndDropTask(files);
-		BAG.getTasksContainer().setDragAndDropTask(newDragAndDropTask);
+		tasksContainer.setDragAndDropTask(newDragAndDropTask);
 		
-		Thread dragAnDropFileChooserThread = new Thread(newDragAndDropTask, "dragAnDropFileChooserThread");
-		BAG.getTasksContainer().setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
+		Thread dragAnDropFileChooserThread = new Thread(newDragAndDropTask);
+		tasksContainer.setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
 		dragAnDropFileChooserThread.start();
 	}
-	
-	
 
 }

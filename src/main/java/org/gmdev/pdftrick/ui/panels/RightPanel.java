@@ -29,7 +29,7 @@ public class RightPanel {
 		ImageIcon getImagesIcon = new ImageIcon(FileLoader.loadFileAsUrl(GET_IMG_ICO));
 	    getImagesButton = new JButton("Get Img");
 	    getImagesButton.setFocusable(false);
-	    getImagesButton.setAction(new GetImgAction());
+	    getImagesButton.setAction(new ImagesExtractionAction());
 	    getImagesButton.setText("GET IMG");
 		getImagesButton.setIcon(getImagesIcon);
 	   

@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.thread;
+package org.gmdev.pdftrick.tasks;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,7 +15,7 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ThumbAction;
 import org.gmdev.pdftrick.utils.*;
 
-public class ShowPdfCoverThumbnailsTask implements Runnable {
+public class PdfCoverThumbnailsDisplayTask implements Runnable {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	

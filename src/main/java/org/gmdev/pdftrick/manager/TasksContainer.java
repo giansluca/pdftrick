@@ -2,112 +2,111 @@ package org.gmdev.pdftrick.manager;
 
 import java.util.concurrent.ExecutorService;
 
-import org.gmdev.pdftrick.thread.*;
+import org.gmdev.pdftrick.tasks.*;
 
 public class TasksContainer {
 	
-	private volatile DragAndDropTask dragAndDropTask = null;
-	private volatile FileChooserTask fileChooserTask = null;
+	private DragAndDropTask dragAndDropTask = null;
+	private FileChooserTask fileChooserTask = null;
+	private PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = null;
+	private DivisionThumb divisionThumbs = null;
+	private ExecPool execPool = null;
+	private PageThumbnailsDisplayTask pageThumbnailsDisplayTask = null;
+	private ImagesExtractionTask imagesExtractionTask = null;
+	private Cancel cancel = null;
 
-	private volatile ShowPdfCoverThumbnailsTask showPdfCoverThumbnailsTask = null;
-	private volatile DivisionThumb divisionThumbs = null;
-	private volatile ExecPool execPool = null;
-	private volatile ExecutorService executor = null;
-	private volatile ImgThumb imgThumb = null;
-	private volatile ImgExtraction imgExtraction = null;
-	private volatile Cancel cancel = null;
-	
-	private volatile Thread showThumbsThread = null;
-	private volatile Thread divisionThumbsThread = null;
-	private volatile Thread execPoolThread = null;
-	private volatile Thread OpenFileChooserThread = null;
-	private volatile Thread DragAnDropFileChooserThread = null;
-	private volatile Thread imgThumbThread = null;
-	private volatile Thread imgExtractionThread = null;
-	private volatile Thread cancelThread = null;
+	private ExecutorService executor = null;
+	private Thread showThumbsThread = null;
+	private Thread divisionThumbsThread = null;
+	private Thread execPoolThread = null;
+	private Thread OpenFileChooserThread = null;
+	private Thread DragAnDropFileChooserThread = null;
+	private Thread imgThumbThread = null;
+	private Thread imgExtractionThread = null;
+	private Thread cancelThread = null;
 
-	public synchronized ShowPdfCoverThumbnailsTask getShowPdfCoverThumbnailsTask() {
-		return showPdfCoverThumbnailsTask;
+	public synchronized PdfCoverThumbnailsDisplayTask getPdfCoverThumbnailsDisplayTask() {
+		return pdfCoverThumbnailsDisplayTask;
 	}
 	
-	public synchronized void setShowPdfCoverThumbnailsTask(
-			ShowPdfCoverThumbnailsTask showPdfCoverThumbnailsTask) {
-		this.showPdfCoverThumbnailsTask = showPdfCoverThumbnailsTask;
+	public synchronized void setPdfCoverThumbnailsDisplayTask(
+			PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask) {
+		this.pdfCoverThumbnailsDisplayTask = pdfCoverThumbnailsDisplayTask;
 	}
 
-	public FileChooserTask getFileChooserTask() {
+	public synchronized FileChooserTask getFileChooserTask() {
 		return fileChooserTask;
 	}
 
-	public void setFileChooserTask(FileChooserTask fileChooserTask) {
+	public synchronized void setFileChooserTask(FileChooserTask fileChooserTask) {
 		this.fileChooserTask = fileChooserTask;
 	}
 
-	public DragAndDropTask getDragAndDropTask() {
+	public synchronized DragAndDropTask getDragAndDropTask() {
 		return dragAndDropTask;
 	}
 
-	public void setDragAndDropTask(DragAndDropTask dragAndDropTask) {
+	public synchronized void setDragAndDropTask(DragAndDropTask dragAndDropTask) {
 		this.dragAndDropTask = dragAndDropTask;
 	}
 	
-	public DivisionThumb getDivisionThumbs() {
+	public synchronized DivisionThumb getDivisionThumbs() {
 		return divisionThumbs;
 	}
 	
-	public void setDivisionThumbs(DivisionThumb divisionThumbs) {
+	public synchronized void setDivisionThumbs(DivisionThumb divisionThumbs) {
 		this.divisionThumbs = divisionThumbs;
 	}
 	
-	public ExecPool getExecPool() {
+	public synchronized ExecPool getExecPool() {
 		return execPool;
 	}
 	
-	public void setExecPool(ExecPool execPool) {
+	public synchronized void setExecPool(ExecPool execPool) {
 		this.execPool = execPool;
 	}
 	
-	public ExecutorService getExecutor() {
+	public synchronized ExecutorService getExecutor() {
 		return executor;
 	}
 	
-	public void setExecutor(ExecutorService executor) {
+	public synchronized void setExecutor(ExecutorService executor) {
 		this.executor = executor;
 	}
 
-	public ImgThumb getImgThumb() {
-		return imgThumb;
+	public synchronized PageThumbnailsDisplayTask getPageThumbnailsDisplayTask() {
+		return pageThumbnailsDisplayTask;
 	}
 	
-	public void setImgThumb(ImgThumb imgThumb) {
-		this.imgThumb = imgThumb;
+	public synchronized void setPageThumbnailsDisplayTask(PageThumbnailsDisplayTask pageThumbnailsDisplayTask) {
+		this.pageThumbnailsDisplayTask = pageThumbnailsDisplayTask;
 	}
 	
-	public ImgExtraction getImgExtraction() {
-		return imgExtraction;
+	public synchronized ImagesExtractionTask getImagesExtractionTask() {
+		return imagesExtractionTask;
 	}
 	
-	public void setImgExtraction(ImgExtraction imgExtraction) {
-		this.imgExtraction = imgExtraction;
+	public synchronized void setImagesExtractionTask(ImagesExtractionTask imagesExtractionTask) {
+		this.imagesExtractionTask = imagesExtractionTask;
 	}
 	
-	public Cancel getCancel() {
+	public synchronized Cancel getCancel() {
 		return cancel;
 	}
 	
-	public void setCancel(Cancel cancel) {
+	public synchronized void setCancel(Cancel cancel) {
 		this.cancel = cancel;
 	}
 
-	public Thread getShowThumbsThread() {
+	public synchronized Thread getShowThumbsThread() {
 		return showThumbsThread;
 	}
 	
-	public void setShowThumbsThread(Thread showThumbsThread) {
+	public synchronized void setShowThumbsThread(Thread showThumbsThread) {
 		this.showThumbsThread = showThumbsThread;
 	}
 	
-	public Thread getDivisionThumbsThread() {
+	public synchronized Thread getDivisionThumbsThread() {
 		return divisionThumbsThread;
 	}
 
@@ -115,51 +114,51 @@ public class TasksContainer {
 		this.divisionThumbsThread = divisionThumbsThread;
 	}
 	
-	public Thread getExecPoolThread() {
+	public synchronized Thread getExecPoolThread() {
 		return execPoolThread;
 	}
 	
-	public void setExecPoolThread(Thread execPoolThread) {
+	public synchronized void setExecPoolThread(Thread execPoolThread) {
 		this.execPoolThread = execPoolThread;
 	}
 	
-	public Thread getOpenFileChooserThread() {
+	public synchronized Thread getOpenFileChooserThread() {
 		return OpenFileChooserThread;
 	}
 	
-	public void setOpenFileChooserThread(Thread openFileChooserThread) {
+	public synchronized void setOpenFileChooserThread(Thread openFileChooserThread) {
 		OpenFileChooserThread = openFileChooserThread;
 	}
 	
-	public Thread getDragAnDropFileChooserThread() {
+	public synchronized Thread getDragAnDropFileChooserThread() {
 		return DragAnDropFileChooserThread;
 	}
 	
-	public void setDragAnDropFileChooserThread(Thread dragAnDropFileChooserThread) {
+	public synchronized void setDragAnDropFileChooserThread(Thread dragAnDropFileChooserThread) {
 		DragAnDropFileChooserThread = dragAnDropFileChooserThread;
 	}
 	
-	public Thread getImgThumbThread() {
+	public  synchronized Thread getImgThumbThread() {
 		return imgThumbThread;
 	}
-	
-	public void setImgThumbThread(Thread imgThumbThread) {
+
+	public synchronized void setImgThumbThread(Thread imgThumbThread) {
 		this.imgThumbThread = imgThumbThread;
 	}
 	
-	public Thread getImgExtractionThread() {
+	public synchronized Thread getImgExtractionThread() {
 		return imgExtractionThread;
 	}
 	
-	public void setImgExtractionThread(Thread imgExtractionThread) {
+	public synchronized void setImgExtractionThread(Thread imgExtractionThread) {
 		this.imgExtractionThread = imgExtractionThread;
 	}
 	
-	public Thread getCancelThread() {
+	public synchronized Thread getCancelThread() {
 		return cancelThread;
 	}
 	
-	public void setCancelThread(Thread cancelThread) {
+	public synchronized void setCancelThread(Thread cancelThread) {
 		this.cancelThread = cancelThread;
 	}
 

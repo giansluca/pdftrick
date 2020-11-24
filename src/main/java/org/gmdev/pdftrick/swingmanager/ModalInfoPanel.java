@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.swingmanager;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.FileLoader;
 
 import javax.swing.*;
@@ -19,7 +18,7 @@ public class ModalInfoPanel {
 
         String aboutTitle = "PdfTrick Info";
         String aboutMessage = String.format(
-                "PdfTrick\nAuthor: Gian Luca Mori\nVersion: 1.3 %s \nLicense: gnu Gpl3", os);
+                "PdfTrick\nAuthor: Gian Luca Mori\nVersion: %s %s \nLicense: gnu Gpl3", VERSION, os);
 
         SwingInvoker.invokeLater(
                 () -> displayGenericInfoPanel(BAG.getUserInterface(), aboutMessage, aboutTitle, pdfTrickIcon));

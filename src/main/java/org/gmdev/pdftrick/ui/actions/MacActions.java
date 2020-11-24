@@ -45,10 +45,10 @@ public class MacActions {
 			}
 		}
 		
-		if (BAG.getTasksContainer().getImgExtraction() !=null &&
-				!BAG.getTasksContainer().getImgExtraction().isFinished()) {
+		if (BAG.getTasksContainer().getImagesExtractionTask() !=null &&
+				BAG.getTasksContainer().getImagesExtractionTask().isRunning()) {
 
-			BAG.getTasksContainer().getImgExtraction().stop();
+			BAG.getTasksContainer().getImagesExtractionTask().stop();
 			if (BAG.getTasksContainer().getImgExtractionThread() !=null &&
 					BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
 				ModalWarningPanel.displayClosingDuringExtractionWarning();

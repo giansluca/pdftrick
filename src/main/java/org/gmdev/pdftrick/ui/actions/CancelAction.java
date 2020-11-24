@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.thread.Cancel;
+import org.gmdev.pdftrick.tasks.Cancel;
 
 public class CancelAction extends AbstractAction {
 	

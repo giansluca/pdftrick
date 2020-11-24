@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.thread;
+package org.gmdev.pdftrick.tasks;
 
 import java.io.File;
 import java.util.*;

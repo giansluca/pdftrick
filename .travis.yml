@@ -1,6 +1,6 @@
-branches:
-  only:
-    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+#branches:
+  #only:
+    #- /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 language: minimal
 jobs:
   include:
@@ -46,5 +46,5 @@ deploy:
   provider: script
   skip_cleanup: true
   script: bash ./deploy.sh
-  on:
-    tags: true
+  #on:
+    #tags: true

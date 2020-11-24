@@ -1,9 +1,10 @@
-package org.gmdev.pdftrick.thread;
+package org.gmdev.pdftrick.tasks;
 
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.*;
 
@@ -16,28 +17,25 @@ import org.gmdev.pdftrick.utils.Messages;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 
-public class ImgThumb implements Runnable {
+public class PageThumbnailsDisplayTask implements Runnable {
 	
-	private static final Logger logger = Logger.getLogger(ImgThumb.class);
+	private static final Logger logger = Logger.getLogger(PageThumbnailsDisplayTask.class);
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private final int numberPage;
-	volatile boolean finished = false;
+	private final AtomicBoolean running = new AtomicBoolean(false);
 	
-	public ImgThumb(int numberPage) {
+	public PageThumbnailsDisplayTask(int numberPage) {
 		this.numberPage = numberPage;
 	}
-	
-	public void stop() {
-	    finished = true;
-	 }
-	
-	@Override
-	public void run() {
-		renderPageThumbnails();
+
+	public boolean isRunning() {
+		return running.get();
 	}
 
-	public void renderPageThumbnails () {
+	@Override
+	public void run () {
+		running.set(true);
 		Properties messages = BAG.getMessagesProps();
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		
@@ -55,27 +53,23 @@ public class ImgThumb implements Runnable {
 			reader.close();
 			
 			String infoUnsupported = "";
-			String infoAvailable = "";
+			String infoAvailable;
 			
-			if (listener.getUnsupportedImage() > 0){
+			if (listener.getUnsupportedImage() > 0)
 				infoUnsupported = MessageFormat.format(messages.getProperty("dmsg_02"), numberPage);
-			}
 			
 			if (listener.getNumImg() == 0) {
 				String noImgTitle = messages.getProperty("tmsg_07");
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						JLabel noImageLabel = new JLabel(noImgTitle);
-						noImageLabel.setHorizontalAlignment(JLabel.CENTER);
-						noImageLabel.setVerticalAlignment(JLabel.CENTER);
-						noImageLabel.setFont(new Font("Verdana", Font.BOLD,20));
-						noImageLabel.setName("NoPicsImg");
-						centerPanel.setLayout(new GridBagLayout());
-						centerPanel.add(noImageLabel);
-						centerPanel.revalidate();
-						centerPanel.repaint();
-					}
+				SwingUtilities.invokeLater(() -> {
+					JLabel noImageLabel = new JLabel(noImgTitle);
+					noImageLabel.setHorizontalAlignment(JLabel.CENTER);
+					noImageLabel.setVerticalAlignment(JLabel.CENTER);
+					noImageLabel.setFont(new Font("Verdana", Font.BOLD,20));
+					noImageLabel.setName("NoPicsImg");
+					centerPanel.setLayout(new GridBagLayout());
+					centerPanel.add(noImageLabel);
+					centerPanel.revalidate();
+					centerPanel.repaint();
 				});
 				infoAvailable = MessageFormat.format(messages.getProperty("dmsg_03"), numberPage);
 			} else {
@@ -88,12 +82,7 @@ public class ImgThumb implements Runnable {
 		}
 		
 		WaitPanel.removeWaitPanel();
-		finished = true;
+		running.set(false);
 	}
-	
-	public boolean isFinished() {
-		return finished;
-	}
-	
 
 }
