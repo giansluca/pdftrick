@@ -16,8 +16,8 @@ jobs:
         - choco install adoptopenjdk11openj9
         - choco install maven
         - choco install putty
-        - refreshenv
-#
+        - cmd //C RefreshEnv.cmd
+  #
   #os:
   #- windows
 #- osx
