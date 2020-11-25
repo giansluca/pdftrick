@@ -16,6 +16,7 @@ public final class Constants {
 	public static final String JFC_EXTRACT_TITLE = "Folder to save";
 	public static final String JFC_OPEN_TITLE = "Open files";
 	public static final String PWD_DIALOG = "Password is required";
+	public static final long TEN = 10L;
 	
 	// pdf page zoom
 	public static final int ZOOM_THUMBNAIL = 30;

@@ -13,29 +13,19 @@ public class MacActions {
 	 * Called on mac OS when the application exit
 	 */
 	public void handleQuitRequestWith() {
-		if (BAG.getTasksContainer().getDivisionThumbs() != null &&
-				!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getTasksContainer().getFirstPdfPageRenderTask() != null &&
+				BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
 
-			BAG.getTasksContainer().getDivisionThumbs().stop();
-			while (!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
+			BAG.getTasksContainer().getFirstPdfPageRenderTask().stop();
+			while (BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
 				// wait thread stop
-			}
-			if (BAG.getTasksContainer().getDivisionThumbsThread() != null) {
-				while (BAG.getTasksContainer().getDivisionThumbsThread().isAlive()) {
-					// wait thread stop
-				}
 			}
 		}
 		
 		if (BAG.getTasksContainer().getExecPool() != null &&
-				!BAG.getTasksContainer().getExecPool().isFinished()) {
+				BAG.getTasksContainer().getExecPool().isRunning()) {
 
 			BAG.getTasksContainer().getExecPool().stop();
-			if (BAG.getTasksContainer().getExecPoolThread() != null) {
-				while (BAG.getTasksContainer().getExecPoolThread().isAlive()) {
-					// wait thread stop
-				}
-			}
 		}
 
 		if (BAG.getTasksContainer().getExecutor() != null) {
@@ -49,10 +39,6 @@ public class MacActions {
 				BAG.getTasksContainer().getImagesExtractionTask().isRunning()) {
 
 			BAG.getTasksContainer().getImagesExtractionTask().stop();
-			if (BAG.getTasksContainer().getImgExtractionThread() !=null &&
-					BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
-				ModalWarningPanel.displayClosingDuringExtractionWarning();
-			}
 		}
 		
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();

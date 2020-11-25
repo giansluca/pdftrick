@@ -9,11 +9,11 @@ public class TasksContainer {
 	private DragAndDropTask dragAndDropTask = null;
 	private FileChooserTask fileChooserTask = null;
 	private PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = null;
-	private DivisionThumb divisionThumbs = null;
-	private ExecPool execPool = null;
+	private FirstPdfPageRenderTask firstPdfPageRenderTask = null;
 	private PageThumbnailsDisplayTask pageThumbnailsDisplayTask = null;
 	private ImagesExtractionTask imagesExtractionTask = null;
-	private Cancel cancel = null;
+	private CancelTask cancelTask = null;
+	private ExecPool execPool = null;
 
 	private ExecutorService executor = null;
 	private Thread showThumbsThread = null;
@@ -50,12 +50,12 @@ public class TasksContainer {
 		this.dragAndDropTask = dragAndDropTask;
 	}
 	
-	public synchronized DivisionThumb getDivisionThumbs() {
-		return divisionThumbs;
+	public synchronized FirstPdfPageRenderTask getFirstPdfPageRenderTask() {
+		return firstPdfPageRenderTask;
 	}
 	
-	public synchronized void setDivisionThumbs(DivisionThumb divisionThumbs) {
-		this.divisionThumbs = divisionThumbs;
+	public synchronized void setFirstPdfPageRenderTask(FirstPdfPageRenderTask firstPdfPageRenderTask) {
+		this.firstPdfPageRenderTask = firstPdfPageRenderTask;
 	}
 	
 	public synchronized ExecPool getExecPool() {
@@ -90,12 +90,12 @@ public class TasksContainer {
 		this.imagesExtractionTask = imagesExtractionTask;
 	}
 	
-	public synchronized Cancel getCancel() {
-		return cancel;
+	public synchronized CancelTask getCancelTask() {
+		return cancelTask;
 	}
 	
-	public synchronized void setCancel(Cancel cancel) {
-		this.cancel = cancel;
+	public synchronized void setCancelTask(CancelTask cancelTask) {
+		this.cancelTask = cancelTask;
 	}
 
 	public synchronized Thread getShowThumbsThread() {

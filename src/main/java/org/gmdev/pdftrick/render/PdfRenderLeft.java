@@ -2,7 +2,7 @@ package org.gmdev.pdftrick.render;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.tasks.DivisionThumb;
+import org.gmdev.pdftrick.tasks.FirstPdfPageRenderTask;
 import org.gmdev.pdftrick.tasks.ExecPool;
 import org.gmdev.pdftrick.tasks.PdfCoverThumbnailsDisplayTask;
 
@@ -41,10 +41,10 @@ public class PdfRenderLeft {
 			division = totPages;
 		}
 		
-		DivisionThumb divisionThumbs = new DivisionThumb(division, imgPath);
-		BAG.getTasksContainer().setDivisionThumbs(divisionThumbs);
+		FirstPdfPageRenderTask firstPdfPageRenderTask = new FirstPdfPageRenderTask(division, imgPath);
+		BAG.getTasksContainer().setFirstPdfPageRenderTask(firstPdfPageRenderTask);
 		
-		Thread divisionThumbsThread = new Thread(divisionThumbs, "divisionThumbsThread");
+		Thread divisionThumbsThread = new Thread(firstPdfPageRenderTask, "divisionThumbsThread");
 		BAG.getTasksContainer().setDivisionThumbsThread(divisionThumbsThread);
 		divisionThumbsThread.start();
 		

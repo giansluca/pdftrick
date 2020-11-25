@@ -20,47 +20,26 @@ public class WindowsActions implements WindowListener {
 	 */
 	@Override
 	public void windowClosing(WindowEvent event) {
-		if (BAG.getTasksContainer().getDivisionThumbs() != null &&
-				!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getTasksContainer().getFirstPdfPageRenderTask() != null &&
+				BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
 
-			BAG.getTasksContainer().getDivisionThumbs().stop();
-			while (!BAG.getTasksContainer().getDivisionThumbs().isFinished()) {
+			BAG.getTasksContainer().getFirstPdfPageRenderTask().stop();
+			while (!BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
 				// wait thread stop
-			}
-			
-			if (BAG.getTasksContainer().getDivisionThumbsThread() != null) {
-				while (BAG.getTasksContainer().getDivisionThumbsThread().isAlive()) {
-					// wait thread stop
-				}
 			}
 		}
 		
 		if (BAG.getTasksContainer().getExecPool() != null &&
-				!BAG.getTasksContainer().getExecPool().isFinished()) {
+				!BAG.getTasksContainer().getExecPool().isRunning()) {
 
 			BAG.getTasksContainer().getExecPool().stop();
-			if (BAG.getTasksContainer().getExecPoolThread() != null) {
-				while (BAG.getTasksContainer().getExecPoolThread().isAlive()) {
-					// wait thread stop
-				}
-			}
-		}
-
-		if (BAG.getTasksContainer().getExecutor() != null) {
-			BAG.getTasksContainer().getExecutor().shutdownNow();
-			while (!BAG.getTasksContainer().getExecutor().isTerminated()) {
-				//wait stop all threadPool task
-			}
 		}
 		
 		if (BAG.getTasksContainer().getImagesExtractionTask() !=null &&
 				BAG.getTasksContainer().getImagesExtractionTask().isRunning()) {
 
+			ModalWarningPanel.displayClosingDuringExtractionWarning();
 			BAG.getTasksContainer().getImagesExtractionTask().stop();
-			if (BAG.getTasksContainer().getImgExtractionThread() !=null &&
-					BAG.getTasksContainer().getImgExtractionThread() .isAlive()) {
-				ModalWarningPanel.displayClosingDuringExtractionWarning();
-			}
 		}
 		
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
