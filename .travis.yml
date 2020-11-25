@@ -16,6 +16,7 @@ jobs:
         - choco install adoptopenjdk11openj9
         - choco install maven
         - choco install putty
+        - refreshenv
 #
   #os:
   #- windows
