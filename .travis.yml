@@ -1,8 +1,7 @@
-#branches:
-  #only:
-    #- /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+branches:
+  only:
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 language: minimal
-
 env:
   global:
     - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
@@ -24,41 +23,19 @@ jobs:
         - source $GRAVIS/install-jdk
         - source $GRAVIS/install-maven
         - choco install putty
-        #- choco install adoptopenjdk11openj9
-        #- choco install maven
       cache:
         directories:
           - $HOME/.m2
           - $HOME/.jabba/
-  #os:
-  #- windows
-#- osx
-  #env:
-  #global:
-  # - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
-  # - GRAVIS="$HOME/gravis"
-  #matrix:
-#  - JDK="openjdk@1.11.0-2"
-  #before_install:
-  #- travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
-  #- source $GRAVIS/install-jdk
-#- source $GRAVIS/install-maven
-  #cache:
-  #directories:
-  # - $HOME/.m2
-# - $HOME/.jabba/
-
 install:
   - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V
 script:
   - mvn test -B
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mvn clean package -DskipTests -P mac -B      ; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then mvn clean package -DskipTests -P win -B  ; fi
-
 deploy:
   provider: script
   skip_cleanup: true
   script: bash ./deploy.sh
   on:
-    all_branches: true
-    #tags: true
+    tags: true

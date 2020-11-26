@@ -14,11 +14,12 @@ public class ModalInfoPanel {
 
     public static void displayAboutPanel() {
         String os = BAG.getOs();
+        String version = BAG.getVersion();
         ImageIcon pdfTrickIcon = new ImageIcon(FileLoader.loadFileAsUrl(PDFTRICK_ICO));
 
         String aboutTitle = "PdfTrick Info";
         String aboutMessage = String.format(
-                "PdfTrick\nAuthor: Gian Luca Mori\nVersion: %s %s \nLicense: gnu Gpl3", VERSION, os);
+                "PdfTrick\nAuthor: Gian Luca Mori\nVersion: %s %s \nLicense: gnu Gpl3", version, os);
 
         SwingInvoker.invokeLater(
                 () -> displayGenericInfoPanel(BAG.getUserInterface(), aboutMessage, aboutTitle, pdfTrickIcon));

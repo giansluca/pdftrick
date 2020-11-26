@@ -1,5 +1,7 @@
 package org.gmdev.pdftrick.manager;
 
+import io.github.giansluca.jargs.Jargs;
+import io.github.giansluca.jargs.exception.JargsException;
 import org.gmdev.pdftrick.swingmanager.UserInterfaceBuilder;
 import org.gmdev.pdftrick.utils.*;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,7 @@ class PdfTrickStarterTest {
     private static final String HOME_FOR_TEST = "src/test/resources/home-for-test";
 
     @Test
-    void isShouldBuildPdfBag() {
+    void isShouldBuildPdfBag() throws JargsException {
         // Given
         Path fakeHomeFolderPath = Path.
                 of(System.getProperty("user.dir") + File.separator + HOME_FOR_TEST);
@@ -28,8 +30,12 @@ class PdfTrickStarterTest {
         MockedStatic<UserInterfaceBuilder> userInterfaceBuilderMock = Mockito.mockStatic(UserInterfaceBuilder.class);
         MockedStatic<Messages> messagesMock = Mockito.mockStatic(Messages.class);
 
+        String schema = String.format("%s*, %s*", "os", "version");
+        String[] args = {"-os", "mac", "-version", "test-version"};
+        Jargs arguments = new Jargs(schema, args);
+
         // When
-        PdfTrickStarter.start(os, fakeHomeFolderPath, fakeNativeLibraryPath);
+        PdfTrickStarter.start(arguments, fakeHomeFolderPath, fakeNativeLibraryPath);
 
         // Then
         PdfTrickBag bag = PdfTrickBag.INSTANCE;

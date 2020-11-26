@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
@@ -16,6 +15,7 @@ public enum PdfTrickBag {
 	INSTANCE;
 
 	private String os;
+	private String version;
 	private Path nativeLibraryPath;
 	private Path pdfFilePath;
 	private Path thumbnailsFolderPath;
@@ -32,13 +32,13 @@ public enum PdfTrickBag {
 	private NativeObjectManager nativeObjectManager;
 	private UserInterface userInterface;
 
-	@CanIgnoreReturnValue
 	public static PdfTrickBag getInstance() {
 		return INSTANCE;
 	}
 
 	private PdfTrickBag init(Builder builder) {
 		this.os = builder.os;
+		this.version = builder.version;
 		this.nativeLibraryPath = builder.nativeLibraryPath;
 		Path homeFolderPath = builder.homeFolderPath;
 
@@ -64,13 +64,14 @@ public enum PdfTrickBag {
 
 	protected static class Builder {
 		private String os;
+		private String version;
 		private Path homeFolderPath;
 		private Path nativeLibraryPath;
 
-		public Builder os(String val) { os = val; return this; }
+		public Builder os(String value) { os = value; return this; }
+		public Builder version(String value) { version = value; return this; }
 		public Builder homeFolderPath(Path val) { homeFolderPath = val; return this; }
 		public Builder nativeLibraryPath(Path val) { nativeLibraryPath = val; return this; }
-
 		public PdfTrickBag build() {
 			return INSTANCE.init(this);
 		}
@@ -94,6 +95,10 @@ public enum PdfTrickBag {
 
 	public String getOs() {
 		return os;
+	}
+
+	public String getVersion() {
+		return version;
 	}
 
 	public Path getNativeLibraryPath() {

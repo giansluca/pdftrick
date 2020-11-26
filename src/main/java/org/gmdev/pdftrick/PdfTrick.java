@@ -18,7 +18,10 @@ import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
 public class PdfTrick {
 
-    private static String operatingSystem;
+    public static final String OS = "os";
+    public static final String VERSION = "version";
+
+    private static Jargs arguments;
     private static Path homeFolderPath;
     private static Path nativeLibraryPath;
 
@@ -27,9 +30,10 @@ public class PdfTrick {
         setLocale();
         checkArchitecture();
         checkSingleInstanceRunning();
+        parseOsArguments(args);
 
-        operatingSystem = checkAndGetSystemOs(args);
-        if (operatingSystem.equals(MAC_OS))
+        String operatingSystem = checkAndGetSystemOs();
+        if (checkAndGetSystemOs().equals(MAC_OS))
             setMacPreferences();
 
         homeFolderPath = setAndGetHomeFolder(operatingSystem);
@@ -47,8 +51,8 @@ public class PdfTrick {
         JComponent.setDefaultLocale(Locale.ENGLISH);
     }
 
-    private static String checkAndGetSystemOs(String[] args) {
-        String osArgument = parseOsArguments(args);
+    private static String checkAndGetSystemOs() {
+        String osArgument = arguments.getString(OS);
         String systemOs = getOs();
         if (!systemOs.equals(osArgument))
             throw new IllegalArgumentException(
@@ -57,22 +61,20 @@ public class PdfTrick {
         return systemOs;
     }
 
-    private static String parseOsArguments(String[] args) {
+    private static void parseOsArguments(String[] args) {
         if (args == null)
             throw new IllegalArgumentException("Argument object cannot be null");
 
-        String os = "os";
-        String schema = os + "*";
-        Jargs arguments;
+        String schema = String.format("%s*, %s*", OS, VERSION);
         try {
             arguments = new Jargs(schema, args);
-            if (!arguments.has(os))
+            if (!arguments.has(OS))
                 throw new IllegalArgumentException("Os argument is missing");
+            if (!arguments.has(VERSION))
+                throw new IllegalStateException("Version argument is missing");
         } catch (JargsException e) {
             throw new IllegalStateException(e);
         }
-
-        return arguments.getString(os);
     }
 
     private static void checkArchitecture() {
@@ -92,7 +94,7 @@ public class PdfTrick {
     }
 
     private static void run() {
-        PdfTrickStarter.start(operatingSystem, homeFolderPath, nativeLibraryPath);
+        PdfTrickStarter.start(arguments, homeFolderPath, nativeLibraryPath);
     }
 
 

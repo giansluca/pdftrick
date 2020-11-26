@@ -8,7 +8,6 @@ public final class Constants {
 
 	// general
 	public static final String APP_NAME = "PdfTrick";
-	public static final String VERSION = "1.3.1";
 	public static final String PDFTRICK_HOME_FOLDER = ".pdftrick";
 	public static final String PDF_FILE_NAME = "file.pdf";
 	public static final String PAGES_THUMBNAIL_FOLDER = "pages-thumbnails";

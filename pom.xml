@@ -249,6 +249,7 @@
                                         <mainClass>org.gmdev.pdftrick.PdfTrick</mainClass>
                                     </classPath>
                                     <cmdLine>-os win</cmdLine>
+                                    <cmdLine>-version ${project.version}</cmdLine>
                                     <stayAlive>false</stayAlive>
                                     <singleInstance>
                                         <mutexName>PdfTrick</mutexName>
@@ -315,6 +316,8 @@
                                 <JVMArguments>
                                     <string>-os</string>
                                     <string>mac</string>
+                                    <string>-version</string>
+                                    <string>${project.version}</string>
                                 </JVMArguments>
                             </plist>
                             <dmg>

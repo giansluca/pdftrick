@@ -76,7 +76,7 @@ class PdfTrickTest {
     })
     void isShouldThrowIfOsAndOsArgumentDoNotMatch(String os) {
         // Given
-        String[] args = {"-os", "wrong"};
+        String[] args = {"-os", "wrong", "-version", "test-version"};
 
         MockedStatic<SingleInstanceValidator> singleInstanceValidatorMock =
                 Mockito.mockStatic(SingleInstanceValidator.class);
@@ -102,7 +102,7 @@ class PdfTrickTest {
     @Test
     void isShouldThrowIfOsArgumentNameIsMisspelled() {
         // Given
-        String[] args = {"-wrong", "win"};
+        String[] args = {"-wrong", "win", "-version", "test-version"};
         String os = "win";
 
         MockedStatic<SingleInstanceValidator> singleInstanceValidatorMock =
@@ -130,7 +130,8 @@ class PdfTrickTest {
     void isShouldTRunWithNoErrors() {
         // Given
         String os = "mac";
-        String[] args = {"-os", os};
+        String version = "test-version";
+        String[] args = {"-os", os, "-version", version};
 
         MockedStatic<SetupUtils> setupUtilsMock = Mockito.mockStatic(SetupUtils.class);
         setupUtilsMock.when(SetupUtils::getOs).thenReturn(os);
