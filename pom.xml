@@ -248,8 +248,7 @@
                                     <classPath>
                                         <mainClass>org.gmdev.pdftrick.PdfTrick</mainClass>
                                     </classPath>
-                                    <cmdLine>-os win</cmdLine>
-                                    <cmdLine>-version ${project.version}</cmdLine>
+                                    <cmdLine>-os win -version ${project.version}</cmdLine>
                                     <stayAlive>false</stayAlive>
                                     <singleInstance>
                                         <mutexName>PdfTrick</mutexName>
