@@ -148,9 +148,9 @@ class SetupUtilsTest {
         String os = SetupUtils.getOs();
         String libraryName = null;
         if (os.equals(SetupUtils.MAC_OS))
-            libraryName = Constants.NATIVE_LIB_MAC_64;
+            libraryName = Constants.NATIVE_LIB_MAC_FILE;
         else if(os.equals(SetupUtils.WIN_OS))
-            libraryName = Constants.NATIVE_LIB_WIN_64;
+            libraryName = Constants.NATIVE_LIB_WIN_FILE;
         Path expectedLibraryPath = Path.of(fakeHome + File.separator + libraryName);
 
         // When
@@ -177,9 +177,9 @@ class SetupUtilsTest {
         String os = SetupUtils.getOs();
         String libraryName = null;
         if (os.equals(SetupUtils.MAC_OS))
-            libraryName = Constants.NATIVE_LIB_MAC_64;
+            libraryName = Constants.NATIVE_LIB_MAC_FILE;
         else if (os.equals(SetupUtils.WIN_OS))
-            libraryName = Constants.NATIVE_LIB_WIN_64;
+            libraryName = Constants.NATIVE_LIB_WIN_FILE;
 
         File expectedLibraryFile = createExpectedLibraryFile(fakeHome, libraryName);
 
