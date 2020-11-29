@@ -34,19 +34,19 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mvn clean package -DskipTests -P mac -B      ; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then mvn clean package -DskipTests -P win -B  ; fi
 before_deploy:
-  - export MAC_FILE_PATH=dist/mac/release/pdftrick_${TRAVIS_TAG:1}.dmg
-  - export WIN_FILE_PATH=dist/win/release/pdftrick_${TRAVIS_TAG:1}.exe
+  - export MAC_FILE_PATH=target/pdftrick_${TRAVIS_TAG:1}.dmg
+  - export WIN_FILE_PATH=target/pdftrick_${TRAVIS_TAG:1}.exe
 deploy:
-  #provider: script
-  #skip_cleanup: true
-  #script: bash ./deploy.sh
-  #on:
-    #tags: true
-  provider: releases
-  api_key: "$GITHUB_TOKEN"
-  file:
-    - ${MAC_FILE_PATH}
-    - ${WIN_FILE_PATH}
-  skip_cleanup: true
-  on:
-    tags: true
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh
+    on:
+      tags: true
+  - provider: releases
+    api_key: "$GITHUB_TOKEN"
+    file:
+      - $MAC_FILE_PATH
+      - $WIN_FILE_PATH
+    skip_cleanup: true
+    on:
+      tags: true
