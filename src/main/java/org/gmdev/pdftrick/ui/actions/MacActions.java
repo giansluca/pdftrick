@@ -1,44 +1,36 @@
 package org.gmdev.pdftrick.ui.actions;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.swingmanager.*;
+import org.gmdev.pdftrick.tasks.*;
 import org.gmdev.pdftrick.utils.*;
+
+import static org.gmdev.pdftrick.utils.Constants.TEN;
+import static org.gmdev.pdftrick.utils.ThreadUtils.pause;
 
 public class MacActions {
 
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
-	/**
-	 * Called on mac OS when the application exit
-	 */
 	public void handleQuitRequestWith() {
-		if (BAG.getTasksContainer().getFirstPdfPageRenderTask() != null &&
-				BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
+		TasksContainer tasksContainer = BAG.getTasksContainer();
 
-			BAG.getTasksContainer().getFirstPdfPageRenderTask().stop();
-			while (BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
-				// wait thread stop
-			}
-		}
-		
-		if (BAG.getTasksContainer().getExecPool() != null &&
-				BAG.getTasksContainer().getExecPool().isRunning()) {
-
-			BAG.getTasksContainer().getExecPool().stop();
+		var firstPdfPageRenderTask = tasksContainer.getFirstPdfPageRenderTask();
+		if (firstPdfPageRenderTask != null && firstPdfPageRenderTask.isRunning()) {
+			firstPdfPageRenderTask.stop();
+			while (firstPdfPageRenderTask.isRunning())
+				pause(TEN);
 		}
 
-		if (BAG.getTasksContainer().getExecutor() != null) {
-			BAG.getTasksContainer().getExecutor().shutdownNow();
-			while (!BAG.getTasksContainer().getExecutor().isTerminated()) {
-				//wait stop all threadPool task
-			}
-		}
-		
-		if (BAG.getTasksContainer().getImagesExtractionTask() !=null &&
-				BAG.getTasksContainer().getImagesExtractionTask().isRunning()) {
+		ExecutorRunnerTask executorRunnerTask = tasksContainer.getExecutorRunnerTask();
+		if (executorRunnerTask != null && executorRunnerTask.isRunning())
+			executorRunnerTask.stop();
 
-			BAG.getTasksContainer().getImagesExtractionTask().stop();
+		ImagesExtractionTask imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+		if (imagesExtractionTask !=null && imagesExtractionTask.isRunning()) {
+			ModalWarningPanel.displayClosingDuringExtractionWarning();
+			imagesExtractionTask.stop();
 		}
 		
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
@@ -48,13 +40,9 @@ public class MacActions {
 		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 		System.exit(0);
 	}
-	
-	/**
-	 * About menu Mac
-	 */
+
 	public void handleAbout() { 
 		ModalInfoPanel.displayAboutPanel();
 	}
-
 
 }

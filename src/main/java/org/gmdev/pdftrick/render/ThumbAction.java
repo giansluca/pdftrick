@@ -71,9 +71,9 @@ public class ThumbAction implements MouseListener {
 			PageThumbnailsDisplayTask pageThumbnailsDisplayTask = new PageThumbnailsDisplayTask(pageNumber);
 			BAG.getTasksContainer().setPageThumbnailsDisplayTask(pageThumbnailsDisplayTask);
 			
-			Thread imgThumbThread = new Thread(pageThumbnailsDisplayTask, "imgThumbThread");
-			BAG.getTasksContainer().setImgThumbThread(imgThumbThread);
-			imgThumbThread.start();
+			Thread pageThumbnailsDisplayThread = new Thread(pageThumbnailsDisplayTask);
+			BAG.getTasksContainer().setPageThumbnailsDisplayThread(pageThumbnailsDisplayThread);
+			pageThumbnailsDisplayThread.start();
 
 			// TODO Itext 7 migration
 			//var renderPageThumbnailsTask = new RenderPageThumbnailsTask(pageNumber);

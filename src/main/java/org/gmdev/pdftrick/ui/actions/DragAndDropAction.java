@@ -55,9 +55,9 @@ public class DragAndDropAction implements FileDrop.Listener {
 		DragAndDropTask newDragAndDropTask = new DragAndDropTask(files);
 		tasksContainer.setDragAndDropTask(newDragAndDropTask);
 		
-		Thread dragAnDropFileChooserThread = new Thread(newDragAndDropTask);
-		tasksContainer.setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
-		dragAnDropFileChooserThread.start();
+		Thread dragAndDropThread = new Thread(newDragAndDropTask);
+		tasksContainer.setDragAndDropThread(dragAndDropThread);
+		dragAndDropThread.start();
 	}
 
 }

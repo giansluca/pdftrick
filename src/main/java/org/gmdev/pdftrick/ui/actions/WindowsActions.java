@@ -2,10 +2,14 @@ package org.gmdev.pdftrick.ui.actions;
 
 import java.awt.event.*;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.tasks.*;
 import org.gmdev.pdftrick.utils.FileUtils;
+
+import static org.gmdev.pdftrick.utils.Constants.TEN;
+import static org.gmdev.pdftrick.utils.ThreadUtils.pause;
 
 public class WindowsActions implements WindowListener {
 	
@@ -14,32 +18,26 @@ public class WindowsActions implements WindowListener {
 	@Override
 	public void windowOpened(WindowEvent e) {
 	}
-	
-	/**
-	 * Called on closing window frame, exit application
-	 */
+
 	@Override
 	public void windowClosing(WindowEvent event) {
-		if (BAG.getTasksContainer().getFirstPdfPageRenderTask() != null &&
-				BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
+		TasksContainer tasksContainer = BAG.getTasksContainer();
 
-			BAG.getTasksContainer().getFirstPdfPageRenderTask().stop();
-			while (!BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
-				// wait thread stop
-			}
+		var firstPdfPageRenderTask = tasksContainer.getFirstPdfPageRenderTask();
+		if (firstPdfPageRenderTask != null && firstPdfPageRenderTask.isRunning()) {
+			firstPdfPageRenderTask.stop();
+			while (firstPdfPageRenderTask.isRunning())
+				pause(TEN);
 		}
-		
-		if (BAG.getTasksContainer().getExecPool() != null &&
-				!BAG.getTasksContainer().getExecPool().isRunning()) {
 
-			BAG.getTasksContainer().getExecPool().stop();
-		}
-		
-		if (BAG.getTasksContainer().getImagesExtractionTask() !=null &&
-				BAG.getTasksContainer().getImagesExtractionTask().isRunning()) {
+		ExecutorRunnerTask executorRunnerTask = tasksContainer.getExecutorRunnerTask();
+		if (executorRunnerTask != null && executorRunnerTask.isRunning())
+			executorRunnerTask.stop();
 
+		ImagesExtractionTask imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+		if (imagesExtractionTask !=null && imagesExtractionTask.isRunning()) {
 			ModalWarningPanel.displayClosingDuringExtractionWarning();
-			BAG.getTasksContainer().getImagesExtractionTask().stop();
+			imagesExtractionTask.stop();
 		}
 		
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
@@ -47,7 +45,6 @@ public class WindowsActions implements WindowListener {
 
 		FileUtils.deletePdfFile(BAG.getPdfFilePath());
 		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
-		
 		System.exit(0);	
 	}
 

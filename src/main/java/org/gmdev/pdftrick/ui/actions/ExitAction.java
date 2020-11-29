@@ -4,12 +4,10 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.manager.TasksContainer;
+import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.tasks.ExecPool;
-import org.gmdev.pdftrick.tasks.ImagesExtractionTask;
+import org.gmdev.pdftrick.tasks.*;
 import org.gmdev.pdftrick.utils.*;
 
 import static org.gmdev.pdftrick.utils.Constants.TEN;
@@ -38,10 +36,9 @@ public class ExitAction extends AbstractAction {
 				pause(TEN);
 		}
 
-		ExecPool execPool = tasksContainer.getExecPool();
-		if (execPool != null && execPool.isRunning()) {
-			execPool.stop();
-		}
+		ExecutorRunnerTask executorRunnerTask = tasksContainer.getExecutorRunnerTask();
+		if (executorRunnerTask != null && executorRunnerTask.isRunning())
+			executorRunnerTask.stop();
 
 		ImagesExtractionTask imagesExtractionTask = tasksContainer.getImagesExtractionTask();
 		if (imagesExtractionTask !=null && imagesExtractionTask.isRunning()) {
@@ -54,7 +51,6 @@ public class ExitAction extends AbstractAction {
 		
 		FileUtils.deletePdfFile(BAG.getPdfFilePath());
 		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
-		
 		System.exit(0);
 	}
 	

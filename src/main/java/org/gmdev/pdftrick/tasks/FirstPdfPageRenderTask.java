@@ -14,12 +14,12 @@ public class FirstPdfPageRenderTask implements Runnable  {
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private final int division;
-	private final String imgPath;
+	private final String imagesFolderPath;
 	private final AtomicBoolean running = new AtomicBoolean(false);
 	
-	public FirstPdfPageRenderTask(int division, String imgPath) {
+	public FirstPdfPageRenderTask(int division, String imagesFolderPath) {
 		this.division = division;
-		this.imgPath = imgPath;
+		this.imagesFolderPath = imagesFolderPath;
 	}
 	
 	public void stop() {
@@ -39,7 +39,7 @@ public class FirstPdfPageRenderTask implements Runnable  {
 		while (i <= division && running.get()) {
 			try {
 				nativeManager.renderPdfPageThumbnail(
-						BAG.getPdfFilePath().toString(), imgPath, i, ZOOM_THUMBNAIL);
+						BAG.getPdfFilePath().toString(), imagesFolderPath, i, ZOOM_THUMBNAIL);
 				i++;
 			} catch (Exception e) {
 				Thread.currentThread().interrupt();

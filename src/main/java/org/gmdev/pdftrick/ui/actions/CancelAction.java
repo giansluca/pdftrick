@@ -16,15 +16,15 @@ public class CancelAction extends AbstractAction {
 	public void actionPerformed(ActionEvent event) {
 		TasksContainer tasksContainer = BAG.getTasksContainer();
 		var cancelTask = tasksContainer.getCancelTask();
-		if (cancelTask != null && cancelTask.isRunning()) {}
-		else {
-			CancelTask newCancelTask = new CancelTask();
-			tasksContainer.setCancelTask(newCancelTask);
+
+		if (cancelTask != null && cancelTask.isRunning()) return;
+
+		CancelTask newCancelTask = new CancelTask();
+		tasksContainer.setCancelTask(newCancelTask);
 			
-			Thread cancelThread = new Thread(newCancelTask);
-			tasksContainer.setCancelThread(cancelThread);
-			cancelThread.start();
-		}
+		Thread cancelThread = new Thread(newCancelTask);
+		tasksContainer.setCancelThread(cancelThread);
+		cancelThread.start();
 	}
 	
 }

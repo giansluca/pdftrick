@@ -85,9 +85,9 @@ public class FileChooserAction extends AbstractAction {
         FileChooserTask newFileChooserTask = new FileChooserTask(files);
         tasksContainer.setFileChooserTask(newFileChooserTask);
 
-        Thread openFileChooserThread = new Thread(newFileChooserTask);
-        tasksContainer.setOpenFileChooserThread(openFileChooserThread);
-        openFileChooserThread.start();
+        Thread fileChooserThread = new Thread(newFileChooserTask);
+        tasksContainer.setFileChooserThread(fileChooserThread);
+        fileChooserThread.start();
     }
 
 }

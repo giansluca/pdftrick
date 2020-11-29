@@ -6,10 +6,9 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
 import org.gmdev.pdftrick.tasks.ImagesExtractionTask;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
@@ -21,29 +20,30 @@ public class ImagesExtractionAction extends AbstractAction  {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final Properties messages = BAG.getMessagesProps();
-		final Container contentPanel = BAG.getUserInterface().getContentPane();
+		Properties messages = BAG.getMessagesProps();
+		Container contentPanel = BAG.getUserInterface().getContentPane();
+		TasksContainer tasksContainer = BAG.getTasksContainer();
 		
-		if (BAG.getTasksContainer().getImgExtractionThread() != null &&
-				BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
+		if (tasksContainer.getImagesExtractionThread() != null &&
+				tasksContainer.getImagesExtractionThread().isAlive()) {
 
 			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
-		if (BAG.getTasksContainer().getOpenFileChooserThread() != null &&
-				BAG.getTasksContainer().getOpenFileChooserThread().isAlive()) {
+		if (tasksContainer.getFileChooserThread() != null &&
+				tasksContainer.getFileChooserThread().isAlive()) {
 
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (BAG.getTasksContainer().getDragAnDropFileChooserThread() != null &&
-				BAG.getTasksContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (tasksContainer.getDragAndDropThread() != null &&
+				tasksContainer.getDragAndDropThread().isAlive()) {
 
 			Messages.append("WARNING", messages.getProperty("tmsg_01"));
 			return;
 		}
-		if (BAG.getTasksContainer().getShowThumbsThread() != null &&
-				BAG.getTasksContainer().getShowThumbsThread().isAlive()) {
+		if (tasksContainer.getPdfCoverThumbnailsDisplayThread() != null &&
+				tasksContainer.getPdfCoverThumbnailsDisplayThread().isAlive()) {
 
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
@@ -81,12 +81,12 @@ public class ImagesExtractionAction extends AbstractAction  {
 		}
 		if (extract) {
 			ImagesExtractionTask imagesExtractionTask = new ImagesExtractionTask();
-			BAG.getTasksContainer().setImagesExtractionTask(imagesExtractionTask);
+			tasksContainer.setImagesExtractionTask(imagesExtractionTask);
 			
-			Thread imgExtractionThread = new Thread(imagesExtractionTask, "imgExtractionThread");
-			BAG.getTasksContainer().setImgExtractionThread(imgExtractionThread);
-			
-			imgExtractionThread.start();
+			Thread imagesExtractionThread = new Thread(imagesExtractionTask);
+			tasksContainer.setImagesExtractionThread(imagesExtractionThread);
+
+			imagesExtractionThread.start();
 		}
 	}
 
