@@ -26,7 +26,7 @@ public class Messages {
 	}
 
 	public static void cleanTextArea() {
-		final JTextArea textArea = BAG.getUserInterface().getBottom().getTextArea();
+		JTextArea textArea = BAG.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
 			SwingUtilities.invokeLater(() -> textArea.setText(""));
 		} else {
@@ -38,8 +38,8 @@ public class Messages {
 	 * Append messages to text area
 	 */
 	public static void append(String level, String message) {
-		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
-		final StringBuilder builder = new StringBuilder(300);
+		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		StringBuilder builder = new StringBuilder(300);
 		Calendar cal = Calendar.getInstance();
 		
         builder.append(df.format(cal.getTimeInMillis()) );
@@ -64,8 +64,8 @@ public class Messages {
 	 * Append messages to text area using invokeLater
 	 */
 	public static void appendLater(String level, String message) {
-		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
-		final StringBuilder builder = new StringBuilder(300);
+		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		StringBuilder builder = new StringBuilder(300);
 		Calendar cal = Calendar.getInstance();
 		
         builder.append(df.format(cal.getTimeInMillis()) );
@@ -84,8 +84,8 @@ public class Messages {
 	 * Append messages to text area without newline character
 	 */
 	public static void appendNoNewLine(String level, String message) {
-		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
-		final StringBuilder builder = new StringBuilder(300);
+		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		StringBuilder builder = new StringBuilder(300);
 		Calendar cal = Calendar.getInstance();
 		
         builder.append(df.format(cal.getTimeInMillis()) );
@@ -109,16 +109,15 @@ public class Messages {
 	 * Append in line message without date and level
 	 */
 	public static void appendInline(String message) {
-		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
-		final String mess = message;
+		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
-				SwingUtilities.invokeAndWait(() -> txtArea.append(mess));
+				SwingUtilities.invokeAndWait(() -> txtArea.append(message));
 			} catch (InterruptedException | InvocationTargetException e) {
 				throw new IllegalStateException(e);
 			}
 		} else {
-			txtArea.append(mess);
+			txtArea.append(message);
 		}
 	}
 	
@@ -126,7 +125,7 @@ public class Messages {
 	 * Append new line character
 	 */
 	public static void appendNewLine() {
-		final JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
 				SwingUtilities.invokeAndWait(() -> txtArea.append("\n"));

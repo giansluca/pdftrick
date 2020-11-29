@@ -29,7 +29,7 @@ public class ImagesExtractor {
 	 */
 	public void getImages() {
 		final Properties messages = BAG.getMessagesProps();
-		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
+		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
 		final Path pdfFile = BAG.getPdfFilePath();
 		boolean getImgCheck = false;
 	
@@ -46,7 +46,7 @@ public class ImagesExtractor {
 		getImgCheck = extractImgSel(
 				extractionFolderWithTimePath.toString(),
 				pdfFile,
-				BAG.getImageSelected(),
+				BAG.getSelectedImages(),
 				inlineImgSelected);
 		
 		// if extraction breaks ...

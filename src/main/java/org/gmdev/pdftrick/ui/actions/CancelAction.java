@@ -5,28 +5,25 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.thread.Cancel;
+import org.gmdev.pdftrick.manager.TasksContainer;
+import org.gmdev.pdftrick.tasks.CancelTask;
 
 public class CancelAction extends AbstractAction {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
-	/**
-	 * Called from the CANCEL SELECTION button, clean everything
-	 */
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if (BAG.getThreadContainer().getCancelThread() !=null && BAG.getThreadContainer().getCancelThread().isAlive()) {
-			// wait thread stop Cancel already running
-			// this to prevent massive click on cancel button and instantiate lots of threads.
-		} else {
-			Cancel cancel = new Cancel();
-			BAG.getThreadContainer().setCancel(cancel);
+		TasksContainer tasksContainer = BAG.getTasksContainer();
+		var cancelTask = tasksContainer.getCancelTask();
+		if (cancelTask != null && cancelTask.isRunning()) {}
+		else {
+			CancelTask newCancelTask = new CancelTask();
+			tasksContainer.setCancelTask(newCancelTask);
 			
-			Thread newCalcelThread = new Thread(cancel, "cancelThread"); 
-			BAG.getThreadContainer().setCancelThread(newCalcelThread);
-			
-			newCalcelThread.start();
+			Thread cancelThread = new Thread(newCancelTask);
+			tasksContainer.setCancelThread(cancelThread);
+			cancelThread.start();
 		}
 	}
 	

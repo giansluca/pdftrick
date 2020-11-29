@@ -66,9 +66,9 @@ public class SetupUtils {
 	public static Path setAndGetNativeLibrary(Path homeFolder, String operatingSystem) {
 		String libraryName;
 		if (operatingSystem.equals(WIN_OS))
-			libraryName = NATIVE_LIB_WIN_64;
+			libraryName = NATIVE_LIB_WIN_FILE;
 		else if (operatingSystem.equals(MAC_OS))
-			libraryName = NATIVE_LIB_MAC_64;
+			libraryName = NATIVE_LIB_MAC_FILE;
 		else
 			throw new IllegalStateException("Error selecting native library, should never get here");
 

@@ -3,68 +3,61 @@ package org.gmdev.pdftrick.ui.actions;
 import java.io.File;
 import java.util.Properties;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.thread.DragAnDropFileChooser;
+import org.gmdev.pdftrick.tasks.DragAndDropTask;
+import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.ui.panels.LeftPanel;
-import org.gmdev.pdftrick.utils.FileUtils;
 import org.gmdev.pdftrick.utils.Messages;
 import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
-	/**
-	 * Called when user upload file with drop action in a panel left
-	 */
+
 	@Override
-	public void filesDropped(File[] fileVett) {
+	public void filesDropped(File[] files) {
 		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
 		Properties messagesProps = BAG.getMessagesProps();
-		
-		if ((BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
-				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive() ) ||
-			(BAG.getThreadContainer().getOpenFileChooserThread() != null &&
-					BAG.getThreadContainer().getOpenFileChooserThread().isAlive())) {
+		TasksContainer tasksContainer = BAG.getTasksContainer();
+
+		var dragAndDropTask = tasksContainer.getDragAndDropTask();
+		var fileChooserTask = tasksContainer.getFileChooserTask();
+		if ( (dragAndDropTask != null && dragAndDropTask.isRunning()) ||
+				(fileChooserTask != null && fileChooserTask.isRunning()) ) {
 
 			leftPanel.resetLeftPanelFileDropBorder();
 			Messages.append("WARNING", messagesProps.getProperty("tmsg_01"));
 			return;
 		}
 
-		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
-				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
-
+		var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
+		if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
 			leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
 			return;
     	}
 
-    	if (BAG.getThreadContainer().getImgExtractionThread() != null &&
-				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+		var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+		if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
+			leftPanel.resetLeftPanelFileDropBorder();
+			ModalWarningPanel.displayExtractingImagesWarning();
+			return;
+		}
 
-		    leftPanel.resetLeftPanelFileDropBorder();
-		    ModalWarningPanel.displayExtractingImagesWarning();
-		    return;	
-    	}
-
-    	if (BAG.getThreadContainer().getImgThumbThread() != null &&
-				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
-
+		PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
+    	if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
     		leftPanel.resetLeftPanelFileDropBorder();
 			ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
 			return;	
     	}
 		
-		DragAnDropFileChooser dropFileChooser = new DragAnDropFileChooser(fileVett);
-		BAG.getThreadContainer().setDragAnDropFileChooser(dropFileChooser);
+		DragAndDropTask newDragAndDropTask = new DragAndDropTask(files);
+		tasksContainer.setDragAndDropTask(newDragAndDropTask);
 		
-		Thread dragAnDropFileChooserThread = new Thread(dropFileChooser, "dragAnDropFileChooserThread");
-		BAG.getThreadContainer().setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
+		Thread dragAnDropFileChooserThread = new Thread(newDragAndDropTask);
+		tasksContainer.setDragAnDropFileChooserThread(dragAnDropFileChooserThread);
 		dragAnDropFileChooserThread.start();
 	}
-	
-	
 
 }

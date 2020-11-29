@@ -1,6 +1,16 @@
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
-  mvn clean package -DskipTests -P mac -B
+  export SSHPASS=$DEPLOY_PASS
+  sshpass -e scp \
+  -o stricthostkeychecking=no \
+  target/pdftrick_1.3.1.dmg \
+  $DEPLOY_USER@$DEPLOY_HOST:/home/gians/test-deploy
 else
-  mvn clean package -DskipTests -P win -B
+  pscp \
+  -pw $DEPLOY_PASS \
+  -hostkey $SERVER_FINGERPRINT \
+  -P 22 \
+  target/PdfTrick_1.3.1.exe \
+  $DEPLOY_USER@$DEPLOY_HOST:/home/gians/test-deploy
 fi
+
 

@@ -6,7 +6,7 @@
 
     <groupId>org.gmdev</groupId>
     <artifactId>pdftrick</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 
     <name>PdfTrick</name>
     <description>Pdf images extractor</description>
@@ -242,13 +242,13 @@
                                 </goals>
                                 <configuration>
                                     <headerType>gui</headerType>
-                                    <jar>target/pdftrick-1.3.0-jar-with-dependencies.jar</jar>
-                                    <outfile>target/PdfTrick.exe</outfile>
+                                    <jar>target/pdftrick-${project.version}-jar-with-dependencies.jar</jar>
+                                    <outfile>target/PdfTrick_${project.version}.exe</outfile>
                                     <downloadUrl></downloadUrl>
                                     <classPath>
                                         <mainClass>org.gmdev.pdftrick.PdfTrick</mainClass>
                                     </classPath>
-                                    <cmdLine>-os win</cmdLine>
+                                    <cmdLine>-os win -version ${project.version}</cmdLine>
                                     <stayAlive>false</stayAlive>
                                     <singleInstance>
                                         <mutexName>PdfTrick</mutexName>
@@ -315,6 +315,8 @@
                                 <JVMArguments>
                                     <string>-os</string>
                                     <string>mac</string>
+                                    <string>-version</string>
+                                    <string>${project.version}</string>
                                 </JVMArguments>
                             </plist>
                             <dmg>

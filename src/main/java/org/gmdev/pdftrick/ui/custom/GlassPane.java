@@ -1,24 +1,17 @@
 package org.gmdev.pdftrick.ui.custom;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import org.gmdev.pdftrick.utils.Constants;
 import org.gmdev.pdftrick.utils.FileLoader;
 
+import static org.gmdev.pdftrick.utils.Constants.WAIT_EXT;
+import static org.gmdev.pdftrick.utils.Constants.WAIT_IMG;
+
 public class GlassPane extends JPanel implements MouseListener, KeyListener {
-	
-	private static final long serialVersionUID = -2219084606428817436L;
-	
+
 	private JLabel thumbSpinner;
 	private JLabel extractSpinner;
 	
@@ -30,34 +23,34 @@ public class GlassPane extends JPanel implements MouseListener, KeyListener {
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		setOpaque(false);
 	}
-	
+
 	/**
-	 * Set icon wait for thumb mode (green)
+	 * Set green spinner during page thumbnails loading
 	 */
 	private void initThumbSpinner() {	
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.WAIT_IMG));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(WAIT_IMG));
 		
 		thumbSpinner = new JLabel();
 		thumbSpinner.setHorizontalAlignment(JLabel.CENTER);
 		thumbSpinner.setHorizontalTextPosition(JLabel.CENTER);
 		thumbSpinner.setVerticalTextPosition(JLabel.BOTTOM);
-		thumbSpinner.setFont(new Font("loading", Font.TRUETYPE_FONT, 13));
+		thumbSpinner.setFont(new Font("loading", Font.PLAIN, 13));
 		thumbSpinner.setForeground(Color.decode("#506D00"));
 		thumbSpinner.setIcon(imageIcon);
 		thumbSpinner.setText("loading");	
 	}
 	
 	/**
-	 * Set icon wait for extract mode (red)
+	 * Set red spinner during image extraction
 	 */
 	private void initExtractSpinner() {
-		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.WAIT_EXT));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(WAIT_EXT));
 		
 		extractSpinner = new JLabel();
 		extractSpinner.setHorizontalAlignment(JLabel.CENTER);
 		extractSpinner.setHorizontalTextPosition(JLabel.CENTER);
 		extractSpinner.setVerticalTextPosition(JLabel.BOTTOM);
-		extractSpinner.setFont(new Font("loading", Font.TRUETYPE_FONT, 13));
+		extractSpinner.setFont(new Font("loading", Font.PLAIN, 13));
 		extractSpinner.setForeground(Color.decode("#D62828"));
 		extractSpinner.setIcon(imageIcon);
 		extractSpinner.setText("extracting");

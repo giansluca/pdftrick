@@ -5,9 +5,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.manager.TasksContainer;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
+import org.gmdev.pdftrick.tasks.ExecPool;
+import org.gmdev.pdftrick.tasks.ImagesExtractionTask;
 import org.gmdev.pdftrick.utils.*;
+
+import static org.gmdev.pdftrick.utils.Constants.TEN;
+import static org.gmdev.pdftrick.utils.ThreadUtils.pause;
 
 public class ExitAction extends AbstractAction {
 	
@@ -20,53 +26,27 @@ public class ExitAction extends AbstractAction {
 		super.putValue(SMALL_ICON, exitIcon);
 		super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
 	}
-	
-	/**
-	 * Called from the EXIT menu, exit the application
-	 */
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if (BAG.getThreadContainer().getDivisionThumbs() != null &&
-				!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+		TasksContainer tasksContainer = BAG.getTasksContainer();
 
-			BAG.getThreadContainer().getDivisionThumbs().stop();
-			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
-				// wait thread stop
-			}
-			
-			if (BAG.getThreadContainer().getDivisionThumbsThread() != null) {
-				while (BAG.getThreadContainer().getDivisionThumbsThread().isAlive()) {
-					// wait thread stop
-				}
-			}
-		}
-		
-		if (BAG.getThreadContainer().getExecPool() != null &&
-				!BAG.getThreadContainer().getExecPool().isFinished()) {
-
-			BAG.getThreadContainer().getExecPool().stop();
-			if (BAG.getThreadContainer().getExecPoolThread() != null) {
-				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
-					// wait thread stop
-				}
-			}
+		var firstPdfPageRenderTask = tasksContainer.getFirstPdfPageRenderTask();
+		if (firstPdfPageRenderTask != null && firstPdfPageRenderTask.isRunning()) {
+			firstPdfPageRenderTask.stop();
+			while (firstPdfPageRenderTask.isRunning())
+				pause(TEN);
 		}
 
-		if (BAG.getThreadContainer().getExecutor() != null) {
-			BAG.getThreadContainer().getExecutor().shutdownNow();
-			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
-				//wait stop all threadPool task
-			}
+		ExecPool execPool = tasksContainer.getExecPool();
+		if (execPool != null && execPool.isRunning()) {
+			execPool.stop();
 		}
-		
-		if (BAG.getThreadContainer().getImgExtraction() !=null &&
-				!BAG.getThreadContainer().getImgExtraction().isFinished()) {
 
-			BAG.getThreadContainer().getImgExtraction().stop();
-			if (BAG.getThreadContainer().getImgExtractionThread() !=null &&
-					BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
-				ModalWarningPanel.displayClosingDuringExtractionWarning();
-			}
+		ImagesExtractionTask imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+		if (imagesExtractionTask !=null && imagesExtractionTask.isRunning()) {
+			ModalWarningPanel.displayClosingDuringExtractionWarning();
+			imagesExtractionTask.stop();
 		}
 		
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();

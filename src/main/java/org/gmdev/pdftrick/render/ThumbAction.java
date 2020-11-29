@@ -12,10 +12,9 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.thread.ImgThumb;
+import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.ui.panels.CenterPanel;
-import org.gmdev.pdftrick.utils.FileUtils;
 
 public class ThumbAction implements MouseListener {
 	
@@ -32,7 +31,7 @@ public class ThumbAction implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		String selected = BAG.getSelected();
+		int selectedPage = BAG.getSelectedPage();
 		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
@@ -40,17 +39,17 @@ public class ThumbAction implements MouseListener {
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Border borderGreen = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green);
 		
-		if (!selected.equalsIgnoreCase("")) {
-			JLabel picLabelSelected = (JLabel) leftPanel.getComponent(Integer.parseInt(selected));
+		if (selectedPage != 0) {
+			JLabel picLabelSelected = (JLabel) leftPanel.getComponent(selectedPage);
 			picLabelSelected.setBorder(borderGray);
 		}
 		
 		JLabel picLabel = (JLabel) leftPanel.getComponent(pageNumber - 1);
 		
 		// deselect page
-		if (selected.equalsIgnoreCase(String.valueOf(pageNumber - 1))) {
+		if (selectedPage == pageNumber - 1) {
 			picLabel.setBorder(borderGray);
-			BAG.setSelected("");
+			BAG.setSelectedPage(0);
 			currentPageField.setText("");
 			centerPanel.clean();
 			
@@ -65,15 +64,15 @@ public class ThumbAction implements MouseListener {
 			}
 			
 			picLabel.setBorder(borderGreen);
-			BAG.setSelected(String.valueOf(pageNumber - 1));
+			BAG.setSelectedPage(pageNumber - 1);
 			currentPageField.setText("Page " + pageNumber);
 			centerPanel.clean();
 			
-			ImgThumb imgThumb = new ImgThumb(pageNumber);
-			BAG.getThreadContainer().setImgThumb(imgThumb);
+			PageThumbnailsDisplayTask pageThumbnailsDisplayTask = new PageThumbnailsDisplayTask(pageNumber);
+			BAG.getTasksContainer().setPageThumbnailsDisplayTask(pageThumbnailsDisplayTask);
 			
-			Thread imgThumbThread = new Thread(imgThumb, "imgThumbThread");
-			BAG.getThreadContainer().setImgThumbThread(imgThumbThread);
+			Thread imgThumbThread = new Thread(pageThumbnailsDisplayTask, "imgThumbThread");
+			BAG.getTasksContainer().setImgThumbThread(imgThumbThread);
 			imgThumbThread.start();
 
 			// TODO Itext 7 migration

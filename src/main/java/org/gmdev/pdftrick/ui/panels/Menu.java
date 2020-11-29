@@ -4,25 +4,28 @@ import java.awt.Desktop;
 
 import javax.swing.*;
 
+import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.*;
-import org.gmdev.pdftrick.utils.SetupUtils;
+
+import static org.gmdev.pdftrick.utils.SetupUtils.MAC_OS;
 
 public class Menu {
-	
+
+	private final static PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+
 	private final JMenuBar menuBar;
 	
 	public Menu() {
-		if (SetupUtils.isMac()) {
+		menuBar = new JMenuBar();
+
+		if (BAG.getOs().equals(MAC_OS)) {
 			MacActions macActions = new MacActions();
 			Desktop desktop = Desktop.getDesktop();
 	        desktop.setAboutHandler(e -> macActions.handleAbout());
 	        desktop.setQuitHandler((e, r) -> macActions.handleQuitRequestWith());
-		}
-		
-		menuBar = new JMenuBar();
-        if (SetupUtils.isWindows()) {
+		} else {
         	JMenu pdftrick = new JMenu("PdfTrick");
-        	
+
         	JMenuItem aboutMenuItem = new JMenuItem();
         	aboutMenuItem.setAction(new AboutAction());
         	
@@ -38,7 +41,7 @@ public class Menu {
         JMenu help = new JMenu("Help");
   
 		JMenuItem openMenuItem = new JMenuItem();
-		openMenuItem.setAction(new OpenAction());
+		openMenuItem.setAction(new FileChooserAction());
     	file.add(openMenuItem);
     	
     	JMenuItem licence = new JMenuItem();
@@ -52,6 +55,5 @@ public class Menu {
 	public JMenuBar getMenuBar() {
 		return menuBar;
 	}
-	
-	
+
 }

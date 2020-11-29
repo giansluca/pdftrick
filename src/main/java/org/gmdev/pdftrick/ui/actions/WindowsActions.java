@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.ui.actions;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
@@ -21,47 +20,26 @@ public class WindowsActions implements WindowListener {
 	 */
 	@Override
 	public void windowClosing(WindowEvent event) {
-		if (BAG.getThreadContainer().getDivisionThumbs() != null &&
-				!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+		if (BAG.getTasksContainer().getFirstPdfPageRenderTask() != null &&
+				BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
 
-			BAG.getThreadContainer().getDivisionThumbs().stop();
-			while (!BAG.getThreadContainer().getDivisionThumbs().isFinished()) {
+			BAG.getTasksContainer().getFirstPdfPageRenderTask().stop();
+			while (!BAG.getTasksContainer().getFirstPdfPageRenderTask().isRunning()) {
 				// wait thread stop
 			}
-			
-			if (BAG.getThreadContainer().getDivisionThumbsThread() != null) {
-				while (BAG.getThreadContainer().getDivisionThumbsThread().isAlive()) {
-					// wait thread stop
-				}
-			}
 		}
 		
-		if (BAG.getThreadContainer().getExecPool() != null &&
-				!BAG.getThreadContainer().getExecPool().isFinished()) {
+		if (BAG.getTasksContainer().getExecPool() != null &&
+				!BAG.getTasksContainer().getExecPool().isRunning()) {
 
-			BAG.getThreadContainer().getExecPool().stop();
-			if (BAG.getThreadContainer().getExecPoolThread() != null) {
-				while (BAG.getThreadContainer().getExecPoolThread().isAlive()) {
-					// wait thread stop
-				}
-			}
-		}
-
-		if (BAG.getThreadContainer().getExecutor() != null) {
-			BAG.getThreadContainer().getExecutor().shutdownNow();
-			while (!BAG.getThreadContainer().getExecutor().isTerminated()) {
-				//wait stop all threadPool task
-			}
+			BAG.getTasksContainer().getExecPool().stop();
 		}
 		
-		if (BAG.getThreadContainer().getImgExtraction() !=null &&
-				!BAG.getThreadContainer().getImgExtraction().isFinished()) {
+		if (BAG.getTasksContainer().getImagesExtractionTask() !=null &&
+				BAG.getTasksContainer().getImagesExtractionTask().isRunning()) {
 
-			BAG.getThreadContainer().getImgExtraction().stop();
-			if (BAG.getThreadContainer().getImgExtractionThread() !=null &&
-					BAG.getThreadContainer().getImgExtractionThread() .isAlive()) {
-				ModalWarningPanel.displayClosingDuringExtractionWarning();
-			}
+			ModalWarningPanel.displayClosingDuringExtractionWarning();
+			BAG.getTasksContainer().getImagesExtractionTask().stop();
 		}
 		
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();

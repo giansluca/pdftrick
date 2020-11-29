@@ -61,7 +61,7 @@ public class ImageListenerShowThumb implements RenderListener {
 	 * extracts the images contained in selected page and convert it in a BufferedImage to add and show to the center panel.
 	 */
 	private void render(ImageRenderInfo renderInfo ) {
-		final HashMap<Integer, String> rotationFromPages = BAG.getRotationFromPages();
+		final HashMap<Integer, String> rotationFromPages = BAG.getPagesRotationPages();
 		boolean isInline = false;
 		
 		PdfImageObject image = null;
@@ -254,8 +254,8 @@ public class ImageListenerShowThumb implements RenderListener {
 		private RenderedImageAttributes imageAttrs;
 		
 		public UpdatePanelCenter() {
-			this.imageSelected = BAG.getImageSelected();
-			this.inlineImgSelected = BAG.getInlineImgSelected();
+			this.imageSelected = BAG.getSelectedImages();
+			this.inlineImgSelected = BAG.getInlineSelectedImages();
 			this.centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		}
 		

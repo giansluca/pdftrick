@@ -2,3 +2,5 @@
 target/
 pdftrick.iml
 .DS_Store
+info.txt
+pom.xml.versionsBackup

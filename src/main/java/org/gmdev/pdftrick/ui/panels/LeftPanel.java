@@ -2,9 +2,7 @@ package org.gmdev.pdftrick.ui.panels;
 
 import java.awt.Color;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import org.gmdev.pdftrick.ui.actions.DragAndDropAction;

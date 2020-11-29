@@ -2,9 +2,9 @@ package org.gmdev.pdftrick.render;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.thread.DivisionThumb;
-import org.gmdev.pdftrick.thread.ExecPool;
-import org.gmdev.pdftrick.thread.ShowThumbs;
+import org.gmdev.pdftrick.tasks.FirstPdfPageRenderTask;
+import org.gmdev.pdftrick.tasks.ExecPool;
+import org.gmdev.pdftrick.tasks.PdfCoverThumbnailsDisplayTask;
 
 import com.itextpdf.text.pdf.PdfReader;
 
@@ -41,28 +41,28 @@ public class PdfRenderLeft {
 			division = totPages;
 		}
 		
-		DivisionThumb divisionThumbs = new DivisionThumb(division, imgPath);
-		BAG.getThreadContainer().setDivisionThumbs(divisionThumbs);
+		FirstPdfPageRenderTask firstPdfPageRenderTask = new FirstPdfPageRenderTask(division, imgPath);
+		BAG.getTasksContainer().setFirstPdfPageRenderTask(firstPdfPageRenderTask);
 		
-		Thread divisionThumbsThread = new Thread(divisionThumbs, "divisionThumbsThread");
-		BAG.getThreadContainer().setDivisionThumbsThread(divisionThumbsThread);
+		Thread divisionThumbsThread = new Thread(firstPdfPageRenderTask, "divisionThumbsThread");
+		BAG.getTasksContainer().setDivisionThumbsThread(divisionThumbsThread);
 		divisionThumbsThread.start();
 		
 		if (runPool) {
 			ExecPool execPool = new ExecPool(totPages, division, imgPath);
-			BAG.getThreadContainer().setExecPool(execPool);
+			BAG.getTasksContainer().setExecPool(execPool);
 			
 			Thread execPoolThread = new Thread(execPool, "execPoolThread");
-			BAG.getThreadContainer().setExecPoolThread(execPoolThread);
+			BAG.getTasksContainer().setExecPoolThread(execPoolThread);
 			execPoolThread.start();
 		}
 		
 		// thread that search and showing thumbnails 
-		ShowThumbs showThumbs = new ShowThumbs();
-		BAG.getThreadContainer().setShowThumbs(showThumbs);
+		PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = new PdfCoverThumbnailsDisplayTask();
+		BAG.getTasksContainer().setPdfCoverThumbnailsDisplayTask(pdfCoverThumbnailsDisplayTask);
 				
-		Thread showThumbsThread = new Thread(showThumbs, "showThumbsThread");
-		BAG.getThreadContainer().setShowThumbsThread(showThumbsThread);
+		Thread showThumbsThread = new Thread(pdfCoverThumbnailsDisplayTask, "showThumbsThread");
+		BAG.getTasksContainer().setShowThumbsThread(showThumbsThread);
 		showThumbsThread.start();
 	}
 

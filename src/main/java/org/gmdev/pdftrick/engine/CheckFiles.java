@@ -1,54 +1,35 @@
 package org.gmdev.pdftrick.engine;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.event.*;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Properties;
+import java.util.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.event.*;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.*;
 
 import com.itextpdf.text.exceptions.BadPasswordException;
-import com.itextpdf.text.pdf.PdfName;
-import com.itextpdf.text.pdf.PdfObject;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStream;
+import com.itextpdf.text.pdf.*;
 
 public class CheckFiles {
 	
 	private static final Logger logger = Logger.getLogger(CheckFiles.class);
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
+	private final HashMap<String, String> pfdPasswords;
 	private boolean checkEncryption = false;
-	private final HashMap<String, String> namePwd;
 	private boolean userProtection = false;
 	private boolean ownerProtection = false;
 	
 	public CheckFiles() {
-		this.namePwd = BAG.getNamePwd();
+		this.pfdPasswords = BAG.getPfdPasswords();
 	}
 	
 	/**
@@ -149,8 +130,8 @@ public class CheckFiles {
 			PdfReader reader = null;
 			
 			try {
-				if (namePwd.containsKey(item.getName())) {
-					reader = new PdfReader(item.getPath(),namePwd.get(item.getName()).getBytes());
+				if (pfdPasswords.containsKey(item.getName())) {
+					reader = new PdfReader(item.getPath(),pfdPasswords.get(item.getName()).getBytes());
 				} else {
 					reader = new PdfReader(item.getPath());
 				}
@@ -348,7 +329,7 @@ public class CheckFiles {
 						if (reader.isEncrypted()) { 
 							if (reader.isOpenedWithFullPermissions()) {
 								check="ok";
-								namePwd.put(file.getName(), pwd);
+								pfdPasswords.put(file.getName(), pwd);
 							} else {
 								check="no";
 								Messages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_08"), n, file.getName()));

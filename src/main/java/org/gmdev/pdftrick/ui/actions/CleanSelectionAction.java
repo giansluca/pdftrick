@@ -17,7 +17,6 @@ import javax.swing.border.Border;
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
-import org.gmdev.pdftrick.utils.FileUtils;
 import org.gmdev.pdftrick.utils.Messages;
 
 public class CleanSelectionAction extends AbstractAction {
@@ -32,38 +31,38 @@ public class CleanSelectionAction extends AbstractAction {
 		Properties messagesProps = BAG.getMessagesProps();
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
 		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
-		HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineImgSelected();
+		HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
 		
-		if (BAG.getThreadContainer().getImgExtractionThread() != null &&
-				BAG.getThreadContainer().getImgExtractionThread().isAlive()) {
+		if (BAG.getTasksContainer().getImgExtractionThread() != null &&
+				BAG.getTasksContainer().getImgExtractionThread().isAlive()) {
 
 			Messages.append("WARNING", messagesProps.getProperty("tmsg_02"));
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getImgThumbThread() !=null &&
-				BAG.getThreadContainer().getImgThumbThread().isAlive()) {
+		if (BAG.getTasksContainer().getImgThumbThread() !=null &&
+				BAG.getTasksContainer().getImgThumbThread().isAlive()) {
 
 			Messages.append("WARNING", messagesProps.getProperty("tmsg_23"));
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getOpenFileChooserThread() != null &&
-				BAG.getThreadContainer().getOpenFileChooserThread().isAlive()) {
+		if (BAG.getTasksContainer().getOpenFileChooserThread() != null &&
+				BAG.getTasksContainer().getOpenFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getDragAnDropFileChooserThread() != null &&
-				BAG.getThreadContainer().getDragAnDropFileChooserThread().isAlive()) {
+		if (BAG.getTasksContainer().getDragAnDropFileChooserThread() != null &&
+				BAG.getTasksContainer().getDragAnDropFileChooserThread().isAlive()) {
 			return;
 		}
 		
-		if (BAG.getThreadContainer().getShowThumbsThread() != null &&
-				BAG.getThreadContainer().getShowThumbsThread().isAlive()) {
+		if (BAG.getTasksContainer().getShowThumbsThread() != null &&
+				BAG.getTasksContainer().getShowThumbsThread().isAlive()) {
 			return;
 		}
 		
-		if (BAG.getImageSelected().size() == 0 && inlineImgSelected.size() == 0) {
+		if (BAG.getSelectedImages().size() == 0 && inlineImgSelected.size() == 0) {
 			Messages.append("INFO", messagesProps.getProperty("tmsg_24"));
 		} else {
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);
@@ -91,8 +90,8 @@ public class CleanSelectionAction extends AbstractAction {
 				}
 			}
 			
-			BAG.cleanImageSelectedHashMap();
-			BAG.cleanInlineImgSelectedHashMap();
+			BAG.cleanSelectedImagesHashMap();
+			BAG.cleanInlineSelectedImagesHashMap();
 			numImgSelectedField.setText("");
 		}
 		

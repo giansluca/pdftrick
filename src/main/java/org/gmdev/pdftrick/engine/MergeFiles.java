@@ -32,7 +32,7 @@ public class MergeFiles {
 	 * Merge multiple pdf files
 	 */
 	public File mergePdf (ArrayList<File> filesVett, Path pdfFilePath) {
-		final HashMap<String, String> namePwd = BAG.getNamePwd();
+		final HashMap<String, String> pfdPasswords = BAG.getPfdPasswords();
 		
 		File mergedFile = pdfFilePath.toFile();
 		List<StreamPwdContainer> list = new ArrayList<StreamPwdContainer>();
@@ -45,8 +45,8 @@ public class MergeFiles {
 				StreamPwdContainer boom = new StreamPwdContainer();
 				boom.setIn(new FileInputStream(element));
 				
-				if (namePwd.containsKey(element.getName())) {
-					boom.setPwd(namePwd.get(element.getName()));
+				if (pfdPasswords.containsKey(element.getName())) {
+					boom.setPwd(pfdPasswords.get(element.getName()));
 				} else {
 					boom.setPwd("");
 				}
@@ -64,7 +64,7 @@ public class MergeFiles {
 	}
 	
 	private void doMerge(List<StreamPwdContainer> list, OutputStream outputStream) throws DocumentException, IOException {
-		HashMap<Integer, String> rotationFromPages = BAG.getRotationFromPages();
+		HashMap<Integer, String> rotationFromPages = BAG.getPagesRotationPages();
 		Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, outputStream);
         document.open();
