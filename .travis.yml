@@ -48,5 +48,5 @@ deploy:
     - ${MAC_FILE_PATH}
     - ${WIN_FILE_PATH}
   skip_cleanup: true
-    on:
-      tags: true
+  on:
+    tags: true
