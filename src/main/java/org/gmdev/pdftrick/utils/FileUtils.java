@@ -1,22 +1,10 @@
 package org.gmdev.pdftrick.utils;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.ui.actions.DragAndDropAction;
-import org.gmdev.pdftrick.ui.custom.WrapLayout;
-import org.gmdev.pdftrick.utils.external.FileDrop;
-
-import static org.gmdev.pdftrick.utils.Constants.*;
 
 public class FileUtils {
-	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
 	private FileUtils() {
 		throw new AssertionError("FileUtils class should never be instantiated");
