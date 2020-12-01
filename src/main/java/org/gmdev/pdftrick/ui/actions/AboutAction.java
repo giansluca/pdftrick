@@ -19,10 +19,7 @@ public class AboutAction extends AbstractAction {
 		super.putValue(SMALL_ICON, aboutIcon);
 		super.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
 	}
-	
-	/**
-	 * About menu Windows
-	 */
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		ModalInfoPanel.displayAboutPanel();

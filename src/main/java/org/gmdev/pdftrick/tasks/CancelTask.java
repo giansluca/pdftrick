@@ -8,15 +8,12 @@ import javax.swing.*;
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.utils.*;
 
-import static org.gmdev.pdftrick.utils.Constants.TEN;
-import static org.gmdev.pdftrick.utils.ThreadUtils.pause;
+import static org.gmdev.pdftrick.serviceprocessor.ThreadTerminator.*;
 
 public class CancelTask implements Runnable {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
 	private final AtomicBoolean running = new AtomicBoolean(false);
-
 	public void stop() {
 	    running.set(false);
 	 }
@@ -35,31 +32,25 @@ public class CancelTask implements Runnable {
 		var fileChooserTask = tasksContainer.getFileChooserTask();
 		if (fileChooserTask != null && fileChooserTask.isRunning()) {
 			fileChooserTask.stop();
-			while (fileChooserTask.isRunning())
-				pause(TEN);
+			joinFileChooserThread();
 		}
-
 		var dragAndDropTask = tasksContainer.getDragAndDropTask();
 		if (dragAndDropTask != null && dragAndDropTask.isRunning()) {
 			dragAndDropTask.stop();
-			while (dragAndDropTask.isRunning())
-				pause(TEN);
-
+			joinDragAndDropThread();
 		}
 
 		var firstPdfPageRenderTask = tasksContainer.getFirstPdfPageRenderTask();
 		if (firstPdfPageRenderTask != null && firstPdfPageRenderTask.isRunning()) {
 			firstPdfPageRenderTask.stop();
-			while (firstPdfPageRenderTask.isRunning())
-				pause(TEN);
+			joinFirstPdfPageRenderThread();
 		}
 
 		var pdfCoverThumbnailsDisplayTask =
 				tasksContainer.getPdfCoverThumbnailsDisplayTask();
 		if (pdfCoverThumbnailsDisplayTask != null && pdfCoverThumbnailsDisplayTask.isRunning()) {
 			pdfCoverThumbnailsDisplayTask.stop();
-			while (pdfCoverThumbnailsDisplayTask.isRunning())
-				pause(TEN);
+			joinPdfCoverThumbnailsDisplayTask();
 		}
 
 		try {
@@ -86,5 +77,8 @@ public class CancelTask implements Runnable {
 
 		running.set(false);
 	}
+
+
+
 
 }
