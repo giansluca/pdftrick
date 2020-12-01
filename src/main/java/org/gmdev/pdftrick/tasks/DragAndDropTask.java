@@ -9,10 +9,11 @@ import javax.swing.*;
 import org.gmdev.pdftrick.engine.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
+import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 
-public class DragAndDropTask implements Runnable {
+public class DragAndDropTask implements Runnable, Stoppable {
 
     private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 

@@ -58,7 +58,7 @@ public class FileUtils {
 	}
 
 	private static void deleteFile(File file) {
-		if (!file.delete())
+		if (!file.delete() || !file.canWrite())
 			throw new IllegalStateException(
 					String.format("Error deleting file %s", file.getName()));
 	}

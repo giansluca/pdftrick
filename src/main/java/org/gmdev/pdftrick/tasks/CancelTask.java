@@ -6,14 +6,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.*;
+import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.utils.*;
 
-import static org.gmdev.pdftrick.serviceprocessor.ThreadTerminator.*;
+import static org.gmdev.pdftrick.serviceprocessor.TaskTerminator.*;
 
-public class CancelTask implements Runnable {
+public class CancelTask implements Runnable, Stoppable {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private final AtomicBoolean running = new AtomicBoolean(false);
+
 	public void stop() {
 	    running.set(false);
 	 }
@@ -27,31 +29,8 @@ public class CancelTask implements Runnable {
 		running.set(true);
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
 		JTextField numImagesSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
-		TasksContainer tasksContainer = BAG.getTasksContainer();
 
-		var fileChooserTask = tasksContainer.getFileChooserTask();
-		if (fileChooserTask != null && fileChooserTask.isRunning()) {
-			fileChooserTask.stop();
-			joinFileChooserThread();
-		}
-		var dragAndDropTask = tasksContainer.getDragAndDropTask();
-		if (dragAndDropTask != null && dragAndDropTask.isRunning()) {
-			dragAndDropTask.stop();
-			joinDragAndDropThread();
-		}
-
-		var firstPdfPageRenderTask = tasksContainer.getFirstPdfPageRenderTask();
-		if (firstPdfPageRenderTask != null && firstPdfPageRenderTask.isRunning()) {
-			firstPdfPageRenderTask.stop();
-			joinFirstPdfPageRenderThread();
-		}
-
-		var pdfCoverThumbnailsDisplayTask =
-				tasksContainer.getPdfCoverThumbnailsDisplayTask();
-		if (pdfCoverThumbnailsDisplayTask != null && pdfCoverThumbnailsDisplayTask.isRunning()) {
-			pdfCoverThumbnailsDisplayTask.stop();
-			joinPdfCoverThumbnailsDisplayTask();
-		}
+		terminateTasks();
 
 		try {
 			SwingUtilities.invokeAndWait(() -> {
@@ -78,7 +57,12 @@ public class CancelTask implements Runnable {
 		running.set(false);
 	}
 
-
-
+	private void terminateTasks() {
+		terminateFileChooserTask();
+		terminateDragAndDropTask();
+		terminateFirstPdfPageRenderTask();
+		terminateExecutorRunnerTask();
+		terminatePdfCoverThumbnailsDisplayTask();
+	}
 
 }

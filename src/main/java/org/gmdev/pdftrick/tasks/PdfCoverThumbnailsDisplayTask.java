@@ -13,9 +13,10 @@ import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ThumbAction;
+import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.utils.*;
 
-public class PdfCoverThumbnailsDisplayTask implements Runnable {
+public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	

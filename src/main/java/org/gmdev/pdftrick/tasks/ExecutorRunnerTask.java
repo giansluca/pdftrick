@@ -4,8 +4,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 
-public class ExecutorRunnerTask implements Runnable {
+public class ExecutorRunnerTask implements Runnable, Stoppable {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	private static final int THREAD_NUMBER = 2;

@@ -3,12 +3,13 @@ package org.gmdev.pdftrick.tasks;
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.gmdev.pdftrick.utils.Constants.ZOOM_THUMBNAIL;
 
-public class FirstPdfPageRenderTask implements Runnable  {
+public class FirstPdfPageRenderTask implements Runnable, Stoppable {
 	
 	private static final Logger logger = Logger.getLogger(FirstPdfPageRenderTask.class);
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
