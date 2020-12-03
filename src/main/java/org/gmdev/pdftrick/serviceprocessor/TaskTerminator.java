@@ -4,6 +4,7 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.manager.TasksContainer;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TaskTerminator {
 
@@ -49,8 +50,6 @@ public class TaskTerminator {
         if (thread == null) return;
         try {
             thread.join();
-            while (thread.isAlive())
-                System.out.println("still alive");
         } catch (InterruptedException e) {
             throw new IllegalStateException(e);
         }
@@ -58,7 +57,12 @@ public class TaskTerminator {
 
     private static void shutdownExecutorService(ExecutorService executorService) {
         if (executorService == null) return;
-        executorService.shutdown();
+        executorService.shutdownNow();
+        try {
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 

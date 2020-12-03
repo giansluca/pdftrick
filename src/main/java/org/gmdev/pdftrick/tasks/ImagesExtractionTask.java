@@ -47,13 +47,10 @@ public class ImagesExtractionTask implements Runnable {
 		
 		running.set(true);
 	}
-	
-	/**
-	 * Deselect images after extraction and clean images elected HashMap
-	 */
+
 	public void cleanAfterGetImages() {
-		final JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
-		final JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
 		
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Component[] comps =  centerPanel.getComponents();

@@ -25,15 +25,6 @@ public class Messages {
 				getSystemProperty("java.version")));
 	}
 
-	public static void cleanTextArea() {
-		JTextArea textArea = BAG.getUserInterface().getBottom().getTextArea();
-		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(() -> textArea.setText(""));
-		} else {
-			textArea.setText("");
-		}
-	}
-
 	/**
 	 * Append messages to text area
 	 */

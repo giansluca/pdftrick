@@ -37,16 +37,17 @@ public class DragAndDropTask implements Runnable, Stoppable {
         running.set(true);
 
         JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
-        JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+        JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
         CenterPanel centerPanel = BAG.getUserInterface().getCenter();
         LeftPanel leftPanel = BAG.getUserInterface().getLeft();
+        BottomPanel bottomPanel = BAG.getUserInterface().getBottom();
         ArrayList<File> filesArray = BAG.getPdfFilesArray();
         Properties messages = BAG.getMessagesProps();
 
         SwingUtilities.invokeLater(() -> {
             leftPanel.clean();
             centerPanel.clean();
-            Messages.cleanTextArea();
+            bottomPanel.clean();
             currentPageField.setText("");
             numImgSelectedField.setText("");
             centerPanel.startWaitIconLoadPdf();

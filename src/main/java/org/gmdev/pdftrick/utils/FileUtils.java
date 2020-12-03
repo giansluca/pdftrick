@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.utils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -58,7 +59,7 @@ public class FileUtils {
 	}
 
 	private static void deleteFile(File file) {
-		if (!file.delete() || !file.canWrite())
+		if (!file.delete())
 			throw new IllegalStateException(
 					String.format("Error deleting file %s", file.getName()));
 	}

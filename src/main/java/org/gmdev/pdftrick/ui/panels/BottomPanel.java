@@ -29,6 +29,10 @@ public class BottomPanel {
 		
 		bottomPanel.add(textAreaScrollPane, BorderLayout.CENTER);
 	}
+
+	public void clean() {
+		textArea.setText("");
+	}
 	
 	public JPanel getBottomPanel() {
 		return bottomPanel;

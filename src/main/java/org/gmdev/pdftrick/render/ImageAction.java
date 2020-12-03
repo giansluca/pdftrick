@@ -1,13 +1,10 @@
 package org.gmdev.pdftrick.render;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
@@ -18,14 +15,16 @@ public class ImageAction implements MouseListener {
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
 	private final JLabel picLabel;
-	RenderedImageAttributes imageAttrs;
+	private final RenderedImageAttributes imageAttributes;
 	private final boolean isInlineImg;
 	private boolean selected;
 	private final boolean enabled;
 	
-	public ImageAction(JLabel picLabel, RenderedImageAttributes imageAttrs, boolean isInlineImg, boolean selected) {
+	public ImageAction(
+			JLabel picLabel, RenderedImageAttributes imageAttributes, boolean isInlineImg, boolean selected) {
+
 		this.picLabel = picLabel;
-		this.imageAttrs = imageAttrs;
+		this.imageAttributes = imageAttributes;
 		this.isInlineImg = isInlineImg;
 		this.selected = selected;
 		this.enabled = true;
@@ -34,9 +33,9 @@ public class ImageAction implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (enabled) {
-			final JTextField numImgSelected = BAG.getUserInterface().getRight().getNumImgSelectedField();
-			final HashMap<String, RenderedImageAttributes> imageSelected = BAG.getSelectedImages();
-			final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
+			JTextField numImgSelected = BAG.getUserInterface().getRight().getSelectedImagesField();
+			HashMap<String, RenderedImageAttributes> imageSelected = BAG.getSelectedImages();
+			HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
 		
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);
 			Border borderOrange = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.orange);
@@ -45,11 +44,10 @@ public class ImageAction implements MouseListener {
 				picLabel.setBorder(borderOrange);
 				selected = true;
 				
-				if (isInlineImg) {
-					inlineImgSelected.put(imageAttrs.getKey(), imageAttrs);
-				} else {
-					imageSelected.put(imageAttrs.getKey(), imageAttrs);
-				}
+				if (isInlineImg)
+					inlineImgSelected.put(imageAttributes.getKey(), imageAttributes);
+				else
+					imageSelected.put(imageAttributes.getKey(), imageAttributes);
 				
 				numImgSelected.setText("Selected "+(imageSelected.size()+inlineImgSelected.size()));
 			} else {
@@ -58,17 +56,15 @@ public class ImageAction implements MouseListener {
 				picLabel.setBackground(Color.WHITE);
 				selected = false;
 				
-				if (isInlineImg) {
-					inlineImgSelected.remove(imageAttrs.getKey());
-				} else {
-					imageSelected.remove(imageAttrs.getKey());
-				}
+				if (isInlineImg)
+					inlineImgSelected.remove(imageAttributes.getKey());
+				else
+					imageSelected.remove(imageAttributes.getKey());
 				
-				if ((imageSelected.size() + inlineImgSelected.size()) == 0) {
+				if ((imageSelected.size() + inlineImgSelected.size()) == 0)
 					numImgSelected.setText("");
-				} else {
+				else
 					numImgSelected.setText("Selected "+(imageSelected.size()+inlineImgSelected.size()));
-				}
 			}
 		}
 	}

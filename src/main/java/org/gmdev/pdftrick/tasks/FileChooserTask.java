@@ -39,18 +39,19 @@ public class FileChooserTask implements Runnable, Stoppable {
 
 		Properties messages = BAG.getMessagesProps();
 		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
-		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
 		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
 		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
+		BottomPanel bottomPanel = BAG.getUserInterface().getBottom();
 		ArrayList<File> filesArray = BAG.getPdfFilesArray();
 		
         SwingUtilities.invokeLater(() -> {
 			leftPanel.clean();
 			centerPanel.clean();
-			Messages.cleanTextArea();
+			bottomPanel.clean();
 			currentPageField.setText("");
 			numImgSelectedField.setText("");
-			BAG.getUserInterface().getCenter().startWaitIconLoadPdf();
+			centerPanel.startWaitIconLoadPdf();
 		});
         		
         // clean up

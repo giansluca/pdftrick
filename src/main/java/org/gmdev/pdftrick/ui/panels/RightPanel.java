@@ -18,7 +18,7 @@ public class RightPanel {
     private final JButton cancelButton;
     private final JButton cleanButton;
     private final JTextField currentPageField;
-    private final JTextField numImgSelectedField;
+    private final JTextField selectedImagesField;
 	
     public RightPanel() {
     	rightTopPanel = new JPanel(
@@ -55,12 +55,12 @@ public class RightPanel {
 	    currentPageField.setEditable(false);
 	    currentPageField.setFocusable(false);
 
-	    numImgSelectedField = new JTextField();
-	    numImgSelectedField.setEditable(false);
-	    numImgSelectedField.setFocusable(false);
+		selectedImagesField = new JTextField();
+		selectedImagesField.setEditable(false);
+		selectedImagesField.setFocusable(false);
 
 	    rightBottomPanel.add(currentPageField, "h 15:25:28, w 60:80%, gaptop 10, wrap");
-	    rightBottomPanel.add(numImgSelectedField, "h 15:25:28, w 60:80%, wrap");
+	    rightBottomPanel.add(selectedImagesField, "h 15:25:28, w 60:80%, wrap");
 	   
 	    rightPanel = new JPanel(new MigLayout("insets 0 0 0 0, flowy, fill"));
 	    rightPanel.add(rightTopPanel, "grow");
@@ -94,9 +94,8 @@ public class RightPanel {
 	public JTextField getCurrentPageField() {
 		return currentPageField;
 	}
-	
-	public JTextField getNumImgSelectedField() {
-		return numImgSelectedField;
+
+	public JTextField getSelectedImagesField() {
+		return selectedImagesField;
 	}
-    
 }

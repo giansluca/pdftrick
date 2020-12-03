@@ -20,7 +20,7 @@ public class CleanSelectionAction extends AbstractAction {
 	public void actionPerformed(ActionEvent event) {
 		Properties messagesProps = BAG.getMessagesProps();
 		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
-		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getNumImgSelectedField();
+		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
 		HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
 		TasksContainer tasksContainer = BAG.getTasksContainer();
 		

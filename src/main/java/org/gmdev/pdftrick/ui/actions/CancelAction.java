@@ -16,8 +16,7 @@ public class CancelAction extends AbstractAction {
 	public void actionPerformed(ActionEvent event) {
 		TasksContainer tasksContainer = BAG.getTasksContainer();
 		var cancelTask = tasksContainer.getCancelTask();
-		if (cancelTask != null && cancelTask.isRunning())
-			return;
+		if (cancelTask != null && cancelTask.isRunning()) return;
 
 		CancelTask newCancelTask = new CancelTask();
 		tasksContainer.setCancelTask(newCancelTask);
