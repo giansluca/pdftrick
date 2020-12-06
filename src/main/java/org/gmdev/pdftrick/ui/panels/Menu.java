@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.*;
+import org.gmdev.pdftrick.ui.actions.MacActions;
 
 import static org.gmdev.pdftrick.utils.SetupUtils.MAC_OS;
 
@@ -27,10 +28,10 @@ public class Menu {
         	JMenu pdftrick = new JMenu("PdfTrick");
 
         	JMenuItem aboutMenuItem = new JMenuItem();
-        	aboutMenuItem.setAction(new AboutAction());
+        	aboutMenuItem.setAction(new WindowsAboutAction());
         	
         	JMenuItem exitMenuItem = new JMenuItem();
-        	exitMenuItem.setAction(new ExitAction());
+        	exitMenuItem.setAction(new WindowsExitAction());
         	
         	pdftrick.add(aboutMenuItem);
         	pdftrick.add(exitMenuItem);

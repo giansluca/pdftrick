@@ -8,6 +8,9 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.manager.TasksContainer;
 import org.gmdev.pdftrick.tasks.CancelTask;
 
+/**
+ * Action called when 'Cancel' button is clicked
+ */
 public class CancelAction extends AbstractAction {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;

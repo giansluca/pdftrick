@@ -43,11 +43,13 @@ public final class Constants {
 	public static final String GET_IMG_ICO = "icons/getigm_icon.png";
 	public static final String CANCEL_ICO = "icons/cancel_icon.png";
 	public static final String CLEAN_SEL_ICO = "icons/clean_icon.png";
+	public static final String GPL3_ICO = "icons/gpl_3.png";
+
+	// custom file chooser for mac
 	public static final String UP_ICO = "icons/filechooser/up_icon.png";
 	public static final String HOME_ICO = "icons/filechooser/home_icon.png";
 	public static final String DESKTOP_ICO = "icons/filechooser/desktop_icon.png";
-	public static final String GPL3_ICO = "icons/gpl_3.png";
-	
+
 	// gifs
 	public static final String WAIT = "icons/wait.gif";
 	public static final String WAIT_IMG = "icons/wait_img.gif";

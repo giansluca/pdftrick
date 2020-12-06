@@ -28,21 +28,12 @@ public class CancelTask implements Runnable, Stoppable {
 
 		terminateTasks();
 		SwingCleaner.cleanUserInterface();
-		cleanUp();
+		BAG.cleanUp();
 
 		FileUtils.deletePdfFile(BAG.getPdfFilePath());
 		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
 
 		running.set(false);
-	}
-
-	private void cleanUp() {
-		BAG.cleanSelectedImagesHashMap();
-		BAG.cleanInlineSelectedImagesHashMap();
-		BAG.cleanPagesRotationHashMap();
-		BAG.setSelectedPage(0);
-		BAG.setExtractionFolderPath(null);
-		BAG.cleanPdfFilesArray();
 	}
 
 	private void terminateTasks() {

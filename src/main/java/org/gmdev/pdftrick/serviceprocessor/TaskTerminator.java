@@ -1,10 +1,8 @@
 package org.gmdev.pdftrick.serviceprocessor;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.manager.TasksContainer;
+import org.gmdev.pdftrick.manager.*;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class TaskTerminator {
 
@@ -36,9 +34,9 @@ public class TaskTerminator {
         waitForThread(tasksContainer.getPdfCoverThumbnailsDisplayThread());
     }
 
-    public static void terminateCancelThread() {
-        stopTask(tasksContainer.getCancelTask());
-        waitForThread(tasksContainer.getCancelThread());
+    public static void terminateImagesExtractionTask() {
+        stopTask(tasksContainer.getImagesExtractionTask());
+        waitForThread(tasksContainer.getImagesExtractionThread());
     }
 
     private static void stopTask(Stoppable task) {
@@ -59,7 +57,8 @@ public class TaskTerminator {
         if (executorService == null) return;
         executorService.shutdownNow();
         try {
-            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            if(!executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS))
+                throw(new IllegalStateException("Error awaiting Executor service termination"));
         } catch (InterruptedException e) {
             throw new IllegalStateException(e);
         }

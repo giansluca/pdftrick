@@ -2,8 +2,7 @@ package org.gmdev.pdftrick.engine;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -76,7 +75,7 @@ public class ImagesExtractor {
 			String type = inImg.getFileType();
 			String filename = String.format(result, z, type);
 			
-			//particular cases of encoding
+			// particular cases of encoding
 			String encode ="";
 			if (type.equalsIgnoreCase("jp2")) {
 				encode = "jpeg 2000";

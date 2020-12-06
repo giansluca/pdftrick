@@ -88,4 +88,11 @@ public class SetupUtils {
 		}
 	}
 
+	public static void setMacPreferences() {
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "PdfTrick");
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		System.setProperty("apple.awt.fileDialogForDirectories", "true");
+	}
+
+
 }

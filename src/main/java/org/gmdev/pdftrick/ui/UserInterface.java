@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode;
-import org.gmdev.pdftrick.ui.actions.WindowsActions;
+import org.gmdev.pdftrick.ui.listeners.MainWindowListener;
 import org.gmdev.pdftrick.ui.custom.GlassPane;
 import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.ui.panels.Menu;
@@ -35,7 +35,7 @@ public class UserInterface extends JFrame {
 		setAppIcon();
         setTitle(APP_NAME);
 
-        addWindowListener(new WindowsActions());
+        addWindowListener(new MainWindowListener());
 
 		left = new LeftPanel();
 		center = new CenterPanel();

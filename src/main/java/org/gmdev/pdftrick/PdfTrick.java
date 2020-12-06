@@ -82,12 +82,6 @@ public class PdfTrick {
             ModalWarningPanel.displayArchWarningAndThrow();
     }
 
-    private static void setMacPreferences() {
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "PdfTrick");
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("apple.awt.fileDialogForDirectories", "true");
-    }
-
     private static void checkSingleInstanceRunning() {
         var singleInstanceValidator = SingleInstanceValidator.getInstance();
         singleInstanceValidator.checkAlreadyRunning();

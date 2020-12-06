@@ -11,9 +11,10 @@ import javax.swing.border.Border;
 import org.gmdev.pdftrick.engine.ImagesExtractor;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
+import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
 
-public class ImagesExtractionTask implements Runnable {
+public class ImagesExtractionTask implements Runnable, Stoppable {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
@@ -45,7 +46,7 @@ public class ImagesExtractionTask implements Runnable {
 			}
 		}
 		
-		running.set(true);
+		running.set(false);
 	}
 
 	public void cleanAfterGetImages() {

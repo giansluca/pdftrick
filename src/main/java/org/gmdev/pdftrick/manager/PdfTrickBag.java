@@ -77,6 +77,15 @@ public enum PdfTrickBag {
 		}
 	}
 
+	public void cleanUp() {
+		cleanSelectedImagesHashMap();
+		cleanInlineSelectedImagesHashMap();
+		cleanPagesRotationHashMap();
+		setSelectedPage(0);
+		setExtractionFolderPath(null);
+		cleanPdfFilesArray();
+	}
+
 	public void cleanPdfFilesArray(){
 		pdfFilesArray.clear();
 	}
