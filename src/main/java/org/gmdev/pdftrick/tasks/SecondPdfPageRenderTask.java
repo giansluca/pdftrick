@@ -23,13 +23,8 @@ public class SecondPdfPageRenderTask implements Runnable {
 	public void run() {
 		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
 		Path pdfFilePath = BAG.getPdfFilePath();
-		
-		try {
-			nativeManager.renderPdfPageThumbnail(pdfFilePath.toString(), imagePath, pageNumber, ZOOM_THUMBNAIL);
-		} catch (Exception e) {
-			Thread.currentThread().interrupt();
-			throw new IllegalStateException(e);
-		}
+
+		nativeManager.renderPdfPageThumbnail(pdfFilePath.toString(), imagePath, pageNumber, ZOOM_THUMBNAIL);
 	}
 	
 	

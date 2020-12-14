@@ -59,11 +59,11 @@ public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
 					// check is next file has arrived
 					if (renderedImages[i] != null && renderedImages[i].getName().endsWith("_" + (i + 1) + ".png")) {
 								
-						// check if file look has gone (native function finished to write)
-						File look = new File(thumbnailsFolderPath +
-								File.separator + "image_" + (i + 1) + ".png.look");
+						// check if file lock has gone (native function finished to write)
+						File lock = new File(thumbnailsFolderPath +
+								File.separator + "image_" + (i + 1) + ".png.lock");
 							
-						if (!look.exists()) {
+						if (!lock.exists()) {
 							BufferedImage bufImg = null;
 							try {
 								if (renderedImages[i].exists() && renderedImages[i].canRead() && renderedImages[i].length() > 0) {
