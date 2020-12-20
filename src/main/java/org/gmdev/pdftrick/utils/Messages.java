@@ -128,5 +128,11 @@ public class Messages {
 		}
 	}
 
+	public enum MessageLevel {
+		INFO,
+		WARNING,
+		ERROR
+	}
+
 
 }

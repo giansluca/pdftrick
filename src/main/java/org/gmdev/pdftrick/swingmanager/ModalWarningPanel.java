@@ -49,13 +49,6 @@ public class ModalWarningPanel {
                 () -> displayGenericWarningPanel(BAG.getUserInterface(), message, WAIT));
     }
 
-    public static void displayClosingDuringExtractionWarning() {
-        String message = "PdfTrick has been closed during images extraction, possible corrupted images";
-        String title = "Attention";
-        SwingInvoker.invokeLater(
-                () -> displayGenericWarningPanel(BAG.getUserInterface(), message, title));
-    }
-
     private static void displayGenericWarningPanel(Component parentComponent,
                                                    String message,
                                                    String title) {

@@ -33,13 +33,13 @@ public class ImagesExtractionAction extends AbstractAction  {
 		if (tasksContainer.getFileChooserThread() != null &&
 				tasksContainer.getFileChooserThread().isAlive()) {
 
-			Messages.append("WARNING", messages.getProperty("tmsg_01"));
+			Messages.append("WARNING", messages.getProperty("t_msg_01"));
 			return;
 		}
 		if (tasksContainer.getDragAndDropThread() != null &&
 				tasksContainer.getDragAndDropThread().isAlive()) {
 
-			Messages.append("WARNING", messages.getProperty("tmsg_01"));
+			Messages.append("WARNING", messages.getProperty("t_msg_01"));
 			return;
 		}
 		if (tasksContainer.getPdfCoverThumbnailsDisplayThread() != null &&
