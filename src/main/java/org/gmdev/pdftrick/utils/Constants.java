@@ -23,7 +23,7 @@ public final class Constants {
 
 	// native library
 	public static final String NATIVE_LIB_PATH = "nativelib";
-	public static final String NATIVE_LIB_VERSION="1.0.1";
+	public static final String NATIVE_LIB_VERSION="1.0.2";
 	public static final String NATIVE_LIB_WIN_FILE ="pdftrick-native_" + NATIVE_LIB_VERSION + ".dll";
 	public static final String NATIVE_LIB_MAC_FILE ="pdftrick-native_" + NATIVE_LIB_VERSION + ".jnilib";
 
