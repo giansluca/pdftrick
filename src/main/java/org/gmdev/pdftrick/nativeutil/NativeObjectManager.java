@@ -5,8 +5,8 @@ import java.lang.reflect.*;
 public class NativeObjectManager {
 
 	private static final String NATIVE_LIB_CALL = "org.gmdev.pdftrick.nativeutil.NativeLibCall";
-	private static final String RENDER_THUMBNAIL_FUNCTION = "start";
-	private static final String RENDER_FULL_FUNCTION = "cover";
+	private static final String RENDER_THUMBNAIL_FUNCTION = "renderThumbnail";
+	private static final String RENDER_FULL_FUNCTION = "renderFull";
 
 	private CustomClassLoader classLoader;
 	private Class<?> nativeLibCallClass;
@@ -32,25 +32,25 @@ public class NativeObjectManager {
 		}
 	}
 
-	public void renderPdfPageThumbnail(String pdfFilePath, String imgPath, int nPage, int zoom) {
+	public void renderPdfPageThumbnail(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
 		try {
 			if (pageThumbnailMethod == null)
 				pageThumbnailMethod = nativeLibCallClass.getMethod(
 						RENDER_THUMBNAIL_FUNCTION, String.class, String.class, int.class, int.class);
 
-			pageThumbnailMethod.invoke(nativeLibCallInstance, pdfFilePath, imgPath, nPage, zoom);
+			pageThumbnailMethod.invoke(nativeLibCallInstance, pdfFilePath, imgPath, pageNumber, zoom);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	public void renderPdfPageFull(String pdfFilePath, String imgPath, int nPage, int zoom) {
+	public void renderPdfPageFull(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
 		try {
 			if (pageFullMethod == null)
 				pageFullMethod = nativeLibCallClass.getMethod(
 						RENDER_FULL_FUNCTION, String.class, String.class, int.class, int.class);
 
-			pageFullMethod.invoke(nativeLibCallInstance, pdfFilePath, imgPath, nPage, zoom);
+			pageFullMethod.invoke(nativeLibCallInstance, pdfFilePath, imgPath, pageNumber, zoom);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}	

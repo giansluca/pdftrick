@@ -47,7 +47,6 @@ public class FileChooserAction extends AbstractAction implements FileIn {
 
         File[] files = fileOpen.getSelectedFiles();
 
-
         FileChooserTask newFileChooserTask = new FileChooserTask(files);
         tasksContainer.setFileChooserTask(newFileChooserTask);
 
