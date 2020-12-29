@@ -165,13 +165,13 @@ public class ImagesExtractor {
 						}
 					}
 					
-					// check if image contains a mask image
+					// isValid if image contains a mask image
 					BufferedImage buffMask = null;
 					PdfDictionary imageDictionary = io.getDictionary(); 
 				    PRStream maskStream = (PRStream) imageDictionary.getAsStream(PdfName.SMASK); 
 					
 				    if (maskStream != null) {
-				    	// i have an smask object i check that is not a jpeg format, because this may cause some problem on offscreen rendering
+				    	// i have an smask object i isValid that is not a jpeg format, because this may cause some problem on offscreen rendering
 				    	// usually all imges with mask are png ... and there aren't problem, if image is jpg i discard the mask :)
 				    	if (!type.equalsIgnoreCase("jpg")) {
 				    		PdfImageObject maskImage = new PdfImageObject(maskStream);

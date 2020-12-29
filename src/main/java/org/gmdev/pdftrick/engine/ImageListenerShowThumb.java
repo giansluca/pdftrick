@@ -115,13 +115,13 @@ public class ImageListenerShowThumb implements RenderListener {
 					return;
 				}
 				
-				// check if image contains a mask image
+				// isValid if image contains a mask image
 				BufferedImage buffMask = null;
 				PdfDictionary imageDictionary = image.getDictionary(); 
 			    PRStream maskStream = (PRStream) imageDictionary.getAsStream(PdfName.SMASK); 
 			    
 			    if (maskStream != null) { 
-			    	// if i have an mask object i check that is not a jpeg format, because this may cause some problem on off screen rendering
+			    	// if i have an mask object i isValid that is not a jpeg format, because this may cause some problem on off screen rendering
 			    	// usually all images with mask are png ... and there aren't problems, if image is jpg i discard the mask :)
 			        if (!image.getFileType().equalsIgnoreCase("jpg") && buffPic != null) {
 			        	PdfImageObject maskImage = new PdfImageObject(maskStream);

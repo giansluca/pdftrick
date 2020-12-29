@@ -1,12 +1,12 @@
-package org.gmdev.pdftrick.ui.actions;
+package org.gmdev.pdftrick.utils;
 
-import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.manager.TasksContainer;
-import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
+import org.gmdev.pdftrick.engine.FileChecker;
+import org.gmdev.pdftrick.manager.*;
+import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
-import org.gmdev.pdftrick.ui.panels.LeftPanel;
-import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.ui.panels.*;
 
+import java.io.File;
 import java.util.Properties;
 
 import static org.gmdev.pdftrick.utils.Messages.MessageLevel.WARNING;
@@ -47,6 +47,21 @@ public interface FileIn {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
         }
+    }
+
+    default void prepareForLoading(PdfTrickBag bag) {
+        CenterPanel centerPanel = bag.getUserInterface().getCenter();
+
+        SwingCleaner.cleanUserInterface();
+        SwingInvoker.invokeLater(centerPanel::startWaitIconLoadPdf);
+
+        bag.cleanUp();
+        FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
+        FileUtils.deletePdfFile(bag.getPdfFilePath());
+    }
+
+    default void checkAndLoadPdfFile(File pdfFile) {
+        FileChecker fileChecker = new FileChecker();
     }
 
 

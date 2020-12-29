@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.tasks.DragAndDropTask;
+import org.gmdev.pdftrick.utils.FileIn;
 import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener, FileIn {

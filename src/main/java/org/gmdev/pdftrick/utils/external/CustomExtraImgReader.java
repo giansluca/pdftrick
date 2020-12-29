@@ -132,7 +132,7 @@ public class CustomExtraImgReader {
         BufferedImage buffImg = null;
         BufferedImage buffPic = ImageIO.read(ima_stream);
 
-        // check if image contains a mask image ... experimental for this type of image
+        // isValid if image contains a mask image ... experimental for this type of image
         BufferedImage buffMask = null;
         PRStream maskStream = (PRStream) dic.getAsStream(PdfName.SMASK);
         if (maskStream != null) {

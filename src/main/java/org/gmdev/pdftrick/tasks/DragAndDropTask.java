@@ -13,7 +13,7 @@ import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 
-public class DragAndDropTask implements Runnable, Stoppable {
+public class DragAndDropTask implements Runnable, Stoppable, FileIn {
 
     private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 
@@ -21,6 +21,8 @@ public class DragAndDropTask implements Runnable, Stoppable {
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     public DragAndDropTask(File[] droppedFiles) {
+        if (droppedFiles.length > 1)
+            throw new IllegalStateException("only one file is allowed for loading");
         this.droppedFiles = droppedFiles;
     }
 
@@ -36,46 +38,25 @@ public class DragAndDropTask implements Runnable, Stoppable {
     public void run() {
         running.set(true);
 
-        JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
-        JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
-        CenterPanel centerPanel = BAG.getUserInterface().getCenter();
         LeftPanel leftPanel = BAG.getUserInterface().getLeft();
-        BottomPanel bottomPanel = BAG.getUserInterface().getBottom();
-        ArrayList<File> filesArray = BAG.getPdfFilesArray();
+        CenterPanel centerPanel = BAG.getUserInterface().getCenter();
         Properties messages = BAG.getMessagesProps();
 
-        SwingUtilities.invokeLater(() -> {
-            leftPanel.clean();
-            centerPanel.clean();
-            bottomPanel.clean();
-            currentPageField.setText("");
-            numImgSelectedField.setText("");
-            centerPanel.startWaitIconLoadPdf();
-        });
+        prepareForLoading(BAG);
 
-        // clean up
-        BAG.setSelectedPage(0);
-        BAG.setExtractionFolderPath(null);
-        BAG.cleanPdfFilesArray();
-        BAG.cleanSelectedImagesHashMap();
-        BAG.cleanInlineSelectedImagesHashMap();
-        BAG.cleanPagesRotationHashMap();
+        ArrayList<File> filesArray = BAG.getPdfFilesArray();
+        filesArray.addAll(List.of(droppedFiles));
 
-        FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
-        FileUtils.deletePdfFile(BAG.getPdfFilePath());
-
-        for (File item : droppedFiles)
-            if (!item.isDirectory())
-                filesArray.add(item);
+        checkAndLoadPdfFile(filesArray.get(0));
 
         boolean fileCheck;
-        CheckFiles checkFiles = new CheckFiles();
+        FileChecker fileChecker = new FileChecker();
 
         if (filesArray.size() > 0) {
-            fileCheck = checkFiles.check();
+            fileCheck = fileChecker.isValid();
 
             if (!fileCheck) {
-                // in case of check failed i clean panel left and center, other stuff
+                // in case of isValid failed i clean panel left and center, other stuff
                 // (vector, hasmap, resultpdf was cleaned on approve open filechooser)
                 Messages.append("WARNING", messages.getProperty("tmsg_11"));
                 SwingUtilities.invokeLater(() -> {
@@ -83,7 +64,7 @@ public class DragAndDropTask implements Runnable, Stoppable {
                     centerPanel.clean();
                 });
             } else {
-                // merge pdf selection after check
+                // merge pdf selection after isValid
                 MergeFiles mergeFiles = new MergeFiles();
                 File resultFile = mergeFiles.mergePdf(filesArray, BAG.getPdfFilePath());
 

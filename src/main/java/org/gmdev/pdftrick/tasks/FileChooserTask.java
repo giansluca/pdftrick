@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.gmdev.pdftrick.engine.*;
@@ -14,7 +13,7 @@ import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 
-public class FileChooserTask implements Runnable, Stoppable {
+public class FileChooserTask implements Runnable, Stoppable, FileIn {
 	
 	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
 	
@@ -22,6 +21,8 @@ public class FileChooserTask implements Runnable, Stoppable {
 	private final AtomicBoolean running = new AtomicBoolean(false);
 	
 	public FileChooserTask(File[] openedFiles) {
+		if (openedFiles.length > 1)
+			throw new IllegalStateException("only one file is allowed for loading");
 		this.openedFiles = openedFiles;
 	}
 	
@@ -37,46 +38,24 @@ public class FileChooserTask implements Runnable, Stoppable {
 	public void run() {
 		running.set(true);
 
-		Properties messages = BAG.getMessagesProps();
-		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
-		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
-		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
 		LeftPanel leftPanel = BAG.getUserInterface().getLeft();
-		BottomPanel bottomPanel = BAG.getUserInterface().getBottom();
-		ArrayList<File> filesArray = BAG.getPdfFilesArray();
-		
-        SwingUtilities.invokeLater(() -> {
-			leftPanel.clean();
-			centerPanel.clean();
-			bottomPanel.clean();
-			currentPageField.setText("");
-			numImgSelectedField.setText("");
-			centerPanel.startWaitIconLoadPdf();
-		});
-        		
-        // clean up
-        BAG.setSelectedPage(0);
-        BAG.setExtractionFolderPath(null);
-        BAG.cleanPdfFilesArray();
-        BAG.cleanSelectedImagesHashMap();
-        BAG.cleanInlineSelectedImagesHashMap();
-        BAG.cleanPagesRotationHashMap();
-        		
-        FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
-        FileUtils.deletePdfFile(BAG.getPdfFilePath());
+		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
+		Properties messages = BAG.getMessagesProps();
 
-		for (File item : openedFiles)
-			if (!item.isDirectory())
-				filesArray.add(item);
-        
-        // call check class control files after selection
+		prepareForLoading(BAG);
+
+		ArrayList<File> filesArray = BAG.getPdfFilesArray();
+		filesArray.addAll(List.of(openedFiles));
+
+		checkAndLoadPdfFile(filesArray.get(0));
+
         boolean fileCheck;
-        CheckFiles checkFiles = new CheckFiles();
+        FileChecker fileChecker = new FileChecker();
         if (filesArray.size() > 0) {
-        	fileCheck = checkFiles.check();
+        	fileCheck = fileChecker.isValid();
         	if (!fileCheck) {
-        		// in case of check failed i clean panel left and center, other stuff 
-        		// (vector, hasmap, resultpdf was cleaned on approve open filechooser)
+        		// in case of isValid failed i clean panel left and center, other stuff
+        		// (vector, hashmap, pdf was cleaned on approve open file chooser)
         		Messages.append("WARNING", messages.getProperty("tmsg_11"));
         		
         		SwingUtilities.invokeLater(() -> {
@@ -84,7 +63,7 @@ public class FileChooserTask implements Runnable, Stoppable {
 					centerPanel.clean();
 				});
         	} else {
-        		// merge pdf selection after check
+        		// merge pdf selection after isValid
         		MergeFiles engine = new MergeFiles();
         		File resultFile = engine.mergePdf(filesArray, BAG.getPdfFilePath());
         		

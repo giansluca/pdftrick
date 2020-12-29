@@ -56,10 +56,10 @@ public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
 				renderedImages = getPdfRenderedPages(thumbnailsFolderPath);
 				if (renderedImages !=null && renderedImages.length > i) {
 					
-					// check is next file has arrived
+					// isValid is next file has arrived
 					if (renderedImages[i] != null && renderedImages[i].getName().endsWith("_" + (i + 1) + ".png")) {
 								
-						// check if file lock has gone (native function finished to write)
+						// isValid if file lock has gone (native function finished to write)
 						File lock = new File(thumbnailsFolderPath +
 								File.separator + "image_" + (i + 1) + ".png.lock");
 							
