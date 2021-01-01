@@ -1,21 +1,26 @@
-package org.gmdev.pdftrick.utils;
+package org.gmdev.pdftrick.engine;
 
-import org.gmdev.pdftrick.engine.FileChecker;
 import org.gmdev.pdftrick.manager.*;
+import org.gmdev.pdftrick.render.PdfRenderLeft;
 import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.ui.panels.*;
+import org.gmdev.pdftrick.utils.FileUtils;
+import org.gmdev.pdftrick.utils.Messages;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import static org.gmdev.pdftrick.utils.Messages.MessageLevel.WARNING;
 
 public interface FileIn {
 
-    default void beforeLoadingCheck(PdfTrickBag bag) {
+    PdfTrickBag bag = PdfTrickBag.INSTANCE;
+
+    default void beforeLoadingCheck() {
         LeftPanel leftPanel = bag.getUserInterface().getLeft();
-        Properties messagesProps = bag.getMessagesProps();
+        Properties messages = bag.getMessagesProps();
         TasksContainer tasksContainer = bag.getTasksContainer();
 
         var dragAndDropTask = tasksContainer.getDragAndDropTask();
@@ -24,7 +29,7 @@ public interface FileIn {
                 (fileChooserTask != null && fileChooserTask.isRunning())) {
 
             leftPanel.resetLeftPanelFileDropBorder();
-            Messages.append(WARNING.name(), messagesProps.getProperty("t_msg_01"));
+            Messages.append(WARNING.name(), messages.getProperty("t_msg_01"));
             return;
         }
 
@@ -49,7 +54,7 @@ public interface FileIn {
         }
     }
 
-    default void prepareForLoading(PdfTrickBag bag) {
+    default void prepareForLoading() {
         CenterPanel centerPanel = bag.getUserInterface().getCenter();
 
         SwingCleaner.cleanUserInterface();
@@ -60,9 +65,33 @@ public interface FileIn {
         FileUtils.deletePdfFile(bag.getPdfFilePath());
     }
 
-    default void checkAndLoadPdfFile(File pdfFile) {
+    default void checkAndPdfFile() {
+        String message = "check file failed!";
         FileChecker fileChecker = new FileChecker();
+
+        if (!fileChecker.isValid()) {
+            SwingCleaner.cleanPanels();
+            Messages.append("WARNING", message);
+            throw new IllegalStateException(message);
+        }
     }
+
+    default void loadPdfFile(ArrayList<File> filesArray) {
+        FileDataManager fileDataManager = new FileDataManager();
+        File pdfFile = fileDataManager.mergePdf(filesArray, bag.getPdfFilePath());
+
+        if (pdfFile == null || !pdfFile.exists() || pdfFile.length() <= 0) {
+            String message = "Error analyzing pdf files!";
+            Messages.append("WARNING", message);
+            throw new IllegalStateException(message);
+        }
+
+        Messages.append("INFO", "Check Pdf OK, start loading pages");
+        PdfRenderLeft render = new PdfRenderLeft();
+        render.pdfRender();
+    }
+
+
 
 
 }

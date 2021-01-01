@@ -4,18 +4,18 @@ import java.io.File;
 
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.tasks.DragAndDropTask;
-import org.gmdev.pdftrick.utils.FileIn;
+import org.gmdev.pdftrick.engine.FileIn;
 import org.gmdev.pdftrick.utils.external.FileDrop;
 
 public class DragAndDropAction implements FileDrop.Listener, FileIn {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
 	@Override
 	public void filesDropped(File[] files) {
-		TasksContainer tasksContainer = BAG.getTasksContainer();
+		TasksContainer tasksContainer = bag.getTasksContainer();
 
-		beforeLoadingCheck(BAG);
+		beforeLoadingCheck();
 
 		DragAndDropTask newDragAndDropTask = new DragAndDropTask(files);
 		tasksContainer.setDragAndDropTask(newDragAndDropTask);

@@ -12,7 +12,7 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 public class ImageAction implements MouseListener {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final JLabel picLabel;
 	private final RenderedImageAttributes imageAttributes;
@@ -33,9 +33,9 @@ public class ImageAction implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (enabled) {
-			JTextField numImgSelected = BAG.getUserInterface().getRight().getSelectedImagesField();
-			HashMap<String, RenderedImageAttributes> imageSelected = BAG.getSelectedImages();
-			HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
+			JTextField numImgSelected = bag.getUserInterface().getRight().getSelectedImagesField();
+			HashMap<String, RenderedImageAttributes> imageSelected = bag.getSelectedImages();
+			HashMap<String, RenderedImageAttributes> inlineImgSelected = bag.getInlineSelectedImages();
 		
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);
 			Border borderOrange = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.orange);

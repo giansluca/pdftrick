@@ -10,20 +10,20 @@ import java.io.File;
 
 public class PdfRenderLeft {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	public PdfRenderLeft() {
 	}
 
 	public void pdfRender() {
-		TasksContainer tasksContainer = BAG.getTasksContainer();
-		String imagesFolderPath = BAG.getThumbnailsFolderPath() + File.separator;
+		TasksContainer tasksContainer = bag.getTasksContainer();
+		String imagesFolderPath = bag.getThumbnailsFolderPath() + File.separator;
 
 		int pages;
 		try {
-			PdfReader reader = new PdfReader(BAG.getPdfFilePath().toString());
+			PdfReader reader = new PdfReader(bag.getPdfFilePath().toString());
 			pages = reader.getNumberOfPages();
-			BAG.setNumberOfPages(pages);
+			bag.setNumberOfPages(pages);
 			reader.close();
 		} catch (Exception e) {
 			throw new IllegalStateException(e);

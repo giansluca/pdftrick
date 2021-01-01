@@ -24,7 +24,7 @@ import com.itextpdf.text.pdf.parser.*;
 public class ImageListenerShowThumb implements RenderListener {
 	
 	private static final Logger logger = Logger.getLogger(ImageListenerShowThumb.class);
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private int numImg;
 	private int unsupportedImage;
@@ -61,7 +61,7 @@ public class ImageListenerShowThumb implements RenderListener {
 	 * extracts the images contained in selected page and convert it in a BufferedImage to add and show to the center panel.
 	 */
 	private void render(ImageRenderInfo renderInfo ) {
-		final HashMap<Integer, String> rotationFromPages = BAG.getPagesRotationPages();
+		final HashMap<Integer, String> rotationFromPages = bag.getPagesRotationPages();
 		boolean isInline = false;
 		
 		PdfImageObject image = null;
@@ -80,7 +80,7 @@ public class ImageListenerShowThumb implements RenderListener {
 					if (isInline) {
 						buffImg = null;
 					} else {
-						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), BAG.getPdfFilePath());
+						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), bag.getPdfFilePath());
 					}
 				} catch (Exception e) {
 					logger.error("Exception", e);
@@ -254,9 +254,9 @@ public class ImageListenerShowThumb implements RenderListener {
 		private RenderedImageAttributes imageAttrs;
 		
 		public UpdatePanelCenter() {
-			this.imageSelected = BAG.getSelectedImages();
-			this.inlineImgSelected = BAG.getInlineSelectedImages();
-			this.centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+			this.imageSelected = bag.getSelectedImages();
+			this.inlineImgSelected = bag.getInlineSelectedImages();
+			this.centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 		}
 		
 		@Override

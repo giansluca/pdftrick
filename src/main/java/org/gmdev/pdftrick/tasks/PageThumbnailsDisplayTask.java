@@ -20,7 +20,7 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 public class PageThumbnailsDisplayTask implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(PageThumbnailsDisplayTask.class);
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final int numberPage;
 	private final AtomicBoolean running = new AtomicBoolean(false);
@@ -36,8 +36,8 @@ public class PageThumbnailsDisplayTask implements Runnable {
 	@Override
 	public void run () {
 		running.set(true);
-		Properties messages = BAG.getMessagesProps();
-		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+		Properties messages = bag.getMessagesProps();
+		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 		
 		WaitPanel.setLoadingThumbnailsWaitPanel();
 		
@@ -45,7 +45,7 @@ public class PageThumbnailsDisplayTask implements Runnable {
 			PdfReader reader;
 			ImageListenerShowThumb listener;
 			
-			reader = new PdfReader(BAG.getPdfFilePath().toString());
+			reader = new PdfReader(bag.getPdfFilePath().toString());
 			PdfReaderContentParser parser = new PdfReaderContentParser(reader);
 			listener = new ImageListenerShowThumb(numberPage);
 

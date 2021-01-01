@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 import com.itextpdf.text.Document;
@@ -23,23 +22,19 @@ import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class MergeFiles {
+public class FileDataManager {
 	
-	private static final Logger logger = Logger.getLogger(MergeFiles.class);
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
-	
-	/**
-	 * Merge multiple pdf files
-	 */
-	public File mergePdf (ArrayList<File> filesVett, Path pdfFilePath) {
-		final HashMap<String, String> pfdPasswords = BAG.getPfdPasswords();
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
+
+	public File mergePdf (ArrayList<File> files, Path pdfFilePath) {
+		final HashMap<String, String> pfdPasswords = bag.getPfdPasswords();
 		
 		File mergedFile = pdfFilePath.toFile();
 		List<StreamPwdContainer> list = new ArrayList<StreamPwdContainer>();
         
 		try {
         	// Source pdfs
-        	Iterator<File> ite = filesVett.iterator();
+        	Iterator<File> ite = files.iterator();
 			while (ite.hasNext()) {
 				File element = ite.next();
 				StreamPwdContainer boom = new StreamPwdContainer();
@@ -57,14 +52,14 @@ public class MergeFiles {
             OutputStream out = new FileOutputStream(mergedFile);
             doMerge(list, out);
         } catch (IOException | DocumentException e) {
-        	logger.error("Exception", e);
+        	throw new IllegalStateException(e);
         }
 
 		return mergedFile;
 	}
 	
 	private void doMerge(List<StreamPwdContainer> list, OutputStream outputStream) throws DocumentException, IOException {
-		HashMap<Integer, String> rotationFromPages = BAG.getPagesRotationPages();
+		HashMap<Integer, String> rotationFromPages = bag.getPagesRotationPages();
 		Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, outputStream);
         document.open();

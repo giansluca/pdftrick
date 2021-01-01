@@ -15,7 +15,7 @@ import static org.gmdev.pdftrick.serviceprocessor.TaskTerminator.*;
  */
 public class WindowsExitAction extends AbstractAction {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	private static final String ACTION_NAME = "Exit";
 
 	public WindowsExitAction() {
@@ -30,11 +30,11 @@ public class WindowsExitAction extends AbstractAction {
 		terminateFirstPdfPageRenderTask();
 		terminateExecutorRunnerTask();
 		
-		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
+		NativeObjectManager nativeManager = bag.getNativeObjectManager();
 		nativeManager.unloadNativeLib();
 		
-		FileUtils.deletePdfFile(BAG.getPdfFilePath());
-		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
+		FileUtils.deletePdfFile(bag.getPdfFilePath());
+		FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
 		System.exit(0);
 	}
 	

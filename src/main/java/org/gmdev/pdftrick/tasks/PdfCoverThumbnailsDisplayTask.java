@@ -18,7 +18,7 @@ import org.gmdev.pdftrick.utils.*;
 
 public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final AtomicBoolean running = new AtomicBoolean(false);
 
@@ -34,16 +34,16 @@ public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
 	public void run () {
 		running.set(true);
 
-		Properties messages = BAG.getMessagesProps();
-		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
-		Path thumbnailsFolderPath = BAG.getThumbnailsFolderPath();
+		Properties messages = bag.getMessagesProps();
+		JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
+		Path thumbnailsFolderPath = bag.getThumbnailsFolderPath();
 
 		long time = System.currentTimeMillis();
 		long delta = 1000;
 		
 		try {
 			Messages.appendNoNewLine("INFO", messages.getProperty("tmsg_08"));
-			int numberOfPages = BAG.getNumberOfPages();
+			int numberOfPages = bag.getNumberOfPages();
 			File[] renderedImages;
 			
 			int i = 0;
@@ -121,7 +121,7 @@ public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
 						picLabel.addMouseListener(new ThumbAction(z + 1));
 						picLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 					}
-					BAG.getUserInterface().getCenter().stopWaitIcon();
+					bag.getUserInterface().getCenter().stopWaitIcon();
 				});
 			}
 		} catch (Exception e) {

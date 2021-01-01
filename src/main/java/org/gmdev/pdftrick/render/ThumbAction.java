@@ -18,23 +18,20 @@ import org.gmdev.pdftrick.ui.panels.CenterPanel;
 
 public class ThumbAction implements MouseListener {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final int pageNumber;
 	
 	public ThumbAction(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
-	
-	/**
-	 * Called when the user click on a page pdf cover
-	 */
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int selectedPage = BAG.getSelectedPage();
-		JPanel leftPanel = BAG.getUserInterface().getLeft().getLeftPanel();
-		JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
-		CenterPanel centerPanel = BAG.getUserInterface().getCenter();
+		int selectedPage = bag.getSelectedPage();
+		JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
+		JTextField currentPageField = bag.getUserInterface().getRight().getCurrentPageField();
+		CenterPanel centerPanel = bag.getUserInterface().getCenter();
 		
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Border borderGreen = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green);
@@ -49,7 +46,7 @@ public class ThumbAction implements MouseListener {
 		// deselect page
 		if (selectedPage == pageNumber - 1) {
 			picLabel.setBorder(borderGray);
-			BAG.setSelectedPage(0);
+			bag.setSelectedPage(0);
 			currentPageField.setText("");
 			centerPanel.clean();
 			
@@ -64,15 +61,15 @@ public class ThumbAction implements MouseListener {
 			}
 			
 			picLabel.setBorder(borderGreen);
-			BAG.setSelectedPage(pageNumber - 1);
+			bag.setSelectedPage(pageNumber - 1);
 			currentPageField.setText("Page " + pageNumber);
 			centerPanel.clean();
 			
 			PageThumbnailsDisplayTask pageThumbnailsDisplayTask = new PageThumbnailsDisplayTask(pageNumber);
-			BAG.getTasksContainer().setPageThumbnailsDisplayTask(pageThumbnailsDisplayTask);
+			bag.getTasksContainer().setPageThumbnailsDisplayTask(pageThumbnailsDisplayTask);
 			
 			Thread pageThumbnailsDisplayThread = new Thread(pageThumbnailsDisplayTask);
-			BAG.getTasksContainer().setPageThumbnailsDisplayThread(pageThumbnailsDisplayThread);
+			bag.getTasksContainer().setPageThumbnailsDisplayThread(pageThumbnailsDisplayThread);
 			pageThumbnailsDisplayThread.start();
 
 			// TODO Itext 7 migration

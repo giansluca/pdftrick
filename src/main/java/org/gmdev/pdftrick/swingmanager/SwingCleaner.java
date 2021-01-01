@@ -6,18 +6,26 @@ import javax.swing.*;
 
 public class SwingCleaner {
 
-    private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
     public static void cleanUserInterface() {
-        JTextField currentPageField = BAG.getUserInterface().getRight().getCurrentPageField();
-        JTextField selectedImagesField = BAG.getUserInterface().getRight().getSelectedImagesField();
+        JTextField currentPageField = bag.getUserInterface().getRight().getCurrentPageField();
+        JTextField selectedImagesField = bag.getUserInterface().getRight().getSelectedImagesField();
 
         SwingInvoker.invokeAndWait(() -> {
-            BAG.getUserInterface().getLeft().clean();
-            BAG.getUserInterface().getCenter().clean();
-            BAG.getUserInterface().getBottom().clean();
+            bag.getUserInterface().getLeft().clean();
+            bag.getUserInterface().getCenter().clean();
+            bag.getUserInterface().getBottom().clean();
             currentPageField.setText("");
             selectedImagesField.setText("");
+        });
+    }
+
+    public static void cleanPanels() {
+        SwingInvoker.invokeLater(() -> {
+            bag.getUserInterface().getLeft().clean();
+            bag.getUserInterface().getCenter().clean();
+            bag.getUserInterface().getBottom().clean();
         });
     }
 

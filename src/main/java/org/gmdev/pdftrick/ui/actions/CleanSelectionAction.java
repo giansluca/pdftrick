@@ -14,15 +14,15 @@ import org.gmdev.pdftrick.utils.Messages;
 
 public class CleanSelectionAction extends AbstractAction {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		Properties messagesProps = BAG.getMessagesProps();
-		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
-		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
-		HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
-		TasksContainer tasksContainer = BAG.getTasksContainer();
+		Properties messagesProps = bag.getMessagesProps();
+		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+		JTextField numImgSelectedField = bag.getUserInterface().getRight().getSelectedImagesField();
+		HashMap<String, RenderedImageAttributes> inlineImgSelected = bag.getInlineSelectedImages();
+		TasksContainer tasksContainer = bag.getTasksContainer();
 		
 		if (tasksContainer.getImagesExtractionThread() != null &&
 				tasksContainer.getImagesExtractionThread().isAlive()) {
@@ -53,7 +53,7 @@ public class CleanSelectionAction extends AbstractAction {
 			return;
 		}
 		
-		if (BAG.getSelectedImages().size() == 0 && inlineImgSelected.size() == 0) {
+		if (bag.getSelectedImages().size() == 0 && inlineImgSelected.size() == 0) {
 			Messages.append("INFO", messagesProps.getProperty("tmsg_24"));
 		} else {
 			Border borderGray = BorderFactory.createLineBorder(Color.gray);
@@ -81,8 +81,8 @@ public class CleanSelectionAction extends AbstractAction {
 				}
 			}
 			
-			BAG.cleanSelectedImagesHashMap();
-			BAG.cleanInlineSelectedImagesHashMap();
+			bag.cleanSelectedImagesHashMap();
+			bag.cleanInlineSelectedImagesHashMap();
 			numImgSelectedField.setText("");
 		}
 	}

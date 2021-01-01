@@ -21,7 +21,7 @@ import com.itextpdf.text.pdf.*;
 public class FileChecker {
 	
 	private static final Logger logger = Logger.getLogger(FileChecker.class);
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final HashMap<String, String> pfdPasswords;
 	private boolean checkEncryption = false;
@@ -29,15 +29,15 @@ public class FileChecker {
 	private boolean ownerProtection = false;
 	
 	public FileChecker() {
-		this.pfdPasswords = BAG.getPfdPasswords();
+		this.pfdPasswords = bag.getPfdPasswords();
 	}
 	
 	/**
 	 * Check files selected (pdf integrity, images inside, protection).
 	 */
 	public boolean isValid() {
-		final Properties messages = BAG.getMessagesProps();
-		final ArrayList<File> pdfFilesArray = BAG.getPdfFilesArray();
+		final Properties messages = bag.getMessagesProps();
+		final ArrayList<File> pdfFilesArray = bag.getPdfFilesArray();
 		
 		boolean check = false;
 		boolean checkPdf = false;

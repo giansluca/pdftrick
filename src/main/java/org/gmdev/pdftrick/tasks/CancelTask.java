@@ -11,7 +11,7 @@ import static org.gmdev.pdftrick.serviceprocessor.TaskTerminator.*;
 
 public class CancelTask implements Runnable, Stoppable {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	private final AtomicBoolean running = new AtomicBoolean(false);
 
 	public void stop() {
@@ -28,10 +28,10 @@ public class CancelTask implements Runnable, Stoppable {
 
 		terminateTasks();
 		SwingCleaner.cleanUserInterface();
-		BAG.cleanUp();
+		bag.cleanUp();
 
-		FileUtils.deletePdfFile(BAG.getPdfFilePath());
-		FileUtils.deleteThumbnailFiles(BAG.getThumbnailsFolderPath());
+		FileUtils.deletePdfFile(bag.getPdfFilePath());
+		FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
 
 		running.set(false);
 	}

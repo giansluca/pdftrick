@@ -10,7 +10,7 @@ import static org.gmdev.pdftrick.utils.SystemProperty.getSystemProperty;
 
 public class Messages {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
 	private Messages() {
@@ -18,7 +18,7 @@ public class Messages {
 	}
 
 	public static void printWelcomeMessage() {
-		String message = BAG.getMessagesProps().getProperty("dmsg_09");
+		String message = bag.getMessagesProps().getProperty("dmsg_09");
 		append("INFO", MessageFormat.format(message,
 				getSystemProperty("os.name"),
 				getSystemProperty("sun.arch.data.model"),
@@ -29,7 +29,7 @@ public class Messages {
 	 * Append messages to text area
 	 */
 	public static void append(String level, String message) {
-		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		StringBuilder builder = new StringBuilder(300);
 		Calendar cal = Calendar.getInstance();
 		
@@ -55,7 +55,7 @@ public class Messages {
 	 * Append messages to text area using invokeLater
 	 */
 	public static void appendLater(String level, String message) {
-		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		StringBuilder builder = new StringBuilder(300);
 		Calendar cal = Calendar.getInstance();
 		
@@ -75,7 +75,7 @@ public class Messages {
 	 * Append messages to text area without newline character
 	 */
 	public static void appendNoNewLine(String level, String message) {
-		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		StringBuilder builder = new StringBuilder(300);
 		Calendar cal = Calendar.getInstance();
 		
@@ -100,7 +100,7 @@ public class Messages {
 	 * Append in line message without date and level
 	 */
 	public static void appendInline(String message) {
-		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
 				SwingUtilities.invokeAndWait(() -> txtArea.append(message));
@@ -116,7 +116,7 @@ public class Messages {
 	 * Append new line character
 	 */
 	public static void appendNewLine() {
-		JTextArea txtArea = BAG.getUserInterface().getBottom().getTextArea();
+		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
 			try {
 				SwingUtilities.invokeAndWait(() -> txtArea.append("\n"));

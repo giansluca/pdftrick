@@ -16,13 +16,13 @@ import org.gmdev.pdftrick.utils.*;
 
 public class ImagesExtractionAction extends AbstractAction  {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		Properties messages = BAG.getMessagesProps();
-		Container contentPanel = BAG.getUserInterface().getContentPane();
-		TasksContainer tasksContainer = BAG.getTasksContainer();
+		Properties messages = bag.getMessagesProps();
+		Container contentPanel = bag.getUserInterface().getContentPane();
+		TasksContainer tasksContainer = bag.getTasksContainer();
 		
 		if (tasksContainer.getImagesExtractionThread() != null &&
 				tasksContainer.getImagesExtractionThread().isAlive()) {
@@ -50,15 +50,15 @@ public class ImagesExtractionAction extends AbstractAction  {
 		}
 		
 		boolean extract = true;
-		File resultFile = BAG.getPdfFilePath().toFile();
+		File resultFile = bag.getPdfFilePath().toFile();
 		if (resultFile.exists() && resultFile.length() > 0) {
 			CustomFileChooser chooseFolderToSave = new CustomFileChooser();
 			chooseFolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			chooseFolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
 			
 			String extractionFolder = null;
-			Set<String> keys = BAG.getSelectedImages().keySet();
-			Set<String> kk = BAG.getInlineSelectedImages().keySet();
+			Set<String> keys = bag.getSelectedImages().keySet();
+			Set<String> kk = bag.getInlineSelectedImages().keySet();
 			
 			if (keys.size() > 0 || kk.size() > 0) {
 				if (chooseFolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) {
@@ -67,7 +67,7 @@ public class ImagesExtractionAction extends AbstractAction  {
 					} else if (SetupUtils.isMac()) {
 						extractionFolder = chooseFolderToSave.getCurrentDirectory().getAbsolutePath();
 					}
-					BAG.setExtractionFolderPath(Path.of(extractionFolder));
+					bag.setExtractionFolderPath(Path.of(extractionFolder));
 				} else {
 					extract = false;
 				}

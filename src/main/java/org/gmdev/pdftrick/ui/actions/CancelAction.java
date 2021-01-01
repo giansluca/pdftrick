@@ -13,11 +13,11 @@ import org.gmdev.pdftrick.tasks.CancelTask;
  */
 public class CancelAction extends AbstractAction {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		TasksContainer tasksContainer = BAG.getTasksContainer();
+		TasksContainer tasksContainer = bag.getTasksContainer();
 		var cancelTask = tasksContainer.getCancelTask();
 		if (cancelTask != null && cancelTask.isRunning()) return;
 

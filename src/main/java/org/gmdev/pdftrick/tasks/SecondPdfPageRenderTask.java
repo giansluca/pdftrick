@@ -9,7 +9,7 @@ import static org.gmdev.pdftrick.utils.Constants.ZOOM_THUMBNAIL;
 
 public class SecondPdfPageRenderTask implements Runnable {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final String imagePath;
 	private final int pageNumber;
@@ -21,8 +21,8 @@ public class SecondPdfPageRenderTask implements Runnable {
 
 	@Override
 	public void run() {
-		NativeObjectManager nativeManager = BAG.getNativeObjectManager();
-		Path pdfFilePath = BAG.getPdfFilePath();
+		NativeObjectManager nativeManager = bag.getNativeObjectManager();
+		Path pdfFilePath = bag.getPdfFilePath();
 
 		nativeManager.renderPdfPageThumbnail(pdfFilePath.toString(), imagePath, pageNumber, ZOOM_THUMBNAIL);
 	}

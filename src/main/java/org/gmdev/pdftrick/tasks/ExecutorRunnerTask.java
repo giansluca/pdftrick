@@ -8,7 +8,7 @@ import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 
 public class ExecutorRunnerTask implements Runnable, Stoppable {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	private static final int THREAD_NUMBER = 2;
 	
 	private final String imagesFolderPath;
@@ -35,7 +35,7 @@ public class ExecutorRunnerTask implements Runnable, Stoppable {
 		running.set(true);
 
 		ExecutorService executorservice = Executors.newFixedThreadPool(THREAD_NUMBER);
-		BAG.getTasksContainer().setExecutorService(executorservice);
+		bag.getTasksContainer().setExecutorService(executorservice);
 		
 		int i = divisionResult + 1;
 		while (i <= pages && running.get()) {

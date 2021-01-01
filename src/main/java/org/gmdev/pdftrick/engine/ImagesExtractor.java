@@ -21,21 +21,21 @@ import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 public class ImagesExtractor {
 	
 	private static final Logger logger = Logger.getLogger(ImagesExtractor.class);
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	/**
 	 * Prepare for the extraction and call images extractor
 	 */
 	public void getImages() {
-		final Properties messages = BAG.getMessagesProps();
-		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
-		final Path pdfFile = BAG.getPdfFilePath();
+		final Properties messages = bag.getMessagesProps();
+		final HashMap<String, RenderedImageAttributes> inlineImgSelected = bag.getInlineSelectedImages();
+		final Path pdfFile = bag.getPdfFilePath();
 		boolean getImgCheck = false;
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
 		Path extractionFolderWithTimePath =
-				Path.of(BAG.getExtractionFolderPath() +
+				Path.of(bag.getExtractionFolderPath() +
 						File.separator +
 						FileUtils.getTimeForExtractionFolder());
 
@@ -45,7 +45,7 @@ public class ImagesExtractor {
 		getImgCheck = extractImgSel(
 				extractionFolderWithTimePath.toString(),
 				pdfFile,
-				BAG.getSelectedImages(),
+				bag.getSelectedImages(),
 				inlineImgSelected);
 		
 		// if extraction breaks ...
@@ -105,7 +105,7 @@ public class ImagesExtractor {
 								   HashMap<String, RenderedImageAttributes> imageSelected,
 								   HashMap<String, RenderedImageAttributes> inlineImgSelected) {
 		
-		final Properties messages = BAG.getMessagesProps();
+		final Properties messages = bag.getMessagesProps();
 		String result = destFolder + "/" + "Img_%s.%s";
 		PdfReader reader = null;
 		boolean retExtract = true;

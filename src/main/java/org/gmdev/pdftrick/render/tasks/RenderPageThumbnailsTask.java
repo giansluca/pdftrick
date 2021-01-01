@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RenderPageThumbnailsTask implements ServiceRequest {
 
-    private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
     private final int pageNumber;
     private final Path pdfFilePath;
@@ -23,14 +23,14 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
     public RenderPageThumbnailsTask(int pageNumber) {
         this.pageNumber = pageNumber;
-        pdfFilePath = BAG.getPdfFilePath();
+        pdfFilePath = bag.getPdfFilePath();
         exited = new AtomicBoolean(false);
     }
 
     @Override
     public void process() throws IOException {
-        Properties messages = BAG.getMessagesProps();
-        JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
+        Properties messages = bag.getMessagesProps();
+        JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 
         WaitPanel.setLoadingThumbnailsWaitPanel();
 

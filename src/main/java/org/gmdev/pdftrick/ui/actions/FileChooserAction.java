@@ -6,6 +6,7 @@ import java.io.File;
 
 import javax.swing.*;
 
+import org.gmdev.pdftrick.engine.FileIn;
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.tasks.FileChooserTask;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
@@ -16,14 +17,14 @@ import static org.gmdev.pdftrick.utils.SetupUtils.WIN_OS;
 
 public class FileChooserAction extends AbstractAction implements FileIn {
 
-    private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
     private static final String ACTION_NAME = "Open";
 
     public FileChooserAction() {
         ImageIcon open_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.OPEN_FILE_ICO));
         super.putValue(NAME, ACTION_NAME);
         super.putValue(SMALL_ICON, open_icon);
-        if (BAG.getOs().equals(WIN_OS))
+        if (bag.getOs().equals(WIN_OS))
             super.putValue(
                     ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
         else
@@ -33,8 +34,8 @@ public class FileChooserAction extends AbstractAction implements FileIn {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        TasksContainer tasksContainer = BAG.getTasksContainer();
-        Container contentPanel = BAG.getUserInterface().getContentPane();
+        TasksContainer tasksContainer = bag.getTasksContainer();
+        Container contentPanel = bag.getUserInterface().getContentPane();
         CustomFileChooser fileOpen = new CustomFileChooser();
 
         fileOpen.setMultiSelectionEnabled(true);
@@ -43,7 +44,7 @@ public class FileChooserAction extends AbstractAction implements FileIn {
         int returnValue = fileOpen.showOpenDialog(contentPanel);
         if (returnValue != JFileChooser.APPROVE_OPTION) return;
 
-        beforeLoadingCheck(BAG);
+        beforeLoadingCheck();
 
         File[] files = fileOpen.getSelectedFiles();
 

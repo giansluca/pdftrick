@@ -20,7 +20,7 @@ import static org.gmdev.pdftrick.utils.SetupUtils.WIN_OS;
 
 public class UserInterface extends JFrame {
 
-	private final static PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private final static PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final LeftPanel left;
     private final CenterPanel center;
@@ -63,7 +63,7 @@ public class UserInterface extends JFrame {
 		if (imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE)
 			throw new IllegalStateException("Image icon non loaded");
 
-		if (BAG.getOs().equals(WIN_OS))
+		if (bag.getOs().equals(WIN_OS))
 			super.setIconImage(imageIcon.getImage());
 		else
 			Taskbar.getTaskbar().setIconImage(imageIcon.getImage());

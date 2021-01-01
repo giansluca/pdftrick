@@ -13,7 +13,7 @@ import static org.gmdev.pdftrick.utils.Constants.*;
 
 public class LicenseAction extends AbstractAction {
 
-    private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
     public LicenseAction() {
         ImageIcon licenseIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.LICENSE_ICO));
@@ -24,7 +24,7 @@ public class LicenseAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         boolean win = SetupUtils.isWindows();
-        JDialog dialog = new JDialog(BAG.getUserInterface(), true);
+        JDialog dialog = new JDialog(bag.getUserInterface(), true);
 
         // box
         dialog.setTitle(Constants.LICENSE_TITLE);

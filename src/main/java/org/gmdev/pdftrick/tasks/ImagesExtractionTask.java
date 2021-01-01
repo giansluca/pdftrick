@@ -16,7 +16,7 @@ import org.gmdev.pdftrick.swingmanager.WaitPanel;
 
 public class ImagesExtractionTask implements Runnable, Stoppable {
 	
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
 	private final AtomicBoolean running = new AtomicBoolean(false);
 	
@@ -50,8 +50,8 @@ public class ImagesExtractionTask implements Runnable, Stoppable {
 	}
 
 	public void cleanAfterGetImages() {
-		JPanel centerPanel = BAG.getUserInterface().getCenter().getCenterPanel();
-		JTextField numImgSelectedField = BAG.getUserInterface().getRight().getSelectedImagesField();
+		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+		JTextField numImgSelectedField = bag.getUserInterface().getRight().getSelectedImagesField();
 		
 		Border borderGray = BorderFactory.createLineBorder(Color.gray);
 		Component[] comps =  centerPanel.getComponents();
@@ -78,8 +78,8 @@ public class ImagesExtractionTask implements Runnable, Stoppable {
 			}
 		}
 		
-		BAG.cleanSelectedImagesHashMap();
-		BAG.cleanInlineSelectedImagesHashMap();
+		bag.cleanSelectedImagesHashMap();
+		bag.cleanInlineSelectedImagesHashMap();
 		numImgSelectedField.setText("");
 	}
 
