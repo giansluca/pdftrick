@@ -38,16 +38,6 @@ public class CleanSelectionAction extends AbstractAction {
 			return;
 		}
 		
-		if (tasksContainer.getFileChooserThread() != null &&
-				tasksContainer.getFileChooserThread().isAlive()) {
-			return;
-		}
-		
-		if (tasksContainer.getDragAndDropThread() != null &&
-				tasksContainer.getDragAndDropThread().isAlive()) {
-			return;
-		}
-		
 		if (tasksContainer.getPdfCoverThumbnailsDisplayThread() != null &&
 				tasksContainer.getPdfCoverThumbnailsDisplayThread().isAlive()) {
 			return;

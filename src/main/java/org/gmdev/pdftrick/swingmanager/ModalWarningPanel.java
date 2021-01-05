@@ -54,7 +54,7 @@ public class ModalWarningPanel {
         SwingInvoker.invokeLater(
                 () -> displayGenericWarningPanel(bag.getUserInterface(), message, WARNING));
 
-        throw new IllegalStateException(message);
+        SwingCleaner.cleanUserInterface();
     }
 
     private static void displayGenericWarningPanel(Component parentComponent,

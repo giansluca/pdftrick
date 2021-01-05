@@ -3,7 +3,6 @@ package org.gmdev.pdftrick.engine;
 import java.awt.Color;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -13,6 +12,7 @@ import javax.swing.event.*;
 
 import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.*;
 
 import com.itextpdf.text.exceptions.BadPasswordException;
@@ -46,11 +46,7 @@ public class FileChecker {
 		checkPdf = checkPdf(pdfFilesArray, messages);
 		
 		if (checkPdf) {
-			try {
-				SwingUtilities.invokeAndWait(() -> checkEncryption = checkEncryption(pdfFilesArray, messages));
-			} catch (InterruptedException | InvocationTargetException e) {
-				throw new IllegalStateException(e);
-			}
+			SwingInvoker.invokeAndWait(() -> checkEncryption = checkEncryption(pdfFilesArray, messages));
 
 			if (checkEncryption) {
 				checkNumImg = checkNumberImages(pdfFilesArray, messages);
@@ -207,28 +203,22 @@ public class FileChecker {
 	 * Check is single pdf has a User password protected, set userProtection = true if BadPasswordException.
 	 */
 	private void hasProtection(File file) {
-		PdfReader reader = null;
-		
+		PdfReader reader;
 		try {
 			reader = new PdfReader(file.getPath());
-			if (reader != null) {
-				if (reader.isEncrypted()) {
-					ownerProtection = true;
-				}
-				reader.close();
+			if (reader.isEncrypted()) {
+				ownerProtection = true;
 			}
+			reader.close();
 		} catch (BadPasswordException e) {
 			userProtection = true;
 		} catch (IOException e) {
 			logger.error("Exception", e);
 		}
 	}
-	
-	/**
-	 * Show dialog to get the User password and isValid it.
-	 */
+
 	private String askAndChekPwd(File file, Properties messages, int n) {
-		ImageIcon imageIcon = new ImageIcon(getClass().getResource(Constants.PDFTRICK_ICO));
+		ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.PDFTRICK_ICO));
 		
 		final JDialog userPwdDialog = new JDialog((JDialog)null, true);
 		userPwdDialog.setTitle(Constants.PWD_DIALOG);

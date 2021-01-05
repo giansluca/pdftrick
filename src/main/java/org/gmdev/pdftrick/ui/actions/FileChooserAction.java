@@ -8,7 +8,6 @@ import javax.swing.*;
 
 import org.gmdev.pdftrick.engine.FileIn;
 import org.gmdev.pdftrick.manager.*;
-import org.gmdev.pdftrick.tasks.FileChooserTask;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
 
@@ -21,9 +20,9 @@ public class FileChooserAction extends AbstractAction implements FileIn {
     private static final String ACTION_NAME = "Open";
 
     public FileChooserAction() {
-        ImageIcon open_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.OPEN_FILE_ICO));
+        ImageIcon openIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.OPEN_FILE_ICO));
         super.putValue(NAME, ACTION_NAME);
-        super.putValue(SMALL_ICON, open_icon);
+        super.putValue(SMALL_ICON, openIcon);
         if (bag.getOs().equals(WIN_OS))
             super.putValue(
                     ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
@@ -34,7 +33,6 @@ public class FileChooserAction extends AbstractAction implements FileIn {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        TasksContainer tasksContainer = bag.getTasksContainer();
         Container contentPanel = bag.getUserInterface().getContentPane();
         CustomFileChooser fileOpen = new CustomFileChooser();
 
@@ -44,16 +42,8 @@ public class FileChooserAction extends AbstractAction implements FileIn {
         int returnValue = fileOpen.showOpenDialog(contentPanel);
         if (returnValue != JFileChooser.APPROVE_OPTION) return;
 
-        beforeLoadingCheck();
-
         File[] files = fileOpen.getSelectedFiles();
-
-        FileChooserTask newFileChooserTask = new FileChooserTask(files);
-        tasksContainer.setFileChooserTask(newFileChooserTask);
-
-        Thread fileChooserThread = new Thread(newFileChooserTask);
-        tasksContainer.setFileChooserThread(fileChooserThread);
-        fileChooserThread.start();
+        start(files);
     }
 
 }

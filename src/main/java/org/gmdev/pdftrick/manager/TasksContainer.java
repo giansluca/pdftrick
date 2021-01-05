@@ -7,8 +7,6 @@ import org.gmdev.pdftrick.tasks.*;
 public class TasksContainer {
 
 	// Tasks
-	private DragAndDropTask dragAndDropTask = null;
-	private FileChooserTask fileChooserTask = null;
 	private PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = null;
 	private FirstPdfPageRenderTask firstPdfPageRenderTask = null;
 	private PageThumbnailsDisplayTask pageThumbnailsDisplayTask = null;
@@ -17,8 +15,6 @@ public class TasksContainer {
 	private ExecutorRunnerTask executorRunnerTask = null;
 
 	// Treads
-	private Thread dragAndDropThread = null;
-	private Thread fileChooserThread = null;
 	private Thread pdfCoverThumbnailsDisplayThread = null;
 	private Thread firstPdfPageRenderThread = null;
 	private Thread pageThumbnailsDisplayThread = null;
@@ -26,22 +22,6 @@ public class TasksContainer {
 	private Thread cancelThread = null;
 	private Thread executorRunnerThread = null;
 	private ExecutorService executorService = null;
-
-	public synchronized DragAndDropTask getDragAndDropTask() {
-		return dragAndDropTask;
-	}
-
-	public synchronized void setDragAndDropTask(DragAndDropTask dragAndDropTask) {
-		this.dragAndDropTask = dragAndDropTask;
-	}
-
-	public synchronized FileChooserTask getFileChooserTask() {
-		return fileChooserTask;
-	}
-
-	public synchronized void setFileChooserTask(FileChooserTask fileChooserTask) {
-		this.fileChooserTask = fileChooserTask;
-	}
 
 	public synchronized PdfCoverThumbnailsDisplayTask getPdfCoverThumbnailsDisplayTask() {
 		return pdfCoverThumbnailsDisplayTask;
@@ -90,22 +70,6 @@ public class TasksContainer {
 	
 	public synchronized void setCancelTask(CancelTask cancelTask) {
 		this.cancelTask = cancelTask;
-	}
-
-	public Thread getDragAndDropThread() {
-		return dragAndDropThread;
-	}
-
-	public void setDragAndDropThread(Thread dragAndDropThread) {
-		this.dragAndDropThread = dragAndDropThread;
-	}
-
-	public Thread getFileChooserThread() {
-		return fileChooserThread;
-	}
-
-	public void setFileChooserThread(Thread fileChooserThread) {
-		this.fileChooserThread = fileChooserThread;
 	}
 
 	public Thread getPdfCoverThumbnailsDisplayThread() {

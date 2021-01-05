@@ -5,53 +5,58 @@ import org.gmdev.pdftrick.render.PdfRenderLeft;
 import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.ui.panels.*;
-import org.gmdev.pdftrick.utils.FileUtils;
-import org.gmdev.pdftrick.utils.Messages;
+import org.gmdev.pdftrick.utils.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
 
-import static org.gmdev.pdftrick.utils.Messages.MessageLevel.WARNING;
+import static org.gmdev.pdftrick.swingmanager.ModalWarningPanel.displayTooManyFilesLoadedAndThrow;
 
 public interface FileIn {
 
     PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-    default void beforeLoadingCheck() {
+    default boolean beforeLoadingCheck() {
         LeftPanel leftPanel = bag.getUserInterface().getLeft();
-        Properties messages = bag.getMessagesProps();
         TasksContainer tasksContainer = bag.getTasksContainer();
-
-        var dragAndDropTask = tasksContainer.getDragAndDropTask();
-        var fileChooserTask = tasksContainer.getFileChooserTask();
-        if ((dragAndDropTask != null && dragAndDropTask.isRunning()) ||
-                (fileChooserTask != null && fileChooserTask.isRunning())) {
-
-            leftPanel.resetLeftPanelFileDropBorder();
-            Messages.append(WARNING.name(), messages.getProperty("t_msg_01"));
-            return;
-        }
 
         var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
         if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
-            return;
+            return false;
         }
 
         var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
         if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayExtractingImagesWarning();
-            return;
+            return false;
         }
 
         PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
         if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPageThumbnailImagesWarning();
+            return false;
         }
+
+        return true;
+    }
+
+    default void start(File[] filesArray) {
+        if (filesArray.length > 1) {
+            displayTooManyFilesLoadedAndThrow(); return;
+        }
+
+        if (!beforeLoadingCheck()) return;
+        prepareForLoading();
+
+        ArrayList<File> files = bag.getPdfFilesArray();
+        files.add(filesArray[0]);
+
+        checkAndPdfFile();
+        loadPdfFile(files);
     }
 
     default void prepareForLoading() {
@@ -90,8 +95,5 @@ public interface FileIn {
         PdfRenderLeft render = new PdfRenderLeft();
         render.pdfRender();
     }
-
-
-
 
 }

@@ -30,18 +30,7 @@ public class ImagesExtractionAction extends AbstractAction  {
 			Messages.append("WARNING", messages.getProperty("tmsg_02"));
 			return;
 		}
-		if (tasksContainer.getFileChooserThread() != null &&
-				tasksContainer.getFileChooserThread().isAlive()) {
-
-			Messages.append("WARNING", messages.getProperty("t_msg_01"));
-			return;
-		}
-		if (tasksContainer.getDragAndDropThread() != null &&
-				tasksContainer.getDragAndDropThread().isAlive()) {
-
-			Messages.append("WARNING", messages.getProperty("t_msg_01"));
-			return;
-		}
+		
 		if (tasksContainer.getPdfCoverThumbnailsDisplayThread() != null &&
 				tasksContainer.getPdfCoverThumbnailsDisplayThread().isAlive()) {
 

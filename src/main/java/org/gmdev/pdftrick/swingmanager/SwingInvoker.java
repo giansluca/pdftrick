@@ -7,7 +7,10 @@ public class SwingInvoker {
 
     public static void invokeAndWait(Runnable doRun) {
         try {
-            SwingUtilities.invokeAndWait(doRun);
+            if(!SwingUtilities.isEventDispatchThread())
+                SwingUtilities.invokeAndWait(doRun);
+            else
+                doRun.run();
         } catch (InterruptedException | InvocationTargetException e) {
             throw new IllegalStateException(e);
         }

@@ -8,16 +8,6 @@ public class TaskTerminator {
 
     private static final TasksContainer tasksContainer = PdfTrickBag.INSTANCE.getTasksContainer();
 
-    public static void terminateFileChooserTask() {
-        stopTask(tasksContainer.getFileChooserTask());
-        waitForThread(tasksContainer.getFileChooserThread());
-    }
-
-    public  static void terminateDragAndDropTask() {
-        stopTask(tasksContainer.getDragAndDropTask());
-        waitForThread(tasksContainer.getDragAndDropThread());
-    }
-
     public static void terminateFirstPdfPageRenderTask() {
         stopTask(tasksContainer.getFirstPdfPageRenderTask());
         waitForThread(tasksContainer.getFirstPdfPageRenderThread());

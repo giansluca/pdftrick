@@ -37,14 +37,14 @@ public class ThumbAction implements MouseListener {
 		Border borderGreen = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.green);
 		
 		if (selectedPage != 0) {
-			JLabel picLabelSelected = (JLabel) leftPanel.getComponent(selectedPage);
+			JLabel picLabelSelected = (JLabel) leftPanel.getComponent(selectedPage - 1);
 			picLabelSelected.setBorder(borderGray);
 		}
 		
 		JLabel picLabel = (JLabel) leftPanel.getComponent(pageNumber - 1);
 		
 		// deselect page
-		if (selectedPage == pageNumber - 1) {
+		if (selectedPage == pageNumber) {
 			picLabel.setBorder(borderGray);
 			bag.setSelectedPage(0);
 			currentPageField.setText("");
@@ -61,7 +61,7 @@ public class ThumbAction implements MouseListener {
 			}
 			
 			picLabel.setBorder(borderGreen);
-			bag.setSelectedPage(pageNumber - 1);
+			bag.setSelectedPage(pageNumber);
 			currentPageField.setText("Page " + pageNumber);
 			centerPanel.clean();
 			
