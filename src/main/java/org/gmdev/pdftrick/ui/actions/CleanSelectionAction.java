@@ -7,75 +7,75 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.render.ImageAction;
+import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.utils.Messages;
 
+import static org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask.*;
+
+/**
+ * Action called when click 'Clean' button
+ */
 public class CleanSelectionAction extends AbstractAction {
-	
-	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		Properties messagesProps = bag.getMessagesProps();
-		JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
-		JTextField numImgSelectedField = bag.getUserInterface().getRight().getSelectedImagesField();
-		HashMap<String, RenderedImageAttributes> inlineImgSelected = bag.getInlineSelectedImages();
-		TasksContainer tasksContainer = bag.getTasksContainer();
-		
-		if (tasksContainer.getImagesExtractionThread() != null &&
-				tasksContainer.getImagesExtractionThread().isAlive()) {
+    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-			Messages.append("WARNING", messagesProps.getProperty("tmsg_02"));
-			return;
-		}
-		
-		if (tasksContainer.getPageThumbnailsDisplayThread() !=null &&
-				tasksContainer.getPageThumbnailsDisplayThread().isAlive()) {
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        Properties messagesProps = bag.getMessagesProps();
+        JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
+        TasksContainer tasksContainer = bag.getTasksContainer();
 
-			Messages.append("WARNING", messagesProps.getProperty("tmsg_23"));
-			return;
-		}
-		
-		if (tasksContainer.getPdfCoverThumbnailsDisplayThread() != null &&
-				tasksContainer.getPdfCoverThumbnailsDisplayThread().isAlive()) {
-			return;
-		}
-		
-		if (bag.getSelectedImages().size() == 0 && inlineImgSelected.size() == 0) {
-			Messages.append("INFO", messagesProps.getProperty("tmsg_24"));
-		} else {
-			Border borderGray = BorderFactory.createLineBorder(Color.gray);
-			Component[] comps =  centerPanel.getComponents();
-			Component component;
+        var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+        if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
+            Messages.append("WARNING", messagesProps.getProperty("t_msg_02"));
+            return;
+        }
 
-			for (Component comp : comps) {
-				component = comp;
+        PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
+        if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
+            Messages.append("WARNING", messagesProps.getProperty("t_msg_23"));
+            return;
+        }
 
-				if (component instanceof JLabel) {
-					JLabel picLabel = (JLabel) comp;
-					String name = "" + picLabel.getName();
+        var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
+        if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
+            return;
+        }
 
-					if (!name.equalsIgnoreCase("NoPicsImg")) {
-						picLabel.setBorder(borderGray);
-						picLabel.setOpaque(true);
-						picLabel.setBackground(Color.WHITE);
-						MouseListener[] mls = (picLabel.getListeners(MouseListener.class));
+        if (bag.getSelectedImages().size() == 0 && bag.getInlineSelectedImages().size() == 0) {
+            Messages.append("INFO", messagesProps.getProperty("t_msg_24"));
+            return;
+        }
 
-						if (mls.length > 0) {
-							ImageAction act = (ImageAction) mls[0];
-							act.setSelected(false);
-						}
-					}
-				}
-			}
-			
-			bag.cleanSelectedImagesHashMap();
-			bag.cleanInlineSelectedImagesHashMap();
-			numImgSelectedField.setText("");
-		}
-	}
+        Border borderGray = BorderFactory.createLineBorder(Color.gray);
+        Component[] components = centerPanel.getComponents();
+        for (Component c : components) {
+            if (!(c instanceof JLabel)) continue;
 
-	
+            JLabel picLabel = (JLabel) c;
+            String name = picLabel.getName() != null ? picLabel.getName() : "";
+
+            if (name.equals(NO_PICTURES)) continue;
+
+            picLabel.setBorder(borderGray);
+            picLabel.setOpaque(true);
+            picLabel.setBackground(Color.WHITE);
+            MouseListener[] mouseListeners = (picLabel.getListeners(MouseListener.class));
+
+            if (mouseListeners.length > 0) {
+                ImageAction imageAction = (ImageAction) mouseListeners[0];
+                imageAction.setSelected(false);
+            }
+        }
+
+        bag.cleanSelectedImagesHashMap();
+        bag.cleanInlineSelectedImagesHashMap();
+
+        JTextField selectedImagesField = bag.getUserInterface().getRight().getSelectedImagesField();
+        selectedImagesField.setText("");
+    }
+
+
 }

@@ -46,7 +46,8 @@ public interface FileIn {
 
     default void start(File[] filesArray) {
         if (filesArray.length > 1) {
-            displayTooManyFilesLoadedAndThrow(); return;
+            displayTooManyFilesLoadedAndThrow();
+            return;
         }
 
         if (!beforeLoadingCheck()) return;

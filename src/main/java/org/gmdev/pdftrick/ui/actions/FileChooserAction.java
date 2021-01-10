@@ -34,8 +34,8 @@ public class FileChooserAction extends AbstractAction implements FileIn {
     @Override
     public void actionPerformed(ActionEvent event) {
         Container contentPanel = bag.getUserInterface().getContentPane();
-        CustomFileChooser fileOpen = new CustomFileChooser();
 
+        CustomFileChooser fileOpen = new CustomFileChooser();
         fileOpen.setMultiSelectionEnabled(true);
         fileOpen.setDialogTitle(JFC_OPEN_TITLE);
 

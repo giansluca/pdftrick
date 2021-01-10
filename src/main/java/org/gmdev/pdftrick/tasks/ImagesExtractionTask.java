@@ -14,6 +14,8 @@ import org.gmdev.pdftrick.render.ImageAction;
 import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
 
+import static org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask.*;
+
 public class ImagesExtractionTask implements Runnable, Stoppable {
 	
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
@@ -64,7 +66,7 @@ public class ImagesExtractionTask implements Runnable, Stoppable {
 				JLabel picLabel = (JLabel) comp;
 				String name = "" + picLabel.getName();
 
-				if (!name.equalsIgnoreCase("NoPicsImg")) {
+				if (!name.equals(NO_PICTURES)) {
 					picLabel.setBorder(borderGray);
 					picLabel.setOpaque(true);
 					picLabel.setBackground(Color.WHITE);

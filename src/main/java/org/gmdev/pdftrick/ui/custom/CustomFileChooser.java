@@ -1,28 +1,13 @@
 package org.gmdev.pdftrick.ui.custom;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 
-import org.gmdev.pdftrick.utils.Constants;
-import org.gmdev.pdftrick.utils.FileLoader;
-import org.gmdev.pdftrick.utils.SetupUtils;
+import org.gmdev.pdftrick.utils.*;
 
 public class CustomFileChooser extends JFileChooser {
 	
@@ -46,13 +31,8 @@ public class CustomFileChooser extends JFileChooser {
 		final JTextField tf = getTF(this);
 		tf.setEditable(false);
 		
-		addPropertyChangeListener(DIRECTORY_CHANGED_PROPERTY, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent arg0) {
-				tf.setText(getCurrentDirectory().getName());
-				
-			}
-		});
+		addPropertyChangeListener(DIRECTORY_CHANGED_PROPERTY,
+				arg0 -> tf.setText(getCurrentDirectory().getName()));
 		
 		setAcceptAllFileFilterUsed(false);
 		
@@ -148,7 +128,7 @@ public class CustomFileChooser extends JFileChooser {
 	}
 	
 	/**
-	 * Get JTextField in a JfileChooser (used for customization)
+	 * Get JTextField in a JFileChooser (used for customization)
 	 */
 	public JTextField getTF(Container c) {
 	    Component[] cmps = c.getComponents();
@@ -162,7 +142,7 @@ public class CustomFileChooser extends JFileChooser {
 	        
 	        if (cmp instanceof Container) {
 	        	tf = getTF((Container) cmp);
-	        	if (tf!=null) return tf;
+	        	if (tf != null) return tf;
 	        }
 	    }
 	    
@@ -170,7 +150,7 @@ public class CustomFileChooser extends JFileChooser {
 	}
 	
 	/**
-	 * Get first JcomboBox in a JfileChooser (not used now)
+	 * Get first JComboBox in a JFileChooser (not used now)
 	 */
 	public JComboBox<?> getCB(Container c) {
 		Component[] cmps = c.getComponents();
@@ -184,7 +164,7 @@ public class CustomFileChooser extends JFileChooser {
 			
 			if (cmp instanceof Container) {
 				cb = getCB((Container) cmp);
-				if (cb!=null) return cb;
+				if (cb != null) return cb;
 			}
 		}
 		

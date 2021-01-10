@@ -10,25 +10,30 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
 
 import static org.gmdev.pdftrick.utils.Constants.*;
+import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
+/**
+ * Action called when click on 'Licence' menu item
+ */
 public class LicenseAction extends AbstractAction {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
+    private static final String CLOSE = "Close";
+    private static final String LICENSE = "License";
 
     public LicenseAction() {
         ImageIcon licenseIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.LICENSE_ICO));
-        super.putValue(NAME, "License");
+        super.putValue(NAME, LICENSE);
         super.putValue(SMALL_ICON, licenseIcon);
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        boolean win = SetupUtils.isWindows();
         JDialog dialog = new JDialog(bag.getUserInterface(), true);
 
         // box
         dialog.setTitle(Constants.LICENSE_TITLE);
-        if (win)
+        if (bag.getOs().equals(WIN_OS))
             dialog.setSize(564, 680);
         else
             dialog.setSize(500, 670);
@@ -42,6 +47,7 @@ public class LicenseAction extends AbstractAction {
         JTextArea licenseArea = new JTextArea();
         try (InputStream in = FileLoader.loadFileAsStream(LICENSE_FILE);
              InputStreamReader inReader = new InputStreamReader(in)) {
+
             licenseArea.read(inReader, LICENSE_TITLE);
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -51,7 +57,7 @@ public class LicenseAction extends AbstractAction {
         JScrollPane scrollPaneLicenseArea = new JScrollPane();
         scrollPaneLicenseArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        if (win)
+        if (bag.getOs().equals(WIN_OS))
             scrollPaneLicenseArea.setSize(560, 600);
         else
             scrollPaneLicenseArea.setSize(500, 600);
@@ -69,10 +75,10 @@ public class LicenseAction extends AbstractAction {
         logo.setBounds(20, 610, imageIcon.getIconWidth(), imageIcon.getIconHeight());
 
         // button
-        JButton okButton = new JButton("CLOSE");
+        JButton okButton = new JButton(CLOSE);
         okButton.addActionListener(new CloseAction(dialog));
 
-        if (win)
+        if (bag.getOs().equals(WIN_OS))
             okButton.setBounds(450, 612, 90, 25);
         else
             okButton.setBounds(386, 612, 90, 25);

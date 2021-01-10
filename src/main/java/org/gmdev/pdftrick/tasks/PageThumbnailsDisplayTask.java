@@ -21,6 +21,7 @@ public class PageThumbnailsDisplayTask implements Runnable {
 	
 	private static final Logger logger = Logger.getLogger(PageThumbnailsDisplayTask.class);
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
+	public static final String NO_PICTURES = "NoPicsImg";
 	
 	private final int numberPage;
 	private final AtomicBoolean running = new AtomicBoolean(false);
@@ -65,7 +66,7 @@ public class PageThumbnailsDisplayTask implements Runnable {
 					noImageLabel.setHorizontalAlignment(JLabel.CENTER);
 					noImageLabel.setVerticalAlignment(JLabel.CENTER);
 					noImageLabel.setFont(new Font("Verdana", Font.BOLD,20));
-					noImageLabel.setName("NoPicsImg");
+					noImageLabel.setName(NO_PICTURES);
 					centerPanel.setLayout(new GridBagLayout());
 					centerPanel.add(noImageLabel);
 					centerPanel.revalidate();
