@@ -15,7 +15,7 @@ import org.gmdev.pdftrick.utils.Messages;
 import static org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask.*;
 
 /**
- * Action called when click 'Clean' button
+ * Action called when 'Clean' button is clicked
  */
 public class CleanSelectionAction extends AbstractAction {
 
@@ -23,32 +23,9 @@ public class CleanSelectionAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        Properties messagesProps = bag.getMessagesProps();
+        if(!isAppFree()) return;
+
         JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
-        TasksContainer tasksContainer = bag.getTasksContainer();
-
-        var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
-        if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
-            Messages.append("WARNING", messagesProps.getProperty("t_msg_02"));
-            return;
-        }
-
-        PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
-        if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
-            Messages.append("WARNING", messagesProps.getProperty("t_msg_23"));
-            return;
-        }
-
-        var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
-        if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
-            return;
-        }
-
-        if (bag.getSelectedImages().size() == 0 && bag.getInlineSelectedImages().size() == 0) {
-            Messages.append("INFO", messagesProps.getProperty("t_msg_24"));
-            return;
-        }
-
         Border borderGray = BorderFactory.createLineBorder(Color.gray);
         Component[] components = centerPanel.getComponents();
         for (Component c : components) {
@@ -75,6 +52,35 @@ public class CleanSelectionAction extends AbstractAction {
 
         JTextField selectedImagesField = bag.getUserInterface().getRight().getSelectedImagesField();
         selectedImagesField.setText("");
+    }
+
+    public boolean isAppFree() {
+        Properties messagesProps = bag.getMessagesProps();
+        TasksContainer tasksContainer = bag.getTasksContainer();
+
+        var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+        if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
+            Messages.append("WARNING", messagesProps.getProperty("t_msg_02"));
+            return false;
+        }
+
+        PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
+        if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
+            Messages.append("WARNING", messagesProps.getProperty("t_msg_23"));
+            return false;
+        }
+
+        var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
+        if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
+            return false;
+        }
+
+        if (bag.getSelectedImages().size() == 0 && bag.getInlineSelectedImages().size() == 0) {
+            Messages.append("INFO", messagesProps.getProperty("t_msg_24"));
+            return false;
+        }
+
+        return true;
     }
 
 

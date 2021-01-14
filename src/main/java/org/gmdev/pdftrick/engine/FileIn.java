@@ -56,7 +56,7 @@ public interface FileIn {
         ArrayList<File> files = bag.getPdfFilesArray();
         files.add(filesArray[0]);
 
-        checkAndPdfFile();
+        checkPdfFile();
         loadPdfFile(files);
     }
 
@@ -71,7 +71,7 @@ public interface FileIn {
         FileUtils.deletePdfFile(bag.getPdfFilePath());
     }
 
-    default void checkAndPdfFile() {
+    default void checkPdfFile() {
         String message = "check file failed!";
         FileChecker fileChecker = new FileChecker();
 
