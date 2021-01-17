@@ -8,7 +8,6 @@ import java.util.*;
 
 import javax.imageio.*;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
@@ -20,7 +19,6 @@ import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 
 public class ImagesExtractor {
 	
-	private static final Logger logger = Logger.getLogger(ImagesExtractor.class);
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	/**
@@ -93,7 +91,7 @@ public class ImagesExtractor {
 			try {
 				ImageIO.write(inImg.getImage(), encode, outputfile);
 			} catch (IOException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 			
 			z++;
@@ -140,7 +138,7 @@ public class ImagesExtractor {
 						File outputFile = new File(filename);
 						ImageIO.write(buff, type, outputFile);
 					} catch (Exception e) {
-						logger.error("Exception", e);
+						throw new IllegalStateException(e);
 					}
 				}
 				
@@ -161,7 +159,7 @@ public class ImagesExtractor {
 						try {
 							buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 						} catch (Exception ex) {
-							logger.error("Exception", e);
+							throw new IllegalStateException(e);
 						}
 					}
 					
@@ -216,7 +214,6 @@ public class ImagesExtractor {
 			
 			Messages.append("INFO", messages.getProperty("tmsg_19"));
 		} catch (Exception e) {
-			logger.error("Exception", e);
 			retExtract = false;
 		}
 		return retExtract;

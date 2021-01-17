@@ -2,18 +2,14 @@ package org.gmdev.pdftrick;
 
 import java.nio.file.Path;
 import java.util.Locale;
-import java.util.Properties;
 import javax.swing.*;
 
 import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
-import org.apache.log4j.*;
 import org.gmdev.pdftrick.manager.PdfTrickStarter;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.utils.*;
 import org.gmdev.pdftrick.validation.SingleInstanceValidator;
 
-import static org.gmdev.pdftrick.utils.Constants.*;
 import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
 public class PdfTrick {
@@ -26,8 +22,6 @@ public class PdfTrick {
     private static Path nativeLibraryPath;
 
     public static void main(String[] args) {
-        configureLogger();
-        setLocale();
         checkArchitecture();
         checkSingleInstanceRunning();
         parseOsArguments(args);
@@ -39,16 +33,6 @@ public class PdfTrick {
         homeFolderPath = setAndGetHomeFolder(operatingSystem);
         nativeLibraryPath = setAndGetNativeLibrary(homeFolderPath, operatingSystem);
         run();
-    }
-
-    private static void configureLogger() {
-        Properties loggerProperty = PropertyLoader.loadPropertyFile(PROPERTY_L4J_FILE);
-        PropertyConfigurator.configure(loggerProperty);
-    }
-
-    private static void setLocale() {
-        Locale.setDefault(Locale.ENGLISH);
-        JComponent.setDefaultLocale(Locale.ENGLISH);
     }
 
     private static String checkAndGetSystemOs() {

@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.utils;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 

@@ -10,7 +10,6 @@ import javax.imageio.IIOException;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ImageAction;
@@ -23,7 +22,6 @@ import com.itextpdf.text.pdf.parser.*;
 
 public class ImageListenerShowThumb implements RenderListener {
 	
-	private static final Logger logger = Logger.getLogger(ImageListenerShowThumb.class);
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private int numImg;
@@ -83,7 +81,6 @@ public class ImageListenerShowThumb implements RenderListener {
 						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), bag.getPdfFilePath());
 					}
 				} catch (Exception e) {
-					logger.error("Exception", e);
 					unsupportedImage++;
 					return;
 				}
@@ -105,12 +102,10 @@ public class ImageListenerShowThumb implements RenderListener {
 					try {
 						buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 					} catch (Exception e) {
-						logger.error("Exception", e);
 						unsupportedImage++;
 						return;
 					}
 				} catch (Exception e) {
-					logger.error("Exception", e);
 					unsupportedImage++;
 					return;
 				}
@@ -206,21 +201,15 @@ public class ImageListenerShowThumb implements RenderListener {
 				
 				try {
 					SwingUtilities.invokeAndWait(upPcenter);
-				} catch (InterruptedException e) {
-					logger.error("Exception", e);
-				} catch (InvocationTargetException e) {
-					logger.error("Exception", e);
+				} catch (InterruptedException | InvocationTargetException e) {
+					throw new IllegalStateException(e);
 				}
-				
+
 				buffImg.flush();
 			} else {
 				unsupportedImage++;
 			}
-		} catch (IOException e) {
-			logger.error("Exception", e);
-			unsupportedImage++;
 		} catch (Exception e) {
-			logger.error("Exception", e);
 			unsupportedImage++;
 		}
 	}

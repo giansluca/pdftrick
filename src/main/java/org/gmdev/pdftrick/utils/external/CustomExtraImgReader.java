@@ -15,7 +15,6 @@ import org.apache.commons.imaging.*;
 import org.apache.commons.imaging.common.bytesource.*;
 import org.apache.commons.imaging.formats.jpeg.JpegImageParser;
 import org.apache.commons.imaging.formats.jpeg.segments.*;
-import org.apache.log4j.Logger;
 
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.codec.PngWriter;
@@ -27,7 +26,6 @@ import static org.gmdev.pdftrick.utils.Constants.*;
 
 public class CustomExtraImgReader {
 
-    private static final Logger logger = Logger.getLogger(CustomExtraImgReader.class);
     private static final int COLOR_TYPE_RGB = 1;
     private static final int COLOR_TYPE_CMYK = 2;
     private static final int COLOR_TYPE_YCCK = 3;
@@ -62,7 +60,7 @@ public class CustomExtraImgReader {
             in.close();
             inG.close();
         } catch (Exception e) {
-            logger.error("Exception", e);
+            throw new IllegalStateException(e);
         }
         return buffImg;
     }

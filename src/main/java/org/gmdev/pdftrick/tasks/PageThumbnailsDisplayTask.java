@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageListenerShowThumb;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
@@ -19,7 +18,6 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 
 public class PageThumbnailsDisplayTask implements Runnable {
 	
-	private static final Logger logger = Logger.getLogger(PageThumbnailsDisplayTask.class);
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	public static final String NO_PICTURES = "NoPicsImg";
 	
@@ -79,7 +77,7 @@ public class PageThumbnailsDisplayTask implements Runnable {
 			}
 			Messages.append("INFO", infoUnsupported + " " + infoAvailable);
 		} catch(Exception e) {
-			logger.error("Exception", e);
+			throw new IllegalStateException(e);
 		}
 		
 		WaitPanel.removeWaitPanel();

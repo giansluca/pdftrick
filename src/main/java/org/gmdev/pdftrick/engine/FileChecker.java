@@ -10,7 +10,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.*;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.*;
@@ -20,7 +19,6 @@ import com.itextpdf.text.pdf.*;
 
 public class FileChecker {
 	
-	private static final Logger logger = Logger.getLogger(FileChecker.class);
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final HashMap<String, String> pfdPasswords;
@@ -102,7 +100,7 @@ public class FileChecker {
             line = brd.readLine();
             in.close();
         } catch (IOException e) {
-        	logger.error("Exception", e);
+			throw new IllegalStateException(e);
         }
         
         return line;
@@ -145,7 +143,7 @@ public class FileChecker {
 					break;
 				}
 			} catch (IOException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 		}
 		
@@ -213,7 +211,7 @@ public class FileChecker {
 		} catch (BadPasswordException e) {
 			userProtection = true;
 		} catch (IOException e) {
-			logger.error("Exception", e);
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -282,7 +280,7 @@ public class FileChecker {
 			try {
 				t.join();
 			} catch (InterruptedException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 		}
 		
@@ -325,7 +323,7 @@ public class FileChecker {
 				check="no";
 				Messages.appendLater("WARNING", MessageFormat.format(messages.getProperty("dmsg_07"), n, file.getName()));
 			} catch (IOException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 		}
 	}
