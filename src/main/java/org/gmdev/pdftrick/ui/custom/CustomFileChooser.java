@@ -11,7 +11,6 @@ import org.gmdev.pdftrick.utils.*;
 
 public class CustomFileChooser extends JFileChooser {
 	
-	private static final long serialVersionUID = -5896368165854589643L;
 	private final ImageIcon up_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.UP_ICO));
 	private final ImageIcon home_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.HOME_ICO));
 	private final ImageIcon desktop_icon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.DESKTOP_ICO));
@@ -23,10 +22,7 @@ public class CustomFileChooser extends JFileChooser {
 			setupWin();
 		}
 	}
-	
-	/**
-	 * Setup a custom JFileChooser for mac platform
-	 */
+
 	public void setupMac() {
 		final JTextField tf = getTF(this);
 		tf.setEditable(false);
@@ -119,10 +115,7 @@ public class CustomFileChooser extends JFileChooser {
 		setAccessory(panel);
 		setPreferredSize(new Dimension(700, 500));
 	}
-	
-	/**
-	 * Setup a custom JFileChooser for win platform
-	 */
+
 	public void setupWin() {
 		setPreferredSize(new Dimension(700, 500));
 	}

@@ -10,74 +10,79 @@ import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.tasks.ImagesExtractionTask;
+import org.gmdev.pdftrick.tasks.*;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
 
-public class ImagesExtractionAction extends AbstractAction  {
-	
-	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
+/**
+ * Action called when 'Get img' button is clicked
+ */
+public class ImagesExtractionAction extends AbstractAction {
 
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		Properties messages = bag.getMessagesProps();
-		Container contentPanel = bag.getUserInterface().getContentPane();
-		TasksContainer tasksContainer = bag.getTasksContainer();
-		
-		if (tasksContainer.getImagesExtractionThread() != null &&
-				tasksContainer.getImagesExtractionThread().isAlive()) {
+    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-			Messages.append("WARNING", messages.getProperty("tmsg_02"));
-			return;
-		}
-		
-		if (tasksContainer.getPdfCoverThumbnailsDisplayThread() != null &&
-				tasksContainer.getPdfCoverThumbnailsDisplayThread().isAlive()) {
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        if (!isAppFree()) return;
 
-			ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
-			return;
-		}
-		
-		boolean extract = true;
-		File resultFile = bag.getPdfFilePath().toFile();
-		if (resultFile.exists() && resultFile.length() > 0) {
-			CustomFileChooser chooseFolderToSave = new CustomFileChooser();
-			chooseFolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			chooseFolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
-			
-			String extractionFolder = null;
-			Set<String> keys = bag.getSelectedImages().keySet();
-			Set<String> kk = bag.getInlineSelectedImages().keySet();
-			
-			if (keys.size() > 0 || kk.size() > 0) {
-				if (chooseFolderToSave.showSaveDialog(contentPanel) == JFileChooser.APPROVE_OPTION) {
-					if (SetupUtils.isWindows()) {
-						extractionFolder = chooseFolderToSave.getSelectedFile().getAbsolutePath();
-					} else if (SetupUtils.isMac()) {
-						extractionFolder = chooseFolderToSave.getCurrentDirectory().getAbsolutePath();
-					}
-					bag.setExtractionFolderPath(Path.of(extractionFolder));
-				} else {
-					extract = false;
-				}
-			} else {
-				Messages.append("INFO", messages.getProperty("tmsg_03"));
-				extract = false;
-			}
-		} else {
-			Messages.append("INFO", messages.getProperty("tmsg_04"));
-			extract = false;
-		}
-		if (extract) {
-			ImagesExtractionTask imagesExtractionTask = new ImagesExtractionTask();
-			tasksContainer.setImagesExtractionTask(imagesExtractionTask);
-			
-			Thread imagesExtractionThread = new Thread(imagesExtractionTask);
-			tasksContainer.setImagesExtractionThread(imagesExtractionThread);
+        Properties messages = bag.getMessagesProps();
+        Container contentPanel = bag.getUserInterface().getContentPane();
+        TasksContainer tasksContainer = bag.getTasksContainer();
 
-			imagesExtractionThread.start();
-		}
-	}
+        File pdfFile = bag.getPdfFilePath().toFile();
+        if (!pdfFile.exists()) {
+            Messages.append("INFO", messages.getProperty("t_msg_04"));
+            return;
+        }
+
+        Set<String> normalImageKeys = bag.getSelectedImages().keySet();
+        Set<String> inlineImageKeys = bag.getInlineSelectedImages().keySet();
+        if (normalImageKeys.size() == 0 && inlineImageKeys.size() == 0) {
+            Messages.append("INFO", messages.getProperty("t_msg_03"));
+            return;
+        }
+
+        CustomFileChooser chooseFolderToSave = new CustomFileChooser();
+        chooseFolderToSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooseFolderToSave.setDialogTitle(Constants.JFC_EXTRACT_TITLE);
+        if (chooseFolderToSave.showSaveDialog(contentPanel) != JFileChooser.APPROVE_OPTION)
+            return;
+
+        String extractionFolder;
+        if (bag.getOs().equals(SetupUtils.WIN_OS))
+            extractionFolder = chooseFolderToSave.getSelectedFile().getAbsolutePath();
+        else
+            extractionFolder = chooseFolderToSave.getCurrentDirectory().getAbsolutePath();
+
+        bag.setExtractionFolderPath(Path.of(extractionFolder));
+
+        ImagesExtractionTask imagesExtractionTask = new ImagesExtractionTask();
+        tasksContainer.setImagesExtractionTask(imagesExtractionTask);
+
+        Thread imagesExtractionThread = new Thread(imagesExtractionTask);
+        tasksContainer.setImagesExtractionThread(imagesExtractionThread);
+
+        imagesExtractionThread.start();
+    }
+
+    public boolean isAppFree() {
+        Properties messagesProps = bag.getMessagesProps();
+        TasksContainer tasksContainer = bag.getTasksContainer();
+
+        var imagesExtractionTask = tasksContainer.getImagesExtractionTask();
+        if (imagesExtractionTask != null && imagesExtractionTask.isRunning()) {
+            Messages.append("WARNING", messagesProps.getProperty("t_msg_02"));
+            return false;
+        }
+
+        PageThumbnailsDisplayTask pageThumbnailsDisplayTask = tasksContainer.getPageThumbnailsDisplayTask();
+        if (pageThumbnailsDisplayTask != null && pageThumbnailsDisplayTask.isRunning()) {
+            ModalWarningPanel.displayLoadingPdfThumbnailsWarning();
+            return false;
+        }
+
+        return true;
+    }
 
 
 }
