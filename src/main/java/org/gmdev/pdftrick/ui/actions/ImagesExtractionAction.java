@@ -14,9 +14,6 @@ import org.gmdev.pdftrick.tasks.*;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
 
-/**
- * Action called when 'Get img' button is clicked
- */
 public class ImagesExtractionAction extends AbstractAction {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;

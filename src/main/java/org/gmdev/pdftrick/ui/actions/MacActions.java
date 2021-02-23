@@ -8,7 +8,7 @@ import org.gmdev.pdftrick.utils.*;
 import static org.gmdev.pdftrick.serviceprocessor.TaskTerminator.*;
 
 /**
- * Action called when 'Exit' or 'About' menu item is selected (only for Mac os)
+ * 'Exit' or 'About' menu item actions (only for Mac os)
  */
 public class MacActions {
 

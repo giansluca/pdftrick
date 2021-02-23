@@ -9,7 +9,7 @@ import org.gmdev.pdftrick.manager.TasksContainer;
 import org.gmdev.pdftrick.tasks.CancelTask;
 
 /**
- * Action called when 'Cancel' button is clicked
+ * 'Cancel' button action
  */
 public class CancelAction extends AbstractAction {
 	

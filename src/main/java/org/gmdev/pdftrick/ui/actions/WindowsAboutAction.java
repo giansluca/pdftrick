@@ -10,7 +10,7 @@ import org.gmdev.pdftrick.utils.FileLoader;
 import static org.gmdev.pdftrick.utils.Constants.*;
 
 /**
- * Action called when 'About' menu item is selected (only for Windows os)
+ * 'About' menu item action (only for Windows os)
  */
 public class WindowsAboutAction extends AbstractAction {
 	

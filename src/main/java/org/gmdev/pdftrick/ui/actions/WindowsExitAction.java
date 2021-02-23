@@ -11,7 +11,7 @@ import org.gmdev.pdftrick.utils.*;
 import static org.gmdev.pdftrick.serviceprocessor.TaskTerminator.*;
 
 /**
- * Action called when 'Exit' menu item is selected or CTRL+Q is pressed (only for Windows os)
+ * 'Exit' menu item or CTRL+Q action (only for Windows os)
  */
 public class WindowsExitAction extends AbstractAction {
 	

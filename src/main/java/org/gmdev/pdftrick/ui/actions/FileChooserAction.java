@@ -14,9 +14,6 @@ import org.gmdev.pdftrick.utils.*;
 import static org.gmdev.pdftrick.utils.Constants.JFC_OPEN_TITLE;
 import static org.gmdev.pdftrick.utils.SetupUtils.WIN_OS;
 
-/**
- * Action called when the pdf file il loaded with file chooser
- */
 public class FileChooserAction extends AbstractAction implements FileIn {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;

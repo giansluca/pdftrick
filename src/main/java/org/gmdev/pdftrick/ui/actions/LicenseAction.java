@@ -12,9 +12,6 @@ import org.gmdev.pdftrick.utils.*;
 import static org.gmdev.pdftrick.utils.Constants.*;
 import static org.gmdev.pdftrick.utils.SetupUtils.*;
 
-/**
- * Action called when 'Licence' menu item is selected
- */
 public class LicenseAction extends AbstractAction {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
