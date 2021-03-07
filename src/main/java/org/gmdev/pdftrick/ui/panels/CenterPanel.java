@@ -67,12 +67,12 @@ public class CenterPanel {
 			picLabel.setBorder(borderGray);
 			picLabel.setOpaque(true);
 			picLabel.setBackground(Color.WHITE);
-			MouseListener[] mouseListeners = (picLabel.getListeners(MouseListener.class));
 
-			if (mouseListeners.length > 0) {
-				ImageAction imageAction = (ImageAction) mouseListeners[0];
-				imageAction.setSelected(false);
-			}
+			MouseListener[] mouseListeners = (picLabel.getListeners(MouseListener.class));
+			if (mouseListeners.length == 0) continue;
+
+			ImageAction imageAction = (ImageAction) mouseListeners[0];
+			imageAction.setSelected(false);
 		}
 	}
 	
