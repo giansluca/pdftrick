@@ -5,18 +5,18 @@ import java.lang.reflect.InvocationTargetException;
 
 public class SwingInvoker {
 
-    public static void invokeAndWait(Runnable doRun) {
+    public static void invokeAndWait(Runnable task) {
         try {
             if(!SwingUtilities.isEventDispatchThread())
-                SwingUtilities.invokeAndWait(doRun);
+                SwingUtilities.invokeAndWait(task);
             else
-                doRun.run();
+                task.run();
         } catch (InterruptedException | InvocationTargetException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public static void invokeLater(Runnable doRun) {
-        SwingUtilities.invokeLater(doRun);
+    public static void invokeLater(Runnable task) {
+        SwingUtilities.invokeLater(task);
     }
 }

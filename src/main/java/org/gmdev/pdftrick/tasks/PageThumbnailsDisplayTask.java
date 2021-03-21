@@ -1,7 +1,6 @@
 package org.gmdev.pdftrick.tasks;
 
-import java.awt.Font;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Properties;
@@ -11,8 +10,7 @@ import javax.swing.*;
 
 import org.gmdev.pdftrick.engine.PageThumbnailsListener;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.swingmanager.SwingInvoker;
-import org.gmdev.pdftrick.swingmanager.WaitPanel;
+import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.utils.Messages;
 
 import com.itextpdf.text.pdf.PdfReader;

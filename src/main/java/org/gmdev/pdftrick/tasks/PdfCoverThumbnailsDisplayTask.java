@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,13 +16,24 @@ import javax.swing.border.Border;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.render.ThumbAction;
 import org.gmdev.pdftrick.serviceprocessor.Stoppable;
+import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.*;
 
 public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
 
+    private static final Comparator<File> comparator = (file1, file2) -> {
+        Integer num1 = Integer.parseInt(
+                file1.getName().substring(6).replace(".png", "").trim());
+        Integer num2 = Integer.parseInt(
+                file2.getName().substring(6).replace(".png", "").trim());
+        return (num1.compareTo(num2));
+    };
+
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
     private final AtomicBoolean running = new AtomicBoolean(false);
+    private final Instant start = Instant.now();
+    private Duration interval = Duration.ofSeconds(1);
 
     public void stop() {
         running.set(false);
@@ -35,123 +48,122 @@ public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
         running.set(true);
 
         Properties messages = bag.getMessagesProps();
-        JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
         Path thumbnailsFolderPath = bag.getThumbnailsFolderPath();
 
-        long time = System.currentTimeMillis();
-        long delta = 1000;
+        Messages.appendNoNewLine("INFO", messages.getProperty("t_msg_08"));
+        int numberOfPages = bag.getNumberOfPages();
 
-        try {
-            Messages.appendNoNewLine("INFO", messages.getProperty("tmsg_08"));
-            int numberOfPages = bag.getNumberOfPages();
-            File[] renderedImages;
+        int renderedCount = 0;
+        while (renderedCount < numberOfPages && running.get()) {
+            shouldPrintDot();
 
-            int i = 0;
-            while (i < numberOfPages && running.get()) {
-                long timeLoop = System.currentTimeMillis();
-                if (timeLoop > time + delta) {
-                    Messages.appendInline(messages.getProperty("tmsg_09"));
-                    delta = delta + 1000;
-                }
-                renderedImages = getPdfRenderedPages(thumbnailsFolderPath);
-                if (renderedImages != null && renderedImages.length > i) {
+            File[] renderedImages = getPdfRenderedPages(thumbnailsFolderPath);
 
-                    // isValid is next file has arrived
-                    if (renderedImages[i] != null && renderedImages[i].getName().endsWith("_" + (i + 1) + ".png")) {
+            if (renderedImages == null || renderedImages.length <= renderedCount) continue;
+            if (!nextExpectedImageExists(renderedImages, renderedCount)) continue;
+            if (lockFileExists(thumbnailsFolderPath, renderedCount)) continue;
 
-                        // isValid if file lock has gone (native function finished to write)
-                        File lock = new File(thumbnailsFolderPath +
-                                File.separator + "image_" + (i + 1) + ".png.lock");
+            BufferedImage image = getImage(renderedImages[renderedCount]);
+            if (image == null) continue;
 
-                        if (!lock.exists()) {
-                            BufferedImage bufImg = null;
-                            try {
-                                if (renderedImages[i].exists() && renderedImages[i].canRead() && renderedImages[i].length() > 0) {
-                                    FileInputStream in = new FileInputStream(renderedImages[i]);
-                                    bufImg = ImageIO.read(in);
-                                    in.close();
-                                }
-                            } catch (Exception e) {
-                                throw new IllegalStateException(e);
-                            }
+            BufferedImage resizedImage = resizeImage(image);
+            appendImageToLeftPanel(resizedImage);
+            resizedImage.flush();
 
-                            if (bufImg != null) {
-                                int w = bufImg.getWidth();
-                                int h = bufImg.getHeight();
-                                if (w > h) {
-                                    bufImg = ImageUtils.getScaledImage(bufImg, 170, 126);
-                                } else {
-                                    bufImg = ImageUtils.getScaledImage(bufImg, 170, 228);
-                                }
+            renderedCount++;
+        }
 
-                                // update left panel, need invokeLater because i'm out EDT here
-                                BufferedImage buffImage = bufImg;
-                                bufImg.flush();
-
-                                if (running.get()) {
-                                    SwingUtilities.invokeAndWait(() -> {
-                                        Border border = BorderFactory.createLineBorder(Color.gray);
-                                        JLabel picLabel = new JLabel(new ImageIcon(buffImage));
-                                        picLabel.setPreferredSize(new Dimension(176, 236));
-                                        picLabel.setBorder(border);
-                                        leftPanel.add(picLabel);
-                                        leftPanel.revalidate();
-                                        leftPanel.repaint();
-                                    });
-                                }
-
-                                buffImage.flush();
-                                i++;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (running.get()) {
-                Messages.appendNewLine();
-                Messages.append("INFO", messages.getProperty("tmsg_10"));
-
-                // after rendering add the mouse listener for each thumb (jlabel) and stop wait Icon, i need invokeLater because i'm out EDT here
-                SwingUtilities.invokeLater(() -> {
-                    Component[] comps = leftPanel.getComponents();
-                    for (int z = 0; z < comps.length; z++) {
-                        JLabel picLabel = (JLabel) comps[z];
-                        picLabel.addMouseListener(new ThumbAction(z + 1));
-                        picLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    }
-                    bag.getUserInterface().getCenter().stopWaitIcon();
-                });
-            }
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        if (running.get()) {
+            Messages.appendNewLine();
+            Messages.append("INFO", messages.getProperty("t_msg_10"));
+            attachListenersToImages();
         }
 
         running.set(false);
     }
 
-    private File[] getPdfRenderedPages(Path thumbnailsFolderPath) {
-        File[] renderedPdfThumbnails = null;
-        File imgFolder = thumbnailsFolderPath.toFile();
+    private void shouldPrintDot() {
+        Instant nextDotTime = start.plus(interval);
 
-        if (imgFolder.exists()) {
-            renderedPdfThumbnails = imgFolder.listFiles(
-                    (dir, name) -> name.toLowerCase().endsWith(".png"));
+        Instant now = Instant.now();
+        if (now.isAfter(nextDotTime)) {
+            Messages.appendInline(".");
+            interval = interval.plus(Duration.ofSeconds(1));
         }
+    }
 
-        Comparator<File> comparator = (f1, f2) -> {
-            Integer num1 = Integer.parseInt(
-                    f1.getName().substring(6).replace(".png", "").trim());
-            Integer num2 = Integer.parseInt(
-                    f2.getName().substring(6).replace(".png", "").trim());
+    private File[] getPdfRenderedPages(Path thumbnailsFolderPath) {
+        File imgFolder = thumbnailsFolderPath.toFile();
+        if (!imgFolder.exists())
+            throw new IllegalStateException("Corrupted image folder");
 
-            return (num1.compareTo(num2));
-        };
+        File[] renderedPdfThumbnails = imgFolder
+                .listFiles((dir, name) -> name.toLowerCase().endsWith(".png"));
+        if (renderedPdfThumbnails == null) return null;
 
-        if (renderedPdfThumbnails != null)
-            Arrays.sort(renderedPdfThumbnails, comparator);
-
+        Arrays.sort(renderedPdfThumbnails, comparator);
         return renderedPdfThumbnails;
+    }
+
+    private boolean nextExpectedImageExists(File[] renderedImages, int renderedCount) {
+        if (renderedImages[renderedCount] == null) return false;
+        return renderedImages[renderedCount].getName().endsWith("_" + (renderedCount + 1) + ".png");
+    }
+
+    private boolean lockFileExists(Path thumbnailsFolderPath, int renderedCount) {
+        File lockFile = new File(thumbnailsFolderPath +
+                File.separator + "image_" + (renderedCount + 1) + ".png.lock");
+        return lockFile.exists();
+    }
+
+    private BufferedImage getImage(File imageFile) {
+        if (!imageFile.exists() || !imageFile.canRead() || !(imageFile.length() > 0)) return null;
+
+        try (FileInputStream in = new FileInputStream(imageFile)) {
+            return ImageIO.read(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private BufferedImage resizeImage(BufferedImage image) {
+        BufferedImage resizedImage;
+        if (image.getWidth() > image.getHeight())
+            resizedImage = ImageUtils.getScaledImage(image, 170, 126);
+        else
+            resizedImage = ImageUtils.getScaledImage(image, 170, 228);
+
+        image.flush();
+        return resizedImage;
+    }
+
+    private void appendImageToLeftPanel(BufferedImage resizedImage) {
+        JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
+
+        SwingInvoker.invokeAndWait(() -> {
+            Border border = BorderFactory.createLineBorder(Color.gray);
+            JLabel imageLabel = new JLabel(new ImageIcon(resizedImage));
+            imageLabel.setPreferredSize(new Dimension(176, 236));
+            imageLabel.setBorder(border);
+            leftPanel.add(imageLabel);
+            leftPanel.revalidate();
+            leftPanel.repaint();
+        });
+    }
+
+    private void attachListenersToImages() {
+        JPanel leftPanel = bag.getUserInterface().getLeft().getLeftPanel();
+
+        SwingInvoker.invokeLater(() -> {
+            Component[] comps = leftPanel.getComponents();
+            for (int z = 0; z < comps.length; z++) {
+                JLabel picLabel = (JLabel) comps[z];
+                picLabel.addMouseListener(new ThumbAction(z + 1));
+                picLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+            bag.getUserInterface().getCenter().stopWaitIcon();
+        });
     }
 
 
