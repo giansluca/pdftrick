@@ -8,7 +8,6 @@ import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 
 import java.io.File;
-import java.util.*;
 
 import static org.gmdev.pdftrick.swingmanager.ModalWarningPanel.displayTooManyFilesLoadedAndThrow;
 
@@ -53,11 +52,11 @@ public interface FileIn {
         if (!beforeLoadingCheck()) return;
         prepareForLoading();
 
-        ArrayList<File> files = bag.getPdfFilesArray();
-        files.add(filesArray[0]);
+        File uploadedFile = filesArray[0];
+        bag.setUploadedFile(uploadedFile);
 
         checkPdfFile();
-        loadPdfFile(files);
+        loadPdfFile(uploadedFile);
     }
 
     default void prepareForLoading() {
@@ -82,12 +81,12 @@ public interface FileIn {
         }
     }
 
-    default void loadPdfFile(ArrayList<File> filesArray) {
+    default void loadPdfFile(File uploadedFile) {
         FileDataManager fileDataManager = new FileDataManager();
-        File pdfFile = fileDataManager.mergePdf(filesArray, bag.getPdfFilePath());
+        File outFile = fileDataManager.mergePdf(uploadedFile, bag.getPdfFilePath());
 
-        if (pdfFile == null || !pdfFile.exists() || pdfFile.length() <= 0) {
-            String message = "Error analyzing pdf files!";
+        if (outFile == null || !outFile.exists()) {
+            String message = "Error checking pdf files!";
             Messages.append("WARNING", message);
             throw new IllegalStateException(message);
         }

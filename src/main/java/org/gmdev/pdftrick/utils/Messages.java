@@ -25,9 +25,6 @@ public class Messages {
 				getSystemProperty("java.version")));
 	}
 
-	/**
-	 * Append messages to text area
-	 */
 	public static void append(String level, String message) {
 		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		StringBuilder builder = new StringBuilder(300);
@@ -50,10 +47,7 @@ public class Messages {
 			txtArea.append(builder.toString());
 		}
 	}
-	
-	/**
-	 * Append messages to text area using invokeLater
-	 */
+
 	public static void appendLater(String level, String message) {
 		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		StringBuilder builder = new StringBuilder(300);
@@ -70,10 +64,7 @@ public class Messages {
 			SwingUtilities.invokeLater(() -> txtArea.append(builder.toString()));
 		}
 	}
-	
-	/**
-	 * Append messages to text area without newline character
-	 */
+
 	public static void appendNoNewLine(String level, String message) {
 		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		StringBuilder builder = new StringBuilder(300);
@@ -95,10 +86,7 @@ public class Messages {
 			txtArea.append(builder.toString());
 		}
 	}
-	
-	/**
-	 * Append in line message without date and level
-	 */
+
 	public static void appendInline(String message) {
 		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
@@ -111,10 +99,7 @@ public class Messages {
 			txtArea.append(message);
 		}
 	}
-	
-	/**
-	 * Append new line character
-	 */
+
 	public static void appendNewLine() {
 		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
 		if (!SwingUtilities.isEventDispatchThread()) {
@@ -126,12 +111,6 @@ public class Messages {
 		} else {
 			txtArea.append("\n");
 		}
-	}
-
-	public enum MessageLevel {
-		INFO,
-		WARNING,
-		ERROR
 	}
 
 

@@ -20,11 +20,14 @@ public enum PdfTrickBag {
 	private Path pdfFilePath;
 	private Path thumbnailsFolderPath;
 	private int numberOfPages;
+
 	private ArrayList<File> pdfFilesArray;
+	private File uploadedFile;
+
 	private int selectedPage;
 	private Path extractionFolderPath;
 	private HashMap<Integer, String> pagesRotation;
-	private HashMap<String, String> pfdPasswords;
+	private String pdfPassword;
 	private HashMap<String, RenderedImageAttributes> selectedImages;
 	private HashMap<String, RenderedImageAttributes> inlineSelectedImages;
 	private TasksContainer tasksContainer;
@@ -48,7 +51,6 @@ public enum PdfTrickBag {
 		pdfFilesArray = new ArrayList<>();
 		selectedPage = 0;
 		pagesRotation = new HashMap<>();
-		pfdPasswords = new HashMap<>();
 		selectedImages = new HashMap<>();
 		inlineSelectedImages = new HashMap<>();
 		tasksContainer = new TasksContainer();
@@ -130,8 +132,12 @@ public enum PdfTrickBag {
 		this.numberOfPages = numberOfPages;
 	}
 
-	public ArrayList<File> getPdfFilesArray() {
-		return pdfFilesArray;
+	public File getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(File uploadedFile) {
+		this.uploadedFile = uploadedFile;
 	}
 
 	public int getSelectedPage() {
@@ -154,8 +160,12 @@ public enum PdfTrickBag {
 		return pagesRotation;
 	}
 
-	public HashMap<String, String> getPfdPasswords() {
-		return pfdPasswords;
+	public String getPdfPassword() {
+		return pdfPassword;
+	}
+
+	public void setPdfPassword(String pdfPassword) {
+		this.pdfPassword = pdfPassword;
 	}
 
 	public HashMap<String, RenderedImageAttributes> getSelectedImages() {
