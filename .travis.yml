@@ -10,11 +10,10 @@ env:
 jobs:
   include:
     - os: osx
-      osx_image: xcode12.2
+      osx_image: xcode12.4
       before_install:
         - brew tap adoptopenjdk/openjdk
         - brew install --cask adoptopenjdk11
-        - brew install maven
         - brew install esolitos/ipa/sshpass
     - os: windows
       #matrix:
@@ -26,7 +25,8 @@ jobs:
         - choco install adoptopenjdkopenj9jdk
         - choco install maven
         - choco install putty
-        - export PATH=$(cmd.exe //c "refreshenv > nul & C:\Progra~1\Git\bin\bash -c 'echo \$PATH' ")
+        #- export PATH=$(cmd.exe //c "refreshenv > nul & C:\Progra~1\Git\bin\bash -c 'echo \$PATH' ")
+        - cmd.exe //c "RefreshEnv.cmd"
       cache:
         directories:
           - $HOME/.m2
