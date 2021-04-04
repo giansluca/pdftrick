@@ -18,7 +18,7 @@ jobs:
         - brew install esolitos/ipa/sshpass
     - os: windows
       matrix:
-        - JDK="adopt-openj9@1.11"
+        - JDK="adopt@1.11.0-9"
       before_install:
         - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
         - source $GRAVIS/install-jdk
