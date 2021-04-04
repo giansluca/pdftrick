@@ -60,10 +60,7 @@ public interface FileIn {
     }
 
     default void prepareForLoading() {
-        CenterPanel centerPanel = bag.getUserInterface().getCenter();
-
         SwingCleaner.cleanUserInterface();
-        SwingInvoker.invokeLater(centerPanel::startWaitIconLoadPdf);
 
         bag.cleanUp();
         FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
@@ -75,13 +72,15 @@ public interface FileIn {
         FileChecker fileChecker = new FileChecker();
 
         if (!fileChecker.isValid()) {
-            SwingCleaner.cleanPanels();
             Messages.append("WARNING", message);
             throw new IllegalStateException(message);
         }
     }
 
     default void loadPdfFile(File uploadedFile) {
+        CenterPanel centerPanel = bag.getUserInterface().getCenter();
+        SwingInvoker.invokeLater(centerPanel::startWaitIconLoadPdf);
+
         FileDataManager fileDataManager = new FileDataManager();
         File outFile = fileDataManager.mergePdf(uploadedFile, bag.getPdfFilePath());
 

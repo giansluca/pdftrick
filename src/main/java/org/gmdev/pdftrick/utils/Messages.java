@@ -1,10 +1,10 @@
 package org.gmdev.pdftrick.utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.*;
 import java.util.Calendar;
 import javax.swing.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 
 import static org.gmdev.pdftrick.utils.SystemProperty.getSystemProperty;
 
@@ -18,7 +18,7 @@ public class Messages {
 	}
 
 	public static void printWelcomeMessage() {
-		String message = bag.getMessagesProps().getProperty("dmsg_09");
+		String message = bag.getMessagesProps().getProperty("d_msg_09");
 		append("INFO", MessageFormat.format(message,
 				getSystemProperty("os.name"),
 				getSystemProperty("sun.arch.data.model"),
@@ -36,16 +36,11 @@ public class Messages {
         builder.append("]: ");
 		builder.append(message);
 		builder.append("\n");
-		
-		if (!SwingUtilities.isEventDispatchThread()) {
-			try {
-				SwingUtilities.invokeAndWait(() -> txtArea.append(builder.toString()));
-			} catch (InterruptedException | InvocationTargetException e) {
-				throw new IllegalStateException(e);
-			}
-		} else {
+
+		if (!SwingUtilities.isEventDispatchThread())
+			SwingInvoker.invokeAndWait(() -> txtArea.append(builder.toString()));
+		else
 			txtArea.append(builder.toString());
-		}
 	}
 
 	public static void appendLater(String level, String message) {
@@ -60,9 +55,8 @@ public class Messages {
 		builder.append(message);
 		builder.append("\n");
 		
-		if (!SwingUtilities.isEventDispatchThread()) {
+		if (!SwingUtilities.isEventDispatchThread())
 			SwingUtilities.invokeLater(() -> txtArea.append(builder.toString()));
-		}
 	}
 
 	public static void appendNoNewLine(String level, String message) {
@@ -75,42 +69,27 @@ public class Messages {
         builder.append(level);
         builder.append("]: ");
 		builder.append(message);
-		
-		if (!SwingUtilities.isEventDispatchThread()) {
-			try {
-				SwingUtilities.invokeAndWait(() -> txtArea.append(builder.toString()));
-			} catch (InterruptedException | InvocationTargetException e) {
-				throw new IllegalStateException(e);
-			}
-		} else {
+
+		if (!SwingUtilities.isEventDispatchThread())
+			SwingInvoker.invokeAndWait(() -> txtArea.append(builder.toString()));
+		else
 			txtArea.append(builder.toString());
-		}
 	}
 
 	public static void appendInline(String message) {
 		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
-		if (!SwingUtilities.isEventDispatchThread()) {
-			try {
-				SwingUtilities.invokeAndWait(() -> txtArea.append(message));
-			} catch (InterruptedException | InvocationTargetException e) {
-				throw new IllegalStateException(e);
-			}
-		} else {
+		if (!SwingUtilities.isEventDispatchThread())
+			SwingInvoker.invokeAndWait(() -> txtArea.append(message));
+		else
 			txtArea.append(message);
-		}
 	}
 
 	public static void appendNewLine() {
 		JTextArea txtArea = bag.getUserInterface().getBottom().getTextArea();
-		if (!SwingUtilities.isEventDispatchThread()) {
-			try {
-				SwingUtilities.invokeAndWait(() -> txtArea.append("\n"));
-			} catch (InterruptedException | InvocationTargetException e) {
-				throw new IllegalStateException(e);
-			}
-		} else {
+		if (!SwingUtilities.isEventDispatchThread())
+			SwingInvoker.invokeAndWait(() -> txtArea.append("\n"));
+		else
 			txtArea.append("\n");
-		}
 	}
 
 
