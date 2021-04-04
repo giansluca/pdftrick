@@ -26,6 +26,7 @@ jobs:
         - choco install adoptopenjdkopenj9jdk
         - choco install maven
         - choco install putty
+        - refreshenv
       cache:
         directories:
           - $HOME/.m2
