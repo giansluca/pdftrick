@@ -13,7 +13,7 @@ jobs:
       osx_image: xcode12.2
       before_install:
         - brew tap adoptopenjdk/openjdk
-        - brew cask install adoptopenjdk11
+        - brew install --cask adoptopenjdk11
         - brew install maven
         - brew install esolitos/ipa/sshpass
     - os: windows
