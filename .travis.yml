@@ -5,8 +5,8 @@ branches:
 language: minimal
 env:
   global:
-    - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
-    - GRAVIS="$HOME/gravis"
+    #- GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
+    #- GRAVIS="$HOME/gravis"
 jobs:
   include:
     - os: osx
@@ -17,17 +17,19 @@ jobs:
         - brew install maven
         - brew install esolitos/ipa/sshpass
     - os: windows
-      matrix:
-        - JDK="adopt@1.11.0-9"
+      #matrix:
+        #- JDK="adopt@1.11.0-9"
       before_install:
-        - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
-        - source $GRAVIS/install-jdk
-        - source $GRAVIS/install-maven
+        #- travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
+        #- source $GRAVIS/install-jdk
+        #- source $GRAVIS/install-maven
+        - choco install adoptopenjdkopenj9jdk
+        - choco install maven
         - choco install putty
       cache:
         directories:
           - $HOME/.m2
-          - $HOME/.jabba/
+          #- $HOME/.jabba/
 install:
   - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V
 script:
