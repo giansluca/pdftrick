@@ -1,6 +1,7 @@
 branches:
   only:
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+    - develop
 language: minimal
 env:
   global:
@@ -17,7 +18,7 @@ jobs:
         - brew install esolitos/ipa/sshpass
     - os: windows
       matrix:
-        - JDK="openjdk@1.11.0-2"
+        - JDK="adopt-openj9@1.11"
       before_install:
         - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
         - source $GRAVIS/install-jdk
@@ -40,6 +41,7 @@ deploy:
   - provider: script
     skip_cleanup: true
     script: bash ./deploy.sh
+
     on:
       tags: true
   - provider: releases
