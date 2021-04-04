@@ -1,0 +1,12 @@
+{
+  "resources": {
+    "includes": [
+      {"pattern": "properties/*.*"},
+      {"pattern": "icons/*.*"},
+      {"pattern": "nativelib/*.*"},
+      {"pattern": "Generic_CMYK_Profile.icc"},
+      {"pattern": "license.txt"}
+    ],
+    "excludes": []
+  }
+}

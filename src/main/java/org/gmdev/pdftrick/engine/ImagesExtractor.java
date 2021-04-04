@@ -2,14 +2,12 @@ package org.gmdev.pdftrick.engine;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
 
 import javax.imageio.*;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.engine.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
@@ -21,22 +19,21 @@ import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 
 public class ImagesExtractor {
 	
-	private static final Logger logger = Logger.getLogger(ImagesExtractor.class);
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	/**
 	 * Prepare for the extraction and call images extractor
 	 */
 	public void getImages() {
-		final Properties messages = BAG.getMessagesProps();
-		final HashMap<String, RenderedImageAttributes> inlineImgSelected = BAG.getInlineSelectedImages();
-		final Path pdfFile = BAG.getPdfFilePath();
+		final Properties messages = bag.getMessagesProps();
+		final HashMap<String, RenderedImageAttributes> inlineImgSelected = bag.getInlineSelectedImages();
+		final Path pdfFile = bag.getPdfFilePath();
 		boolean getImgCheck = false;
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));
 			
 		Path extractionFolderWithTimePath =
-				Path.of(BAG.getExtractionFolderPath() +
+				Path.of(bag.getExtractionFolderPath() +
 						File.separator +
 						FileUtils.getTimeForExtractionFolder());
 
@@ -46,7 +43,7 @@ public class ImagesExtractor {
 		getImgCheck = extractImgSel(
 				extractionFolderWithTimePath.toString(),
 				pdfFile,
-				BAG.getSelectedImages(),
+				bag.getSelectedImages(),
 				inlineImgSelected);
 		
 		// if extraction breaks ...
@@ -76,7 +73,7 @@ public class ImagesExtractor {
 			String type = inImg.getFileType();
 			String filename = String.format(result, z, type);
 			
-			//particular cases of encoding
+			// particular cases of encoding
 			String encode ="";
 			if (type.equalsIgnoreCase("jp2")) {
 				encode = "jpeg 2000";
@@ -94,7 +91,7 @@ public class ImagesExtractor {
 			try {
 				ImageIO.write(inImg.getImage(), encode, outputfile);
 			} catch (IOException e) {
-				logger.error("Exception", e);
+				throw new IllegalStateException(e);
 			}
 			
 			z++;
@@ -106,7 +103,7 @@ public class ImagesExtractor {
 								   HashMap<String, RenderedImageAttributes> imageSelected,
 								   HashMap<String, RenderedImageAttributes> inlineImgSelected) {
 		
-		final Properties messages = BAG.getMessagesProps();
+		final Properties messages = bag.getMessagesProps();
 		String result = destFolder + "/" + "Img_%s.%s";
 		PdfReader reader = null;
 		boolean retExtract = true;
@@ -141,7 +138,7 @@ public class ImagesExtractor {
 						File outputFile = new File(filename);
 						ImageIO.write(buff, type, outputFile);
 					} catch (Exception e) {
-						logger.error("Exception", e);
+						throw new IllegalStateException(e);
 					}
 				}
 				
@@ -162,17 +159,17 @@ public class ImagesExtractor {
 						try {
 							buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
 						} catch (Exception ex) {
-							logger.error("Exception", e);
+							throw new IllegalStateException(e);
 						}
 					}
 					
-					// check if image contains a mask image
+					// isValid if image contains a mask image
 					BufferedImage buffMask = null;
 					PdfDictionary imageDictionary = io.getDictionary(); 
 				    PRStream maskStream = (PRStream) imageDictionary.getAsStream(PdfName.SMASK); 
 					
 				    if (maskStream != null) {
-				    	// i have an smask object i check that is not a jpeg format, because this may cause some problem on offscreen rendering
+				    	// i have an smask object i isValid that is not a jpeg format, because this may cause some problem on offscreen rendering
 				    	// usually all imges with mask are png ... and there aren't problem, if image is jpg i discard the mask :)
 				    	if (!type.equalsIgnoreCase("jpg")) {
 				    		PdfImageObject maskImage = new PdfImageObject(maskStream);
@@ -217,7 +214,6 @@ public class ImagesExtractor {
 			
 			Messages.append("INFO", messages.getProperty("tmsg_19"));
 		} catch (Exception e) {
-			logger.error("Exception", e);
 			retExtract = false;
 		}
 		return retExtract;

@@ -722,7 +722,7 @@ public class FileDrop {
          * Returns <tt>true</tt> if <var>flavor</var> is one of the supported
          * flavors. Flavors are supported using the <code>equals(...)</code> method.
          *
-         * @param flavor The data flavor to check
+         * @param flavor The data flavor to isValid
          * @return Whether or not the flavor is supported
          * @since 1.1
          */

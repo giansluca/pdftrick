@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.WaitPanel.WaitPanelMode;
-import org.gmdev.pdftrick.ui.actions.WindowsActions;
+import org.gmdev.pdftrick.ui.listeners.MainWindowListener;
 import org.gmdev.pdftrick.ui.custom.GlassPane;
 import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.ui.panels.Menu;
@@ -20,7 +20,7 @@ import static org.gmdev.pdftrick.utils.SetupUtils.WIN_OS;
 
 public class UserInterface extends JFrame {
 
-	private final static PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private final static PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	private final LeftPanel left;
     private final CenterPanel center;
@@ -35,7 +35,7 @@ public class UserInterface extends JFrame {
 		setAppIcon();
         setTitle(APP_NAME);
 
-        addWindowListener(new WindowsActions());
+        addWindowListener(new MainWindowListener());
 
 		left = new LeftPanel();
 		center = new CenterPanel();
@@ -63,7 +63,7 @@ public class UserInterface extends JFrame {
 		if (imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE)
 			throw new IllegalStateException("Image icon non loaded");
 
-		if (BAG.getOs().equals(WIN_OS))
+		if (bag.getOs().equals(WIN_OS))
 			super.setIconImage(imageIcon.getImage());
 		else
 			Taskbar.getTaskbar().setIconImage(imageIcon.getImage());

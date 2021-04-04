@@ -1,10 +1,8 @@
 package org.gmdev.pdftrick.render;
 
-import org.apache.log4j.Logger;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.tasks.FirstPdfPageRenderTask;
-import org.gmdev.pdftrick.tasks.ExecPool;
-import org.gmdev.pdftrick.tasks.PdfCoverThumbnailsDisplayTask;
+import org.gmdev.pdftrick.manager.TasksContainer;
+import org.gmdev.pdftrick.tasks.*;
 
 import com.itextpdf.text.pdf.PdfReader;
 
@@ -12,58 +10,57 @@ import java.io.File;
 
 public class PdfRenderLeft {
 	
-	private static final Logger logger = Logger.getLogger(PdfRenderLeft.class);
-	private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
 	public PdfRenderLeft() {
 	}
 
 	public void pdfRender() {
-		String imgPath = BAG.getThumbnailsFolderPath() + File.separator;
-		int totPages = 0;
-		
-		// get the page number of the new generated pdf
+		TasksContainer tasksContainer = bag.getTasksContainer();
+		String imagesFolderPath = bag.getThumbnailsFolderPath() + File.separator;
+
+		int pages;
 		try {
-			PdfReader reader = new PdfReader(BAG.getPdfFilePath().toString());
-			totPages = reader.getNumberOfPages();
-			BAG.setNumberOfPages(totPages);
+			PdfReader reader = new PdfReader(bag.getPdfFilePath().toString());
+			pages = reader.getNumberOfPages();
+			bag.setNumberOfPages(pages);
 			reader.close();
 		} catch (Exception e) {
-			logger.error("Exception", e);
+			throw new IllegalStateException(e);
 		}
-		
-		// call native function and rendering pdf cover in png images
+
 		boolean runPool = true;
-		int division = totPages / 3;
+		int divisionResult = pages / 3;
 		
-		if (totPages < 3) {
+		if (pages < 3) {
 			runPool = false;
-			division = totPages;
+			divisionResult = pages;
 		}
 		
-		FirstPdfPageRenderTask firstPdfPageRenderTask = new FirstPdfPageRenderTask(division, imgPath);
-		BAG.getTasksContainer().setFirstPdfPageRenderTask(firstPdfPageRenderTask);
+		FirstPdfPageRenderTask firstPdfPageRenderTask =
+				new FirstPdfPageRenderTask(divisionResult, imagesFolderPath);
+		tasksContainer.setFirstPdfPageRenderTask(firstPdfPageRenderTask);
 		
-		Thread divisionThumbsThread = new Thread(firstPdfPageRenderTask, "divisionThumbsThread");
-		BAG.getTasksContainer().setDivisionThumbsThread(divisionThumbsThread);
-		divisionThumbsThread.start();
+		Thread firstPdfPageRenderThread = new Thread(firstPdfPageRenderTask);
+		tasksContainer.setFirstPdfPageRenderThread(firstPdfPageRenderThread);
+		firstPdfPageRenderThread.start();
 		
 		if (runPool) {
-			ExecPool execPool = new ExecPool(totPages, division, imgPath);
-			BAG.getTasksContainer().setExecPool(execPool);
+			ExecutorRunnerTask executorRunnerTask =
+					new ExecutorRunnerTask(pages, divisionResult, imagesFolderPath);
+			tasksContainer.setExecutorRunnerTask(executorRunnerTask);
 			
-			Thread execPoolThread = new Thread(execPool, "execPoolThread");
-			BAG.getTasksContainer().setExecPoolThread(execPoolThread);
-			execPoolThread.start();
+			Thread executorRunnerThread = new Thread(executorRunnerTask);
+			tasksContainer.setExecutorRunnerThread(executorRunnerThread);
+			executorRunnerThread.start();
 		}
-		
-		// thread that search and showing thumbnails 
+
 		PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = new PdfCoverThumbnailsDisplayTask();
-		BAG.getTasksContainer().setPdfCoverThumbnailsDisplayTask(pdfCoverThumbnailsDisplayTask);
+		tasksContainer.setPdfCoverThumbnailsDisplayTask(pdfCoverThumbnailsDisplayTask);
 				
-		Thread showThumbsThread = new Thread(pdfCoverThumbnailsDisplayTask, "showThumbsThread");
-		BAG.getTasksContainer().setShowThumbsThread(showThumbsThread);
-		showThumbsThread.start();
+		Thread pdfCoverThumbnailsDisplayThread = new Thread(pdfCoverThumbnailsDisplayTask);
+		tasksContainer.setPdfCoverThumbnailsDisplayThread(pdfCoverThumbnailsDisplayThread);
+		pdfCoverThumbnailsDisplayThread.start();
 	}
 
 	

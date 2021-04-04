@@ -123,4 +123,6 @@ public class WrapLayout extends FlowLayout {
 		minimum.width -= (getHgap() + 1);
 		return minimum;
 	}
+
+
 }

@@ -66,7 +66,7 @@ public class ImageUtils {
     }
 
     /**
-     * Apply mask (alpha channel to an image)
+     * Apply mask (alpha channel)
      */
     public static BufferedImage ApplyTransparency(BufferedImage sourceImage, Image mask) {
         BufferedImage destImage = new BufferedImage(

@@ -5,51 +5,33 @@ import java.util.concurrent.ExecutorService;
 import org.gmdev.pdftrick.tasks.*;
 
 public class TasksContainer {
-	
-	private DragAndDropTask dragAndDropTask = null;
-	private FileChooserTask fileChooserTask = null;
+
+	// Tasks
 	private PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = null;
 	private FirstPdfPageRenderTask firstPdfPageRenderTask = null;
 	private PageThumbnailsDisplayTask pageThumbnailsDisplayTask = null;
 	private ImagesExtractionTask imagesExtractionTask = null;
 	private CancelTask cancelTask = null;
-	private ExecPool execPool = null;
+	private ExecutorRunnerTask executorRunnerTask = null;
 
-	private ExecutorService executor = null;
-	private Thread showThumbsThread = null;
-	private Thread divisionThumbsThread = null;
-	private Thread execPoolThread = null;
-	private Thread OpenFileChooserThread = null;
-	private Thread DragAnDropFileChooserThread = null;
-	private Thread imgThumbThread = null;
-	private Thread imgExtractionThread = null;
+	// Treads
+	private Thread pdfCoverThumbnailsDisplayThread = null;
+	private Thread firstPdfPageRenderThread = null;
+	private Thread pageThumbnailsDisplayThread = null;
+	private Thread imagesExtractionThread = null;
 	private Thread cancelThread = null;
+	private Thread executorRunnerThread = null;
+	private ExecutorService executorService = null;
 
 	public synchronized PdfCoverThumbnailsDisplayTask getPdfCoverThumbnailsDisplayTask() {
 		return pdfCoverThumbnailsDisplayTask;
 	}
-	
+
 	public synchronized void setPdfCoverThumbnailsDisplayTask(
 			PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask) {
 		this.pdfCoverThumbnailsDisplayTask = pdfCoverThumbnailsDisplayTask;
 	}
 
-	public synchronized FileChooserTask getFileChooserTask() {
-		return fileChooserTask;
-	}
-
-	public synchronized void setFileChooserTask(FileChooserTask fileChooserTask) {
-		this.fileChooserTask = fileChooserTask;
-	}
-
-	public synchronized DragAndDropTask getDragAndDropTask() {
-		return dragAndDropTask;
-	}
-
-	public synchronized void setDragAndDropTask(DragAndDropTask dragAndDropTask) {
-		this.dragAndDropTask = dragAndDropTask;
-	}
-	
 	public synchronized FirstPdfPageRenderTask getFirstPdfPageRenderTask() {
 		return firstPdfPageRenderTask;
 	}
@@ -57,21 +39,13 @@ public class TasksContainer {
 	public synchronized void setFirstPdfPageRenderTask(FirstPdfPageRenderTask firstPdfPageRenderTask) {
 		this.firstPdfPageRenderTask = firstPdfPageRenderTask;
 	}
-	
-	public synchronized ExecPool getExecPool() {
-		return execPool;
+
+	public ExecutorRunnerTask getExecutorRunnerTask() {
+		return executorRunnerTask;
 	}
-	
-	public synchronized void setExecPool(ExecPool execPool) {
-		this.execPool = execPool;
-	}
-	
-	public synchronized ExecutorService getExecutor() {
-		return executor;
-	}
-	
-	public synchronized void setExecutor(ExecutorService executor) {
-		this.executor = executor;
+
+	public void setExecutorRunnerTask(ExecutorRunnerTask executorRunnerTask) {
+		this.executorRunnerTask = executorRunnerTask;
 	}
 
 	public synchronized PageThumbnailsDisplayTask getPageThumbnailsDisplayTask() {
@@ -98,62 +72,38 @@ public class TasksContainer {
 		this.cancelTask = cancelTask;
 	}
 
-	public synchronized Thread getShowThumbsThread() {
-		return showThumbsThread;
-	}
-	
-	public synchronized void setShowThumbsThread(Thread showThumbsThread) {
-		this.showThumbsThread = showThumbsThread;
-	}
-	
-	public synchronized Thread getDivisionThumbsThread() {
-		return divisionThumbsThread;
+	public Thread getPdfCoverThumbnailsDisplayThread() {
+		return pdfCoverThumbnailsDisplayThread;
 	}
 
-	public void setDivisionThumbsThread(Thread divisionThumbsThread) {
-		this.divisionThumbsThread = divisionThumbsThread;
-	}
-	
-	public synchronized Thread getExecPoolThread() {
-		return execPoolThread;
-	}
-	
-	public synchronized void setExecPoolThread(Thread execPoolThread) {
-		this.execPoolThread = execPoolThread;
-	}
-	
-	public synchronized Thread getOpenFileChooserThread() {
-		return OpenFileChooserThread;
-	}
-	
-	public synchronized void setOpenFileChooserThread(Thread openFileChooserThread) {
-		OpenFileChooserThread = openFileChooserThread;
-	}
-	
-	public synchronized Thread getDragAnDropFileChooserThread() {
-		return DragAnDropFileChooserThread;
-	}
-	
-	public synchronized void setDragAnDropFileChooserThread(Thread dragAnDropFileChooserThread) {
-		DragAnDropFileChooserThread = dragAnDropFileChooserThread;
-	}
-	
-	public  synchronized Thread getImgThumbThread() {
-		return imgThumbThread;
+	public void setPdfCoverThumbnailsDisplayThread(Thread pdfCoverThumbnailsDisplayThread) {
+		this.pdfCoverThumbnailsDisplayThread = pdfCoverThumbnailsDisplayThread;
 	}
 
-	public synchronized void setImgThumbThread(Thread imgThumbThread) {
-		this.imgThumbThread = imgThumbThread;
+	public Thread getFirstPdfPageRenderThread() {
+		return firstPdfPageRenderThread;
 	}
-	
-	public synchronized Thread getImgExtractionThread() {
-		return imgExtractionThread;
+
+	public void setFirstPdfPageRenderThread(Thread firstPdfPageRenderThread) {
+		this.firstPdfPageRenderThread = firstPdfPageRenderThread;
 	}
-	
-	public synchronized void setImgExtractionThread(Thread imgExtractionThread) {
-		this.imgExtractionThread = imgExtractionThread;
+
+	public Thread getPageThumbnailsDisplayThread() {
+		return pageThumbnailsDisplayThread;
 	}
-	
+
+	public void setPageThumbnailsDisplayThread(Thread pageThumbnailsDisplayThread) {
+		this.pageThumbnailsDisplayThread = pageThumbnailsDisplayThread;
+	}
+
+	public Thread getImagesExtractionThread() {
+		return imagesExtractionThread;
+	}
+
+	public void setImagesExtractionThread(Thread imagesExtractionThread) {
+		this.imagesExtractionThread = imagesExtractionThread;
+	}
+
 	public synchronized Thread getCancelThread() {
 		return cancelThread;
 	}
@@ -161,5 +111,22 @@ public class TasksContainer {
 	public synchronized void setCancelThread(Thread cancelThread) {
 		this.cancelThread = cancelThread;
 	}
+
+	public Thread getExecutorRunnerThread() {
+		return executorRunnerThread;
+	}
+
+	public void setExecutorRunnerThread(Thread executorRunnerThread) {
+		this.executorRunnerThread = executorRunnerThread;
+	}
+
+	public ExecutorService getExecutorService() {
+		return executorService;
+	}
+
+	public void setExecutorService(ExecutorService executorService) {
+		this.executorService = executorService;
+	}
+
 
 }

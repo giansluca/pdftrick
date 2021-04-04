@@ -10,11 +10,11 @@ import static org.gmdev.pdftrick.utils.Constants.*;
 
 public class ModalInfoPanel {
 
-    private static final PdfTrickBag BAG = PdfTrickBag.INSTANCE;
+    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
     public static void displayAboutPanel() {
-        String os = BAG.getOs();
-        String version = BAG.getVersion();
+        String os = bag.getOs();
+        String version = bag.getVersion();
         ImageIcon pdfTrickIcon = new ImageIcon(FileLoader.loadFileAsUrl(PDFTRICK_ICO));
 
         String aboutTitle = "PdfTrick Info";
@@ -22,7 +22,7 @@ public class ModalInfoPanel {
                 "PdfTrick\nAuthor: Gian Luca Mori\nVersion: %s %s \nLicense: gnu Gpl3", version, os);
 
         SwingInvoker.invokeLater(
-                () -> displayGenericInfoPanel(BAG.getUserInterface(), aboutMessage, aboutTitle, pdfTrickIcon));
+                () -> displayGenericInfoPanel(bag.getUserInterface(), aboutMessage, aboutTitle, pdfTrickIcon));
     }
 
     private static void displayGenericInfoPanel(Component parentComponent,

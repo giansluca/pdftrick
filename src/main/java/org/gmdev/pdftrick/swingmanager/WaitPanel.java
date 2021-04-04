@@ -21,8 +21,7 @@ public class WaitPanel {
 	}
 
 	public static void removeWaitPanel() {
-		SwingInvoker.invokeLater(
-				userInterface::unlockScreen);
+		SwingInvoker.invokeLater(userInterface::unlockScreen);
 	}
 
 	public enum WaitPanelMode {
