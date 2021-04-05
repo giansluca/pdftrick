@@ -18,7 +18,8 @@ jobs:
         - choco install putty
         - export PATH=$(cmd.exe //c "refreshenv > nul & C:\Progra~1\Git\bin\bash -c 'echo \$PATH'")
 install:
-  - mvn install -DskipTests -Dmaven.javadoc.skip=true -B
+  - mvn dependency:go-offline -B
+  #- mvn dependency:go-offline -DskipTests -Dmaven.javadoc.skip=true -B
 script:
   - mvn test -B
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mvn clean package -DskipTests -P mac -B      ; fi
@@ -31,7 +32,7 @@ deploy:
     #skip_cleanup: true
     #script: bash ./deploy.sh
     #on:
-      #tags: true
+      #branch: develop
   - provider: releases
     api_key: "$GITHUB_TOKEN"
     file:
