@@ -1,4 +1,4 @@
-# PdfTrick 1.3.1
+# PdfTrick 1.3.2
 
 Pdf images extractor
 PdfTrick is a free open source software released under Gpl 3 license. It requires java jdk 11 or higher installed.  
