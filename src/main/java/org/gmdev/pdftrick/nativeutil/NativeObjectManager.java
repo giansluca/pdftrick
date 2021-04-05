@@ -8,13 +8,13 @@ public class NativeObjectManager {
 	private static final String RENDER_THUMBNAIL_FUNCTION = "renderThumbnail";
 	private static final String RENDER_FULL_FUNCTION = "renderFull";
 
-	//private CustomClassLoader classLoader;
-	//private Class<?> nativeLibCallClass;
-	//private Object nativeLibCallInstance;
-	//private Method pageThumbnailMethod;
-	//private Method pageFullMethod;
+	private CustomClassLoader classLoader;
+	private Class<?> nativeLibCallClass;
+	private Object nativeLibCallInstance;
+	private Method pageThumbnailMethod;
+	private Method pageFullMethod;
 
-	private NativeLibCall nativeLib;
+	//private NativeLibCall nativeLib;
 
 	public NativeObjectManager() {
 		loadNativeLibrary();
@@ -26,12 +26,11 @@ public class NativeObjectManager {
 	 */
 	private void loadNativeLibrary() {
 		try {
-			//classLoader = new CustomClassLoader();
-			//nativeLibCallClass = classLoader.findClass(NATIVE_LIB_CALL);
-			//nativeLibCallInstance = nativeLibCallClass.getDeclaredConstructor().newInstance();
+			classLoader = new CustomClassLoader();
+			nativeLibCallClass = classLoader.findClass(NATIVE_LIB_CALL);
+			nativeLibCallInstance = nativeLibCallClass.getDeclaredConstructor().newInstance();
 
-			nativeLib = new NativeLibCall();
-
+			//nativeLib = new NativeLibCall();
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
@@ -39,13 +38,13 @@ public class NativeObjectManager {
 
 	public void renderPdfPageThumbnail(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
 		try {
-			/*if (pageThumbnailMethod == null)
+			if (pageThumbnailMethod == null)
 				pageThumbnailMethod = nativeLibCallClass.getMethod(
 						RENDER_THUMBNAIL_FUNCTION, String.class, String.class, int.class, int.class);
 
 			pageThumbnailMethod.invoke(nativeLibCallInstance, pdfFilePath, imgPath, pageNumber, zoom);
-			*/
-			nativeLib.renderThumbnail(pdfFilePath, imgPath, pageNumber, zoom);
+
+			//nativeLib.renderThumbnail(pdfFilePath, imgPath, pageNumber, zoom);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
@@ -53,26 +52,25 @@ public class NativeObjectManager {
 
 	public void renderPdfPageFull(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
 		try {
-			/*if (pageFullMethod == null)
+			if (pageFullMethod == null)
 				pageFullMethod = nativeLibCallClass.getMethod(
 						RENDER_FULL_FUNCTION, String.class, String.class, int.class, int.class);
 
 			pageFullMethod.invoke(nativeLibCallInstance, pdfFilePath, imgPath, pageNumber, zoom);
-			*/
-			nativeLib.renderFull(pdfFilePath, imgPath, pageNumber, zoom);
 
+			//nativeLib.renderFull(pdfFilePath, imgPath, pageNumber, zoom);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}	
 	}
 
 	public void unloadNativeLib() {
-		/*
 		classLoader = null;
 		nativeLibCallClass = null;
 		nativeLibCallInstance = null;
-		*/
-		nativeLib = null;
+
+		//nativeLib = null;
+
 		System.runFinalization();
 		System.gc();
 		try {
