@@ -1,34 +1,24 @@
 branches:
   only:
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+    - develop
 language: minimal
-env:
-  global:
-    - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
-    - GRAVIS="$HOME/gravis"
 jobs:
   include:
     - os: osx
-      osx_image: xcode12.2
+      osx_image: xcode12.4
       before_install:
         - brew tap adoptopenjdk/openjdk
-        - brew cask install adoptopenjdk11
-        - brew install maven
+        - brew install --cask adoptopenjdk11
         - brew install esolitos/ipa/sshpass
     - os: windows
-      matrix:
-        - JDK="openjdk@1.11.0-2"
       before_install:
-        - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
-        - source $GRAVIS/install-jdk
-        - source $GRAVIS/install-maven
+        - choco install adoptopenjdk11
+        - choco install maven
         - choco install putty
-      cache:
-        directories:
-          - $HOME/.m2
-          - $HOME/.jabba/
+        - export PATH=$(cmd.exe //c "refreshenv > nul & C:\Progra~1\Git\bin\bash -c 'echo \$PATH'")
 install:
-  - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V
+  - mvn dependency:go-offline -B
 script:
   - mvn test -B
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mvn clean package -DskipTests -P mac -B      ; fi
@@ -37,11 +27,11 @@ before_deploy:
   - export MAC_FILE_PATH=target/PdfTrick_${TRAVIS_TAG:1}.dmg
   - export WIN_FILE_PATH=target/PdfTrick_${TRAVIS_TAG:1}.exe
 deploy:
-  - provider: script
-    skip_cleanup: true
-    script: bash ./deploy.sh
-    on:
-      tags: true
+  #- provider: script
+    #skip_cleanup: true
+    #script: bash ./deploy.sh
+    #on:
+      #branch: develop
   - provider: releases
     api_key: "$GITHUB_TOKEN"
     file:
