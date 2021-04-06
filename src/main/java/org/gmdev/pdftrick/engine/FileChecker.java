@@ -15,28 +15,30 @@ import static org.gmdev.pdftrick.engine.PasswordChecker.Result.OK;
 public class FileChecker {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
-    private static final int MAX_SIZE = 256;
+    private static final int MAX_SIZE_MB = 256;
+    private static final String PDF_MAGIC_NUMBER = "%PDF";
 
     private boolean userProtection = false;
     private boolean ownerProtection = false;
+    private final File uploadedFile;
+    private final Properties messages;
 
-    public boolean isValid() {
-        Properties messages = bag.getMessagesProps();
-        File uploadedFile = bag.getUploadedFile();
-
-        if (!checkPdfTypeFile(uploadedFile, messages)) return false;
-        if (!checkFileSize(uploadedFile, messages)) return false;
-
-        boolean canAccess = canAccess(uploadedFile);
-        if (!canAccess) return false;
-
-        return checkNumberOfImages(uploadedFile, messages);
+    public FileChecker(File uploadedFile) {
+        this.uploadedFile = uploadedFile;
+        this.messages = bag.getMessagesProps();
     }
 
-    private boolean checkPdfTypeFile(File uploadedFile, Properties messages) {
+    public boolean isValid() {
+        if (!isValidFileType()) return false;
+        if (!isValidFileSize()) return false;
+        if (!canAccess()) return false;
+        return hasImages();
+    }
+
+    private boolean isValidFileType() {
         String fileName = uploadedFile.getName();
-        String content = this.readFile(uploadedFile);
-        if (content.isEmpty() || !content.substring(0, 4).equalsIgnoreCase("%PDF")) {
+        String content = this.readFile();
+        if (content.isEmpty() || !content.substring(0, 4).equalsIgnoreCase(PDF_MAGIC_NUMBER)) {
             Messages.append("WARNING", MessageFormat.format(messages.getProperty("d_msg_04"), fileName));
             return false;
         }
@@ -44,31 +46,20 @@ public class FileChecker {
         return true;
     }
 
-    private String readFile(File uploadedFile) {
-        FileReader in = null;
-        String line;
-        try {
-            in = new FileReader(uploadedFile);
-            BufferedReader reader = new BufferedReader(in);
-            line = reader.readLine();
+    private String readFile() {
+        try (FileReader in = new FileReader(uploadedFile);
+            BufferedReader reader = new BufferedReader(in)) {
+            return reader.readLine();
         } catch (IOException e) {
             throw new IllegalStateException(e);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ignored) {}
-            }
         }
-
-        return line;
     }
 
-    private boolean checkFileSize(File uploadedFile, Properties messages) {
+    private boolean isValidFileSize() {
         long fileSize = uploadedFile.length();
         long fileSizeKB = fileSize / 1024;
         long fileSizeMB = fileSizeKB / 1024;
-        if (fileSizeMB > MAX_SIZE) {
+        if (fileSizeMB > MAX_SIZE_MB) {
             Messages.append("WARNING", messages.getProperty("t_msg_20"));
             return false;
         }
@@ -76,7 +67,29 @@ public class FileChecker {
         return true;
     }
 
-    private boolean checkNumberOfImages(File uploadedFile, Properties messages) {
+    private boolean canAccess() {
+        verifyProtection();
+        if (!userProtection && !ownerProtection) return true;
+
+        PasswordChecker passwordChecker = new PasswordChecker(uploadedFile);
+        return passwordChecker.check() == OK;
+    }
+
+    private void verifyProtection() {
+        PdfReader pdfReader = null;
+        try {
+            pdfReader = new PdfReader(uploadedFile.getPath());
+            if (pdfReader.isEncrypted()) ownerProtection = true;
+        } catch (BadPasswordException e) {
+            userProtection = true;
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        } finally {
+            if (pdfReader != null) pdfReader.close();
+        }
+    }
+
+    private boolean hasImages() {
         PdfReader pdfReader = null;
         try {
             pdfReader = bag.getPdfPassword() != null
@@ -101,28 +114,6 @@ public class FileChecker {
 
         Messages.append("WARNING", messages.getProperty("t_msg_21"));
         return false;
-    }
-
-    private boolean canAccess(File uploadedFile) {
-        verifyProtection(uploadedFile);
-        if (!userProtection && !ownerProtection) return true;
-
-        PasswordChecker passwordChecker = new PasswordChecker();
-        return passwordChecker.check() == OK;
-    }
-
-    private void verifyProtection(File file) {
-        PdfReader pdfReader = null;
-        try {
-            pdfReader = new PdfReader(file.getPath());
-            if (pdfReader.isEncrypted()) ownerProtection = true;
-        } catch (BadPasswordException e) {
-            userProtection = true;
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            if (pdfReader != null) pdfReader.close();
-        }
     }
 
 

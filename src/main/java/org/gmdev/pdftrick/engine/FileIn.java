@@ -53,9 +53,9 @@ public interface FileIn {
         prepareForLoading();
 
         File uploadedFile = filesArray[0];
-        bag.setUploadedFile(uploadedFile);
+        if(!isValidPdfFile(uploadedFile)) return;
 
-        checkPdfFile();
+        bag.setUploadedFile(uploadedFile);
         loadPdfFile(uploadedFile);
     }
 
@@ -67,14 +67,9 @@ public interface FileIn {
         FileUtils.deletePdfFile(bag.getPdfFilePath());
     }
 
-    default void checkPdfFile() {
-        String message = "check file failed!";
-        FileChecker fileChecker = new FileChecker();
-
-        if (!fileChecker.isValid()) {
-            Messages.append("WARNING", message);
-            throw new IllegalStateException(message);
-        }
+    default boolean isValidPdfFile(File uploadedFile) {
+        FileChecker fileChecker = new FileChecker(uploadedFile);
+        return fileChecker.isValid();
     }
 
     default void loadPdfFile(File uploadedFile) {

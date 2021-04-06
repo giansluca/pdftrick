@@ -24,22 +24,15 @@ public class PasswordChecker {
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
     private static final int MAX_ATTEMPTS = 3;
 
-    private static class PasswordChekResult {
-        public PasswordChekResult(String pdfPassword, Result result) {
-            this.pdfPassword = pdfPassword;
-            this.result = result;
-        }
-
-        private final String pdfPassword;
-        private final Result result;
-    }
-
-    public enum Result {
-        DEFAULT, OK, KO, ABORT
-    }
-
     private PasswordChekResult passwordCheckResult = new PasswordChekResult(null, DEFAULT);
     private int attempt = 1;
+    private final File uploadedFile;
+    private final Properties messages;
+
+    public PasswordChecker(File uploadedFile) {
+        this.uploadedFile = uploadedFile;
+        this.messages = bag.getMessagesProps();
+    }
 
     public Consumer<PasswordChekResult> passwordCheckCallback = result -> {
         attempt++;
@@ -58,16 +51,11 @@ public class PasswordChecker {
     }
 
     private void askPassword() {
-        System.out.println("before ask password");
         SwingInvoker.invokeAndWait(() -> loadPasswordForm(passwordCheckCallback));
-
-        System.out.println("after ask password");
     }
 
     private void loadPasswordForm(Consumer<PasswordChekResult> passwordCheckCallback ) {
         ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.PDFTRICK_ICO));
-        Properties messages = bag.getMessagesProps();
-        File uploadedFile = bag.getUploadedFile();
 
         JDialog passwordDialog = new JDialog((JDialog) null, true);
         passwordDialog.setTitle(Constants.PWD_DIALOG);
@@ -144,12 +132,9 @@ public class PasswordChecker {
     }
 
     private boolean canAccessWithPassword(String typedPassword) {
-        Properties messages = bag.getMessagesProps();
-        File uploadedFile = bag.getUploadedFile();
-
         PdfReader reader = null;
         try {
-            reader = new PdfReader(bag.getUploadedFile().getPath(), typedPassword.getBytes());
+            reader = new PdfReader(uploadedFile.getPath(), typedPassword.getBytes());
             boolean openedWithFullPermissions = reader.isOpenedWithFullPermissions();
 
             if (!openedWithFullPermissions)
@@ -167,6 +152,22 @@ public class PasswordChecker {
             if (reader != null) reader.close();
         }
     }
+
+    private static class PasswordChekResult {
+        public PasswordChekResult(String pdfPassword, Result result) {
+            this.pdfPassword = pdfPassword;
+            this.result = result;
+        }
+
+        private final String pdfPassword;
+        private final Result result;
+    }
+
+    public enum Result {
+        DEFAULT, OK, KO, ABORT
+    }
+
+
 
 
 }
