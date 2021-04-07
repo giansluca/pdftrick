@@ -10,7 +10,7 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
-public class FileDataManager {
+public class PdfFileTransformer {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 

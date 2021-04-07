@@ -76,8 +76,8 @@ public interface FileIn {
         CenterPanel centerPanel = bag.getUserInterface().getCenter();
         SwingInvoker.invokeLater(centerPanel::startWaitIconLoadPdf);
 
-        FileDataManager fileDataManager = new FileDataManager();
-        File outFile = fileDataManager.mergePdf(uploadedFile, bag.getPdfFilePath());
+        PdfFileTransformer pdfFileTransformer = new PdfFileTransformer();
+        File outFile = pdfFileTransformer.mergePdf(uploadedFile, bag.getPdfFilePath());
 
         if (outFile == null || !outFile.exists()) {
             String message = "Error checking pdf files!";
