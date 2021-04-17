@@ -29,6 +29,8 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
     @Override
     public void process() throws IOException {
+        // TODO this class if a test for migration to Itext 7
+
         Properties messages = bag.getMessagesProps();
         JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
 
@@ -43,9 +45,6 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
         reader.close();
         document.close();
-
-        // FIXME close reader and document here ?
-
         WaitPanel.removeWaitPanel();
         exited.set(true);
     }
