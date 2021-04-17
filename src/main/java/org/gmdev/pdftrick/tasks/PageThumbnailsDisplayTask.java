@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.*;
 
-import org.gmdev.pdftrick.engine.PageThumbnailsListener;
+import org.gmdev.pdftrick.render.PageThumbnailsListener;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.utils.Messages;
@@ -65,12 +65,12 @@ public class PageThumbnailsDisplayTask implements Runnable {
 
     private void processPage(PageThumbnailsListener pageThumbnailsListener) {
         try {
-            PdfReader pdfReader = new PdfReader(bag.getPdfFilePath().toString());
-            PdfReaderContentParser pdfParser = new PdfReaderContentParser(pdfReader);
+            PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
+            PdfReaderContentParser pdfParser = new PdfReaderContentParser(reader);
 
             pdfParser.processContent(pageNumber, pageThumbnailsListener);
 
-            pdfReader.close();
+            reader.close();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

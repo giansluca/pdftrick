@@ -35,7 +35,7 @@ public class PageThumbnailsDisplay implements IEventListener {
         PdfImageXObject image = imageRenderInfo.getImage();
         System.out.println(image.identifyImageType());
 
-        // TODO migration to Itext 7
+        // TODO this class if a test for migration to Itext 7
     }
 
 }

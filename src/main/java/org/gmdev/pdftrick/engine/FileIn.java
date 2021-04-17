@@ -1,5 +1,6 @@
 package org.gmdev.pdftrick.engine;
 
+import com.itextpdf.text.pdf.PdfReader;
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.render.PdfRenderLeft;
 import org.gmdev.pdftrick.swingmanager.*;
@@ -8,6 +9,7 @@ import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.gmdev.pdftrick.swingmanager.ModalWarningPanel.displayTooManyFilesLoadedAndThrow;
 
@@ -56,35 +58,46 @@ public interface FileIn {
         if(!isValidPdfFile(uploadedFile)) return;
 
         bag.setUploadedFile(uploadedFile);
-        loadPdfFile(uploadedFile);
+        savePdfFile(uploadedFile);
+        renderPdfPages();
     }
 
-    default void prepareForLoading() {
+    private void prepareForLoading() {
         SwingCleaner.cleanUserInterface();
 
         bag.cleanUp();
         FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
-        FileUtils.deletePdfFile(bag.getPdfFilePath());
+        FileUtils.deletePdfFile(bag.getSavedFilePath());
     }
 
-    default boolean isValidPdfFile(File uploadedFile) {
+    private boolean isValidPdfFile(File uploadedFile) {
         FileChecker fileChecker = new FileChecker(uploadedFile);
         return fileChecker.isValid();
     }
 
-    default void loadPdfFile(File uploadedFile) {
+    private void savePdfFile(File uploadedFile) {
         CenterPanel centerPanel = bag.getUserInterface().getCenter();
         SwingInvoker.invokeLater(centerPanel::startWaitIconLoadPdf);
 
-        PdfFileTransformer pdfFileTransformer = new PdfFileTransformer();
-        File outFile = pdfFileTransformer.mergePdf(uploadedFile, bag.getPdfFilePath());
+        PdfFileTransformer transformer = new PdfFileTransformer();
+        File savedFile = transformer.saveUploadedFile(uploadedFile);
 
-        if (outFile == null || !outFile.exists()) {
-            String message = "Error checking pdf files!";
-            Messages.append("WARNING", message);
+        if (savedFile == null || !savedFile.exists()) {
+            String message = "Error saving pdf file.";
+            Messages.append("ERROR", message);
             throw new IllegalStateException(message);
         }
 
+        try {
+            PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
+            bag.setNumberOfPages(reader.getNumberOfPages());
+            reader.close();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private void renderPdfPages() {
         Messages.append("INFO", "Check Pdf OK, start loading pages");
         PdfRenderLeft render = new PdfRenderLeft();
         render.pdfRender();

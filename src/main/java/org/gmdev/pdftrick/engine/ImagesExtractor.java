@@ -27,7 +27,7 @@ public class ImagesExtractor {
 	public void getImages() {
 		final Properties messages = bag.getMessagesProps();
 		final HashMap<String, RenderedImageAttributes> inlineImgSelected = bag.getInlineSelectedImages();
-		final Path pdfFile = bag.getPdfFilePath();
+		final Path pdfFile = bag.getSavedFilePath();
 		boolean getImgCheck = false;
 	
 		Messages.append("INFO", messages.getProperty("tmsg_17"));

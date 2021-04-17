@@ -17,13 +17,10 @@ public enum PdfTrickBag {
 	private String os;
 	private String version;
 	private Path nativeLibraryPath;
-	private Path pdfFilePath;
+	private Path savedFilePath;
 	private Path thumbnailsFolderPath;
 	private int numberOfPages;
-
-	private ArrayList<File> pdfFilesArray;
 	private File uploadedFile;
-
 	private int selectedPage;
 	private Path extractionFolderPath;
 	private HashMap<Integer, String> pagesRotation;
@@ -45,10 +42,9 @@ public enum PdfTrickBag {
 		this.nativeLibraryPath = builder.nativeLibraryPath;
 		Path homeFolderPath = builder.homeFolderPath;
 
-		pdfFilePath = Path.of(homeFolderPath + File.separator + PDF_FILE_NAME);
+		savedFilePath = Path.of(homeFolderPath + File.separator + PDF_FILE_NAME);
 		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);
 		numberOfPages = 0;
-		pdfFilesArray = new ArrayList<>();
 		selectedPage = 0;
 		pagesRotation = new HashMap<>();
 		selectedImages = new HashMap<>();
@@ -85,11 +81,11 @@ public enum PdfTrickBag {
 		cleanPagesRotationHashMap();
 		setSelectedPage(0);
 		setExtractionFolderPath(null);
-		cleanPdfFilesArray();
+		cleanPdfFile();
 	}
 
-	public void cleanPdfFilesArray(){
-		pdfFilesArray.clear();
+	public void cleanPdfFile(){
+		uploadedFile = null;
 	}
 
 	public void cleanSelectedImagesHashMap() {
@@ -116,8 +112,8 @@ public enum PdfTrickBag {
 		return nativeLibraryPath;
 	}
 
-	public Path getPdfFilePath() {
-		return pdfFilePath;
+	public Path getSavedFilePath() {
+		return savedFilePath;
 	}
 
 	public Path getThumbnailsFolderPath() {
@@ -130,10 +126,6 @@ public enum PdfTrickBag {
 
 	public void setNumberOfPages(int numberOfPages) {
 		this.numberOfPages = numberOfPages;
-	}
-
-	public File getUploadedFile() {
-		return uploadedFile;
 	}
 
 	public void setUploadedFile(File uploadedFile) {

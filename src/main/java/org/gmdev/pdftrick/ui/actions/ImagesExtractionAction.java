@@ -26,7 +26,7 @@ public class ImagesExtractionAction extends AbstractAction {
         Container contentPanel = bag.getUserInterface().getContentPane();
         TasksContainer tasksContainer = bag.getTasksContainer();
 
-        File pdfFile = bag.getPdfFilePath().toFile();
+        File pdfFile = bag.getSavedFilePath().toFile();
         if (!pdfFile.exists()) {
             Messages.append("INFO", messages.getProperty("t_msg_04"));
             return;

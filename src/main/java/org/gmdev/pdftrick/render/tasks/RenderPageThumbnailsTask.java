@@ -23,7 +23,7 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
     public RenderPageThumbnailsTask(int pageNumber) {
         this.pageNumber = pageNumber;
-        pdfFilePath = bag.getPdfFilePath();
+        pdfFilePath = bag.getSavedFilePath();
         exited = new AtomicBoolean(false);
     }
 
@@ -34,17 +34,17 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
 
         WaitPanel.setLoadingThumbnailsWaitPanel();
 
-        PdfReader pdfReader = new PdfReader(pdfFilePath.toString());
-        PdfDocument pdfDocument = new PdfDocument(pdfReader);
-        PdfDocumentContentParser contentParser = new PdfDocumentContentParser(pdfDocument);
+        PdfReader reader = new PdfReader(pdfFilePath.toString());
+        PdfDocument document = new PdfDocument(reader);
+        PdfDocumentContentParser contentParser = new PdfDocumentContentParser(document);
 
         PageThumbnailsDisplay pageThumbnailsDisplay = new PageThumbnailsDisplay(pageNumber);
         contentParser.processContent(pageNumber, pageThumbnailsDisplay);
 
-        pdfReader.close();
-        pdfDocument.close();
+        reader.close();
+        document.close();
 
-        // TODO other logic ....
+        // FIXME close reader and document here ?
 
         WaitPanel.removeWaitPanel();
         exited.set(true);

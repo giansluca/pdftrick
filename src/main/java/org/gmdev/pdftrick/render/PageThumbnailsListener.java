@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.engine;
+package org.gmdev.pdftrick.render;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -77,7 +77,7 @@ public class PageThumbnailsListener implements RenderListener {
 					if (isInline) {
 						buffImg = null;
 					} else {
-						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), bag.getPdfFilePath());
+						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), bag.getSavedFilePath());
 					}
 				} catch (Exception e) {
 					unsupportedImages++;

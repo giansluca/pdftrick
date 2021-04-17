@@ -22,7 +22,7 @@ public class SecondPdfPageRenderTask implements Runnable {
 	@Override
 	public void run() {
 		NativeObjectManager nativeManager = bag.getNativeObjectManager();
-		Path pdfFilePath = bag.getPdfFilePath();
+		Path pdfFilePath = bag.getSavedFilePath();
 
 		nativeManager.renderPdfPageThumbnail(pdfFilePath.toString(), imagePath, pageNumber, ZOOM_THUMBNAIL);
 	}

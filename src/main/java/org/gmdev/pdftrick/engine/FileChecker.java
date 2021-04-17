@@ -76,28 +76,30 @@ public class FileChecker {
     }
 
     private void verifyProtection() {
-        PdfReader pdfReader = null;
+        PdfReader reader = null;
         try {
-            pdfReader = new PdfReader(uploadedFile.getPath());
-            if (pdfReader.isEncrypted()) ownerProtection = true;
+            reader = new PdfReader(uploadedFile.getPath());
+            if (reader.isEncrypted()) ownerProtection = true;
+
+            reader.close();
         } catch (BadPasswordException e) {
             userProtection = true;
         } catch (IOException e) {
             throw new IllegalStateException(e);
         } finally {
-            if (pdfReader != null) pdfReader.close();
+            if (reader != null) reader.close();
         }
     }
 
     private boolean hasImages() {
-        PdfReader pdfReader = null;
+        PdfReader reader = null;
         try {
-            pdfReader = bag.getPdfPassword() != null
+            reader = bag.getPdfPassword() != null
                     ? new PdfReader(uploadedFile.getPath(), bag.getPdfPassword().getBytes())
                     : new PdfReader(uploadedFile.getPath());
 
-            for (int i = 0; i < pdfReader.getXrefSize(); i++) {
-                PdfObject pdfObject = pdfReader.getPdfObject(i);
+            for (int i = 0; i < reader.getXrefSize(); i++) {
+                PdfObject pdfObject = reader.getPdfObject(i);
                 if (pdfObject == null || !pdfObject.isStream()) continue;
 
                 PdfStream pdfStream = (PdfStream) pdfObject;
@@ -106,10 +108,12 @@ public class FileChecker {
                 if (pdfSubtype != null &&
                         pdfSubtype.toString().equals(PdfName.IMAGE.toString())) return true;
             }
+
+            reader.close();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         } finally {
-            if (pdfReader != null) pdfReader.close();
+            if (reader != null) reader.close();
         }
 
         Messages.append("WARNING", messages.getProperty("t_msg_21"));

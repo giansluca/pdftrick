@@ -21,7 +21,7 @@ public class MacActions {
 		NativeObjectManager nativeManager = bag.getNativeObjectManager();
 		nativeManager.unloadNativeLib();
 		
-		FileUtils.deletePdfFile(bag.getPdfFilePath());
+		FileUtils.deletePdfFile(bag.getSavedFilePath());
 		FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
 		System.exit(0);
 	}

@@ -11,30 +11,18 @@ import java.io.File;
 public class PdfRenderLeft {
 	
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
-	
-	public PdfRenderLeft() {
-	}
 
 	public void pdfRender() {
 		TasksContainer tasksContainer = bag.getTasksContainer();
 		String imagesFolderPath = bag.getThumbnailsFolderPath() + File.separator;
-
-		int pages;
-		try {
-			PdfReader reader = new PdfReader(bag.getPdfFilePath().toString());
-			pages = reader.getNumberOfPages();
-			bag.setNumberOfPages(pages);
-			reader.close();
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
+		int numberOfPages = bag.getNumberOfPages();
 
 		boolean runPool = true;
-		int divisionResult = pages / 3;
+		int divisionResult = numberOfPages / 3;
 		
-		if (pages < 3) {
+		if (numberOfPages < 3) {
 			runPool = false;
-			divisionResult = pages;
+			divisionResult = numberOfPages;
 		}
 		
 		FirstPdfPageRenderTask firstPdfPageRenderTask =
@@ -47,7 +35,7 @@ public class PdfRenderLeft {
 		
 		if (runPool) {
 			ExecutorRunnerTask executorRunnerTask =
-					new ExecutorRunnerTask(pages, divisionResult, imagesFolderPath);
+					new ExecutorRunnerTask(numberOfPages, divisionResult, imagesFolderPath);
 			tasksContainer.setExecutorRunnerTask(executorRunnerTask);
 			
 			Thread executorRunnerThread = new Thread(executorRunnerTask);
