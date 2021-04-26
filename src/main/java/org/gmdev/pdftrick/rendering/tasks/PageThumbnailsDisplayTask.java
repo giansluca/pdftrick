@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.tasks;
+package org.gmdev.pdftrick.rendering.tasks;
 
 import java.awt.*;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.*;
 
-import org.gmdev.pdftrick.render.PageThumbnailsListener;
+import org.gmdev.pdftrick.rendering.PageThumbnailsDisplay;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.utils.Messages;
@@ -38,24 +38,24 @@ public class PageThumbnailsDisplayTask implements Runnable {
         Properties messages = bag.getMessagesProps();
         WaitPanel.setLoadingThumbnailsWaitPanel();
 
-        PageThumbnailsListener pageThumbnailsListener = new PageThumbnailsListener(pageNumber);
-        processPage(pageThumbnailsListener);
+        PageThumbnailsDisplay pageThumbnailsDisplay = new PageThumbnailsDisplay(pageNumber);
+        processPage(pageThumbnailsDisplay);
 
         String infoUnsupported = "";
         String infoAvailable;
-        if (pageThumbnailsListener.getUnsupportedImages() > 0)
+        if (pageThumbnailsDisplay.getUnsupportedImages() > 0)
             infoUnsupported = MessageFormat.format(messages.getProperty("d_msg_02"), pageNumber);
 
-        if (pageThumbnailsListener.getImageNumber() == 0) {
+        if (pageThumbnailsDisplay.getImageNumber() == 0) {
             setNoImagePage();
             infoAvailable = MessageFormat.format(messages.getProperty("d_msg_03"), pageNumber);
         } else {
-            String availableMessage = pageThumbnailsListener.getImageNumber() > 1
+            String availableMessage = pageThumbnailsDisplay.getImageNumber() > 1
                     ? messages.getProperty("t_msg_15")
                     : messages.getProperty("t_msg_16");
 
             infoAvailable = String.format(
-                    "%s %s", pageThumbnailsListener.getImageNumber(), availableMessage);
+                    "%s %s", pageThumbnailsDisplay.getImageNumber(), availableMessage);
         }
 
         Messages.append("INFO", String.format("%s %s", infoUnsupported, infoAvailable));
@@ -63,12 +63,12 @@ public class PageThumbnailsDisplayTask implements Runnable {
         running.set(false);
     }
 
-    private void processPage(PageThumbnailsListener pageThumbnailsListener) {
+    private void processPage(PageThumbnailsDisplay pageThumbnailsDisplay) {
         try {
             PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
             PdfReaderContentParser pdfParser = new PdfReaderContentParser(reader);
 
-            pdfParser.processContent(pageNumber, pageThumbnailsListener);
+            pdfParser.processContent(pageNumber, pageThumbnailsDisplay);
 
             reader.close();
         } catch (IOException e) {

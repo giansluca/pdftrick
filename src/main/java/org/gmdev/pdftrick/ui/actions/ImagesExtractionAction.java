@@ -8,9 +8,10 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.gmdev.pdftrick.extraction.tasks.ImagesExtractionTask;
 import org.gmdev.pdftrick.manager.*;
+import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.tasks.*;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
 

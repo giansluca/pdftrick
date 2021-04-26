@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.engine.ImageAttr;
+package org.gmdev.pdftrick.checking.ImageAttr;
 
 public abstract class RenderedImageAttributes {
 	

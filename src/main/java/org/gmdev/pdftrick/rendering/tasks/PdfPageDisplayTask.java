@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.tasks;
+package org.gmdev.pdftrick.rendering.tasks;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,12 +14,12 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.render.ThumbAction;
+import org.gmdev.pdftrick.ui.actions.PdfPageAction;
 import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.*;
 
-public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
+public class PdfPageDisplayTask implements Runnable, Stoppable {
 
     private static final Comparator<File> comparator = (file1, file2) -> {
         Integer num1 = Integer.parseInt(
@@ -159,7 +159,7 @@ public class PdfCoverThumbnailsDisplayTask implements Runnable, Stoppable {
             Component[] comps = leftPanel.getComponents();
             for (int z = 0; z < comps.length; z++) {
                 JLabel picLabel = (JLabel) comps[z];
-                picLabel.addMouseListener(new ThumbAction(z + 1));
+                picLabel.addMouseListener(new PdfPageAction(z + 1));
                 picLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
             bag.getUserInterface().getCenter().stopWaitIcon();

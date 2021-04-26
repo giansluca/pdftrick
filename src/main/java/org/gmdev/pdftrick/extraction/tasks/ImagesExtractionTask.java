@@ -1,11 +1,11 @@
-package org.gmdev.pdftrick.tasks;
+package org.gmdev.pdftrick.extraction.tasks;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.*;
 
-import org.gmdev.pdftrick.engine.ImagesExtractor;
+import org.gmdev.pdftrick.extraction.ImagesExtractor;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;

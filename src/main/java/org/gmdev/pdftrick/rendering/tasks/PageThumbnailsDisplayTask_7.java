@@ -1,9 +1,9 @@
-package org.gmdev.pdftrick.render.tasks;
+package org.gmdev.pdftrick.rendering.tasks;
 
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfDocumentContentParser;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.render.PageThumbnailsDisplay;
+import org.gmdev.pdftrick.rendering.PageThumbnailsDisplay_7;
 import org.gmdev.pdftrick.serviceprocessor.ServiceRequest;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
 
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class RenderPageThumbnailsTask implements ServiceRequest {
+public class PageThumbnailsDisplayTask_7 implements ServiceRequest {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
@@ -21,7 +21,7 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
     private final Path pdfFilePath;
     private final AtomicBoolean exited;
 
-    public RenderPageThumbnailsTask(int pageNumber) {
+    public PageThumbnailsDisplayTask_7(int pageNumber) {
         this.pageNumber = pageNumber;
         pdfFilePath = bag.getSavedFilePath();
         exited = new AtomicBoolean(false);
@@ -40,8 +40,8 @@ public class RenderPageThumbnailsTask implements ServiceRequest {
         PdfDocument document = new PdfDocument(reader);
         PdfDocumentContentParser contentParser = new PdfDocumentContentParser(document);
 
-        PageThumbnailsDisplay pageThumbnailsDisplay = new PageThumbnailsDisplay(pageNumber);
-        contentParser.processContent(pageNumber, pageThumbnailsDisplay);
+        PageThumbnailsDisplay_7 pageThumbnailsDisplay7 = new PageThumbnailsDisplay_7(pageNumber);
+        contentParser.processContent(pageNumber, pageThumbnailsDisplay7);
 
         reader.close();
         document.close();

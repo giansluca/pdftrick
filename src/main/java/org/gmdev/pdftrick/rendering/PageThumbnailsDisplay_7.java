@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.render;
+package org.gmdev.pdftrick.rendering;
 
 import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
@@ -11,11 +11,11 @@ import java.util.Set;
 
 import static com.itextpdf.kernel.pdf.canvas.parser.EventType.RENDER_IMAGE;
 
-public class PageThumbnailsDisplay implements IEventListener {
+public class PageThumbnailsDisplay_7 implements IEventListener {
 
     private final int pageNumber;
 
-    public PageThumbnailsDisplay(int pageNumber) {
+    public PageThumbnailsDisplay_7(int pageNumber) {
         this.pageNumber = pageNumber;
     }
 

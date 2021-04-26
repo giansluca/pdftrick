@@ -2,12 +2,17 @@ package org.gmdev.pdftrick.manager;
 
 import java.util.concurrent.ExecutorService;
 
+import org.gmdev.pdftrick.extraction.tasks.ImagesExtractionTask;
+import org.gmdev.pdftrick.rendering.tasks.ExecutorRunnerTask;
+import org.gmdev.pdftrick.rendering.tasks.FirstPdfPageRenderTask;
+import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
+import org.gmdev.pdftrick.rendering.tasks.PdfPageDisplayTask;
 import org.gmdev.pdftrick.tasks.*;
 
 public class TasksContainer {
 
 	// Tasks
-	private PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = null;
+	private PdfPageDisplayTask pdfPageDisplayTask = null;
 	private FirstPdfPageRenderTask firstPdfPageRenderTask = null;
 	private PageThumbnailsDisplayTask pageThumbnailsDisplayTask = null;
 	private ImagesExtractionTask imagesExtractionTask = null;
@@ -23,13 +28,13 @@ public class TasksContainer {
 	private Thread executorRunnerThread = null;
 	private ExecutorService executorService = null;
 
-	public synchronized PdfCoverThumbnailsDisplayTask getPdfCoverThumbnailsDisplayTask() {
-		return pdfCoverThumbnailsDisplayTask;
+	public synchronized PdfPageDisplayTask getPdfCoverThumbnailsDisplayTask() {
+		return pdfPageDisplayTask;
 	}
 
 	public synchronized void setPdfCoverThumbnailsDisplayTask(
-			PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask) {
-		this.pdfCoverThumbnailsDisplayTask = pdfCoverThumbnailsDisplayTask;
+			PdfPageDisplayTask pdfPageDisplayTask) {
+		this.pdfPageDisplayTask = pdfPageDisplayTask;
 	}
 
 	public synchronized FirstPdfPageRenderTask getFirstPdfPageRenderTask() {

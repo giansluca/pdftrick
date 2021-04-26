@@ -1,31 +1,33 @@
-package org.gmdev.pdftrick.engine.ImageAttr;
+package org.gmdev.pdftrick.checking.ImageAttr;
 
-public class RenderedImageNormal extends RenderedImageAttributes {
+public class RenderedImageInline extends RenderedImageAttributes {
 	
-	private final int imageRefNumber;
+	private final int inlineImageCounter;
+	private final InlineImage image;
 	private final int numPage;
 	private final String flip;
 	private final String rotate;
 	private final String key;
 	
-	public RenderedImageNormal(int numPage, int imageRefNumber, String flip, String rotate) {
-		this.imageRefNumber = imageRefNumber;
+	public RenderedImageInline(int inlineImageCounter, InlineImage image, int numPage, String flip, String rotate) {
+		this.inlineImageCounter = inlineImageCounter;
+		this.image = image;
 		this.numPage = numPage;
 		this.flip = flip;
 		this.rotate = rotate;
-		this.key = numPage + "_" + imageRefNumber;
+		this.key = numPage + "_" + inlineImageCounter;
 	}
 	
 	@Override
 	public int getReference() {
-		return imageRefNumber;
+		return inlineImageCounter;
 	}
 	
 	@Override
 	public InlineImage getInlineImage() {
-		return null;
+		return image;
 	}
-	
+
 	@Override
 	public int getNumPage() {
 		return numPage;
@@ -46,5 +48,6 @@ public class RenderedImageNormal extends RenderedImageAttributes {
 		return key;
 	}
 	
-	
+
+
 }

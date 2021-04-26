@@ -6,7 +6,7 @@ import java.util.*;
 import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.*;
-import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
+import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.utils.Messages;
 
 public class CleanSelectionAction extends AbstractAction {

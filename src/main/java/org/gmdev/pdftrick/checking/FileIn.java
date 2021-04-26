@@ -1,10 +1,10 @@
-package org.gmdev.pdftrick.engine;
+package org.gmdev.pdftrick.checking;
 
 import com.itextpdf.text.pdf.PdfReader;
 import org.gmdev.pdftrick.manager.*;
-import org.gmdev.pdftrick.render.PdfRenderLeft;
+import org.gmdev.pdftrick.rendering.PdfPageDisplay;
 import org.gmdev.pdftrick.swingmanager.*;
-import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
+import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 
@@ -57,17 +57,15 @@ public interface FileIn {
         File uploadedFile = filesArray[0];
         if(!isValidPdfFile(uploadedFile)) return;
 
-        bag.setUploadedFile(uploadedFile);
         savePdfFile(uploadedFile);
         renderPdfPages();
     }
 
     private void prepareForLoading() {
         SwingCleaner.cleanUserInterface();
-
-        bag.cleanUp();
         FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
         FileUtils.deletePdfFile(bag.getSavedFilePath());
+        bag.cleanUp();
     }
 
     private boolean isValidPdfFile(File uploadedFile) {
@@ -99,7 +97,7 @@ public interface FileIn {
 
     private void renderPdfPages() {
         Messages.append("INFO", "Check Pdf OK, start loading pages");
-        PdfRenderLeft render = new PdfRenderLeft();
+        PdfPageDisplay render = new PdfPageDisplay();
         render.pdfRender();
     }
 

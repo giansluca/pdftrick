@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.checking.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.PropertyLoader;
@@ -20,7 +20,6 @@ public enum PdfTrickBag {
 	private Path savedFilePath;
 	private Path thumbnailsFolderPath;
 	private int numberOfPages;
-	private File uploadedFile;
 	private int selectedPage;
 	private Path extractionFolderPath;
 	private HashMap<Integer, String> pagesRotation;
@@ -81,11 +80,6 @@ public enum PdfTrickBag {
 		cleanPagesRotationHashMap();
 		setSelectedPage(0);
 		setExtractionFolderPath(null);
-		cleanPdfFile();
-	}
-
-	public void cleanPdfFile(){
-		uploadedFile = null;
 	}
 
 	public void cleanSelectedImagesHashMap() {
@@ -126,10 +120,6 @@ public enum PdfTrickBag {
 
 	public void setNumberOfPages(int numberOfPages) {
 		this.numberOfPages = numberOfPages;
-	}
-
-	public void setUploadedFile(File uploadedFile) {
-		this.uploadedFile = uploadedFile;
 	}
 
 	public int getSelectedPage() {

@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.engine;
+package org.gmdev.pdftrick.checking;
 
 import java.io.*;
 import java.text.MessageFormat;
@@ -10,7 +10,7 @@ import org.gmdev.pdftrick.utils.*;
 import com.itextpdf.text.exceptions.BadPasswordException;
 import com.itextpdf.text.pdf.*;
 
-import static org.gmdev.pdftrick.engine.PasswordChecker.Result.OK;
+import static org.gmdev.pdftrick.checking.PasswordChecker.Result.OK;
 
 public class FileChecker {
 

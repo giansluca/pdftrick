@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.render;
+package org.gmdev.pdftrick.ui.actions;
 
 import java.awt.Color;
 import java.awt.event.*;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.checking.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 public class ImageAction implements MouseListener {

@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.tasks;
+package org.gmdev.pdftrick.rendering.tasks;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;

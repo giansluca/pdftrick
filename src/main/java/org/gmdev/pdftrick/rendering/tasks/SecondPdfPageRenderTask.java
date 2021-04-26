@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.tasks;
+package org.gmdev.pdftrick.rendering.tasks;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;

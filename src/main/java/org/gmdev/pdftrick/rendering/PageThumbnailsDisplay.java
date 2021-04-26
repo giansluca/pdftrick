@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.render;
+package org.gmdev.pdftrick.rendering;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,9 +9,9 @@ import javax.imageio.IIOException;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.engine.ImageAttr.*;
+import org.gmdev.pdftrick.checking.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.render.ImageAction;
+import org.gmdev.pdftrick.ui.actions.ImageAction;
 import org.gmdev.pdftrick.utils.*;
 import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
 
@@ -19,7 +19,7 @@ import com.itextpdf.text.exceptions.UnsupportedPdfException;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.*;
 
-public class PageThumbnailsListener implements RenderListener {
+public class PageThumbnailsDisplay implements RenderListener {
 	
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	
@@ -29,7 +29,7 @@ public class PageThumbnailsListener implements RenderListener {
 	private final UpdatePanelCenter updatePanelCenter;
 	private int inlineImageCounter;
 	
-	public PageThumbnailsListener(int numPage) {
+	public PageThumbnailsDisplay(int numPage) {
 		this.imageNumber = 0;
 		this.unsupportedImages = 0;
 		this.numPage = numPage;
