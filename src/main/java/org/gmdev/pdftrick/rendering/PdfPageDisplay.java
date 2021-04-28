@@ -12,7 +12,7 @@ public class PdfPageDisplay {
 	
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-	public void pdfRender() {
+	public void render() {
 		TasksContainer tasksContainer = bag.getTasksContainer();
 		String imagesFolderPath = bag.getThumbnailsFolderPath() + File.separator;
 		int numberOfPages = bag.getNumberOfPages();

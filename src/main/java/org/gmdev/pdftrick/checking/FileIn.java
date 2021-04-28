@@ -97,8 +97,8 @@ public interface FileIn {
 
     private void renderPdfPages() {
         Messages.append("INFO", "Check Pdf OK, start loading pages");
-        PdfPageDisplay render = new PdfPageDisplay();
-        render.pdfRender();
+        PdfPageDisplay pdfPageDisplay = new PdfPageDisplay();
+        pdfPageDisplay.render();
     }
 
 }
