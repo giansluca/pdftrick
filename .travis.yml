@@ -11,12 +11,14 @@ jobs:
         - brew tap adoptopenjdk/openjdk
         - brew install --cask adoptopenjdk11
         - brew install esolitos/ipa/sshpass
+        - rm ~/.m2/settings.xml
     - os: windows
       before_install:
         - choco install adoptopenjdk11
         - choco install maven
         - choco install putty
         - export PATH=$(cmd.exe //c "refreshenv > nul & C:\Progra~1\Git\bin\bash -c 'echo \$PATH'")
+        - rm ~/.m2/settings.xml
 install:
   - mvn dependency:go-offline -B
 script:

@@ -105,13 +105,6 @@
             <artifactId>miglayout-swing</artifactId>
             <version>5.2</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>com.bulenkov</groupId>
-            <artifactId>darcula</artifactId>
-            <version>2018.2</version>
-        </dependency>
-        -->
     </dependencies>
 
     <repositories>
@@ -121,7 +114,7 @@
             </snapshots>
             <id>imageio-ext-repository</id>
             <name>imageio-ext Repository</name>
-            <url>http://maven.geo-solutions.it/</url>
+            <url>http://maven.geo-solutions.it</url>
         </repository>
     </repositories>
 
@@ -136,7 +129,6 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -275,6 +267,28 @@
                             </execution>
                         </executions>
                     </plugin>
+
+                    <!--
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>2.0.2</version>
+                        <executions>
+                            <execution>
+                                <id>download-glassfish</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>download-single</goal>
+                                </goals>
+                                <configuration>
+                                    <url>http://download.java.net</url>
+                                    <fromFile>glassfish/3.1/release/glassfish-3.1.zip</fromFile>
+                                    <toDir>${project.build.directory}/src/main/resources</toDir>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    -->
                 </plugins>
             </build>
         </profile>
