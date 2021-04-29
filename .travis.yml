@@ -11,6 +11,8 @@ jobs:
         - brew tap adoptopenjdk/openjdk
         - brew install --cask adoptopenjdk11
         - brew install esolitos/ipa/sshpass
+        - brew install maven
+        - rm ~/.m2/settings.xml
     - os: windows
       before_install:
         - choco install adoptopenjdk11
@@ -18,7 +20,7 @@ jobs:
         - choco install putty
         - export PATH=$(cmd.exe //c "refreshenv > nul & C:\Progra~1\Git\bin\bash -c 'echo \$PATH'")
 install:
-  - mvn dependency:go-offline -s settings.xml -P all-lib -B
+  - mvn dependency:go-offline -B
 script:
   - mvn test -B
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mvn clean package -DskipTests -P mac -B      ; fi
