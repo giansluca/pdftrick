@@ -2,12 +2,17 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
-    <mirrors>
-        <mirror>
-            <id>imageio-ext-repository</id>
-            <name>imageio-ext Repository</name>
-            <url>http://maven.geo-solutions.it</url>
-        </mirror>
-    </mirrors>
+    <profiles>
+        <profile>
+            <id>all-lib</id>
+            <repositories>
+                <repository>
+                    <id>imageio-ext-repository</id>
+                    <name>imageio-ext Repository</name>
+                    <url>http://maven.geo-solutions.it</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
 
 </settings>

@@ -20,7 +20,7 @@ jobs:
         - export PATH=$(cmd.exe //c "refreshenv > nul & C:\Progra~1\Git\bin\bash -c 'echo \$PATH'")
         - cp ./settings.xml $HOME/.m2
 install:
-  - mvn dependency:go-offline -B
+  - mvn dependency:go-offline -P all-lib -B
 script:
   - mvn test -B
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mvn clean package -DskipTests -P mac -B      ; fi
