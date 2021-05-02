@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import org.gmdev.pdftrick.checking.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.rendering.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.PropertyLoader;

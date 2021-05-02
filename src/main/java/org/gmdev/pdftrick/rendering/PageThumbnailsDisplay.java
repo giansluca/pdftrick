@@ -9,7 +9,7 @@ import javax.imageio.IIOException;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.checking.ImageAttr.*;
+import org.gmdev.pdftrick.rendering.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.ImageAction;
 import org.gmdev.pdftrick.utils.*;

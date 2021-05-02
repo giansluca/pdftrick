@@ -7,7 +7,7 @@ import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.checking.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.rendering.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 public class ImageAction implements MouseListener {

@@ -8,7 +8,7 @@ import java.util.*;
 
 import javax.imageio.*;
 
-import org.gmdev.pdftrick.checking.ImageAttr.*;
+import org.gmdev.pdftrick.rendering.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
 

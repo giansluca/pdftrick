@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.checking.ImageAttr;
+package org.gmdev.pdftrick.rendering.ImageAttr;
 
 public class RenderedImageInline extends RenderedImageAttributes {
 	
