@@ -21,7 +21,7 @@ public interface FileIn {
         LeftPanel leftPanel = bag.getUserInterface().getLeft();
         TasksContainer tasksContainer = bag.getTasksContainer();
 
-        var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
+        var showPdfCoverThumbnailsTask = tasksContainer.getPdfPageDisplayTask();
         if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
             leftPanel.resetLeftPanelFileDropBorder();
             ModalWarningPanel.displayLoadingPdfThumbnailsWarning();

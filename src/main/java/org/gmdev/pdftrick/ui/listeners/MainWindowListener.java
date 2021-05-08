@@ -17,7 +17,6 @@ public class MainWindowListener implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent event) {
-		terminateFirstPdfPageRenderTask();
 		terminateExecutorRunnerTask();
 
 		NativeObjectManager nativeManager = bag.getNativeObjectManager();

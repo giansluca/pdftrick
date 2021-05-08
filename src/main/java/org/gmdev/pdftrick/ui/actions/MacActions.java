@@ -15,7 +15,6 @@ public class MacActions {
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
 	public void handleQuitRequestWith() {
-		terminateFirstPdfPageRenderTask();
 		terminateExecutorRunnerTask();
 
 		NativeObjectManager nativeManager = bag.getNativeObjectManager();

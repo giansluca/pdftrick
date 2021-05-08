@@ -41,7 +41,7 @@ public class CleanSelectionAction extends AbstractAction {
             return false;
         }
 
-        var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
+        var showPdfCoverThumbnailsTask = tasksContainer.getPdfPageDisplayTask();
         if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
             return false;
         }

@@ -4,21 +4,19 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.serviceprocessor.Stoppable;
+import org.gmdev.pdftrick.serviceprocessor.*;
 
-public class ExecutorRunnerTask implements Runnable, Stoppable {
+public class PdfPageRunnerTask implements Runnable, Stoppable {
 	
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
-	private static final int THREAD_NUMBER = 2;
+	private static final int THREAD_NUMBER = 3;
 	
 	private final String imagesFolderPath;
 	private final int pages;
-	private final int divisionResult;
 	private final AtomicBoolean running = new AtomicBoolean(false);
 	
-	public ExecutorRunnerTask(int pages, int divisionResult, String imagesFolderPath) {
+	public PdfPageRunnerTask(int pages, String imagesFolderPath) {
 		this.pages = pages;
-		this.divisionResult = divisionResult;
 		this.imagesFolderPath = imagesFolderPath;
 	}
 	
@@ -33,13 +31,12 @@ public class ExecutorRunnerTask implements Runnable, Stoppable {
 	@Override
 	public void run() {
 		running.set(true);
-
 		ExecutorService executorservice = Executors.newFixedThreadPool(THREAD_NUMBER);
 		bag.getTasksContainer().setExecutorService(executorservice);
-		
-		int i = divisionResult + 1;
+
+		int i = 1;
 		while (i <= pages && running.get()) {
-			Runnable worker = new SecondPdfPageRenderTask(imagesFolderPath, i);
+			PdfPageRenderTask worker = new PdfPageRenderTask(imagesFolderPath, i);
 			executorservice.execute(worker);
 			i++;
 		}
@@ -47,5 +44,6 @@ public class ExecutorRunnerTask implements Runnable, Stoppable {
 		executorservice.shutdown();
 		running.set(false);
 	}
+
 
 }

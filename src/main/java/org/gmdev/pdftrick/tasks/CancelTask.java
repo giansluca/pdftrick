@@ -37,7 +37,6 @@ public class CancelTask implements Runnable, Stoppable {
 	}
 
 	private void terminateTasks() {
-		terminateFirstPdfPageRenderTask();
 		terminateExecutorRunnerTask();
 		terminatePdfCoverThumbnailsDisplayTask();
 	}
