@@ -24,7 +24,7 @@ import org.gmdev.pdftrick.utils.*;
 
 import static org.gmdev.pdftrick.utils.Constants.*;
 
-public class CustomExtraImgReader {
+public class CustomImageReader {
 
     private static final int COLOR_TYPE_RGB = 1;
     private static final int COLOR_TYPE_CMYK = 2;
@@ -32,9 +32,6 @@ public class CustomExtraImgReader {
     private static int colorType = COLOR_TYPE_RGB;
     private static boolean hasAdobeMarker = false;
 
-    /**
-     * Read a JBIG2 image
-     */
     public static BufferedImage readJBIG2(PdfImageObject image) {
         BufferedImage buffImg = null;
         PdfDictionary dic = image.getDictionary();
@@ -90,7 +87,7 @@ public class CustomExtraImgReader {
             palette = PdfReader.getStreamBytes(((PRStream) id2));
         }
 
-        Map<PdfName, FilterHandlers.FilterHandler> handlers = new HashMap<PdfName, FilterHandlers.FilterHandler>(FilterHandlers.getDefaultFilterHandlers());
+        Map<PdfName, FilterHandlers.FilterHandler> handlers = new HashMap<>(FilterHandlers.getDefaultFilterHandlers());
         byte[] imageBytes = PdfReader.decodeBytes(content, dic, handlers);
 
         int stride = (width * pngBitDepth + 7) / 8;

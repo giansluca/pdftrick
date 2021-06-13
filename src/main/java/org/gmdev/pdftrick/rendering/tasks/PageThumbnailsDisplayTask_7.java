@@ -29,7 +29,7 @@ public class PageThumbnailsDisplayTask_7 implements ServiceRequest {
 
     @Override
     public void process() throws IOException {
-        // TODO this class if a test for migration to Itext 7
+        // TODO this class is a test for migration to Itext 7
 
         Properties messages = bag.getMessagesProps();
         JPanel centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
@@ -45,7 +45,7 @@ public class PageThumbnailsDisplayTask_7 implements ServiceRequest {
 
         reader.close();
         document.close();
-        WaitPanel.removeWaitPanel();
+        //WaitPanel.removeWaitPanel(); // TODO commented to avoid double removing
         exited.set(true);
     }
 

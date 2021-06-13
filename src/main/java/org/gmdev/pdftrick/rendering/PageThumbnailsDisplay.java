@@ -2,20 +2,21 @@ package org.gmdev.pdftrick.rendering;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
+import java.util.*;
 
 import javax.imageio.IIOException;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import org.apache.commons.imaging.ImageReadException;
 import org.gmdev.pdftrick.rendering.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.ImageAction;
 import org.gmdev.pdftrick.utils.*;
-import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
+import org.gmdev.pdftrick.utils.external.CustomImageReader;
 
-import com.itextpdf.text.exceptions.UnsupportedPdfException;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.*;
 
@@ -25,14 +26,14 @@ public class PageThumbnailsDisplay implements RenderListener {
 	
 	private int imageNumber;
 	private int unsupportedImages;
-	private final int numPage;
+	private final int pageNumber;
 	private final UpdatePanelCenter updatePanelCenter;
 	private int inlineImageCounter;
 	
-	public PageThumbnailsDisplay(int numPage) {
+	public PageThumbnailsDisplay(int pageNumber) {
 		this.imageNumber = 0;
 		this.unsupportedImages = 0;
-		this.numPage = numPage;
+		this.pageNumber = pageNumber;
 		this.updatePanelCenter = new UpdatePanelCenter();
 		this.inlineImageCounter = 0;
 	}
@@ -53,32 +54,35 @@ public class PageThumbnailsDisplay implements RenderListener {
 	public void renderImage(ImageRenderInfo renderInfo) {
 		this.render(renderInfo);
 	}
-	
-	/**
-	 * extracts the images contained in selected page and convert it in a BufferedImage to add and show to the center panel.
-	 */
-	private void render(ImageRenderInfo renderInfo ) {
-		final HashMap<Integer, String> rotationFromPages = bag.getPagesRotationPages();
-		boolean isInline = false;
-		
-		PdfImageObject image = null;
+
+	private Optional<PdfImageObject> getImage(ImageRenderInfo renderInfo) {
 		try {
-			BufferedImage buffImg = null;
-			
-			if (renderInfo.getRef() == null) {
-				isInline = true;
-				inlineImageCounter += 1;
-			}
-			
-			try {
-				image = renderInfo.getImage();
-			} catch (UnsupportedPdfException updfe)  {
+			return Optional.of(renderInfo.getImage());
+		} catch (IOException e) {
+			return Optional.empty();
+		}
+	}
+
+	private boolean isInlineImage(ImageRenderInfo renderInfo) {
+		return renderInfo.getRef() == null;
+	}
+
+	private void render(ImageRenderInfo renderInfo ) {
+		HashMap<Integer, String> rotationFromPages = bag.getPagesRotationPages();
+
+		boolean isInline = isInlineImage(renderInfo);
+		PdfImageObject image = getImage(renderInfo).orElse(null);
+
+		try {
+			BufferedImage bufferedImageImg = null;
+
+			if (isInline) inlineImageCounter += 1;
+			if (image == null) {
 				try {
-					if (isInline) {
-						buffImg = null;
-					} else {
-						buffImg = CustomExtraImgReader.readIndexedPNG(renderInfo.getRef().getNumber(), bag.getSavedFilePath());
-					}
+					bufferedImageImg = CustomImageReader.readIndexedPNG(
+									renderInfo.getRef().getNumber(),
+									bag.getSavedFilePath());
+
 				} catch (Exception e) {
 					unsupportedImages++;
 					return;
@@ -91,7 +95,7 @@ public class PageThumbnailsDisplay implements RenderListener {
 				try {
 					// if image is JBIG2 type i need a custom way and using jbig2 ImageIO plugin
 					if ( image.getFileType().equalsIgnoreCase("JBIG2") ) {
-						buffPic = CustomExtraImgReader.readJBIG2(image);
+						buffPic = CustomImageReader.readJBIG2(image);
 					} else {
 						buffPic = image.getBufferedImage();
 					}
@@ -99,7 +103,7 @@ public class PageThumbnailsDisplay implements RenderListener {
 					byte[] imageByteArray = image.getImageAsBytes();
 					
 					try {
-						buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
+						buffPic = CustomImageReader.readCMYK_JPG(imageByteArray);
 					} catch (Exception e) {
 						unsupportedImages++;
 						return;
@@ -121,19 +125,19 @@ public class PageThumbnailsDisplay implements RenderListener {
 			        	PdfImageObject maskImage = new PdfImageObject(maskStream);
 			        	buffMask = maskImage.getBufferedImage();
 			        	Image img = ImageUtils.TransformGrayToTransparency(buffMask);
-			        	buffImg = ImageUtils.ApplyTransparency(buffPic, img);
+			        	bufferedImageImg = ImageUtils.ApplyTransparency(buffPic, img);
 			        } else {
-			        	buffImg = buffPic;
+			        	bufferedImageImg = buffPic;
 			        }
 			    } else {
-			    	buffImg = buffPic;
+			    	bufferedImageImg = buffPic;
 			    }	
 			}
 			
 			String flip = "";
 			String rotate = "";
 			Matrix matrix = renderInfo.getImageCTM();
-			String angle = ""+rotationFromPages.get(numPage);
+			String angle = "" + rotationFromPages.get(pageNumber);
 			
 			// experimental 
 			float i11 = matrix.get(Matrix.I11);	// if negative -> horizontal flip
@@ -159,22 +163,22 @@ public class PageThumbnailsDisplay implements RenderListener {
 				rotate = "90";
 			}
 			
-			if (buffImg != null) {
-				buffImg = ImageUtils.adjustImage(buffImg, flip, rotate);
+			if (bufferedImageImg != null) {
+				bufferedImageImg = ImageUtils.adjustImage(bufferedImageImg, flip, rotate);
 				RenderedImageAttributes imageAttrs = null;
 				
 				if (isInline) {
 					// set up inline image object attributes and store it in a hashmap
-					InlineImage inImg = new InlineImage(buffImg, image!=null?image.getFileType():"png");
-					imageAttrs = new RenderedImageInline(inlineImageCounter, inImg, numPage, flip, rotate);
+					InlineImage inImg = new InlineImage(bufferedImageImg, image!=null?image.getFileType():"png");
+					imageAttrs = new RenderedImageInline(inlineImageCounter, inImg, pageNumber, flip, rotate);
 				} else {
 					// set up image object for normal images
-					imageAttrs = new RenderedImageNormal(numPage, renderInfo.getRef().getNumber(), flip, rotate);
+					imageAttrs = new RenderedImageNormal(pageNumber, renderInfo.getRef().getNumber(), flip, rotate);
 				}
 				
 				// scaling image with original aspect ratio (if image exceded pic box)
-				int w = buffImg.getWidth();
-				int h = buffImg.getHeight();
+				int w = bufferedImageImg.getWidth();
+				int h = bufferedImageImg.getHeight();
 				
 				if (w > 170 || h > 170) {
 					double faktor;
@@ -182,20 +186,20 @@ public class PageThumbnailsDisplay implements RenderListener {
 						faktor = 160 / (double)w;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = ImageUtils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
+						bufferedImageImg = ImageUtils.getScaledImageWithScalr(bufferedImageImg, scaledW, scaledH);
 					
 					} else {
 						faktor = 160 / (double)h;
 						int scaledW = (int) Math.round(faktor * w);
 						int scaledH = (int) Math.round(faktor * h);
-						buffImg = ImageUtils.getScaledImageWithScalr(buffImg, scaledW, scaledH);
+						bufferedImageImg = ImageUtils.getScaledImageWithScalr(bufferedImageImg, scaledW, scaledH);
 					}
 				}
 
 				imageNumber ++;
 				// dynamic update on the center panel (under EDT thread). UpdatePanelCenter upPcenter = this.upPcenter;
 				updatePanelCenter.setInlineImg(isInline);
-				updatePanelCenter.setBuffImg(buffImg);
+				updatePanelCenter.setBuffImg(bufferedImageImg);
 				updatePanelCenter.setImageAttrs(imageAttrs);
 				
 				try {
@@ -204,7 +208,7 @@ public class PageThumbnailsDisplay implements RenderListener {
 					throw new IllegalStateException(e);
 				}
 
-				buffImg.flush();
+				bufferedImageImg.flush();
 			} else {
 				unsupportedImages++;
 			}

@@ -1,11 +1,25 @@
 package org.gmdev.pdftrick.rendering;
 
+import com.itextpdf.kernel.PdfException;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfObject;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfStream;
 import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
 import com.itextpdf.kernel.pdf.canvas.parser.data.ImageRenderInfo;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
+import com.itextpdf.text.pdf.PRStream;
+import com.itextpdf.text.pdf.parser.PdfImageObject;
+import org.gmdev.pdftrick.rendering.imagereader.ImageReader;
+import org.gmdev.pdftrick.rendering.imagereader.ImageReaderStrategy;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
@@ -26,16 +40,29 @@ public class PageThumbnailsDisplay_7 implements IEventListener {
 
     @Override
     public void eventOccurred(IEventData eventData, EventType eventType) {
-        if (!(eventData instanceof ImageRenderInfo)) return;
+        if (eventType != RENDER_IMAGE) return;
         display((ImageRenderInfo) eventData);
     }
 
     private void display(ImageRenderInfo imageRenderInfo) {
-        System.out.println("page: " + pageNumber);
-        PdfImageXObject image = imageRenderInfo.getImage();
-        System.out.println(image.identifyImageType());
+        ImageReader imageReader = ImageReaderStrategy.getReader(imageRenderInfo);
 
-        // TODO this class if a test for migration to Itext 7
+//        try {
+//            PdfReader reader = new PdfReader("filepath");
+//            PdfDocument pdfDoc = new PdfDocument(reader);
+//
+//            PdfObject obj = pdfDoc.getPdfObject(objNumber);
+//            if (obj != null && obj.isStream()) {
+//                //byte[] bytes = ((PdfStream) obj).getBytes();
+//                PdfImageXObject xObject = new PdfImageXObject((PdfStream) obj);
+//                BufferedImage bufferedImage = xObject.getBufferedImage();
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        // TODO this class is a test for migration to Itext 7
     }
 
 }

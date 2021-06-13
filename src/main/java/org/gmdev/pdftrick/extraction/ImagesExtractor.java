@@ -15,7 +15,7 @@ import org.gmdev.pdftrick.utils.*;
 import com.itextpdf.text.exceptions.UnsupportedPdfException;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfImageObject;
-import org.gmdev.pdftrick.utils.external.CustomExtraImgReader;
+import org.gmdev.pdftrick.utils.external.CustomImageReader;
 
 public class ImagesExtractor {
 	
@@ -127,7 +127,7 @@ public class ImagesExtractor {
 					io = new PdfImageObject((PRStream) stream);
 				} catch (UnsupportedPdfException updfe) {
 					try {
-						buff = CustomExtraImgReader.readIndexedPNG(ref, pdfFile);
+						buff = CustomImageReader.readIndexedPNG(ref, pdfFile);
 						buff = ImageUtils.adjustImage(buff, flip, rotate);
 						String type = "png";
 						String filename = String.format(result, z, type);
@@ -146,7 +146,7 @@ public class ImagesExtractor {
 					
 					try {
 						if (type.equalsIgnoreCase("JBIG2")) {
-							buffPic = CustomExtraImgReader.readJBIG2(io);
+							buffPic = CustomImageReader.readJBIG2(io);
 						} else {
 							buffPic = io.getBufferedImage();
 						}	
@@ -154,7 +154,7 @@ public class ImagesExtractor {
 						byte[] imageByteArray = io.getImageAsBytes();
 						
 						try {
-							buffPic = CustomExtraImgReader.readCMYK_JPG(imageByteArray);
+							buffPic = CustomImageReader.readCMYK_JPG(imageByteArray);
 						} catch (Exception ex) {
 							throw new IllegalStateException(e);
 						}

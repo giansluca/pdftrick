@@ -13,6 +13,8 @@ import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
+import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask_7;
+import org.gmdev.pdftrick.serviceprocessor.ServiceScheduler;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.ui.panels.CenterPanel;
 
@@ -56,10 +58,9 @@ public class PdfPageAction implements MouseListener {
 			// (the same layout with wait icon during pdf rendering)
 			JPanel jCenterPanel = centerPanel.getCenterPanel();
 			
-			if (jCenterPanel.getLayout() instanceof GridBagLayout) {
+			if (jCenterPanel.getLayout() instanceof GridBagLayout)
 				jCenterPanel.setLayout(new WrapLayout());
-			}
-			
+
 			picLabel.setBorder(borderGreen);
 			bag.setSelectedPage(pageNumber);
 			currentPageField.setText("Page " + pageNumber);
@@ -73,8 +74,8 @@ public class PdfPageAction implements MouseListener {
 			pageThumbnailsDisplayThread.start();
 
 			// TODO Itext 7 migration
-			//var renderPageThumbnailsTask = new PageThumbnailsDisplayTask_7(pageNumber);
-			//ServiceScheduler.getServiceScheduler().schedule(renderPageThumbnailsTask);
+			var renderPageThumbnailsTask = new PageThumbnailsDisplayTask_7(pageNumber);
+			ServiceScheduler.getServiceScheduler().schedule(renderPageThumbnailsTask);
 		}
 	}
 
