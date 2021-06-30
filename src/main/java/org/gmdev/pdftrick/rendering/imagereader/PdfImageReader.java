@@ -2,7 +2,7 @@ package org.gmdev.pdftrick.rendering.imagereader;
 
 import java.awt.image.BufferedImage;
 
-public interface ImageReader {
+public interface PdfImageReader {
 
     BufferedImage readImage();
 

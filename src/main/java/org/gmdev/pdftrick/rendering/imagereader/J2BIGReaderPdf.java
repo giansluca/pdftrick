@@ -9,12 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.*;
 
-public class J2BIGReader implements ImageReader {
+public class J2BIGReaderPdf implements PdfImageReader {
 
     private final PdfImageXObject image;
     private final int ref;
 
-    public J2BIGReader(PdfImageXObject image, int ref) {
+    public J2BIGReaderPdf(PdfImageXObject image, int ref) {
         this.image = image;
         this.ref = ref;
     }

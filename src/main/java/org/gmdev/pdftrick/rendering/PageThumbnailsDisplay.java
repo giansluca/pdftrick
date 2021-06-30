@@ -10,7 +10,6 @@ import javax.imageio.IIOException;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.apache.commons.imaging.ImageReadException;
 import org.gmdev.pdftrick.rendering.ImageAttr.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.ImageAction;

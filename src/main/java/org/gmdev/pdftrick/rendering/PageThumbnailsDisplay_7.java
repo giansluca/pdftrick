@@ -1,25 +1,12 @@
 package org.gmdev.pdftrick.rendering;
 
-import com.itextpdf.kernel.PdfException;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfObject;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfStream;
 import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
 import com.itextpdf.kernel.pdf.canvas.parser.data.ImageRenderInfo;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
-import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
-import com.itextpdf.text.pdf.PRStream;
-import com.itextpdf.text.pdf.parser.PdfImageObject;
-import org.gmdev.pdftrick.rendering.imagereader.ImageReader;
+import org.gmdev.pdftrick.rendering.imagereader.PdfImageReader;
 import org.gmdev.pdftrick.rendering.imagereader.ImageReaderStrategy;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
@@ -45,8 +32,9 @@ public class PageThumbnailsDisplay_7 implements IEventListener {
     }
 
     private void display(ImageRenderInfo imageRenderInfo) {
-        ImageReader imageReader = ImageReaderStrategy.getReader(imageRenderInfo);
+        PdfImageReader pdfImageReader = ImageReaderStrategy.getReader(imageRenderInfo);
 
+// code for extractions with itext 7
 //        try {
 //            PdfReader reader = new PdfReader("filepath");
 //            PdfDocument pdfDoc = new PdfDocument(reader);

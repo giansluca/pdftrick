@@ -1,16 +1,16 @@
 package org.gmdev.pdftrick.rendering.model;
 
-import org.gmdev.pdftrick.rendering.imagereader.ImageReader;
+import org.gmdev.pdftrick.rendering.imagereader.PdfImageReader;
 
 public class PdfTrickImage {
 
-    private final ImageReader imageReader;
+    private final PdfImageReader pdfImageReader;
 
-    public PdfTrickImage(ImageReader imageReader) {
-        this.imageReader = imageReader;
+    public PdfTrickImage(PdfImageReader pdfImageReader) {
+        this.pdfImageReader = pdfImageReader;
     }
 
-    public ImageReader getImageReader() {
-        return imageReader;
+    public PdfImageReader getImageReader() {
+        return pdfImageReader;
     }
 }
