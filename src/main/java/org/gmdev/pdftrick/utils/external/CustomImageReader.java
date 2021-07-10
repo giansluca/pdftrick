@@ -103,7 +103,9 @@ public class CustomImageReader {
                         imageBytes[t] ^= 0xff;
                     }
                 } else {
-                    // if the decode array is 0,1, do nothing.  It's possible that the array could be 0,0 or 1,1 - but that would be silly, so we'll just ignore that case
+                    // if the decode array is 0,1, do nothing.
+                    // It's possible that the array could be 0,0 or 1,1,
+                    // but that would be silly, so we'll just ignore that case
                 }
             } else {
                 // TODO: add decode transformation for other depths

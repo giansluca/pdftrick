@@ -9,12 +9,11 @@ import java.io.IOException;
 public class ImageReaderStrategy {
 
     public static PdfImageReader getReader(ImageRenderInfo imageRenderInfo) {
-        if (imageRenderInfo.isInline()) {
-            System.out.println("INLINE");
-            return null;
-        }
-
         PdfImageXObject image = imageRenderInfo.getImage();
+
+        if (imageRenderInfo.isInline())
+            return new InlineImageReader(image);
+
         int ref = image.getPdfObject().getIndirectReference().getObjNumber();
         try {
             if (ImageType.JBIG2 == image.identifyImageType())
@@ -26,11 +25,10 @@ public class ImageReaderStrategy {
         } catch (IOException e) {
             return new JPEGColorSpaceCMYKReaderPdf(image, ref);
         } catch (com.itextpdf.io.IOException e) {
-            //TODO CustomImageReader.readIndexedPNG(renderInfo.getRef().getNumber(),bag.getSavedFilePath());
-            System.out.println("No indexed color space supported");
+            return new PNGIndexedReader(image, ref);
         }
 
-        return null;
+        throw new IllegalStateException("Unsupported image");
     }
 
 }

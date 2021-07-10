@@ -47,7 +47,7 @@ public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
     /**
      * Read a JPG image with CMYK ICC profile
      */
-    public BufferedImage read(byte[] imageByteArray) throws IOException, ImageReadException {
+    private BufferedImage read(byte[] imageByteArray) throws IOException, ImageReadException {
         InputStream in = new ByteArrayInputStream(imageByteArray);
         ImageInputStream imageStream = ImageIO.createImageInputStream(in);
         Iterator<javax.imageio.ImageReader> ite = ImageIO.getImageReaders(imageStream);
