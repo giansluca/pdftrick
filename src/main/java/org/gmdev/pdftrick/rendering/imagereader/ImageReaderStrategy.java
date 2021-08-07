@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.rendering.imagereader;
 
 import com.itextpdf.io.image.ImageType;
+import com.itextpdf.kernel.geom.Matrix;
 import com.itextpdf.kernel.pdf.canvas.parser.data.ImageRenderInfo;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 
@@ -8,8 +9,9 @@ import java.io.IOException;
 
 public class ImageReaderStrategy {
 
-    public static PdfImageReader getReader(ImageRenderInfo imageRenderInfo) {
+    public static PdfImageReader getReader(ImageRenderInfo imageRenderInfo, int pageNumber) {
         PdfImageXObject image = imageRenderInfo.getImage();
+        Matrix matrix = imageRenderInfo.getImageCtm();
 
         if (imageRenderInfo.isInline())
             return new InlineImageReader(image);
@@ -28,7 +30,7 @@ public class ImageReaderStrategy {
             return new PNGIndexedReader(image, ref);
         }
 
-        throw new IllegalStateException("Unsupported image");
+        throw new IllegalStateException("Unsupported strategy");
     }
 
 }

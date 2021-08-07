@@ -62,21 +62,21 @@ public class PdfFileTransformer {
                               PdfWriter writer,
                               PdfReader reader) {
 
-        HashMap<Integer, String> rotationFromPages = bag.getPagesRotationPages();
+        HashMap<Integer, String> pagesRotation = bag.getPagesRotation();
         PdfImportedPage page = writer.getImportedPage(reader, pageNumber);
 
         switch(rotation) {
             case 90:
                 pdfContent.addTemplate(page, 0, -1, 1, 0, 0, reader.getPageSizeWithRotation(pageNumber).getHeight());
-                rotationFromPages.put(pageNumber, String.valueOf(rotation));
+                pagesRotation.put(pageNumber, String.valueOf(rotation));
                 break;
             case 180:
                 pdfContent.addTemplate(page, -1, 0, 0, -1, 0, 0);
-                rotationFromPages.put(pageNumber, String.valueOf(rotation));
+                pagesRotation.put(pageNumber, String.valueOf(rotation));
                 break;
             case 270:
                 pdfContent.addTemplate(page, 0, 1, -1, 0, reader.getPageSizeWithRotation(pageNumber).getWidth(), 0);
-                rotationFromPages.put(pageNumber, String.valueOf(rotation));
+                pagesRotation.put(pageNumber, String.valueOf(rotation));
                 break;
             default:
                 pdfContent.addTemplate(page, 1, 0, 0, 1, 0, 0);

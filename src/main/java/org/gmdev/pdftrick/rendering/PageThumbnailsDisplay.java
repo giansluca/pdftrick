@@ -67,7 +67,7 @@ public class PageThumbnailsDisplay implements RenderListener {
 	}
 
 	private void render(ImageRenderInfo renderInfo ) {
-		HashMap<Integer, String> rotationFromPages = bag.getPagesRotationPages();
+		HashMap<Integer, String> pagesRotation = bag.getPagesRotation();
 
 		boolean isInline = isInlineImage(renderInfo);
 		PdfImageObject image = getImage(renderInfo).orElse(null);
@@ -123,8 +123,8 @@ public class PageThumbnailsDisplay implements RenderListener {
 			        if (!image.getFileType().equalsIgnoreCase("jpg") && buffPic != null) {
 			        	PdfImageObject maskImage = new PdfImageObject(maskStream);
 			        	buffMask = maskImage.getBufferedImage();
-			        	Image img = ImageUtils.TransformGrayToTransparency(buffMask);
-			        	bufferedImageImg = ImageUtils.ApplyTransparency(buffPic, img);
+			        	Image img = ImageUtils.transformGrayToTransparency(buffMask);
+			        	bufferedImageImg = ImageUtils.applyTransparency(buffPic, img);
 			        } else {
 			        	bufferedImageImg = buffPic;
 			        }
@@ -136,7 +136,7 @@ public class PageThumbnailsDisplay implements RenderListener {
 			String flip = "";
 			String rotate = "";
 			Matrix matrix = renderInfo.getImageCTM();
-			String angle = "" + rotationFromPages.get(pageNumber);
+			String pageRotation = "" + pagesRotation.get(pageNumber);
 			
 			// experimental 
 			float i11 = matrix.get(Matrix.I11);	// if negative -> horizontal flip
@@ -152,13 +152,13 @@ public class PageThumbnailsDisplay implements RenderListener {
 				flip = "fv";
 			}
 			
-			if (angle.equalsIgnoreCase("270") || (""+i21).charAt(0) =='-' ) {
+			if (pageRotation.equalsIgnoreCase("270") || (""+i21).charAt(0) =='-' ) {
 				rotate = "270";
 			}
-			else if (angle.equalsIgnoreCase("180")) {
+			else if (pageRotation.equalsIgnoreCase("180")) {
 				rotate = "180";
 			}
-			else if (angle.equalsIgnoreCase("90") || (""+i12).charAt(0) =='-') {
+			else if (pageRotation.equalsIgnoreCase("90") || (""+i12).charAt(0) =='-') {
 				rotate = "90";
 			}
 			

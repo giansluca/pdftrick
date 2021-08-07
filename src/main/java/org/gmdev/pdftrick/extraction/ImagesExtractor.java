@@ -172,8 +172,8 @@ public class ImagesExtractor {
 				    		PdfImageObject maskImage = new PdfImageObject(maskStream);
 				    		buffMask = maskImage.getBufferedImage();
 				    
-				    		Image img = ImageUtils.TransformGrayToTransparency(buffMask);
-				    		buff = ImageUtils.ApplyTransparency(buffPic, img);
+				    		Image img = ImageUtils.transformGrayToTransparency(buffMask);
+				    		buff = ImageUtils.applyTransparency(buffPic, img);
 				    	} else {
 				        	buff = buffPic;
 				        }

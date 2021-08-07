@@ -4,10 +4,16 @@ import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
 import com.itextpdf.kernel.pdf.canvas.parser.data.ImageRenderInfo;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
+import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 import org.gmdev.pdftrick.rendering.imagereader.PdfImageReader;
 import org.gmdev.pdftrick.rendering.imagereader.ImageReaderStrategy;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.itextpdf.kernel.pdf.canvas.parser.EventType.RENDER_IMAGE;
@@ -15,9 +21,13 @@ import static com.itextpdf.kernel.pdf.canvas.parser.EventType.RENDER_IMAGE;
 public class PageThumbnailsDisplay_7 implements IEventListener {
 
     private final int pageNumber;
+    private int imageNumber;
+    private int unsupportedImages;
 
     public PageThumbnailsDisplay_7(int pageNumber) {
         this.pageNumber = pageNumber;
+        this.imageNumber = 0;
+        this.unsupportedImages = 0;
     }
 
     @Override
@@ -32,7 +42,20 @@ public class PageThumbnailsDisplay_7 implements IEventListener {
     }
 
     private void display(ImageRenderInfo imageRenderInfo) {
-        PdfImageReader pdfImageReader = ImageReaderStrategy.getReader(imageRenderInfo);
+        PdfImageReader pdfImageReader = ImageReaderStrategy.getReader(imageRenderInfo, pageNumber);
+
+        Optional<BufferedImage> bufferedImageMaybe = pdfImageReader.readImage();
+        if (bufferedImageMaybe.isEmpty()) {
+            unsupportedImages++;
+            return;
+        }
+
+        BufferedImage bufferedImage = bufferedImageMaybe.get();
+        bufferedImage = pdfImageReader.checkAndApplyMask(bufferedImage);
+
+        //writeImage(bufferedImage, pdfImageReader.getImage());
+
+        imageNumber++;
 
 // code for extractions with itext 7
 //        try {
@@ -51,6 +74,23 @@ public class PageThumbnailsDisplay_7 implements IEventListener {
 //        }
 
         // TODO this class is a test for migration to Itext 7
+    }
+
+    private void writeImage(BufferedImage bufferedImage, PdfImageXObject image) {
+        try {
+            String imageType = image.identifyImageFileExtension();
+            String imagePath = String.format(
+                    "/Users/gians/Desktop/pdftrick-pdf-for-test/out/%s.%s",
+                    imageNumber, imageType);
+
+            ImageIO.write(
+                    bufferedImage,
+                    imageType,
+                    new File(imagePath)
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

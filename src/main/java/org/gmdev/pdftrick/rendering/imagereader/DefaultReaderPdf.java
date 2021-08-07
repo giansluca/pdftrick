@@ -4,6 +4,7 @@ import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Optional;
 
 public class DefaultReaderPdf implements PdfImageReader {
 
@@ -16,12 +17,24 @@ public class DefaultReaderPdf implements PdfImageReader {
     }
 
     @Override
-    public BufferedImage readImage() {
+    public PdfImageXObject getImage() {
+        return image;
+    }
+
+    @Override
+    public Optional<BufferedImage> readImage() {
         try {
-            return image.getBufferedImage();
+            BufferedImage bufferedImage = image.getBufferedImage();
+
+            return Optional.of(bufferedImage);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            return Optional.empty();
         }
+    }
+
+    @Override
+    public BufferedImage checkAndApplyMask(BufferedImage bufferedImage) {
+        return checkAndApplyMask(bufferedImage, image);
     }
 
 

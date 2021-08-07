@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class PNGIndexedReader implements PdfImageReader {
 
@@ -35,12 +36,25 @@ public class PNGIndexedReader implements PdfImageReader {
     }
 
     @Override
-    public BufferedImage readImage() {
+    public PdfImageXObject getImage() {
+        return image;
+    }
+
+
+    @Override
+    public Optional<BufferedImage> readImage() {
         try {
-            return readIndexedPNG();
+            BufferedImage bufferedImage = readIndexedPNG();
+
+            return Optional.of(bufferedImage);
         } catch (IOException | ImageReadException e) {
-            throw new IllegalStateException(e);
+            return Optional.empty();
         }
+    }
+
+    @Override
+    public BufferedImage checkAndApplyMask(BufferedImage bufferedImage) {
+        return checkAndApplyMask(bufferedImage, image);
     }
 
     /**
@@ -87,5 +101,6 @@ public class PNGIndexedReader implements PdfImageReader {
         ImageInputStream inputStream = ImageIO.createImageInputStream(in);
         return ImageIO.read(inputStream);
     }
+
 
 }

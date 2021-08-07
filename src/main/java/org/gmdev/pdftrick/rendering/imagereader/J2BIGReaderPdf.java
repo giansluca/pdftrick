@@ -8,6 +8,7 @@ import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.*;
+import java.util.Optional;
 
 public class J2BIGReaderPdf implements PdfImageReader {
 
@@ -20,7 +21,12 @@ public class J2BIGReaderPdf implements PdfImageReader {
     }
 
     @Override
-    public BufferedImage readImage() {
+    public PdfImageXObject getImage() {
+        return image;
+    }
+
+    @Override
+    public Optional<BufferedImage> readImage() {
         try {
             InputStream in = new ByteArrayInputStream(image.getImageBytes());
             ImageInputStream imageStream = ImageIO.createImageInputStream(in);
@@ -29,11 +35,17 @@ public class J2BIGReaderPdf implements PdfImageReader {
             imageReader.setInput(imageStream);
             JBIG2ReadParam param = imageReader.getDefaultReadParam();
 
-            return imageReader.read(0, param);
+            BufferedImage bufferedImage = imageReader.read(0, param);
+
+            return Optional.of(bufferedImage);
         } catch (IOException e) {
-            throw new IllegalStateException("Error getting bufferedImage on a JBIG2 image");
+            return Optional.empty();
         }
     }
 
+    @Override
+    public BufferedImage checkAndApplyMask(BufferedImage bufferedImage) {
+        return checkAndApplyMask(bufferedImage, image);
+    }
 
 }

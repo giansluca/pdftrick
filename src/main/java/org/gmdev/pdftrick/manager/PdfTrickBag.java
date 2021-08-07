@@ -138,7 +138,7 @@ public enum PdfTrickBag {
 		this.extractionFolderPath = extractionFolderPath;
 	}
 
-	public HashMap<Integer, String> getPagesRotationPages() {
+	public HashMap<Integer, String> getPagesRotation() {
 		return pagesRotation;
 	}
 

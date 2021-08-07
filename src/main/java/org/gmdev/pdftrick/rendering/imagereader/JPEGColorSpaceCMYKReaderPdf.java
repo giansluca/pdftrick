@@ -35,13 +35,25 @@ public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
     }
 
     @Override
-    public BufferedImage readImage() {
+    public PdfImageXObject getImage() {
+        return image;
+    }
+
+    @Override
+    public Optional<BufferedImage> readImage() {
         byte[] imageBytes = image.getImageBytes();
         try {
-            return read(imageBytes);
+            BufferedImage bufferedImage = read(imageBytes);
+
+            return Optional.of(bufferedImage);
         } catch (IOException | ImageReadException e) {
-            throw new IllegalStateException(e);
+            return Optional.empty();
         }
+    }
+
+    @Override
+    public BufferedImage checkAndApplyMask(BufferedImage bufferedImage) {
+        return checkAndApplyMask(bufferedImage, image);
     }
 
     /**
@@ -205,7 +217,6 @@ public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
         array[ICC_Profile.icHdrDeviceClass + 2] = (byte) (ICC_Profile.icSigDisplayClass >> 8);
         array[ICC_Profile.icHdrDeviceClass + 3] = (byte) (ICC_Profile.icSigDisplayClass);
     }
-
 
 
 }
