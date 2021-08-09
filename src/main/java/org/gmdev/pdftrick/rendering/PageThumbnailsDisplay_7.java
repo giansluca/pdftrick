@@ -51,7 +51,6 @@ public class PageThumbnailsDisplay_7 implements IEventListener {
         }
 
         BufferedImage bufferedImage = bufferedImageMaybe.get();
-        bufferedImage = pdfImageReader.checkAndApplyMask(bufferedImage);
 
         //writeImage(bufferedImage, pdfImageReader.getImage());
 

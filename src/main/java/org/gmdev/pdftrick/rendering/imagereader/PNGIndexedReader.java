@@ -1,6 +1,7 @@
 package org.gmdev.pdftrick.rendering.imagereader;
 
 import com.itextpdf.io.codec.PngWriter;
+import com.itextpdf.kernel.geom.Matrix;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.filters.DoNothingFilter;
 import com.itextpdf.kernel.pdf.filters.FilterHandlers;
@@ -24,15 +25,17 @@ import java.util.Optional;
 public class PNGIndexedReader implements PdfImageReader {
 
     private final PdfImageXObject image;
-    private final int ref;
+    private final int reference;
+    private final Matrix matrix;
+    private final int pageNumber;
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-    public PNGIndexedReader(PdfImageXObject image, int ref) {
+    public PNGIndexedReader(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
         this.image = image;
-        this.ref = ref;
-
-        readImage();
+        this.reference = reference;
+        this.matrix = matrix;
+        this.pageNumber = pageNumber;
     }
 
     @Override
@@ -44,7 +47,9 @@ public class PNGIndexedReader implements PdfImageReader {
     @Override
     public Optional<BufferedImage> readImage() {
         try {
-            BufferedImage bufferedImage = readIndexedPNG();
+            BufferedImage bufferedImage = read();
+            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);
         } catch (IOException | ImageReadException e) {
@@ -52,15 +57,10 @@ public class PNGIndexedReader implements PdfImageReader {
         }
     }
 
-    @Override
-    public BufferedImage checkAndApplyMask(BufferedImage bufferedImage) {
-        return checkAndApplyMask(bufferedImage, image);
-    }
-
     /**
      * Read a png image with if all other method fails
      */
-    private BufferedImage readIndexedPNG() throws IOException, ImageReadException {
+    private BufferedImage read() throws IOException, ImageReadException {
         byte[] imageBytes = image.getPdfObject().getBytes();
         float width = image.getWidth();
         float height = image.getHeight();

@@ -1,5 +1,6 @@
 package org.gmdev.pdftrick.rendering.imagereader;
 
+import com.itextpdf.kernel.geom.Matrix;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 import org.apache.commons.imaging.*;
 import org.apache.commons.imaging.common.bytesource.*;
@@ -25,13 +26,17 @@ public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
     private static final int COLOR_TYPE_YCCK = 3;
     
     private final PdfImageXObject image;
-    private final int ref;
+    private final int reference;
+    private final Matrix matrix;
+    private final int pageNumber;
     private int colorType = COLOR_TYPE_RGB;
     private boolean hasAdobeMarker = false;
 
-    public JPEGColorSpaceCMYKReaderPdf(PdfImageXObject image, int ref) {
+    public JPEGColorSpaceCMYKReaderPdf(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
         this.image = image;
-        this.ref = ref;
+        this.reference = reference;
+        this.matrix = matrix;
+        this.pageNumber = pageNumber;
     }
 
     @Override
@@ -41,9 +46,10 @@ public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
 
     @Override
     public Optional<BufferedImage> readImage() {
-        byte[] imageBytes = image.getImageBytes();
         try {
-            BufferedImage bufferedImage = read(imageBytes);
+            BufferedImage bufferedImage = read();
+            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);
         } catch (IOException | ImageReadException e) {
@@ -51,15 +57,11 @@ public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
         }
     }
 
-    @Override
-    public BufferedImage checkAndApplyMask(BufferedImage bufferedImage) {
-        return checkAndApplyMask(bufferedImage, image);
-    }
-
     /**
      * Read a JPG image with CMYK ICC profile
      */
-    private BufferedImage read(byte[] imageByteArray) throws IOException, ImageReadException {
+    private BufferedImage read() throws IOException, ImageReadException {
+        byte[] imageByteArray = image.getImageBytes();
         InputStream in = new ByteArrayInputStream(imageByteArray);
         ImageInputStream imageStream = ImageIO.createImageInputStream(in);
         Iterator<javax.imageio.ImageReader> ite = ImageIO.getImageReaders(imageStream);

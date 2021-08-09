@@ -1,5 +1,6 @@
 package org.gmdev.pdftrick.rendering.imagereader;
 
+import com.itextpdf.kernel.geom.Matrix;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 
 import java.awt.image.BufferedImage;
@@ -9,11 +10,15 @@ import java.util.Optional;
 public class DefaultReaderPdf implements PdfImageReader {
 
     private final PdfImageXObject image;
-    private final int ref;
+    private final int reference;
+    private final Matrix matrix;
+    private final int pageNumber;
 
-    public DefaultReaderPdf(PdfImageXObject image, int ref) {
+    public DefaultReaderPdf(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
         this.image = image;
-        this.ref = ref;
+        this.reference = reference;
+        this.matrix = matrix;
+        this.pageNumber = pageNumber;
     }
 
     @Override
@@ -25,16 +30,13 @@ public class DefaultReaderPdf implements PdfImageReader {
     public Optional<BufferedImage> readImage() {
         try {
             BufferedImage bufferedImage = image.getBufferedImage();
+            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);
         } catch (IOException e) {
             return Optional.empty();
         }
-    }
-
-    @Override
-    public BufferedImage checkAndApplyMask(BufferedImage bufferedImage) {
-        return checkAndApplyMask(bufferedImage, image);
     }
 
 
