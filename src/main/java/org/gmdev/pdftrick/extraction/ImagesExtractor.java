@@ -8,13 +8,14 @@ import java.util.*;
 
 import javax.imageio.*;
 
-import org.gmdev.pdftrick.rendering.ImageAttr.*;
+import org.gmdev.pdftrick.rendering.Imageattributes.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
 
 import com.itextpdf.text.exceptions.UnsupportedPdfException;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfImageObject;
+import org.gmdev.pdftrick.utils.ImageUtils.Flip;
 import org.gmdev.pdftrick.utils.external.CustomImageReader;
 
 public class ImagesExtractor {
@@ -115,7 +116,7 @@ public class ImagesExtractor {
 				String key = i.next();
 				
 				RenderedImageAttributes imgAttr = imageSelected.get(key);
-				String flip = imgAttr.getFlip();
+				Flip flip = imgAttr.getFlip();
 				String rotate = imgAttr.getRotate();
 				int ref = imgAttr.getReference();
 					

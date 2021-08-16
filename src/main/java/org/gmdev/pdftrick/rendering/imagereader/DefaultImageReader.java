@@ -7,22 +7,34 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Optional;
 
-public class DefaultReaderPdf implements PdfImageReader {
+public class DefaultImageReader implements PdfImageReader {
 
     private final PdfImageXObject image;
     private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
+    private final int imageNumber;
 
-    public DefaultReaderPdf(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
+    public DefaultImageReader(PdfImageXObject image,
+                              int reference,
+                              Matrix matrix,
+                              int pageNumber,
+                              int imageNumber) {
+
         this.image = image;
         this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
+        this.imageNumber = imageNumber;
     }
 
     @Override
-    public PdfImageXObject getImage() {
+    public String getKey() {
+        return String.format("%s-%s", imageNumber, pageNumber);
+    }
+
+    @Override
+    public PdfImageXObject getImageObject() {
         return image;
     }
 

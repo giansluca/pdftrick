@@ -1,15 +1,17 @@
-package org.gmdev.pdftrick.rendering.ImageAttr;
+package org.gmdev.pdftrick.rendering.Imageattributes;
+
+import org.gmdev.pdftrick.utils.ImageUtils.Flip;
 
 public class RenderedImageInline extends RenderedImageAttributes {
 	
 	private final int inlineImageCounter;
 	private final InlineImage image;
 	private final int numPage;
-	private final String flip;
+	private final Flip flip;
 	private final String rotate;
 	private final String key;
 	
-	public RenderedImageInline(int inlineImageCounter, InlineImage image, int numPage, String flip, String rotate) {
+	public RenderedImageInline(int inlineImageCounter, InlineImage image, int numPage, Flip flip, String rotate) {
 		this.inlineImageCounter = inlineImageCounter;
 		this.image = image;
 		this.numPage = numPage;
@@ -34,7 +36,7 @@ public class RenderedImageInline extends RenderedImageAttributes {
 	}
 
 	@Override
-	public String getFlip() {
+	public Flip getFlip() {
 		return flip;
 	}
 

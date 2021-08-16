@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.serviceprocessor.*;
 
-public class PdfPageRunnerTask implements Runnable, Stoppable {
+public class PdfPageCoverRunnerTask implements Runnable, Stoppable {
 	
 	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 	private static final int THREAD_NUMBER = 3;
@@ -15,7 +15,7 @@ public class PdfPageRunnerTask implements Runnable, Stoppable {
 	private final int pages;
 	private final AtomicBoolean running = new AtomicBoolean(false);
 	
-	public PdfPageRunnerTask(int pages, String imagesFolderPath) {
+	public PdfPageCoverRunnerTask(int pages, String imagesFolderPath) {
 		this.pages = pages;
 		this.imagesFolderPath = imagesFolderPath;
 	}
@@ -36,7 +36,7 @@ public class PdfPageRunnerTask implements Runnable, Stoppable {
 
 		int i = 1;
 		while (i <= pages && running.get()) {
-			PdfPageRenderTask worker = new PdfPageRenderTask(imagesFolderPath, i);
+			PdfPageCoverRenderTask worker = new PdfPageCoverRenderTask(imagesFolderPath, i);
 			executorservice.execute(worker);
 			i++;
 		}

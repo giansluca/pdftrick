@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class PNGIndexedReader implements PdfImageReader {
+public class PngIndexedImageReader implements PdfImageReader {
 
     private final PdfImageXObject image;
     private final int reference;
@@ -31,7 +31,7 @@ public class PNGIndexedReader implements PdfImageReader {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-    public PNGIndexedReader(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
+    public PngIndexedImageReader(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
         this.image = image;
         this.reference = reference;
         this.matrix = matrix;
@@ -39,7 +39,12 @@ public class PNGIndexedReader implements PdfImageReader {
     }
 
     @Override
-    public PdfImageXObject getImage() {
+    public String getKey() {
+        return String.format("%s-%s", reference, pageNumber);
+    }
+
+    @Override
+    public PdfImageXObject getImageObject() {
         return image;
     }
 

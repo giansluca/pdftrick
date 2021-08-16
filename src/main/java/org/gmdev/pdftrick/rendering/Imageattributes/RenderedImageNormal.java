@@ -1,14 +1,16 @@
-package org.gmdev.pdftrick.rendering.ImageAttr;
+package org.gmdev.pdftrick.rendering.Imageattributes;
+
+import org.gmdev.pdftrick.utils.ImageUtils.Flip;
 
 public class RenderedImageNormal extends RenderedImageAttributes {
 	
 	private final int imageRefNumber;
 	private final int numPage;
-	private final String flip;
+	private final Flip flip;
 	private final String rotate;
 	private final String key;
 	
-	public RenderedImageNormal(int numPage, int imageRefNumber, String flip, String rotate) {
+	public RenderedImageNormal(int numPage, int imageRefNumber, Flip flip, String rotate) {
 		this.imageRefNumber = imageRefNumber;
 		this.numPage = numPage;
 		this.flip = flip;
@@ -32,7 +34,7 @@ public class RenderedImageNormal extends RenderedImageAttributes {
 	}
 
 	@Override
-	public String getFlip() {
+	public Flip getFlip() {
 		return flip;
 	}
 

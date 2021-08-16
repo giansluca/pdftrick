@@ -52,5 +52,9 @@ public final class Constants {
 	public static final String WAIT = "icons/wait.gif";
 	public static final String WAIT_IMG = "icons/wait_img.gif";
 	public static final String WAIT_EXT = "icons/wait_ext.gif";
+
+	// thumbnails size
+	public static final int THUMBNAIL_MAX_SIZE_WIDTH = 170;
+	public static final int THUMBNAIL_MAX_SIZE_HEIGHT = 170;
 	
 }

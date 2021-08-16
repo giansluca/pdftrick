@@ -9,25 +9,24 @@ import java.io.IOException;
 
 public class ImageReaderStrategy {
 
-    public static PdfImageReader getReader(ImageRenderInfo imageRenderInfo, int pageNumber) {
+    public static PdfImageReader getReader(ImageRenderInfo imageRenderInfo, int pageNumber, int imageNumber) {
         PdfImageXObject image = imageRenderInfo.getImage();
         Matrix matrix = imageRenderInfo.getImageCtm();
 
         if (imageRenderInfo.isInline())
-            return new InlineImageReader(image, matrix, pageNumber);
+            return new InlineImageReader(image, matrix, pageNumber, imageNumber);
 
         int reference = image.getPdfObject().getIndirectReference().getObjNumber();
         try {
             if (ImageType.JBIG2 == image.identifyImageType())
-                return new J2BIGReaderPdf(image, reference, matrix, pageNumber);
+                return new J2BIGImageReader(image, reference, matrix, pageNumber, imageNumber);
 
             if (image.getBufferedImage() != null)
-                return new DefaultReaderPdf(image, reference, matrix, pageNumber);
-
+                return new DefaultImageReader(image, reference, matrix, pageNumber, imageNumber);
         } catch (IOException e) {
-            return new JPEGColorSpaceCMYKReaderPdf(image, reference, matrix, pageNumber);
+            return new JpegCMYKImageReader(image, reference, matrix, pageNumber, imageNumber);
         } catch (com.itextpdf.io.IOException e) {
-            return new PNGIndexedReader(image, reference, matrix, pageNumber);
+            return new PngIndexedImageReader(image, reference, matrix, pageNumber);
         }
 
         throw new IllegalStateException("Unsupported strategy");

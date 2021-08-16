@@ -2,8 +2,8 @@ package org.gmdev.pdftrick.rendering;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.manager.TasksContainer;
-import org.gmdev.pdftrick.rendering.tasks.PdfPageRunnerTask;
-import org.gmdev.pdftrick.rendering.tasks.PdfPageDisplayTask;
+import org.gmdev.pdftrick.rendering.tasks.PdfPageCoverRunnerTask;
+import org.gmdev.pdftrick.rendering.tasks.PdfPageCoverDisplayTask;
 
 import java.io.File;
 
@@ -15,18 +15,18 @@ public class PdfPageDisplay {
         TasksContainer tasksContainer = bag.getTasksContainer();
         String imagesFolderPath = bag.getThumbnailsFolderPath() + File.separator;
 
-        PdfPageRunnerTask pdfPageRunnerTask =
-                new PdfPageRunnerTask(bag.getNumberOfPages(), imagesFolderPath);
-        tasksContainer.setPdfPageRunnerTask(pdfPageRunnerTask);
+        PdfPageCoverRunnerTask pdfPageCoverRunnerTask =
+                new PdfPageCoverRunnerTask(bag.getNumberOfPages(), imagesFolderPath);
+        tasksContainer.setPdfPageRunnerTask(pdfPageCoverRunnerTask);
 
-        Thread pdfPageRunnerThread = new Thread(pdfPageRunnerTask);
+        Thread pdfPageRunnerThread = new Thread(pdfPageCoverRunnerTask);
         tasksContainer.setPdfPageRunnerThread(pdfPageRunnerThread);
 		pdfPageRunnerThread.start();
 
-        PdfPageDisplayTask pdfPageDisplayTask = new PdfPageDisplayTask();
-        tasksContainer.setPdfPageDisplayTask(pdfPageDisplayTask);
+        PdfPageCoverDisplayTask pdfPageCoverDisplayTask = new PdfPageCoverDisplayTask();
+        tasksContainer.setPdfPageDisplayTask(pdfPageCoverDisplayTask);
 
-        Thread pdfPageDisplayThread = new Thread(pdfPageDisplayTask);
+        Thread pdfPageDisplayThread = new Thread(pdfPageCoverDisplayTask);
         tasksContainer.setPdfPageDisplayThread(pdfPageDisplayThread);
 		pdfPageDisplayThread.start();
     }

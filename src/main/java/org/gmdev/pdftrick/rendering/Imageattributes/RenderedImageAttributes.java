@@ -1,4 +1,6 @@
-package org.gmdev.pdftrick.rendering.ImageAttr;
+package org.gmdev.pdftrick.rendering.Imageattributes;
+
+import org.gmdev.pdftrick.utils.ImageUtils.Flip;
 
 public abstract class RenderedImageAttributes {
 	
@@ -8,7 +10,7 @@ public abstract class RenderedImageAttributes {
 	
 	public abstract int getNumPage();
 	
-	public abstract String getFlip();
+	public abstract Flip getFlip();
 	
 	public abstract String getRotate();
 	

@@ -9,8 +9,8 @@ import org.gmdev.pdftrick.tasks.*;
 public class TasksContainer {
 
 	// Tasks
-	private PdfPageRunnerTask pdfPageRunnerTask = null;
-	private PdfPageDisplayTask pdfPageDisplayTask = null;
+	private PdfPageCoverRunnerTask pdfPageCoverRunnerTask = null;
+	private PdfPageCoverDisplayTask pdfPageCoverDisplayTask = null;
 	private PageThumbnailsDisplayTask pageThumbnailsDisplayTask = null;
 	private ImagesExtractionTask imagesExtractionTask = null;
 	private CancelTask cancelTask = null;
@@ -24,20 +24,20 @@ public class TasksContainer {
 	private Thread cancelThread = null;
 
 	// Tasks
-	public PdfPageRunnerTask getPdfPageRunnerTask() {
-		return pdfPageRunnerTask;
+	public PdfPageCoverRunnerTask getPdfPageRunnerTask() {
+		return pdfPageCoverRunnerTask;
 	}
 
-	public void setPdfPageRunnerTask(PdfPageRunnerTask pdfPageRunnerTask) {
-		this.pdfPageRunnerTask = pdfPageRunnerTask;
+	public void setPdfPageRunnerTask(PdfPageCoverRunnerTask pdfPageCoverRunnerTask) {
+		this.pdfPageCoverRunnerTask = pdfPageCoverRunnerTask;
 	}
 
-	public  PdfPageDisplayTask getPdfPageDisplayTask() {
-		return pdfPageDisplayTask;
+	public PdfPageCoverDisplayTask getPdfPageDisplayTask() {
+		return pdfPageCoverDisplayTask;
 	}
 
-	public void setPdfPageDisplayTask(PdfPageDisplayTask pdfPageDisplayTask) {
-		this.pdfPageDisplayTask = pdfPageDisplayTask;
+	public void setPdfPageDisplayTask(PdfPageCoverDisplayTask pdfPageCoverDisplayTask) {
+		this.pdfPageCoverDisplayTask = pdfPageCoverDisplayTask;
 	}
 
 	public PageThumbnailsDisplayTask getPageThumbnailsDisplayTask() {

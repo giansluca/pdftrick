@@ -54,8 +54,8 @@ public class PdfPageAction implements MouseListener {
 			
 		// select page	
 		} else {
-			// when previous page selected don't have images i need to reset the layout to FlowLayout 
-			// (the same layout with wait icon during pdf rendering)
+			// when previous page selected i don't have images and i need to reset the layout to FlowLayout
+			// (the same layout with wait icon during the pdf rendering)
 			JPanel jCenterPanel = centerPanel.getCenterPanel();
 			
 			if (jCenterPanel.getLayout() instanceof GridBagLayout)
@@ -74,8 +74,8 @@ public class PdfPageAction implements MouseListener {
 			pageThumbnailsDisplayThread.start();
 
 			// TODO Itext 7 migration
-			var renderPageThumbnailsTask = new PageThumbnailsDisplayTask_7(pageNumber);
-			ServiceScheduler.getServiceScheduler().schedule(renderPageThumbnailsTask);
+			var pageThumbnailsDisplayTask_7 = new PageThumbnailsDisplayTask_7(pageNumber);
+			ServiceScheduler.getServiceScheduler().schedule(pageThumbnailsDisplayTask_7);
 		}
 	}
 

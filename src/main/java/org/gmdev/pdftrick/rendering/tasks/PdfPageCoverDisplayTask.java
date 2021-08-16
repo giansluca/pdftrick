@@ -19,7 +19,7 @@ import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.*;
 
-public class PdfPageDisplayTask implements Runnable, Stoppable {
+public class PdfPageCoverDisplayTask implements Runnable, Stoppable {
 
     private static final Comparator<File> comparator = (file1, file2) -> {
         Integer num1 = Integer.parseInt(

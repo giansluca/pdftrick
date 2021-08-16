@@ -1,4 +1,4 @@
-package org.gmdev.pdftrick.rendering.ImageAttr;
+package org.gmdev.pdftrick.rendering.Imageattributes;
 
 import java.awt.image.BufferedImage;
 

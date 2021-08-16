@@ -10,7 +10,7 @@ import javax.imageio.IIOException;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.rendering.ImageAttr.*;
+import org.gmdev.pdftrick.rendering.Imageattributes.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.ui.actions.ImageAction;
 import org.gmdev.pdftrick.utils.*;
@@ -133,7 +133,7 @@ public class PageThumbnailsDisplay implements RenderListener {
 			    }	
 			}
 			
-			String flip = "";
+			ImageUtils.Flip flip = null;
 			String rotate = "";
 			Matrix matrix = renderInfo.getImageCTM();
 			String pageRotation = "" + pagesRotation.get(pageNumber);
@@ -146,10 +146,10 @@ public class PageThumbnailsDisplay implements RenderListener {
 			
 			// flip and rotation ... from matrix if i11 or i22 is negative i have to flip image
 			if ( (""+i11).charAt(0) =='-' ) {
-				flip = "fh";
+				flip = ImageUtils.Flip.FLIP_HORIZONTAL;
 			} 
 			else if ((""+i22).charAt(0) =='-') {
-				flip = "fv";
+				flip = ImageUtils.Flip.FLIP_VERTICAL;
 			}
 			
 			if (pageRotation.equalsIgnoreCase("270") || (""+i21).charAt(0) =='-' ) {
@@ -168,14 +168,14 @@ public class PageThumbnailsDisplay implements RenderListener {
 				
 				if (isInline) {
 					// set up inline image object attributes and store it in a hashmap
-					InlineImage inImg = new InlineImage(bufferedImageImg, image!=null?image.getFileType():"png");
+					InlineImage inImg = new InlineImage(bufferedImageImg, image != null ? image.getFileType() : "png");
 					imageAttrs = new RenderedImageInline(inlineImageCounter, inImg, pageNumber, flip, rotate);
 				} else {
 					// set up image object for normal images
 					imageAttrs = new RenderedImageNormal(pageNumber, renderInfo.getRef().getNumber(), flip, rotate);
 				}
 				
-				// scaling image with original aspect ratio (if image exceded pic box)
+				// scaling image with original aspect ratio (if image overflow image box)
 				int w = bufferedImageImg.getWidth();
 				int h = bufferedImageImg.getHeight();
 				

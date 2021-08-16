@@ -4,8 +4,9 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import org.gmdev.pdftrick.rendering.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.rendering.Imageattributes.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.rendering.imagereader.PdfImageReader;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.PropertyLoader;
 
@@ -24,8 +25,12 @@ public enum PdfTrickBag {
 	private Path extractionFolderPath;
 	private HashMap<Integer, String> pagesRotation;
 	private String pdfPassword;
+
+	// TODO
 	private HashMap<String, RenderedImageAttributes> selectedImages;
 	private HashMap<String, RenderedImageAttributes> inlineSelectedImages;
+	private HashMap<String, PdfImageReader> selectedImagesV2;
+
 	private TasksContainer tasksContainer;
 	private Properties messagesProps;
 	private NativeObjectManager nativeObjectManager;
@@ -46,8 +51,12 @@ public enum PdfTrickBag {
 		numberOfPages = 0;
 		selectedPage = 0;
 		pagesRotation = new HashMap<>();
+
+		//TODO
 		selectedImages = new HashMap<>();
 		inlineSelectedImages = new HashMap<>();
+		selectedImagesV2 = new HashMap<>();
+
 		tasksContainer = new TasksContainer();
 		messagesProps = PropertyLoader.loadMessagesPropertyFile();
 		nativeObjectManager = new NativeObjectManager();
@@ -158,6 +167,10 @@ public enum PdfTrickBag {
 		return inlineSelectedImages;
 	}
 
+	public HashMap<String, PdfImageReader> getSelectedImagesV2() {
+		return selectedImagesV2;
+	}
+
 	public TasksContainer getTasksContainer() {
 		return tasksContainer;
 	}
@@ -172,7 +185,7 @@ public enum PdfTrickBag {
 		return userInterface;
 	}
 
-	protected void setUserInterface(UserInterface userInterface) {
+	public void setUserInterface(UserInterface userInterface) {
 		this.userInterface = userInterface;
 	}
 

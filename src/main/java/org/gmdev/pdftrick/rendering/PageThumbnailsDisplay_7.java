@@ -7,6 +7,8 @@ import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 import org.gmdev.pdftrick.rendering.imagereader.PdfImageReader;
 import org.gmdev.pdftrick.rendering.imagereader.ImageReaderStrategy;
+import org.gmdev.pdftrick.rendering.tasks.UpdateCenterPanelTask;
+import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -42,7 +44,7 @@ public class PageThumbnailsDisplay_7 implements IEventListener {
     }
 
     private void display(ImageRenderInfo imageRenderInfo) {
-        PdfImageReader pdfImageReader = ImageReaderStrategy.getReader(imageRenderInfo, pageNumber);
+        PdfImageReader pdfImageReader = ImageReaderStrategy.getReader(imageRenderInfo, pageNumber, ++imageNumber);
 
         Optional<BufferedImage> bufferedImageMaybe = pdfImageReader.readImage();
         if (bufferedImageMaybe.isEmpty()) {
@@ -51,10 +53,10 @@ public class PageThumbnailsDisplay_7 implements IEventListener {
         }
 
         BufferedImage bufferedImage = bufferedImageMaybe.get();
+        BufferedImage scaledBufferedImage = pdfImageReader.scaleImage(bufferedImage);
 
-        //writeImage(bufferedImage, pdfImageReader.getImage());
-
-        imageNumber++;
+        //writeImage(bufferedImage, pdfImageReader.getImageObject());
+        SwingInvoker.invokeAndWait(new UpdateCenterPanelTask(pdfImageReader, scaledBufferedImage));
 
 // code for extractions with itext 7
 //        try {

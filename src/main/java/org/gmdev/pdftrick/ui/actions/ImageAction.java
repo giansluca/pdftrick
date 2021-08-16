@@ -7,7 +7,7 @@ import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.rendering.ImageAttr.RenderedImageAttributes;
+import org.gmdev.pdftrick.rendering.Imageattributes.RenderedImageAttributes;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 public class ImageAction implements MouseListener {
@@ -49,7 +49,7 @@ public class ImageAction implements MouseListener {
 				else
 					imageSelected.put(imageAttributes.getKey(), imageAttributes);
 				
-				numImgSelected.setText("Selected "+(imageSelected.size()+inlineImgSelected.size()));
+				numImgSelected.setText("Selected " + (imageSelected.size()+inlineImgSelected.size()));
 			} else {
 				picLabel.setBorder(borderGray);
 				picLabel.setOpaque(false);

@@ -11,22 +11,34 @@ import java.io.ByteArrayInputStream;
 import java.io.*;
 import java.util.Optional;
 
-public class J2BIGReaderPdf implements PdfImageReader {
+public class J2BIGImageReader implements PdfImageReader {
 
     private final PdfImageXObject image;
     private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
+    private final int imageNumber;
 
-    public J2BIGReaderPdf(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
+    public J2BIGImageReader(PdfImageXObject image,
+                            int reference,
+                            Matrix matrix,
+                            int pageNumber,
+                            int imageNumber) {
+
         this.image = image;
         this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
+        this.imageNumber = imageNumber;
     }
 
     @Override
-    public PdfImageXObject getImage() {
+    public String getKey() {
+        return String.format("%s-%s", imageNumber, pageNumber);
+    }
+
+    @Override
+    public PdfImageXObject getImageObject() {
         return image;
     }
 

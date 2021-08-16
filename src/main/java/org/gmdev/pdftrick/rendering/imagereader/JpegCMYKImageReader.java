@@ -19,7 +19,7 @@ import java.util.*;
 
 import static org.gmdev.pdftrick.utils.Constants.GENERIC_ICC_FILE;
 
-public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
+public class JpegCMYKImageReader implements PdfImageReader {
 
     private static final int COLOR_TYPE_RGB = 1;
     private static final int COLOR_TYPE_CMYK = 2;
@@ -29,18 +29,31 @@ public class JPEGColorSpaceCMYKReaderPdf implements PdfImageReader {
     private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
+    private final int imageNumber;
+
     private int colorType = COLOR_TYPE_RGB;
     private boolean hasAdobeMarker = false;
 
-    public JPEGColorSpaceCMYKReaderPdf(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
+    public JpegCMYKImageReader(PdfImageXObject image,
+                               int reference,
+                               Matrix matrix,
+                               int pageNumber,
+                               int imageNumber) {
+
         this.image = image;
         this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
+        this.imageNumber = imageNumber;
     }
 
     @Override
-    public PdfImageXObject getImage() {
+    public String getKey() {
+        return String.format("%s-%s", imageNumber, pageNumber);
+    }
+
+    @Override
+    public PdfImageXObject getImageObject() {
         return image;
     }
 
