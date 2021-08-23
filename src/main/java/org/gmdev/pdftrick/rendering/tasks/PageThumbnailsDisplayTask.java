@@ -1,20 +1,19 @@
 package org.gmdev.pdftrick.rendering.tasks;
 
-import java.awt.*;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.swing.*;
-
-import org.gmdev.pdftrick.rendering.PageThumbnailsDisplay;
+import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.canvas.parser.PdfDocumentContentParser;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
+import org.gmdev.pdftrick.rendering.PageThumbnailsDisplay;
 import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.utils.Messages;
 
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.text.MessageFormat;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PageThumbnailsDisplayTask implements Runnable {
 
@@ -22,10 +21,13 @@ public class PageThumbnailsDisplayTask implements Runnable {
     public static final String NO_PICTURES = "NoPicsImg";
 
     private final int pageNumber;
-    private final AtomicBoolean running = new AtomicBoolean(false);
+    private final Path pdfFilePath;
+    private final AtomicBoolean running;
 
     public PageThumbnailsDisplayTask(int pageNumber) {
         this.pageNumber = pageNumber;
+        pdfFilePath = bag.getSavedFilePath();
+        running = new AtomicBoolean(false);
     }
 
     public boolean isRunning() {
@@ -35,6 +37,7 @@ public class PageThumbnailsDisplayTask implements Runnable {
     @Override
     public void run() {
         running.set(true);
+
         Properties messages = bag.getMessagesProps();
         WaitPanel.setLoadingThumbnailsWaitPanel();
 
@@ -59,20 +62,23 @@ public class PageThumbnailsDisplayTask implements Runnable {
         }
 
         Messages.append("INFO", String.format("%s %s", infoUnsupported, infoAvailable));
+
         WaitPanel.removeWaitPanel();
         running.set(false);
     }
 
     private void processPage(PageThumbnailsDisplay pageThumbnailsDisplay) {
         try {
-            PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
-            PdfReaderContentParser pdfParser = new PdfReaderContentParser(reader);
+            PdfReader reader = new PdfReader(pdfFilePath.toString());
+            PdfDocument document = new PdfDocument(reader);
+            PdfDocumentContentParser contentParser = new PdfDocumentContentParser(document);
 
-            pdfParser.processContent(pageNumber, pageThumbnailsDisplay);
+            contentParser.processContent(pageNumber, pageThumbnailsDisplay);
 
             reader.close();
+            document.close();
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Error parsing page");
         }
     }
 
@@ -86,11 +92,13 @@ public class PageThumbnailsDisplayTask implements Runnable {
             noImageLabel.setVerticalAlignment(JLabel.CENTER);
             noImageLabel.setFont(new Font("Verdana", Font.BOLD, 20));
             noImageLabel.setName(NO_PICTURES);
+
             centerPanel.setLayout(new GridBagLayout());
             centerPanel.add(noImageLabel);
             centerPanel.revalidate();
             centerPanel.repaint();
         });
     }
+
 
 }

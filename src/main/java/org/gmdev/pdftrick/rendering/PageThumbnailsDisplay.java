@@ -1,283 +1,89 @@
 package org.gmdev.pdftrick.rendering;
 
-import java.awt.*;
+import com.itextpdf.kernel.pdf.canvas.parser.EventType;
+import com.itextpdf.kernel.pdf.canvas.parser.data.*;
+import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
+import org.gmdev.pdftrick.rendering.imagereader.*;
+import org.gmdev.pdftrick.rendering.tasks.UpdateCenterPanelTask;
+import org.gmdev.pdftrick.swingmanager.SwingInvoker;
+
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 
-import javax.imageio.IIOException;
-import javax.swing.*;
-import javax.swing.border.Border;
+import static com.itextpdf.kernel.pdf.canvas.parser.EventType.RENDER_IMAGE;
 
-import org.gmdev.pdftrick.rendering.Imageattributes.*;
-import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.ui.actions.ImageAction;
-import org.gmdev.pdftrick.utils.*;
-import org.gmdev.pdftrick.utils.external.CustomImageReader;
+public class PageThumbnailsDisplay implements IEventListener {
 
-import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.parser.*;
+    private final int pageNumber;
+    private int imageNumber;
+    private int unsupportedImages;
 
-public class PageThumbnailsDisplay implements RenderListener {
-	
-	private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
-	
-	private int imageNumber;
-	private int unsupportedImages;
-	private final int pageNumber;
-	private final UpdatePanelCenter updatePanelCenter;
-	private int inlineImageCounter;
-	
-	public PageThumbnailsDisplay(int pageNumber) {
-		this.imageNumber = 0;
-		this.unsupportedImages = 0;
-		this.pageNumber = pageNumber;
-		this.updatePanelCenter = new UpdatePanelCenter();
-		this.inlineImageCounter = 0;
-	}
-	
-	@Override
-	public void beginTextBlock() {
-	}
-	
-	@Override
-	public void endTextBlock() {
-	}
-	
-	@Override
-	public void renderText(TextRenderInfo renderInfo) {
-	}
-	
-	@Override
-	public void renderImage(ImageRenderInfo renderInfo) {
-		this.render(renderInfo);
-	}
+    public PageThumbnailsDisplay(int pageNumber) {
+        this.pageNumber = pageNumber;
+        this.imageNumber = 0;
+        this.unsupportedImages = 0;
+    }
 
-	private Optional<PdfImageObject> getImage(ImageRenderInfo renderInfo) {
-		try {
-			return Optional.of(renderInfo.getImage());
-		} catch (IOException e) {
-			return Optional.empty();
-		}
-	}
+    @Override
+    public Set<EventType> getSupportedEvents() {
+        return Collections.singleton(RENDER_IMAGE);
+    }
 
-	private boolean isInlineImage(ImageRenderInfo renderInfo) {
-		return renderInfo.getRef() == null;
-	}
+    @Override
+    public void eventOccurred(IEventData eventData, EventType eventType) {
+        if (eventType != RENDER_IMAGE) return;
+        display((ImageRenderInfo) eventData);
+    }
 
-	private void render(ImageRenderInfo renderInfo ) {
-		HashMap<Integer, String> pagesRotation = bag.getPagesRotation();
+    private void display(ImageRenderInfo imageRenderInfo) {
+        PdfImageReader pdfImageReader = ImageReaderStrategy.getReader(imageRenderInfo, pageNumber, ++imageNumber);
 
-		boolean isInline = isInlineImage(renderInfo);
-		PdfImageObject image = getImage(renderInfo).orElse(null);
+        Optional<BufferedImage> bufferedImageMaybe = pdfImageReader.readImage();
+        if (bufferedImageMaybe.isEmpty()) {
+            unsupportedImages++;
+            return;
+        }
 
-		try {
-			BufferedImage bufferedImageImg = null;
+        BufferedImage bufferedImage = bufferedImageMaybe.get();
 
-			if (isInline) inlineImageCounter += 1;
-			if (image == null) {
-				try {
-					bufferedImageImg = CustomImageReader.readIndexedPNG(
-									renderInfo.getRef().getNumber(),
-									bag.getSavedFilePath());
+        ImageAttributes imageAttributes = new ImageAttributes(
+                bufferedImage,
+                pdfImageReader.getExtension(),
+                pdfImageReader.getKey());
 
-				} catch (Exception e) {
-					unsupportedImages++;
-					return;
-				}
-			}
-			
-			if (image != null) {
-				BufferedImage buffPic = null;
-				
-				try {
-					// if image is JBIG2 type i need a custom way and using jbig2 ImageIO plugin
-					if ( image.getFileType().equalsIgnoreCase("JBIG2") ) {
-						buffPic = CustomImageReader.readJBIG2(image);
-					} else {
-						buffPic = image.getBufferedImage();
-					}
-				} catch (IIOException iioex) {
-					byte[] imageByteArray = image.getImageAsBytes();
-					
-					try {
-						buffPic = CustomImageReader.readCMYK_JPG(imageByteArray);
-					} catch (Exception e) {
-						unsupportedImages++;
-						return;
-					}
-				} catch (Exception e) {
-					unsupportedImages++;
-					return;
-				}
-				
-				// isValid if image contains a mask image
-				BufferedImage buffMask = null;
-				PdfDictionary imageDictionary = image.getDictionary(); 
-			    PRStream maskStream = (PRStream) imageDictionary.getAsStream(PdfName.SMASK); 
-			    
-			    if (maskStream != null) { 
-			    	// if i have an mask object i isValid that is not a jpeg format, because this may cause some problem on off screen rendering
-			    	// usually all images with mask are png ... and there aren't problems, if image is jpg i discard the mask :)
-			        if (!image.getFileType().equalsIgnoreCase("jpg") && buffPic != null) {
-			        	PdfImageObject maskImage = new PdfImageObject(maskStream);
-			        	buffMask = maskImage.getBufferedImage();
-			        	Image img = ImageUtils.transformGrayToTransparency(buffMask);
-			        	bufferedImageImg = ImageUtils.applyTransparency(buffPic, img);
-			        } else {
-			        	bufferedImageImg = buffPic;
-			        }
-			    } else {
-			    	bufferedImageImg = buffPic;
-			    }	
-			}
-			
-			ImageUtils.Flip flip = null;
-			String rotate = "";
-			Matrix matrix = renderInfo.getImageCTM();
-			String pageRotation = "" + pagesRotation.get(pageNumber);
-			
-			// experimental 
-			float i11 = matrix.get(Matrix.I11);	// if negative -> horizontal flip
-			float i12 = matrix.get(Matrix.I12);	// if negative -> 90 degree rotation
-			float i21 = matrix.get(Matrix.I21); // if negative -> 270 degree rotation
-			float i22 = matrix.get(Matrix.I22); // if negative -> vertical flip
-			
-			// flip and rotation ... from matrix if i11 or i22 is negative i have to flip image
-			if ( (""+i11).charAt(0) =='-' ) {
-				flip = ImageUtils.Flip.FLIP_HORIZONTAL;
-			} 
-			else if ((""+i22).charAt(0) =='-') {
-				flip = ImageUtils.Flip.FLIP_VERTICAL;
-			}
-			
-			if (pageRotation.equalsIgnoreCase("270") || (""+i21).charAt(0) =='-' ) {
-				rotate = "270";
-			}
-			else if (pageRotation.equalsIgnoreCase("180")) {
-				rotate = "180";
-			}
-			else if (pageRotation.equalsIgnoreCase("90") || (""+i12).charAt(0) =='-') {
-				rotate = "90";
-			}
-			
-			if (bufferedImageImg != null) {
-				bufferedImageImg = ImageUtils.adjustImage(bufferedImageImg, flip, rotate);
-				RenderedImageAttributes imageAttrs = null;
-				
-				if (isInline) {
-					// set up inline image object attributes and store it in a hashmap
-					InlineImage inImg = new InlineImage(bufferedImageImg, image != null ? image.getFileType() : "png");
-					imageAttrs = new RenderedImageInline(inlineImageCounter, inImg, pageNumber, flip, rotate);
-				} else {
-					// set up image object for normal images
-					imageAttrs = new RenderedImageNormal(pageNumber, renderInfo.getRef().getNumber(), flip, rotate);
-				}
-				
-				// scaling image with original aspect ratio (if image overflow image box)
-				int w = bufferedImageImg.getWidth();
-				int h = bufferedImageImg.getHeight();
-				
-				if (w > 170 || h > 170) {
-					double faktor;
-					if (w > h) {
-						faktor = 160 / (double)w;
-						int scaledW = (int) Math.round(faktor * w);
-						int scaledH = (int) Math.round(faktor * h);
-						bufferedImageImg = ImageUtils.getScaledImageWithScalr(bufferedImageImg, scaledW, scaledH);
-					
-					} else {
-						faktor = 160 / (double)h;
-						int scaledW = (int) Math.round(faktor * w);
-						int scaledH = (int) Math.round(faktor * h);
-						bufferedImageImg = ImageUtils.getScaledImageWithScalr(bufferedImageImg, scaledW, scaledH);
-					}
-				}
+        BufferedImage scaledBufferedImage = pdfImageReader.scaleImage(bufferedImage);
 
-				imageNumber ++;
-				// dynamic update on the center panel (under EDT thread). UpdatePanelCenter upPcenter = this.upPcenter;
-				updatePanelCenter.setInlineImg(isInline);
-				updatePanelCenter.setBuffImg(bufferedImageImg);
-				updatePanelCenter.setImageAttrs(imageAttrs);
-				
-				try {
-					SwingUtilities.invokeAndWait(updatePanelCenter);
-				} catch (InterruptedException | InvocationTargetException e) {
-					throw new IllegalStateException(e);
-				}
+        SwingInvoker.invokeAndWait(
+                new UpdateCenterPanelTask(
+                        imageAttributes,
+                        scaledBufferedImage)
+        );
 
-				bufferedImageImg.flush();
-			} else {
-				unsupportedImages++;
-			}
-		} catch (Exception e) {
-			unsupportedImages++;
-		}
-	}
-	
-	public int getImageNumber() {
-		return imageNumber;
-	}
+// code for extractions with itext 7
+//        try {
+//            PdfReader reader = new PdfReader("filepath");
+//            PdfDocument pdfDoc = new PdfDocument(reader);
+//
+//            PdfObject obj = pdfDoc.getPdfObject(objNumber);
+//            if (obj != null && obj.isStream()) {
+//                //byte[] bytes = ((PdfStream) obj).getBytes();
+//                PdfImageXObject xObject = new PdfImageXObject((PdfStream) obj);
+//                BufferedImage bufferedImage = xObject.getBufferedImage();
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 
-	public int getUnsupportedImages() {
-		return unsupportedImages;
-	}
-	
-	public static class UpdatePanelCenter implements Runnable {
-		private final Border borderGray = BorderFactory.createLineBorder(Color.gray);
-		private final Border borderOrange = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.orange);
-		
-		private final HashMap<String, RenderedImageAttributes> imageSelected;
-		private final HashMap<String, RenderedImageAttributes> inlineImgSelected;
-		private final JPanel centerPanel;
-		
-		private boolean isInlineImg;
-		private BufferedImage buffImg;
-		private RenderedImageAttributes imageAttrs;
-		
-		public UpdatePanelCenter() {
-			this.imageSelected = bag.getSelectedImages();
-			this.inlineImgSelected = bag.getInlineSelectedImages();
-			this.centerPanel = bag.getUserInterface().getCenter().getCenterPanel();
-		}
-		
-		@Override
-		public void run() {
-			JLabel picLabel = new JLabel(new ImageIcon(buffImg));
-			picLabel.setPreferredSize(new Dimension(170, 170));
-			
-			boolean selected = false;
-			
-			if (imageSelected.containsKey(imageAttrs.getKey()) || inlineImgSelected.containsKey(imageAttrs.getKey())) {
-				picLabel.setBorder(borderOrange);
-				selected = true;
-			} else {
-				picLabel.setBorder(borderGray);
-			}
-			
-			picLabel.addMouseListener(new ImageAction(picLabel, imageAttrs, isInlineImg, selected));
-			picLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			
-			centerPanel.add(picLabel);
-			centerPanel.revalidate();
-			centerPanel.repaint();
-		}
-		
-		public void setInlineImg(boolean isInlineImg) {
-			this.isInlineImg = isInlineImg;
-		}
+    public int getImageNumber() {
+        return imageNumber;
+    }
 
-		public void setBuffImg(BufferedImage buffImg) {
-			this.buffImg = buffImg;
-		}
-		
-		public void setImageAttrs(RenderedImageAttributes imageAttrs) {
-			this.imageAttrs = imageAttrs;
-		}
-		
-	}
+    public int getUnsupportedImages() {
+        return unsupportedImages;
+    }
 
-	
 }
-

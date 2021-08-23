@@ -3,8 +3,8 @@ package org.gmdev.pdftrick.checking;
 import com.itextpdf.text.pdf.PdfReader;
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.rendering.PdfPageDisplay;
-import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
+import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 

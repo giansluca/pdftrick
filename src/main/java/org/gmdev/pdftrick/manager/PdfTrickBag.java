@@ -4,9 +4,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import org.gmdev.pdftrick.rendering.Imageattributes.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
-import org.gmdev.pdftrick.rendering.imagereader.PdfImageReader;
+import org.gmdev.pdftrick.rendering.imagereader.ImageAttributes;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.PropertyLoader;
 
@@ -25,12 +24,7 @@ public enum PdfTrickBag {
 	private Path extractionFolderPath;
 	private HashMap<Integer, String> pagesRotation;
 	private String pdfPassword;
-
-	// TODO
-	private HashMap<String, RenderedImageAttributes> selectedImages;
-	private HashMap<String, RenderedImageAttributes> inlineSelectedImages;
-	private HashMap<String, PdfImageReader> selectedImagesV2;
-
+	private HashMap<String, ImageAttributes> selectedImages;
 	private TasksContainer tasksContainer;
 	private Properties messagesProps;
 	private NativeObjectManager nativeObjectManager;
@@ -51,12 +45,7 @@ public enum PdfTrickBag {
 		numberOfPages = 0;
 		selectedPage = 0;
 		pagesRotation = new HashMap<>();
-
-		//TODO
 		selectedImages = new HashMap<>();
-		inlineSelectedImages = new HashMap<>();
-		selectedImagesV2 = new HashMap<>();
-
 		tasksContainer = new TasksContainer();
 		messagesProps = PropertyLoader.loadMessagesPropertyFile();
 		nativeObjectManager = new NativeObjectManager();
@@ -85,7 +74,6 @@ public enum PdfTrickBag {
 
 	public void cleanUp() {
 		cleanSelectedImagesHashMap();
-		cleanInlineSelectedImagesHashMap();
 		cleanPagesRotationHashMap();
 		setSelectedPage(0);
 		setExtractionFolderPath(null);
@@ -93,10 +81,6 @@ public enum PdfTrickBag {
 
 	public void cleanSelectedImagesHashMap() {
 		selectedImages.clear();
-	}
-
-	public void cleanInlineSelectedImagesHashMap() {
-		inlineSelectedImages.clear();
 	}
 
 	public void cleanPagesRotationHashMap() {
@@ -159,16 +143,8 @@ public enum PdfTrickBag {
 		this.pdfPassword = pdfPassword;
 	}
 
-	public HashMap<String, RenderedImageAttributes> getSelectedImages() {
+	public HashMap<String, ImageAttributes> getSelectedImages() {
 		return selectedImages;
-	}
-
-	public HashMap<String, RenderedImageAttributes> getInlineSelectedImages() {
-		return inlineSelectedImages;
-	}
-
-	public HashMap<String, PdfImageReader> getSelectedImagesV2() {
-		return selectedImagesV2;
 	}
 
 	public TasksContainer getTasksContainer() {

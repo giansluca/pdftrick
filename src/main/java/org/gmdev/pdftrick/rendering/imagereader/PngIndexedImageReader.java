@@ -3,7 +3,7 @@ package org.gmdev.pdftrick.rendering.imagereader;
 import com.itextpdf.io.codec.PngWriter;
 import com.itextpdf.kernel.geom.Matrix;
 import com.itextpdf.kernel.pdf.*;
-import com.itextpdf.kernel.pdf.filters.DoNothingFilter;
+import com.itextpdf.kernel.pdf.filters.*;
 import com.itextpdf.kernel.pdf.filters.FilterHandlers;
 import com.itextpdf.kernel.pdf.filters.IFilterHandler;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
@@ -14,25 +14,20 @@ import org.gmdev.pdftrick.manager.PdfTrickBag;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.io.*;
+import java.util.*;
 
 public class PngIndexedImageReader implements PdfImageReader {
 
-    private final PdfImageXObject image;
+    private final PdfImageXObject imageXObject;
     private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 
-    public PngIndexedImageReader(PdfImageXObject image, int reference, Matrix matrix, int pageNumber) {
-        this.image = image;
+    public PngIndexedImageReader(PdfImageXObject imageXObject, int reference, Matrix matrix, int pageNumber) {
+        this.imageXObject = imageXObject;
         this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
@@ -44,16 +39,20 @@ public class PngIndexedImageReader implements PdfImageReader {
     }
 
     @Override
-    public PdfImageXObject getImageObject() {
-        return image;
+    public PdfImageXObject getImageXObject() {
+        return imageXObject;
     }
 
+    @Override
+    public String getExtension() {
+        return imageXObject.identifyImageFileExtension();
+    }
 
     @Override
     public Optional<BufferedImage> readImage() {
         try {
             BufferedImage bufferedImage = read();
-            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            bufferedImage = checkAndApplyMask(bufferedImage, imageXObject);
             bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);
@@ -66,15 +65,15 @@ public class PngIndexedImageReader implements PdfImageReader {
      * Read a png image with if all other method fails
      */
     private BufferedImage read() throws IOException, ImageReadException {
-        byte[] imageBytes = image.getPdfObject().getBytes();
-        float width = image.getWidth();
-        float height = image.getHeight();
-        int pngBitDepth = image.getPdfObject().getAsNumber(PdfName.BitsPerComponent).intValue();
-        PdfArray decode = image.getPdfObject().getAsArray(PdfName.Decode);
+        byte[] imageBytes = imageXObject.getPdfObject().getBytes();
+        float width = imageXObject.getWidth();
+        float height = imageXObject.getHeight();
+        int pngBitDepth = imageXObject.getPdfObject().getAsNumber(PdfName.BitsPerComponent).intValue();
+        PdfArray decode = imageXObject.getPdfObject().getAsArray(PdfName.Decode);
 
         Map<PdfName, IFilterHandler> filters = new HashMap<>(FilterHandlers.getDefaultFilterHandlers());
         filters.put(PdfName.JBIG2Decode, new DoNothingFilter());
-        byte[] decodedBytes = PdfReader.decodeBytes(imageBytes, image.getPdfObject(), filters);
+        byte[] decodedBytes = PdfReader.decodeBytes(imageBytes, imageXObject.getPdfObject(), filters);
 
         int stride = ((int) width * pngBitDepth + 7) / 8;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

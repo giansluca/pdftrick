@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.*;
 
-import org.gmdev.pdftrick.extraction.ImagesExtractor;
+import org.gmdev.pdftrick.extraction.ImageExtractor;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.serviceprocessor.Stoppable;
 import org.gmdev.pdftrick.swingmanager.WaitPanel;
@@ -28,9 +28,9 @@ public class ImagesExtractionTask implements Runnable, Stoppable {
 	public void run () {
 		running.set(true);
 		WaitPanel.setExtractingImagesWaitPanel();
-		
-		ImagesExtractor imagesExtractor = new ImagesExtractor();
-		imagesExtractor.getImages();
+
+		ImageExtractor imageExtractor = new ImageExtractor();
+		imageExtractor.extract();
 		
 		WaitPanel.removeWaitPanel();
 		
@@ -48,7 +48,6 @@ public class ImagesExtractionTask implements Runnable, Stoppable {
 	public void cleanAfterGetImages() {
 		bag.getUserInterface().getCenter().cleanSelection();
 		bag.cleanSelectedImagesHashMap();
-		bag.cleanInlineSelectedImagesHashMap();
 
 		JTextField numImgSelectedField = bag.getUserInterface().getRight().getSelectedImagesField();
 		numImgSelectedField.setText("");

@@ -19,7 +19,6 @@ public class CleanSelectionAction extends AbstractAction {
 
         bag.getUserInterface().getCenter().cleanSelection();
         bag.cleanSelectedImagesHashMap();
-        bag.cleanInlineSelectedImagesHashMap();
 
         JTextField selectedImagesField = bag.getUserInterface().getRight().getSelectedImagesField();
         selectedImagesField.setText("");
@@ -46,7 +45,7 @@ public class CleanSelectionAction extends AbstractAction {
             return false;
         }
 
-        if (bag.getSelectedImages().size() == 0 && bag.getInlineSelectedImages().size() == 0) {
+        if (bag.getSelectedImages().size() == 0) {
             Messages.append("INFO", messagesProps.getProperty("t_msg_24"));
             return false;
         }

@@ -13,7 +13,6 @@ import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
-import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask_7;
 import org.gmdev.pdftrick.serviceprocessor.ServiceScheduler;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.ui.panels.CenterPanel;
@@ -63,19 +62,15 @@ public class PdfPageAction implements MouseListener {
 
 			picLabel.setBorder(borderGreen);
 			bag.setSelectedPage(pageNumber);
-			currentPageField.setText("Page " + pageNumber);
+			currentPageField.setText(String.format("Page %s",pageNumber));
 			centerPanel.clean();
-			
+
 			PageThumbnailsDisplayTask pageThumbnailsDisplayTask = new PageThumbnailsDisplayTask(pageNumber);
 			bag.getTasksContainer().setPageThumbnailsDisplayTask(pageThumbnailsDisplayTask);
-			
+
 			Thread pageThumbnailsDisplayThread = new Thread(pageThumbnailsDisplayTask);
 			bag.getTasksContainer().setPageThumbnailsDisplayThread(pageThumbnailsDisplayThread);
 			pageThumbnailsDisplayThread.start();
-
-			// TODO Itext 7 migration
-			var pageThumbnailsDisplayTask_7 = new PageThumbnailsDisplayTask_7(pageNumber);
-			ServiceScheduler.getServiceScheduler().schedule(pageThumbnailsDisplayTask_7);
 		}
 	}
 

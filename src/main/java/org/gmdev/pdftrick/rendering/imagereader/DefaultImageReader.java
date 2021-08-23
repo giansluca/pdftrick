@@ -9,19 +9,19 @@ import java.util.Optional;
 
 public class DefaultImageReader implements PdfImageReader {
 
-    private final PdfImageXObject image;
+    private final PdfImageXObject imageXObject;
     private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
     private final int imageNumber;
 
-    public DefaultImageReader(PdfImageXObject image,
+    public DefaultImageReader(PdfImageXObject imageXObject,
                               int reference,
                               Matrix matrix,
                               int pageNumber,
                               int imageNumber) {
 
-        this.image = image;
+        this.imageXObject = imageXObject;
         this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
@@ -34,15 +34,20 @@ public class DefaultImageReader implements PdfImageReader {
     }
 
     @Override
-    public PdfImageXObject getImageObject() {
-        return image;
+    public PdfImageXObject getImageXObject() {
+        return imageXObject;
+    }
+
+    @Override
+    public String getExtension() {
+        return imageXObject.identifyImageFileExtension();
     }
 
     @Override
     public Optional<BufferedImage> readImage() {
         try {
-            BufferedImage bufferedImage = image.getBufferedImage();
-            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            BufferedImage bufferedImage = imageXObject.getBufferedImage();
+            bufferedImage = checkAndApplyMask(bufferedImage, imageXObject);
             bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);

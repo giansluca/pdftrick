@@ -25,7 +25,7 @@ public class JpegCMYKImageReader implements PdfImageReader {
     private static final int COLOR_TYPE_CMYK = 2;
     private static final int COLOR_TYPE_YCCK = 3;
     
-    private final PdfImageXObject image;
+    private final PdfImageXObject imageXObject;
     private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
@@ -34,13 +34,13 @@ public class JpegCMYKImageReader implements PdfImageReader {
     private int colorType = COLOR_TYPE_RGB;
     private boolean hasAdobeMarker = false;
 
-    public JpegCMYKImageReader(PdfImageXObject image,
+    public JpegCMYKImageReader(PdfImageXObject imageXObject,
                                int reference,
                                Matrix matrix,
                                int pageNumber,
                                int imageNumber) {
 
-        this.image = image;
+        this.imageXObject = imageXObject;
         this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
@@ -53,15 +53,20 @@ public class JpegCMYKImageReader implements PdfImageReader {
     }
 
     @Override
-    public PdfImageXObject getImageObject() {
-        return image;
+    public PdfImageXObject getImageXObject() {
+        return imageXObject;
+    }
+
+    @Override
+    public String getExtension() {
+        return imageXObject.identifyImageFileExtension();
     }
 
     @Override
     public Optional<BufferedImage> readImage() {
         try {
             BufferedImage bufferedImage = read();
-            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            bufferedImage = checkAndApplyMask(bufferedImage, imageXObject);
             bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);
@@ -74,7 +79,7 @@ public class JpegCMYKImageReader implements PdfImageReader {
      * Read a JPG image with CMYK ICC profile
      */
     private BufferedImage read() throws IOException, ImageReadException {
-        byte[] imageByteArray = image.getImageBytes();
+        byte[] imageByteArray = imageXObject.getImageBytes();
         InputStream in = new ByteArrayInputStream(imageByteArray);
         ImageInputStream imageStream = ImageIO.createImageInputStream(in);
         Iterator<javax.imageio.ImageReader> ite = ImageIO.getImageReaders(imageStream);

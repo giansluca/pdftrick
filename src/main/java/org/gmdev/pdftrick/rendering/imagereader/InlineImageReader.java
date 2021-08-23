@@ -9,13 +9,13 @@ import java.util.Optional;
 
 public class InlineImageReader implements PdfImageReader {
 
-    private final PdfImageXObject image;
+    private final PdfImageXObject imageXObject;
     private final Matrix matrix;
     private final int pageNumber;
     private final int imageNumber;
 
-    public InlineImageReader(PdfImageXObject image, Matrix matrix, int pageNumber, int imageNumber) {
-        this.image = image;
+    public InlineImageReader(PdfImageXObject imageXObject, Matrix matrix, int pageNumber, int imageNumber) {
+        this.imageXObject = imageXObject;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
         this.imageNumber = imageNumber;
@@ -27,15 +27,20 @@ public class InlineImageReader implements PdfImageReader {
     }
 
     @Override
-    public PdfImageXObject getImageObject() {
-        return image;
+    public PdfImageXObject getImageXObject() {
+        return imageXObject;
+    }
+
+    @Override
+    public String getExtension() {
+        return imageXObject.identifyImageFileExtension();
     }
 
     @Override
     public Optional<BufferedImage> readImage() {
         try {
-            BufferedImage bufferedImage = image.getBufferedImage();
-            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            BufferedImage bufferedImage = imageXObject.getBufferedImage();
+            bufferedImage = checkAndApplyMask(bufferedImage, imageXObject);
             bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);

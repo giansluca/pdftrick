@@ -13,19 +13,19 @@ import java.util.Optional;
 
 public class J2BIGImageReader implements PdfImageReader {
 
-    private final PdfImageXObject image;
+    private final PdfImageXObject imageXObject;
     private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
     private final int imageNumber;
 
-    public J2BIGImageReader(PdfImageXObject image,
+    public J2BIGImageReader(PdfImageXObject imageXObject,
                             int reference,
                             Matrix matrix,
                             int pageNumber,
                             int imageNumber) {
 
-        this.image = image;
+        this.imageXObject = imageXObject;
         this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
@@ -38,15 +38,20 @@ public class J2BIGImageReader implements PdfImageReader {
     }
 
     @Override
-    public PdfImageXObject getImageObject() {
-        return image;
+    public PdfImageXObject getImageXObject() {
+        return imageXObject;
+    }
+
+    @Override
+    public String getExtension() {
+        return imageXObject.identifyImageFileExtension();
     }
 
     @Override
     public Optional<BufferedImage> readImage() {
         try {
             BufferedImage bufferedImage = read();
-            bufferedImage = checkAndApplyMask(bufferedImage, image);
+            bufferedImage = checkAndApplyMask(bufferedImage, imageXObject);
             bufferedImage = checkAndApplyRotations(bufferedImage, matrix, pageNumber);
 
             return Optional.of(bufferedImage);
@@ -56,7 +61,7 @@ public class J2BIGImageReader implements PdfImageReader {
     }
 
     private BufferedImage read() throws IOException {
-        InputStream in = new ByteArrayInputStream(image.getImageBytes());
+        InputStream in = new ByteArrayInputStream(imageXObject.getImageBytes());
         ImageInputStream imageStream = ImageIO.createImageInputStream(in);
 
         JBIG2ImageReader imageReader = new JBIG2ImageReader(new JBIG2ImageReaderSpi());

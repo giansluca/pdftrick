@@ -25,7 +25,9 @@ public interface PdfImageReader {
 
     String getKey();
 
-    PdfImageXObject getImageObject();
+    PdfImageXObject getImageXObject();
+
+    String getExtension();
 
     Optional<BufferedImage> readImage();
 
