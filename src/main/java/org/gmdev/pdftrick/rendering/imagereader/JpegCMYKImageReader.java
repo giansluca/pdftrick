@@ -26,7 +26,6 @@ public class JpegCMYKImageReader implements PdfImageReader {
     private static final int COLOR_TYPE_YCCK = 3;
     
     private final PdfImageXObject imageXObject;
-    private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
     private final int imageNumber;
@@ -35,13 +34,11 @@ public class JpegCMYKImageReader implements PdfImageReader {
     private boolean hasAdobeMarker = false;
 
     public JpegCMYKImageReader(PdfImageXObject imageXObject,
-                               int reference,
                                Matrix matrix,
                                int pageNumber,
                                int imageNumber) {
 
         this.imageXObject = imageXObject;
-        this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
         this.imageNumber = imageNumber;

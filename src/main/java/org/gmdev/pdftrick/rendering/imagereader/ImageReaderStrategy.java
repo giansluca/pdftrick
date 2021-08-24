@@ -13,20 +13,16 @@ public class ImageReaderStrategy {
         PdfImageXObject imageXObject = imageRenderInfo.getImage();
         Matrix matrix = imageRenderInfo.getImageCtm();
 
-        if (imageRenderInfo.isInline())
-            return new InlineImageReader(imageXObject, matrix, pageNumber, imageNumber);
-
-        int reference = imageXObject.getPdfObject().getIndirectReference().getObjNumber();
         try {
             if (ImageType.JBIG2 == imageXObject.identifyImageType())
-                return new J2BIGImageReader(imageXObject, reference, matrix, pageNumber, imageNumber);
+                return new J2BIGImageReader(imageXObject, matrix, pageNumber, imageNumber);
 
             if (imageXObject.getBufferedImage() != null)
-                return new DefaultImageReader(imageXObject, reference, matrix, pageNumber, imageNumber);
+                return new DefaultImageReader(imageXObject, matrix, pageNumber, imageNumber);
         } catch (IOException e) {
-            return new JpegCMYKImageReader(imageXObject, reference, matrix, pageNumber, imageNumber);
+            return new JpegCMYKImageReader(imageXObject, matrix, pageNumber, imageNumber);
         } catch (com.itextpdf.io.IOException e) {
-            return new PngIndexedImageReader(imageXObject, reference, matrix, pageNumber);
+            return new PngIndexedImageReader(imageXObject, matrix, pageNumber, imageNumber);
         }
 
         throw new IllegalStateException("Unsupported strategy");

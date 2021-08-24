@@ -14,19 +14,16 @@ import java.util.Optional;
 public class J2BIGImageReader implements PdfImageReader {
 
     private final PdfImageXObject imageXObject;
-    private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
     private final int imageNumber;
 
     public J2BIGImageReader(PdfImageXObject imageXObject,
-                            int reference,
                             Matrix matrix,
                             int pageNumber,
                             int imageNumber) {
 
         this.imageXObject = imageXObject;
-        this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
         this.imageNumber = imageNumber;

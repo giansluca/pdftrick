@@ -3,7 +3,7 @@ package org.gmdev.pdftrick.rendering.tasks;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfDocumentContentParser;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
-import org.gmdev.pdftrick.rendering.PageThumbnailsDisplay;
+import org.gmdev.pdftrick.rendering.PageThumbnailsManager;
 import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.utils.Messages;
 
@@ -26,8 +26,8 @@ public class PageThumbnailsDisplayTask implements Runnable {
 
     public PageThumbnailsDisplayTask(int pageNumber) {
         this.pageNumber = pageNumber;
-        pdfFilePath = bag.getSavedFilePath();
-        running = new AtomicBoolean(false);
+        this.pdfFilePath = bag.getSavedFilePath();
+        this.running = new AtomicBoolean(false);
     }
 
     public boolean isRunning() {
@@ -41,24 +41,24 @@ public class PageThumbnailsDisplayTask implements Runnable {
         Properties messages = bag.getMessagesProps();
         WaitPanel.setLoadingThumbnailsWaitPanel();
 
-        PageThumbnailsDisplay pageThumbnailsDisplay = new PageThumbnailsDisplay(pageNumber);
-        processPage(pageThumbnailsDisplay);
+        PageThumbnailsManager pageThumbnailsManager = new PageThumbnailsManager(pageNumber);
+        processPage(pageThumbnailsManager);
 
         String infoUnsupported = "";
         String infoAvailable;
-        if (pageThumbnailsDisplay.getUnsupportedImages() > 0)
+        if (pageThumbnailsManager.getUnsupportedImages() > 0)
             infoUnsupported = MessageFormat.format(messages.getProperty("d_msg_02"), pageNumber);
 
-        if (pageThumbnailsDisplay.getImageNumber() == 0) {
+        if (pageThumbnailsManager.getImageNumber() == 0) {
             setNoImagePage();
             infoAvailable = MessageFormat.format(messages.getProperty("d_msg_03"), pageNumber);
         } else {
-            String availableMessage = pageThumbnailsDisplay.getImageNumber() > 1
+            String availableMessage = pageThumbnailsManager.getImageNumber() > 1
                     ? messages.getProperty("t_msg_15")
                     : messages.getProperty("t_msg_16");
 
             infoAvailable = String.format(
-                    "%s %s", pageThumbnailsDisplay.getImageNumber(), availableMessage);
+                    "%s %s", pageThumbnailsManager.getImageNumber(), availableMessage);
         }
 
         Messages.append("INFO", String.format("%s %s", infoUnsupported, infoAvailable));
@@ -67,13 +67,13 @@ public class PageThumbnailsDisplayTask implements Runnable {
         running.set(false);
     }
 
-    private void processPage(PageThumbnailsDisplay pageThumbnailsDisplay) {
+    private void processPage(PageThumbnailsManager pageThumbnailsManager) {
         try {
             PdfReader reader = new PdfReader(pdfFilePath.toString());
             PdfDocument document = new PdfDocument(reader);
             PdfDocumentContentParser contentParser = new PdfDocumentContentParser(document);
 
-            contentParser.processContent(pageNumber, pageThumbnailsDisplay);
+            contentParser.processContent(pageNumber, pageThumbnailsManager);
 
             reader.close();
             document.close();

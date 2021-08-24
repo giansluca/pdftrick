@@ -7,7 +7,7 @@ import org.gmdev.pdftrick.rendering.tasks.PdfPageCoverDisplayTask;
 
 import java.io.File;
 
-public class PdfPageDisplay {
+public class PdfPageRendering {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
 

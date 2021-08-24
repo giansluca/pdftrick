@@ -8,19 +8,17 @@ import org.gmdev.pdftrick.rendering.tasks.UpdateCenterPanelTask;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.itextpdf.kernel.pdf.canvas.parser.EventType.RENDER_IMAGE;
 
-public class PageThumbnailsDisplay implements IEventListener {
+public class PageThumbnailsManager implements IEventListener {
 
     private final int pageNumber;
     private int imageNumber;
     private int unsupportedImages;
 
-    public PageThumbnailsDisplay(int pageNumber) {
+    public PageThumbnailsManager(int pageNumber) {
         this.pageNumber = pageNumber;
         this.imageNumber = 0;
         this.unsupportedImages = 0;
@@ -60,22 +58,6 @@ public class PageThumbnailsDisplay implements IEventListener {
                         imageAttributes,
                         scaledBufferedImage)
         );
-
-// code for extractions with itext 7
-//        try {
-//            PdfReader reader = new PdfReader("filepath");
-//            PdfDocument pdfDoc = new PdfDocument(reader);
-//
-//            PdfObject obj = pdfDoc.getPdfObject(objNumber);
-//            if (obj != null && obj.isStream()) {
-//                //byte[] bytes = ((PdfStream) obj).getBytes();
-//                PdfImageXObject xObject = new PdfImageXObject((PdfStream) obj);
-//                BufferedImage bufferedImage = xObject.getBufferedImage();
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public int getImageNumber() {

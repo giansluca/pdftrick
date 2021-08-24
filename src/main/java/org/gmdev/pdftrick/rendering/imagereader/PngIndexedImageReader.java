@@ -3,13 +3,9 @@ package org.gmdev.pdftrick.rendering.imagereader;
 import com.itextpdf.io.codec.PngWriter;
 import com.itextpdf.kernel.geom.Matrix;
 import com.itextpdf.kernel.pdf.*;
-import com.itextpdf.kernel.pdf.filters.*;
-import com.itextpdf.kernel.pdf.filters.FilterHandlers;
-import com.itextpdf.kernel.pdf.filters.IFilterHandler;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 
 import org.apache.commons.imaging.ImageReadException;
-import org.gmdev.pdftrick.manager.PdfTrickBag;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -20,22 +16,20 @@ import java.util.*;
 public class PngIndexedImageReader implements PdfImageReader {
 
     private final PdfImageXObject imageXObject;
-    private final int reference;
     private final Matrix matrix;
     private final int pageNumber;
+    private final int imageNumber;
 
-    private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
-
-    public PngIndexedImageReader(PdfImageXObject imageXObject, int reference, Matrix matrix, int pageNumber) {
+    public PngIndexedImageReader(PdfImageXObject imageXObject, Matrix matrix, int pageNumber, int imageNumber) {
         this.imageXObject = imageXObject;
-        this.reference = reference;
         this.matrix = matrix;
         this.pageNumber = pageNumber;
+        this.imageNumber = imageNumber;
     }
 
     @Override
     public String getKey() {
-        return String.format("%s-%s", reference, pageNumber);
+        return String.format("%s-%s", imageNumber, pageNumber);
     }
 
     @Override
@@ -71,10 +65,6 @@ public class PngIndexedImageReader implements PdfImageReader {
         int pngBitDepth = imageXObject.getPdfObject().getAsNumber(PdfName.BitsPerComponent).intValue();
         PdfArray decode = imageXObject.getPdfObject().getAsArray(PdfName.Decode);
 
-        Map<PdfName, IFilterHandler> filters = new HashMap<>(FilterHandlers.getDefaultFilterHandlers());
-        filters.put(PdfName.JBIG2Decode, new DoNothingFilter());
-        byte[] decodedBytes = PdfReader.decodeBytes(imageBytes, imageXObject.getPdfObject(), filters);
-
         int stride = ((int) width * pngBitDepth + 7) / 8;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PngWriter png = new PngWriter(outputStream);
@@ -99,7 +89,7 @@ public class PngIndexedImageReader implements PdfImageReader {
         png.writeHeader((int) width, (int) height, pngBitDepth, pngColorType);
         png.writeData(imageBytes, stride);
         png.writeEnd();
-        decodedBytes = outputStream.toByteArray();
+        byte[] decodedBytes = outputStream.toByteArray();
 
         InputStream in = new ByteArrayInputStream(decodedBytes);
         ImageInputStream inputStream = ImageIO.createImageInputStream(in);

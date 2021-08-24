@@ -1,8 +1,9 @@
 package org.gmdev.pdftrick.checking;
 
-import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import org.gmdev.pdftrick.manager.*;
-import org.gmdev.pdftrick.rendering.PdfPageDisplay;
+import org.gmdev.pdftrick.rendering.PdfPageRendering;
 import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.swingmanager.*;
 import org.gmdev.pdftrick.ui.panels.*;
@@ -87,9 +88,16 @@ public interface FileIn {
         }
 
         try {
+//            PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
+//            bag.setNumberOfPages(reader.getNumberOfPages());
+//            reader.close();
+
             PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
-            bag.setNumberOfPages(reader.getNumberOfPages());
+            PdfDocument document = new PdfDocument(reader);
+            bag.setNumberOfPages(document.getNumberOfPages());
+
             reader.close();
+            document.close();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -97,7 +105,7 @@ public interface FileIn {
 
     private void renderPdfPages() {
         Messages.append("INFO", "Check Pdf OK, start loading pages");
-        PdfPageDisplay pdfPageDisplay = new PdfPageDisplay();
+        PdfPageRendering pdfPageDisplay = new PdfPageRendering();
         pdfPageDisplay.render();
     }
 
