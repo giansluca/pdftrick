@@ -1,7 +1,5 @@
 package org.gmdev.pdftrick.checking;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.rendering.PdfPageRendering;
 import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
@@ -10,7 +8,6 @@ import org.gmdev.pdftrick.ui.panels.*;
 import org.gmdev.pdftrick.utils.*;
 
 import java.io.File;
-import java.io.IOException;
 
 import static org.gmdev.pdftrick.swingmanager.ModalWarningPanel.displayTooManyFilesLoadedAndThrow;
 
@@ -85,21 +82,6 @@ public interface FileIn {
             String message = "Error saving pdf file.";
             Messages.append("ERROR", message);
             throw new IllegalStateException(message);
-        }
-
-        try {
-//            PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
-//            bag.setNumberOfPages(reader.getNumberOfPages());
-//            reader.close();
-
-            PdfReader reader = new PdfReader(bag.getSavedFilePath().toString());
-            PdfDocument document = new PdfDocument(reader);
-            bag.setNumberOfPages(document.getNumberOfPages());
-
-            reader.close();
-            document.close();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
         }
     }
 

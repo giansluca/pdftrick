@@ -1,12 +1,12 @@
 package org.gmdev.pdftrick.checking;
 
-import java.io.*;
-import java.util.*;
-
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 public class PdfFileTransformer {
 
@@ -14,74 +14,50 @@ public class PdfFileTransformer {
 
     public File saveUploadedFile(File uploadedFile) {
         String pdfPassword = bag.getPdfPassword();
-        File savedFile = bag.getSavedFilePath().toFile();
+        File toSaveFile = bag.getSavedFilePath().toFile();
 
         try {
-            InputStream in = new FileInputStream(uploadedFile);
-            OutputStream out = new FileOutputStream(savedFile);
-
-            Document document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, out);
-            document.open();
-            PdfContentByte pdfContent = writer.getDirectContent();
-
             PdfReader reader;
-            if (pdfPassword != null)
-                reader = new PdfReader(in, pdfPassword.getBytes());
-            else
-                reader = new PdfReader(in);
+            if (pdfPassword != null) {
+                ReaderProperties readerProperties =new ReaderProperties()
+                        .setPassword(pdfPassword.getBytes(StandardCharsets.UTF_8));
 
-            for (int pageNumber = 1; pageNumber <= reader.getNumberOfPages(); pageNumber++) {
-                int rotation = reader.getPageRotation(pageNumber);
+                reader = new PdfReader(uploadedFile.getPath(), readerProperties)
+                        .setUnethicalReading(true);
+            }
+            else reader = new PdfReader(uploadedFile);
 
-                Rectangle pageSize = reader.getPageSize(pageNumber);
+            PdfWriter writer = new PdfWriter(toSaveFile);
+            PdfDocument pdfDocument = new PdfDocument(reader, writer);
+
+            bag.setNumberOfPages(pdfDocument.getNumberOfPages());
+
+            for (int pageNumber = 1; pageNumber <= pdfDocument.getNumberOfPages(); pageNumber++) {
+                PdfPage page = pdfDocument.getPage(pageNumber);
+                Rectangle pageSize = page.getPageSize();
+
+                int rotation = page.getRotation();
                 if (rotation == 270 || rotation == 90)
                     pageSize = new Rectangle(pageSize.getHeight(), pageSize.getWidth());
 
-                document.setPageSize(pageSize);
-                writer.setCropBoxSize(pageSize);
-                document.newPage();
+                page.setCropBox(pageSize);
 
-                addPageToPdf(pdfContent, rotation, pageNumber, writer, reader);
+                setPageRotation(pageNumber, rotation);
             }
 
-            document.close();
-            out.close();
-            in.close();
-            reader.close();
-        } catch (DocumentException | IOException e) {
+            pdfDocument.close();
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
 
-        return savedFile;
+        return toSaveFile;
     }
 
-    private void addPageToPdf(PdfContentByte pdfContent,
-                              int rotation,
-                              int pageNumber,
-                              PdfWriter writer,
-                              PdfReader reader) {
-
+    private void setPageRotation(int pageNumber, int rotation) {
         HashMap<Integer, String> pagesRotation = bag.getPagesRotation();
-        PdfImportedPage page = writer.getImportedPage(reader, pageNumber);
 
-        switch(rotation) {
-            case 90:
-                pdfContent.addTemplate(page, 0, -1, 1, 0, 0, reader.getPageSizeWithRotation(pageNumber).getHeight());
-                pagesRotation.put(pageNumber, String.valueOf(rotation));
-                break;
-            case 180:
-                pdfContent.addTemplate(page, -1, 0, 0, -1, 0, 0);
-                pagesRotation.put(pageNumber, String.valueOf(rotation));
-                break;
-            case 270:
-                pdfContent.addTemplate(page, 0, 1, -1, 0, reader.getPageSizeWithRotation(pageNumber).getWidth(), 0);
-                pagesRotation.put(pageNumber, String.valueOf(rotation));
-                break;
-            default:
-                pdfContent.addTemplate(page, 1, 0, 0, 1, 0, 0);
-        }
+        if (rotation == 90 || rotation == 180 || rotation == 270)
+            pagesRotation.put(pageNumber, String.valueOf(rotation));
     }
-
 
 }
