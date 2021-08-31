@@ -135,7 +135,7 @@ public class PasswordChecker {
     }
 
     private boolean canAccessWithPassword(String typedPassword) {
-        ReaderProperties readerProperties =new ReaderProperties()
+        ReaderProperties readerProperties = new ReaderProperties()
                 .setPassword(typedPassword.getBytes(StandardCharsets.UTF_8));
 
         try (

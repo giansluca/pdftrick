@@ -1,12 +1,12 @@
 package org.gmdev.pdftrick.checking;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.*;
 
 import com.itextpdf.kernel.crypto.BadPasswordException;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.*;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
 
@@ -48,7 +48,7 @@ public class FileChecker {
 
     private String readFile() {
         try (FileReader in = new FileReader(uploadedFile);
-            BufferedReader reader = new BufferedReader(in)) {
+             BufferedReader reader = new BufferedReader(in)) {
             return reader.readLine();
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -82,36 +82,42 @@ public class FileChecker {
         ) {
             if (reader.isEncrypted()) ownerProtection = true;
         } catch (BadPasswordException e) {
-                userProtection = true;
+            userProtection = true;
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
     private boolean hasImages() {
-        PdfReader reader = null;
+        PdfDocument pdfDocument = null;
         try {
-            reader = bag.getPdfPassword() != null
-                    ? new PdfReader(uploadedFile.getPath(), bag.getPdfPassword().getBytes())
-                    : new PdfReader(uploadedFile.getPath());
+            PdfReader reader;
+            if (bag.getPdfPassword() != null) {
+                ReaderProperties readerProperties = new ReaderProperties()
+                        .setPassword(bag.getPdfPassword().getBytes(StandardCharsets.UTF_8));
 
-            for (int i = 0; i < reader.getXrefSize(); i++) {
-                PdfObject pdfObject = reader.getPdfObject(i);
+                reader = new PdfReader(uploadedFile.getPath(), readerProperties);
+            } else reader = new PdfReader(uploadedFile);
+
+            pdfDocument = new PdfDocument(reader);
+            for (int i = 0; i < pdfDocument.getNumberOfPdfObjects(); i++) {
+                PdfObject pdfObject = pdfDocument.getPdfObject(i);
                 if (pdfObject == null || !pdfObject.isStream()) continue;
 
                 PdfStream pdfStream = (PdfStream) pdfObject;
-                PdfObject pdfSubtype = pdfStream.get(PdfName.SUBTYPE);
+                PdfObject pdfSubtype = pdfStream.get(PdfName.Subtype);
 
                 if (pdfSubtype != null &&
-                        pdfSubtype.toString().equals(PdfName.IMAGE.toString())) return true;
+                        pdfSubtype.toString().equals(PdfName.Image.toString())) return true;
             }
-
-            reader.close();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         } finally {
-            if (reader != null) reader.close();
+            if(pdfDocument != null) pdfDocument.close();
         }
+
+
+
 
         Messages.append("WARNING", messages.getProperty("t_msg_21"));
         return false;

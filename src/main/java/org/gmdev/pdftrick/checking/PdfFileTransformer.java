@@ -19,7 +19,7 @@ public class PdfFileTransformer {
         try {
             PdfReader reader;
             if (pdfPassword != null) {
-                ReaderProperties readerProperties =new ReaderProperties()
+                ReaderProperties readerProperties = new ReaderProperties()
                         .setPassword(pdfPassword.getBytes(StandardCharsets.UTF_8));
 
                 reader = new PdfReader(uploadedFile.getPath(), readerProperties)
