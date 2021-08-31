@@ -4,11 +4,11 @@ import java.io.*;
 import java.text.MessageFormat;
 import java.util.*;
 
+import com.itextpdf.kernel.crypto.BadPasswordException;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.utils.*;
-
-import com.itextpdf.text.exceptions.BadPasswordException;
-import com.itextpdf.text.pdf.*;
 
 import static org.gmdev.pdftrick.checking.PasswordChecker.Result.OK;
 
@@ -76,18 +76,15 @@ public class FileChecker {
     }
 
     private void verifyProtection() {
-        PdfReader reader = null;
-        try {
-            reader = new PdfReader(uploadedFile.getPath());
+        try (
+                PdfReader reader = new PdfReader(uploadedFile.getPath());
+                PdfDocument ignored = new PdfDocument(reader)
+        ) {
             if (reader.isEncrypted()) ownerProtection = true;
-
-            reader.close();
         } catch (BadPasswordException e) {
-            userProtection = true;
+                userProtection = true;
         } catch (IOException e) {
             throw new IllegalStateException(e);
-        } finally {
-            if (reader != null) reader.close();
         }
     }
 

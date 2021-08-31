@@ -1,7 +1,9 @@
 package org.gmdev.pdftrick.checking;
 
-import com.itextpdf.text.exceptions.BadPasswordException;
-import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.kernel.crypto.BadPasswordException;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.ReaderProperties;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.*;
@@ -13,6 +15,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -132,10 +135,14 @@ public class PasswordChecker {
     }
 
     private boolean canAccessWithPassword(String typedPassword) {
-        PdfReader reader = null;
-        try {
-            reader = new PdfReader(uploadedFile.getPath(), typedPassword.getBytes());
-            boolean openedWithFullPermissions = reader.isOpenedWithFullPermissions();
+        ReaderProperties readerProperties =new ReaderProperties()
+                .setPassword(typedPassword.getBytes(StandardCharsets.UTF_8));
+
+        try (
+                PdfReader reader = new PdfReader(uploadedFile.getPath(), readerProperties);
+                PdfDocument ignored = new PdfDocument(reader)
+        ) {
+            boolean openedWithFullPermissions = reader.isOpenedWithFullPermission();
 
             if (!openedWithFullPermissions)
                 Messages.append("WARNING", MessageFormat.format(
@@ -147,9 +154,8 @@ public class PasswordChecker {
                     messages.getProperty("d_msg_07"), attempt, uploadedFile.getName()));
             return false;
         } catch (IOException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            if (reader != null) reader.close();
+            Messages.append("WARNING", messages.getProperty("t_msg_05"));
+            return false;
         }
     }
 
