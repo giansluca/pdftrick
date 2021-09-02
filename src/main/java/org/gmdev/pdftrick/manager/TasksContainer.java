@@ -108,7 +108,7 @@ public class TasksContainer {
 	public Thread getCancelThread() {
 		return cancelThread;
 	}
-	
+
 	public void setCancelThread(Thread cancelThread) {
 		this.cancelThread = cancelThread;
 	}

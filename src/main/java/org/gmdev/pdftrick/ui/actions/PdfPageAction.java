@@ -13,7 +13,6 @@ import javax.swing.border.Border;
 
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
-import org.gmdev.pdftrick.serviceprocessor.ServiceScheduler;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.ui.panels.CenterPanel;
 
