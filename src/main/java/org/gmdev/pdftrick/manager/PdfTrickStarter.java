@@ -20,7 +20,7 @@ public class PdfTrickStarter {
                 .nativeLibraryPath(nativeLibraryPath)
                 .build();
 
-        cleanUpPdfTrickHome(bag.getThumbnailsFolderPath(), bag.getPdfFilePath());
+        cleanUpPdfTrickHome(bag.getThumbnailsFolderPath(), bag.getSavedFilePath());
 
         UserInterface userInterface = UserInterfaceBuilder.build();
         bag.setUserInterface(userInterface);

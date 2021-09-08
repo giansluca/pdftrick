@@ -6,7 +6,7 @@ import java.io.File;
 
 import javax.swing.*;
 
-import org.gmdev.pdftrick.engine.FileIn;
+import org.gmdev.pdftrick.checking.FileIn;
 import org.gmdev.pdftrick.manager.*;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;

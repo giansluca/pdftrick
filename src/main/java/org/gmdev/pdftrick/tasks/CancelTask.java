@@ -30,14 +30,13 @@ public class CancelTask implements Runnable, Stoppable {
 		SwingCleaner.cleanUserInterface();
 		bag.cleanUp();
 
-		FileUtils.deletePdfFile(bag.getPdfFilePath());
+		FileUtils.deletePdfFile(bag.getSavedFilePath());
 		FileUtils.deleteThumbnailFiles(bag.getThumbnailsFolderPath());
 
 		running.set(false);
 	}
 
 	private void terminateTasks() {
-		terminateFirstPdfPageRenderTask();
 		terminateExecutorRunnerTask();
 		terminatePdfCoverThumbnailsDisplayTask();
 	}

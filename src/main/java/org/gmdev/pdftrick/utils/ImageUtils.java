@@ -5,6 +5,9 @@ import org.imgscalr.Scalr;
 import java.awt.*;
 import java.awt.image.*;
 
+import static org.gmdev.pdftrick.utils.ImageUtils.Flip.FLIP_HORIZONTAL;
+import static org.gmdev.pdftrick.utils.ImageUtils.Flip.FLIP_VERTICAL;
+
 public class ImageUtils {
 
     private ImageUtils() {
@@ -37,26 +40,25 @@ public class ImageUtils {
                 Scalr.OP_ANTIALIAS);
     }
 
-    public static BufferedImage adjustImage(BufferedImage sourceImage, String flip, String angle) {
-        BufferedImage buffImg = sourceImage;
-        if (flip.equalsIgnoreCase("fh"))
-            buffImg = Scalr.rotate(buffImg, Scalr.Rotation.FLIP_HORZ);
-        else if (flip.equalsIgnoreCase("fv"))
-            buffImg = Scalr.rotate(buffImg, Scalr.Rotation.FLIP_VERT);
-        if (angle.equalsIgnoreCase("270"))
-            buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_270);
-        else if (angle.equalsIgnoreCase("180"))
-            buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_180);
-        else if (angle.equalsIgnoreCase("90"))
-            buffImg = Scalr.rotate(buffImg, Scalr.Rotation.CW_90);
+    public static BufferedImage adjustImage(BufferedImage bufferedImage, Flip flip, String angle) {
+        if (flip == FLIP_HORIZONTAL)
+            bufferedImage = Scalr.rotate(bufferedImage, Scalr.Rotation.FLIP_HORZ);
+        else if (flip == FLIP_VERTICAL)
+            bufferedImage = Scalr.rotate(bufferedImage, Scalr.Rotation.FLIP_VERT);
 
-        sourceImage.flush();
-        return buffImg;
+        if (angle.equals("270"))
+            bufferedImage = Scalr.rotate(bufferedImage, Scalr.Rotation.CW_270);
+        else if (angle.equals("180"))
+            bufferedImage = Scalr.rotate(bufferedImage, Scalr.Rotation.CW_180);
+        else if (angle.equals("90"))
+            bufferedImage = Scalr.rotate(bufferedImage, Scalr.Rotation.CW_90);
+
+        return bufferedImage;
     }
 
-    public static Image TransformGrayToTransparency(BufferedImage image) {
+    public static Image transformGrayToTransparency(BufferedImage image) {
         ImageFilter filter = new RGBImageFilter() {
-            public final int filterRGB(int x, int y, int rgb) {
+            public int filterRGB(int x, int y, int rgb) {
                 return (rgb << 8) & 0xFF000000;
             }
         };
@@ -68,7 +70,7 @@ public class ImageUtils {
     /**
      * Apply mask (alpha channel)
      */
-    public static BufferedImage ApplyTransparency(BufferedImage sourceImage, Image mask) {
+    public static BufferedImage applyTransparency(BufferedImage sourceImage, Image mask) {
         BufferedImage destImage = new BufferedImage(
                 sourceImage.getWidth(), sourceImage.getHeight(),BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = destImage.createGraphics();
@@ -80,6 +82,11 @@ public class ImageUtils {
         graphics.dispose();
 
         return destImage;
+    }
+
+    public enum Flip {
+        FLIP_VERTICAL,
+        FLIP_HORIZONTAL
     }
 
 }

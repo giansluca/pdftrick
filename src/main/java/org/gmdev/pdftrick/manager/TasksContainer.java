@@ -2,90 +2,91 @@ package org.gmdev.pdftrick.manager;
 
 import java.util.concurrent.ExecutorService;
 
+import org.gmdev.pdftrick.extraction.tasks.ImagesExtractionTask;
+import org.gmdev.pdftrick.rendering.tasks.*;
 import org.gmdev.pdftrick.tasks.*;
 
 public class TasksContainer {
 
 	// Tasks
-	private PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask = null;
-	private FirstPdfPageRenderTask firstPdfPageRenderTask = null;
+	private PdfPageCoverRunnerTask pdfPageCoverRunnerTask = null;
+	private PdfPageCoverDisplayTask pdfPageCoverDisplayTask = null;
 	private PageThumbnailsDisplayTask pageThumbnailsDisplayTask = null;
 	private ImagesExtractionTask imagesExtractionTask = null;
 	private CancelTask cancelTask = null;
-	private ExecutorRunnerTask executorRunnerTask = null;
 
 	// Treads
-	private Thread pdfCoverThumbnailsDisplayThread = null;
-	private Thread firstPdfPageRenderThread = null;
+	private ExecutorService executorService = null;
+	private Thread pdfPageRunnerThread = null;
+	private Thread pdfPageDisplayThread = null;
 	private Thread pageThumbnailsDisplayThread = null;
 	private Thread imagesExtractionThread = null;
 	private Thread cancelThread = null;
-	private Thread executorRunnerThread = null;
-	private ExecutorService executorService = null;
 
-	public synchronized PdfCoverThumbnailsDisplayTask getPdfCoverThumbnailsDisplayTask() {
-		return pdfCoverThumbnailsDisplayTask;
+	// Tasks
+	public PdfPageCoverRunnerTask getPdfPageRunnerTask() {
+		return pdfPageCoverRunnerTask;
 	}
 
-	public synchronized void setPdfCoverThumbnailsDisplayTask(
-			PdfCoverThumbnailsDisplayTask pdfCoverThumbnailsDisplayTask) {
-		this.pdfCoverThumbnailsDisplayTask = pdfCoverThumbnailsDisplayTask;
+	public void setPdfPageRunnerTask(PdfPageCoverRunnerTask pdfPageCoverRunnerTask) {
+		this.pdfPageCoverRunnerTask = pdfPageCoverRunnerTask;
 	}
 
-	public synchronized FirstPdfPageRenderTask getFirstPdfPageRenderTask() {
-		return firstPdfPageRenderTask;
-	}
-	
-	public synchronized void setFirstPdfPageRenderTask(FirstPdfPageRenderTask firstPdfPageRenderTask) {
-		this.firstPdfPageRenderTask = firstPdfPageRenderTask;
+	public PdfPageCoverDisplayTask getPdfPageDisplayTask() {
+		return pdfPageCoverDisplayTask;
 	}
 
-	public ExecutorRunnerTask getExecutorRunnerTask() {
-		return executorRunnerTask;
+	public void setPdfPageDisplayTask(PdfPageCoverDisplayTask pdfPageCoverDisplayTask) {
+		this.pdfPageCoverDisplayTask = pdfPageCoverDisplayTask;
 	}
 
-	public void setExecutorRunnerTask(ExecutorRunnerTask executorRunnerTask) {
-		this.executorRunnerTask = executorRunnerTask;
-	}
-
-	public synchronized PageThumbnailsDisplayTask getPageThumbnailsDisplayTask() {
+	public PageThumbnailsDisplayTask getPageThumbnailsDisplayTask() {
 		return pageThumbnailsDisplayTask;
 	}
 	
-	public synchronized void setPageThumbnailsDisplayTask(PageThumbnailsDisplayTask pageThumbnailsDisplayTask) {
+	public void setPageThumbnailsDisplayTask(PageThumbnailsDisplayTask pageThumbnailsDisplayTask) {
 		this.pageThumbnailsDisplayTask = pageThumbnailsDisplayTask;
 	}
 	
-	public synchronized ImagesExtractionTask getImagesExtractionTask() {
+	public ImagesExtractionTask getImagesExtractionTask() {
 		return imagesExtractionTask;
 	}
 	
-	public synchronized void setImagesExtractionTask(ImagesExtractionTask imagesExtractionTask) {
+	public void setImagesExtractionTask(ImagesExtractionTask imagesExtractionTask) {
 		this.imagesExtractionTask = imagesExtractionTask;
 	}
 	
-	public synchronized CancelTask getCancelTask() {
+	public CancelTask getCancelTask() {
 		return cancelTask;
 	}
 	
-	public synchronized void setCancelTask(CancelTask cancelTask) {
+	public void setCancelTask(CancelTask cancelTask) {
 		this.cancelTask = cancelTask;
 	}
 
-	public Thread getPdfCoverThumbnailsDisplayThread() {
-		return pdfCoverThumbnailsDisplayThread;
+	// Threads
+	public ExecutorService getExecutorService() {
+		return executorService;
 	}
 
-	public void setPdfCoverThumbnailsDisplayThread(Thread pdfCoverThumbnailsDisplayThread) {
-		this.pdfCoverThumbnailsDisplayThread = pdfCoverThumbnailsDisplayThread;
+	public void setExecutorService(ExecutorService executorService) {
+		this.executorService = executorService;
 	}
 
-	public Thread getFirstPdfPageRenderThread() {
-		return firstPdfPageRenderThread;
+	public Thread getPdfPageRunnerThread() {
+		return pdfPageRunnerThread;
 	}
 
-	public void setFirstPdfPageRenderThread(Thread firstPdfPageRenderThread) {
-		this.firstPdfPageRenderThread = firstPdfPageRenderThread;
+	public void setPdfPageRunnerThread(Thread pdfPageRunnerThread) {
+		this.pdfPageRunnerThread = pdfPageRunnerThread;
+	}
+
+	public Thread getPdfPageDisplayThread() {
+		return pdfPageDisplayThread;
+	}
+
+	public void setPdfPageDisplayThread(Thread pdfPageDisplayThread) {
+		this.pdfPageDisplayThread = pdfPageDisplayThread;
 	}
 
 	public Thread getPageThumbnailsDisplayThread() {
@@ -104,29 +105,14 @@ public class TasksContainer {
 		this.imagesExtractionThread = imagesExtractionThread;
 	}
 
-	public synchronized Thread getCancelThread() {
+	public Thread getCancelThread() {
 		return cancelThread;
 	}
-	
-	public synchronized void setCancelThread(Thread cancelThread) {
+
+	public void setCancelThread(Thread cancelThread) {
 		this.cancelThread = cancelThread;
 	}
 
-	public Thread getExecutorRunnerThread() {
-		return executorRunnerThread;
-	}
-
-	public void setExecutorRunnerThread(Thread executorRunnerThread) {
-		this.executorRunnerThread = executorRunnerThread;
-	}
-
-	public ExecutorService getExecutorService() {
-		return executorService;
-	}
-
-	public void setExecutorService(ExecutorService executorService) {
-		this.executorService = executorService;
-	}
 
 
 }

@@ -8,20 +8,15 @@ public class TaskTerminator {
 
     private static final TasksContainer tasksContainer = PdfTrickBag.INSTANCE.getTasksContainer();
 
-    public static void terminateFirstPdfPageRenderTask() {
-        stopTask(tasksContainer.getFirstPdfPageRenderTask());
-        waitForThread(tasksContainer.getFirstPdfPageRenderThread());
-    }
-
     public static void terminateExecutorRunnerTask() {
-        stopTask(tasksContainer.getExecutorRunnerTask());
-        waitForThread(tasksContainer.getExecutorRunnerThread());
+        stopTask(tasksContainer.getPdfPageRunnerTask());
+        waitForThread(tasksContainer.getPdfPageRunnerThread());
         shutdownExecutorService(tasksContainer.getExecutorService());
     }
 
     public static void terminatePdfCoverThumbnailsDisplayTask() {
-        stopTask(tasksContainer.getPdfCoverThumbnailsDisplayTask());
-        waitForThread(tasksContainer.getPdfCoverThumbnailsDisplayThread());
+        stopTask(tasksContainer.getPdfPageDisplayTask());
+        waitForThread(tasksContainer.getPdfPageDisplayThread());
     }
 
     public static void terminateImagesExtractionTask() {

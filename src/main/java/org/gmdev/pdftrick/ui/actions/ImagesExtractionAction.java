@@ -8,9 +8,11 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.gmdev.pdftrick.extraction.tasks.ImagesExtractionTask;
 import org.gmdev.pdftrick.manager.*;
+import org.gmdev.pdftrick.rendering.imagereader.ImageAttributes;
+import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.swingmanager.ModalWarningPanel;
-import org.gmdev.pdftrick.tasks.*;
 import org.gmdev.pdftrick.ui.custom.CustomFileChooser;
 import org.gmdev.pdftrick.utils.*;
 
@@ -26,15 +28,14 @@ public class ImagesExtractionAction extends AbstractAction {
         Container contentPanel = bag.getUserInterface().getContentPane();
         TasksContainer tasksContainer = bag.getTasksContainer();
 
-        File pdfFile = bag.getPdfFilePath().toFile();
+        File pdfFile = bag.getSavedFilePath().toFile();
         if (!pdfFile.exists()) {
             Messages.append("INFO", messages.getProperty("t_msg_04"));
             return;
         }
 
-        Set<String> normalImageKeys = bag.getSelectedImages().keySet();
-        Set<String> inlineImageKeys = bag.getInlineSelectedImages().keySet();
-        if (normalImageKeys.size() == 0 && inlineImageKeys.size() == 0) {
+        HashMap<String, ImageAttributes> selectedImagesKeys = bag.getSelectedImages();
+        if (selectedImagesKeys.size() == 0) {
             Messages.append("INFO", messages.getProperty("t_msg_03"));
             return;
         }

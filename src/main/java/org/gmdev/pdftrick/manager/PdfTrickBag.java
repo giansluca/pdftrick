@@ -4,8 +4,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
-import org.gmdev.pdftrick.engine.ImageAttr.RenderedImageAttributes;
 import org.gmdev.pdftrick.nativeutil.NativeObjectManager;
+import org.gmdev.pdftrick.rendering.imagereader.ImageAttributes;
 import org.gmdev.pdftrick.ui.UserInterface;
 import org.gmdev.pdftrick.utils.PropertyLoader;
 
@@ -17,19 +17,14 @@ public enum PdfTrickBag {
 	private String os;
 	private String version;
 	private Path nativeLibraryPath;
-	private Path pdfFilePath;
+	private Path savedFilePath;
 	private Path thumbnailsFolderPath;
 	private int numberOfPages;
-
-	private ArrayList<File> pdfFilesArray;
-	private File uploadedFile;
-
 	private int selectedPage;
 	private Path extractionFolderPath;
 	private HashMap<Integer, String> pagesRotation;
 	private String pdfPassword;
-	private HashMap<String, RenderedImageAttributes> selectedImages;
-	private HashMap<String, RenderedImageAttributes> inlineSelectedImages;
+	private HashMap<String, ImageAttributes> selectedImages;
 	private TasksContainer tasksContainer;
 	private Properties messagesProps;
 	private NativeObjectManager nativeObjectManager;
@@ -45,14 +40,12 @@ public enum PdfTrickBag {
 		this.nativeLibraryPath = builder.nativeLibraryPath;
 		Path homeFolderPath = builder.homeFolderPath;
 
-		pdfFilePath = Path.of(homeFolderPath + File.separator + PDF_FILE_NAME);
+		savedFilePath = Path.of(homeFolderPath + File.separator + PDF_FILE_NAME);
 		thumbnailsFolderPath = Path.of(homeFolderPath + File.separator + PAGES_THUMBNAIL_FOLDER);
 		numberOfPages = 0;
-		pdfFilesArray = new ArrayList<>();
 		selectedPage = 0;
 		pagesRotation = new HashMap<>();
 		selectedImages = new HashMap<>();
-		inlineSelectedImages = new HashMap<>();
 		tasksContainer = new TasksContainer();
 		messagesProps = PropertyLoader.loadMessagesPropertyFile();
 		nativeObjectManager = new NativeObjectManager();
@@ -81,23 +74,13 @@ public enum PdfTrickBag {
 
 	public void cleanUp() {
 		cleanSelectedImagesHashMap();
-		cleanInlineSelectedImagesHashMap();
 		cleanPagesRotationHashMap();
 		setSelectedPage(0);
 		setExtractionFolderPath(null);
-		cleanPdfFilesArray();
-	}
-
-	public void cleanPdfFilesArray(){
-		pdfFilesArray.clear();
 	}
 
 	public void cleanSelectedImagesHashMap() {
 		selectedImages.clear();
-	}
-
-	public void cleanInlineSelectedImagesHashMap() {
-		inlineSelectedImages.clear();
 	}
 
 	public void cleanPagesRotationHashMap() {
@@ -116,8 +99,8 @@ public enum PdfTrickBag {
 		return nativeLibraryPath;
 	}
 
-	public Path getPdfFilePath() {
-		return pdfFilePath;
+	public Path getSavedFilePath() {
+		return savedFilePath;
 	}
 
 	public Path getThumbnailsFolderPath() {
@@ -130,14 +113,6 @@ public enum PdfTrickBag {
 
 	public void setNumberOfPages(int numberOfPages) {
 		this.numberOfPages = numberOfPages;
-	}
-
-	public File getUploadedFile() {
-		return uploadedFile;
-	}
-
-	public void setUploadedFile(File uploadedFile) {
-		this.uploadedFile = uploadedFile;
 	}
 
 	public int getSelectedPage() {
@@ -156,7 +131,7 @@ public enum PdfTrickBag {
 		this.extractionFolderPath = extractionFolderPath;
 	}
 
-	public HashMap<Integer, String> getPagesRotationPages() {
+	public HashMap<Integer, String> getPagesRotation() {
 		return pagesRotation;
 	}
 
@@ -168,12 +143,8 @@ public enum PdfTrickBag {
 		this.pdfPassword = pdfPassword;
 	}
 
-	public HashMap<String, RenderedImageAttributes> getSelectedImages() {
+	public HashMap<String, ImageAttributes> getSelectedImages() {
 		return selectedImages;
-	}
-
-	public HashMap<String, RenderedImageAttributes> getInlineSelectedImages() {
-		return inlineSelectedImages;
 	}
 
 	public TasksContainer getTasksContainer() {
@@ -190,7 +161,7 @@ public enum PdfTrickBag {
 		return userInterface;
 	}
 
-	protected void setUserInterface(UserInterface userInterface) {
+	public void setUserInterface(UserInterface userInterface) {
 		this.userInterface = userInterface;
 	}
 

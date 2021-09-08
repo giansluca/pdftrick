@@ -6,11 +6,11 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import org.gmdev.pdftrick.render.ImageAction;
+import org.gmdev.pdftrick.ui.actions.ImageAction;
 import org.gmdev.pdftrick.ui.custom.WrapLayout;
 import org.gmdev.pdftrick.utils.FileLoader;
 
-import static org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask.NO_PICTURES;
+import static org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask.NO_PICTURES;
 import static org.gmdev.pdftrick.utils.Constants.WAIT;
 
 public class CenterPanel {

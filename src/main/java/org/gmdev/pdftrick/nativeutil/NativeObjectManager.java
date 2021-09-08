@@ -36,7 +36,7 @@ public class NativeObjectManager {
 		}
 	}
 
-	public void renderPdfPageThumbnail(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
+	public void renderPdfPageCoverThumbnail(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
 		try {
 			if (pageThumbnailMethod == null)
 				pageThumbnailMethod = nativeLibCallClass.getMethod(
@@ -50,7 +50,7 @@ public class NativeObjectManager {
 		}
 	}
 
-	public void renderPdfPageFull(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
+	public void renderPdfPageCoverFull(String pdfFilePath, String imgPath, int pageNumber, int zoom) {
 		try {
 			if (pageFullMethod == null)
 				pageFullMethod = nativeLibCallClass.getMethod(

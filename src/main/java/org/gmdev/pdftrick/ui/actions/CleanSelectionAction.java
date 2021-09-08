@@ -6,7 +6,7 @@ import java.util.*;
 import javax.swing.*;
 
 import org.gmdev.pdftrick.manager.*;
-import org.gmdev.pdftrick.tasks.PageThumbnailsDisplayTask;
+import org.gmdev.pdftrick.rendering.tasks.PageThumbnailsDisplayTask;
 import org.gmdev.pdftrick.utils.Messages;
 
 public class CleanSelectionAction extends AbstractAction {
@@ -19,7 +19,6 @@ public class CleanSelectionAction extends AbstractAction {
 
         bag.getUserInterface().getCenter().cleanSelection();
         bag.cleanSelectedImagesHashMap();
-        bag.cleanInlineSelectedImagesHashMap();
 
         JTextField selectedImagesField = bag.getUserInterface().getRight().getSelectedImagesField();
         selectedImagesField.setText("");
@@ -41,12 +40,12 @@ public class CleanSelectionAction extends AbstractAction {
             return false;
         }
 
-        var showPdfCoverThumbnailsTask = tasksContainer.getPdfCoverThumbnailsDisplayTask();
+        var showPdfCoverThumbnailsTask = tasksContainer.getPdfPageDisplayTask();
         if (showPdfCoverThumbnailsTask != null && showPdfCoverThumbnailsTask.isRunning()) {
             return false;
         }
 
-        if (bag.getSelectedImages().size() == 0 && bag.getInlineSelectedImages().size() == 0) {
+        if (bag.getSelectedImages().size() == 0) {
             Messages.append("INFO", messagesProps.getProperty("t_msg_24"));
             return false;
         }

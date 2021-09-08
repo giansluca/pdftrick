@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 public class ServiceScheduler {
 	
-	private static final int NUMBER_OF_THREADS = 5;
+	private static final int NUMBER_OF_THREADS = 3;
 	private static final ServiceScheduler INSTANCE = new ServiceScheduler(NUMBER_OF_THREADS);
 
 	private final ExecutorService executorService;

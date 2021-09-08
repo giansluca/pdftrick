@@ -15,8 +15,7 @@ public final class Constants {
 	public static final String JFC_EXTRACT_TITLE = "Folder to save";
 	public static final String JFC_OPEN_TITLE = "Open files";
 	public static final String PWD_DIALOG = "Password is required";
-	public static final long TEN = 10L;
-	
+
 	// pdf page zoom
 	public static final int ZOOM_THUMBNAIL = 30;
 	public static final int ZOOM_FULL = 100;
@@ -29,7 +28,6 @@ public final class Constants {
 
 	// resource files
 	public static final String MESSAGES_PROPERTY_FILE = "properties/messages.properties";
-	public static final String PROPERTY_L4J_FILE = "properties/log4j.properties";
 	public static final String GENERIC_ICC_FILE = "Generic_CMYK_Profile.icc";
 	public static final String LICENSE_FILE = "license.txt";
 
@@ -54,5 +52,9 @@ public final class Constants {
 	public static final String WAIT = "icons/wait.gif";
 	public static final String WAIT_IMG = "icons/wait_img.gif";
 	public static final String WAIT_EXT = "icons/wait_ext.gif";
+
+	// thumbnails size
+	public static final int THUMBNAIL_MAX_SIZE_WIDTH = 170;
+	public static final int THUMBNAIL_MAX_SIZE_HEIGHT = 170;
 	
 }

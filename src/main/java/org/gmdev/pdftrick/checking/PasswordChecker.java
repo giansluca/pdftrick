@@ -1,7 +1,9 @@
-package org.gmdev.pdftrick.engine;
+package org.gmdev.pdftrick.checking;
 
-import com.itextpdf.text.exceptions.BadPasswordException;
-import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.kernel.crypto.BadPasswordException;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.ReaderProperties;
 import org.gmdev.pdftrick.manager.PdfTrickBag;
 import org.gmdev.pdftrick.swingmanager.SwingInvoker;
 import org.gmdev.pdftrick.utils.*;
@@ -13,33 +15,27 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.function.Consumer;
 
-import static org.gmdev.pdftrick.engine.PasswordChecker.Result.*;
+import static org.gmdev.pdftrick.checking.PasswordChecker.Result.*;
 
 public class PasswordChecker {
 
     private static final PdfTrickBag bag = PdfTrickBag.INSTANCE;
     private static final int MAX_ATTEMPTS = 3;
 
-    private static class PasswordChekResult {
-        public PasswordChekResult(String pdfPassword, Result result) {
-            this.pdfPassword = pdfPassword;
-            this.result = result;
-        }
-
-        private final String pdfPassword;
-        private final Result result;
-    }
-
-    public enum Result {
-        DEFAULT, OK, KO, ABORT
-    }
-
     private PasswordChekResult passwordCheckResult = new PasswordChekResult(null, DEFAULT);
     private int attempt = 1;
+    private final File uploadedFile;
+    private final Properties messages;
+
+    public PasswordChecker(File uploadedFile) {
+        this.uploadedFile = uploadedFile;
+        this.messages = bag.getMessagesProps();
+    }
 
     public Consumer<PasswordChekResult> passwordCheckCallback = result -> {
         attempt++;
@@ -58,16 +54,11 @@ public class PasswordChecker {
     }
 
     private void askPassword() {
-        System.out.println("before ask password");
         SwingInvoker.invokeAndWait(() -> loadPasswordForm(passwordCheckCallback));
-
-        System.out.println("after ask password");
     }
 
     private void loadPasswordForm(Consumer<PasswordChekResult> passwordCheckCallback ) {
         ImageIcon imageIcon = new ImageIcon(FileLoader.loadFileAsUrl(Constants.PDFTRICK_ICO));
-        Properties messages = bag.getMessagesProps();
-        File uploadedFile = bag.getUploadedFile();
 
         JDialog passwordDialog = new JDialog((JDialog) null, true);
         passwordDialog.setTitle(Constants.PWD_DIALOG);
@@ -144,13 +135,14 @@ public class PasswordChecker {
     }
 
     private boolean canAccessWithPassword(String typedPassword) {
-        Properties messages = bag.getMessagesProps();
-        File uploadedFile = bag.getUploadedFile();
+        ReaderProperties readerProperties = new ReaderProperties()
+                .setPassword(typedPassword.getBytes(StandardCharsets.UTF_8));
 
-        PdfReader reader = null;
-        try {
-            reader = new PdfReader(bag.getUploadedFile().getPath(), typedPassword.getBytes());
-            boolean openedWithFullPermissions = reader.isOpenedWithFullPermissions();
+        try (
+                PdfReader reader = new PdfReader(uploadedFile.getPath(), readerProperties);
+                PdfDocument ignored = new PdfDocument(reader)
+        ) {
+            boolean openedWithFullPermissions = reader.isOpenedWithFullPermission();
 
             if (!openedWithFullPermissions)
                 Messages.append("WARNING", MessageFormat.format(
@@ -162,11 +154,26 @@ public class PasswordChecker {
                     messages.getProperty("d_msg_07"), attempt, uploadedFile.getName()));
             return false;
         } catch (IOException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            if (reader != null) reader.close();
+            Messages.append("WARNING", messages.getProperty("t_msg_05"));
+            return false;
         }
     }
+
+    private static class PasswordChekResult {
+        public PasswordChekResult(String pdfPassword, Result result) {
+            this.pdfPassword = pdfPassword;
+            this.result = result;
+        }
+
+        private final String pdfPassword;
+        private final Result result;
+    }
+
+    public enum Result {
+        DEFAULT, OK, KO, ABORT
+    }
+
+
 
 
 }
