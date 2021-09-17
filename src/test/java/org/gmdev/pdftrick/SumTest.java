@@ -1,8 +1,10 @@
 package org.gmdev.pdftrick;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -11,116 +13,61 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SumTest {
 
-    @Test
-    void itShouldDoTheJobWithPositiveNumbers() {
+    @ParameterizedTest
+    @CsvSource({
+            "11, 4",
+            "11.0, 4",
+            "11.000, 4",
+            "011, 4",
+            "011.0, 4",
+            "16.25, 1",
+            "17.25, 2",
+            "0.72, 1",
+            "999, 0",
+    })
+    void itShouldFindTheSubsetsWithPositiveNumbers(BigDecimal sumToFind, int expectedSubsets) {
         // Given
-        List<Integer> amountList = getAmountListPositive();
-        Integer sum = 11;
+        List<BigDecimal> amountList = getAmountListPositive();
+        BigDecimal sum = sumToFind.setScale(2,RoundingMode.CEILING);
 
         // When
         Subset subset = new Subset(amountList, sum);
-        subset.solve(0, 0);
-        List<List<Integer>> solutionSubsets = subset.getSolutionSubsets();
+        BigDecimal zero = BigDecimal.ZERO.setScale(2, RoundingMode.CEILING);
+        subset.solve(zero, 0);
+        List<List<BigDecimal>> solutionSubsets = subset.getSolutionSubsets();
 
         // Then
-        assertThat(solutionSubsets).isNotEmpty().hasSize(7);
+        assertThat(solutionSubsets).hasSize(expectedSubsets);
     }
 
-    @Test
-    void itShouldDoTheJobWithPositiveNumbersBig() {
+    @ParameterizedTest
+    @CsvSource({
+            "-12, 2",
+            "-12.0, 2",
+            "-12.00, 2",
+            "-0012.00, 2",
+            "-153.30, 1",
+            "-9.21, 1",
+            "-9.210, 1",
+            "-09.21, 1",
+            "-999, 0",
+    })
+    void itShouldFindTheSubsetsWithNegativeNumbers(BigDecimal sumToFind, int expectedSubsets) {
         // Given
-        List<BigDecimal> amountList = getAmountListPositiveBig();
-        BigDecimal sum = new BigDecimal("11");
-
-        // When
-        SubsetBig subsetBig = new SubsetBig(amountList, sum);
-        subsetBig.solve(new BigDecimal("0"), 0);
-        List<List<BigDecimal>> solutionSubsets = subsetBig.getSolutionSubsets();
-
-        // Then
-        assertThat(solutionSubsets).isNotEmpty().hasSize(7);
-    }
-
-    @Test
-    void itShouldDoTheJobWithNegativeNumbers() {
-        // Given
-        List<Integer> amountList = getAmountListNegative();
-        Integer sum = -12;
+        List<BigDecimal> amountList = getAmountListNegative();
+        BigDecimal sum = sumToFind.setScale(2,RoundingMode.CEILING);
 
         // When
         Subset subset = new Subset(amountList, sum);
-        subset.solve(0, 0);
-        List<List<Integer>> solutionSubsets = subset.getSolutionSubsets();
+        BigDecimal zero = BigDecimal.ZERO.setScale(2, RoundingMode.CEILING);
+        subset.solve(zero, 0);
+        List<List<BigDecimal>> solutionSubsets = subset.getSolutionSubsets();
 
         // Then
-        assertThat(solutionSubsets).isNotEmpty().hasSize(2);
-    }
-
-    @Test
-    void itShouldDoTheJobWithNegativeNumbersBig() {
-        // Given
-        List<BigDecimal> amountList = getAmountListNegativeBig();
-        BigDecimal sum = new BigDecimal("-12");
-
-        // When
-        SubsetBig subsetBig = new SubsetBig(amountList, sum);
-        subsetBig.solve(new BigDecimal("0"), 0);
-        List<List<BigDecimal>> solutionSubsets = subsetBig.getSolutionSubsets();
-
-        // Then
-        assertThat(solutionSubsets).isNotEmpty().hasSize(2);
+        assertThat(solutionSubsets).hasSize(expectedSubsets);
     }
 
     static class Subset {
-        List<Integer> amountList;
-        Integer sum;
-        Stack<Integer> solutionStack;
-        List<List<Integer>> solutionSubsets;
-        boolean foundSubset;
-        boolean positive;
-
-        public Subset(List<Integer> amountList, Integer sum) {
-            this.amountList = amountList;
-            this.sum = sum;
-            this.solutionStack = new Stack<>();
-            this.foundSubset = false;
-            this.solutionSubsets = new ArrayList<>();
-            this.positive = sum >= 0;
-        }
-
-        public void solve(Integer actualSum, int index) {
-            // return false if actualSum value exceed sum
-            if (positive && actualSum > sum) return;
-            if (!positive && actualSum < sum) return;
-
-            // check if stack has the right subsets of numbers
-            if (actualSum.equals(sum)) {
-                foundSubset = true;
-                solutionSubsets.add(new ArrayList<>(solutionStack));
-
-                return;
-            }
-
-            for (int i = index; i < amountList.size(); i++) {
-                // add element to the stack
-                Integer element = amountList.get(i);
-                solutionStack.push(element);
-
-                // add amountList[i] to the 'actualSum' and recursively start from next number
-                solve(actualSum + element, i + 1);
-
-                // remove element from stack (Backtracking)
-                solutionStack.pop();
-            }
-        }
-
-        public List<List<Integer>> getSolutionSubsets() {
-            return solutionSubsets;
-        }
-
-    }
-
-    static class SubsetBig {
         List<BigDecimal> amountList;
         BigDecimal sum;
         Stack<BigDecimal> solutionStack;
@@ -128,7 +75,7 @@ public class SumTest {
         boolean foundSubset;
         boolean positive;
 
-        public SubsetBig(List<BigDecimal> amountList, BigDecimal sum) {
+        public Subset(List<BigDecimal> amountList, BigDecimal sum) {
             this.amountList = amountList;
             this.sum = sum;
             this.solutionStack = new Stack<>();
@@ -142,7 +89,7 @@ public class SumTest {
             if (positive && actualSum.compareTo(sum) > 0) return;
             if (!positive && actualSum.compareTo(sum) < 0) return;
 
-            // check if stack has the right subsets of numbers
+            // check if stack has the right subsets of numbers to match the expected sum
             if (actualSum.equals(sum)) {
                 foundSubset = true;
                 solutionSubsets.add(new ArrayList<>(solutionStack));
@@ -152,13 +99,13 @@ public class SumTest {
 
             for (int i = index; i < amountList.size(); i++) {
                 // add element to the stack
-                BigDecimal element = amountList.get(i);
+                BigDecimal element = amountList.get(i).setScale(2, RoundingMode.CEILING);
                 solutionStack.push(element);
 
                 // add amountList[i] to the 'actualSum' and recursively start from next number
                 solve(actualSum.add(element), i + 1);
 
-                // remove element from stack (Backtracking)
+                // remove element from stack (backtracking)
                 solutionStack.pop();
             }
         }
@@ -166,54 +113,35 @@ public class SumTest {
         public List<List<BigDecimal>> getSolutionSubsets() {
             return solutionSubsets;
         }
-
     }
 
-    List<Integer> getAmountListPositive() {
-        List<Integer> amountList = new ArrayList<>();
-        amountList.add(4);
-        amountList.add(10);
-        amountList.add(7);
-        amountList.add(6);
-        amountList.add(12);
-        amountList.add(4);
-        amountList.add(1);
-        amountList.add(3);
-        return amountList;
-    }
-
-    List<BigDecimal> getAmountListPositiveBig() {
+    List<BigDecimal> getAmountListPositive() {
         List<BigDecimal> amountList = new ArrayList<>();
-        amountList.add(new BigDecimal("4"));
+        amountList.add(new BigDecimal("4.30"));
         amountList.add(new BigDecimal("10"));
-        amountList.add(new BigDecimal("7"));
+        amountList.add(new BigDecimal("7.00"));
         amountList.add(new BigDecimal("6"));
-        amountList.add(new BigDecimal("12"));
-        amountList.add(new BigDecimal("4"));
-        amountList.add(new BigDecimal("1"));
-        amountList.add(new BigDecimal("3"));
+        amountList.add(new BigDecimal("12.15"));
+        amountList.add(new BigDecimal("4.0"));
+        amountList.add(new BigDecimal("01.0"));
+        amountList.add(new BigDecimal("1.10"));
+        amountList.add(new BigDecimal("003"));
+        amountList.add(new BigDecimal("0.18"));
+        amountList.add(new BigDecimal("0.54"));
         return amountList;
     }
 
-    List<Integer> getAmountListNegative() {
-        List<Integer> amountList = new ArrayList<>();
-        amountList.add(-4);
-        amountList.add(-7);
-        amountList.add(-6);
-        amountList.add(-12);
-        amountList.add(-1);
-        amountList.add(-3);
-        return amountList;
-    }
-
-    List<BigDecimal> getAmountListNegativeBig() {
+    List<BigDecimal> getAmountListNegative() {
         List<BigDecimal> amountList = new ArrayList<>();
-        amountList.add(new BigDecimal("-4"));
+        amountList.add(new BigDecimal("-04.00"));
         amountList.add(new BigDecimal("-7"));
-        amountList.add(new BigDecimal("-6"));
-        amountList.add(new BigDecimal("-12"));
+        amountList.add(new BigDecimal("-6.00"));
+        amountList.add(new BigDecimal("-12.0"));
         amountList.add(new BigDecimal("-1"));
-        amountList.add(new BigDecimal("-3"));
+        amountList.add(new BigDecimal("-03"));
+        amountList.add(new BigDecimal("-150.30"));
+        amountList.add(new BigDecimal("-3.40"));
+        amountList.add(new BigDecimal("-5.81"));
         return amountList;
     }
 
