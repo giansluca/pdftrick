@@ -1,8 +1,6 @@
 package org.gmdev.pdftrick;
 
 import java.nio.file.Path;
-import java.util.Locale;
-import javax.swing.*;
 
 import io.github.giansluca.jargs.Jargs;
 import io.github.giansluca.jargs.exception.JargsException;
