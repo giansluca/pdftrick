@@ -3,6 +3,7 @@ on: [ push ]
 
 jobs:
   test-mac:
+    needs: create-release
     runs-on: macos-latest
     if: github.ref == 'refs/heads/develop'
     steps:
@@ -15,24 +16,35 @@ jobs:
           distribution: 'temurin'
       - name: Test
         run: mvn test -B
-
-  test-windows:
-    runs-on: windows-latest
-    if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: Build
+        run: mvn clean package -DskipTests -P mac -B
+      - name: Upload windows artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          java-version: '11'
-          distribution: 'temurin'
-      - name: Test
-        run: mvn test -B
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+          asset_content_type: application/octet-stream
+
+#  test-windows:
+#    runs-on: windows-latest
+#    if: github.ref == 'refs/heads/develop'
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '11'
+#          distribution: 'temurin'
+#      - name: Test
+#        run: mvn test -B
 
   create-release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -67,7 +79,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Test
+      - name: Build
         run: mvn clean package -DskipTests -P mac -B
       - name: Upload mac artifact
         uses: actions/upload-release-asset@v1
@@ -93,7 +105,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Test
+      - name: Build
         run: mvn clean package -DskipTests -P win -B
       - name: Upload windows artifact
         uses: actions/upload-release-asset@v1
@@ -101,6 +113,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.exe
           asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.exe
           asset_content_type: application/octet-stream
