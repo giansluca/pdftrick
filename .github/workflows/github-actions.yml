@@ -3,11 +3,8 @@ on: [ push ]
 
 jobs:
   test-mac:
-    needs: create-release
     runs-on: macos-latest
     if: github.ref == 'refs/heads/develop'
-    env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -18,8 +15,6 @@ jobs:
           distribution: 'temurin'
       - name: Test
         run: mvn test -B
-      - name: Print version
-        run: echo "version is $RELEASE_VERSION"
 
   test-windows:
     runs-on: windows-latest
@@ -37,7 +32,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -67,7 +62,13 @@ jobs:
     steps:
       - name: Upload mac artifact
         uses: actions/upload-release-asset@v1
-
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Test
+        run: mvn test -B clean package -P mac
 
   release-windows:
     needs: create-release
@@ -78,3 +79,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Test
+        run: mvn test -B clean package -P win
