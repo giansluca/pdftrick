@@ -6,6 +6,8 @@ jobs:
     needs: create-release
     runs-on: macos-latest
     if: github.ref == 'refs/heads/develop'
+    env:
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
