@@ -2,6 +2,25 @@ name: pdftrick-native windows
 on: [ push ]
 
 jobs:
+  test-mac:
+    needs: create-release
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/develop'
+    env:
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Test
+        run: mvn test -B
+      - name: Print version
+        run: echo "version is $RELEASE_VERSION"
+
   test-windows:
     runs-on: windows-latest
     if: github.ref == 'refs/heads/develop'
@@ -16,29 +35,15 @@ jobs:
       - name: Test
         run: mvn test -B
 
-  test-mac:
-    runs-on: macos-latest
+  create-release:
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-      - name: Test
-        run: mvn test -B
-
-  create-release:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: "Set release version"
+      - name: Set release version
         id: version
-        run: echo "::set-output name=RELEASE_VERSION::$(make version)"
+        run: echo "::set-output name=RELEASE_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
       - name: Create Release
         uses: actions/create-release@v1
         id: release
@@ -60,21 +65,9 @@ jobs:
     env:
       RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Setup dev tools
-        run: brew install check
-      - name: Build
-        run: make release
       - name: Upload mac artifact
         uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
-          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
-          asset_content_type: application/octet-stream
+
 
   release-windows:
     needs: create-release
@@ -82,30 +75,6 @@ jobs:
     if: github.ref == 'refs/heads/master'
     env:
       RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set up Mysys2
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          msystem: MINGW64
-          install: >-
-            pkg-config
-            make
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-check
-      - name: Build
-        run: make release
-      - name: Upload mac artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_content_type: application/octet-stream
