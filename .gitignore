@@ -1,6 +1,7 @@
 .idea/
 target/
+info/
 pdftrick.iml
 .DS_Store
-info.txt
+info/info.txt
 pom.xml.versionsBackup
