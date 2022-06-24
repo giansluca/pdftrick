@@ -1,4 +1,4 @@
-name: pdftrick-native windows
+name: pdftrick
 on: [ push ]
 
 jobs:
@@ -6,8 +6,6 @@ jobs:
     needs: create-release
     runs-on: macos-latest
     if: github.ref == 'refs/heads/develop'
-    env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -18,31 +16,20 @@ jobs:
           distribution: 'temurin'
       - name: Test
         run: mvn test -B
-      - name: Build
-        run: mvn clean package -DskipTests -P mac -B
-      - name: Upload windows artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.dmg
-          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.dmg
-          asset_content_type: application/octet-stream
 
-#  test-windows:
-#    runs-on: windows-latest
-#    if: github.ref == 'refs/heads/develop'
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#      - name: Set up JDK
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '11'
-#          distribution: 'temurin'
-#      - name: Test
-#        run: mvn test -B
+  test-windows:
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Test
+        run: mvn test -B
 
   create-release:
     runs-on: ubuntu-latest
