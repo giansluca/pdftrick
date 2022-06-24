@@ -68,7 +68,16 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - name: Test
-        run: mvn test -B clean package -P mac
+        run: mvn clean package -DskipTests -P mac -B
+      - name: Upload mac artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+          asset_content_type: application/octet-stream
 
   release-windows:
     needs: create-release
@@ -85,4 +94,13 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - name: Test
-        run: mvn test -B clean package -P win
+        run: mvn clean package -DskipTests -P win -B
+      - name: Upload windows artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.exe
+          asset_content_type: application/octet-stream
