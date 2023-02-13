@@ -1,0 +1,14 @@
+
+release versioning workflow:
+
+- on branch 'develop' update version :              mvn versions:set -DnewVersion=1.3.3
+- commit and push develop :                         git commit -m "message" --> git push
+- on branch 'master' merge 'develop' and push:      git merge develop -m "release v1.3.3" --> git push
+
+
+- important:    when the native library is updated change version in Constants.java
+
+PdfTrick native tests:
+$GRAALVM_HOME/bin/native-image -jar pdftrick-1.3.1-jar-with-dependencies.jar --no-fallback --allow-incomplete-classpath -H:ResourceConfigurationFiles="../native-resources-config.json"
+
+

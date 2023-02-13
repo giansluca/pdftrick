@@ -1,7 +1,11 @@
-.idea/
-target/
-info/
-pdftrick.iml
 .DS_Store
-info/info.txt
-pom.xml.versionsBackup
+
+### IntelliJ IDEA ###
+target/
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
