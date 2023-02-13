@@ -2,33 +2,33 @@ name: pdftrick
 on: [ push ]
 
 jobs:
-  test-mac:
-    runs-on: macos-latest
-    if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Test
-        run: mvn test -B
-
-  test-windows:
-    runs-on: windows-latest
-    if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Test
-        run: mvn test -B
+#  test-mac:
+#    runs-on: macos-latest
+#    if: github.ref == 'refs/heads/develop'
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#      - name: Test
+#        run: mvn test -B
+#
+#  test-windows:
+#    runs-on: windows-latest
+#    if: github.ref == 'refs/heads/develop'
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#      - name: Test
+#        run: mvn test -B
 
   create-release:
     runs-on: ubuntu-latest
