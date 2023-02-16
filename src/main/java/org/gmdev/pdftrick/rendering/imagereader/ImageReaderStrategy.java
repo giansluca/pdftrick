@@ -21,7 +21,7 @@ public class ImageReaderStrategy {
                 return new DefaultImageReader(imageXObject, matrix, pageNumber, imageNumber);
         } catch (IOException e) {
             return new JpegCMYKImageReader(imageXObject, matrix, pageNumber, imageNumber);
-        } catch (com.itextpdf.io.IOException e) {
+        } catch (com.itextpdf.io.exceptions.IOException e) {
             return new PngIndexedImageReader(imageXObject, matrix, pageNumber, imageNumber);
         }
 
