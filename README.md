@@ -6,5 +6,3 @@ PdfTrick is a free open source software released under Gpl 3 license. It require
 For the pdftrick native library there is a dedicated project:
 - https://github.com/giansluca/pdftrick-native
 
-old PdfTrick versions here:
-- https://sourceforge.net/projects/pdftrick
