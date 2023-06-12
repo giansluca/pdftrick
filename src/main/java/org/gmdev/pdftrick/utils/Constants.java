@@ -22,9 +22,9 @@ public final class Constants {
 
 	// native library
 	public static final String NATIVE_LIB_PATH = "nativelib";
-	public static final String NATIVE_LIB_VERSION="1.0.2";
-	public static final String NATIVE_LIB_WIN_FILE ="pdftrick-native_" + NATIVE_LIB_VERSION + ".dll";
-	public static final String NATIVE_LIB_MAC_FILE ="pdftrick-native_" + NATIVE_LIB_VERSION + ".jnilib";
+	public static final String NATIVE_LIB_VERSION="1.0.3";
+	public static final String NATIVE_LIB_WIN_FILE ="libpdftrick-native_" + NATIVE_LIB_VERSION + ".dll";
+	public static final String NATIVE_LIB_MAC_FILE ="libpdftrick-native_" + NATIVE_LIB_VERSION + ".dylib";
 
 	// resource files
 	public static final String MESSAGES_PROPERTY_FILE = "properties/messages.properties";
