@@ -2,14 +2,14 @@ name: pdftrick
 on:
   push:
     branches:
-      - develop
-      #- master
+      #- develop
+      - master
 
 jobs:
   test-mac:
     runs-on: macos-latest
-    if: github.ref == 'refs/heads/develop'
-    #if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -23,8 +23,8 @@ jobs:
 
   test-windows:
     runs-on: windows-latest
-    if: github.ref == 'refs/heads/develop'
-    #if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -39,8 +39,8 @@ jobs:
   create-release:
     needs: [test-mac, test-windows]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-    #if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -62,8 +62,8 @@ jobs:
   release-mac:
     needs: create-release
     runs-on: macos-latest
-    if: github.ref == 'refs/heads/develop'
-    #if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     env:
       RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
@@ -88,8 +88,8 @@ jobs:
   release-windows:
     needs: create-release
     runs-on: windows-latest
-    if: github.ref == 'refs/heads/develop'
-    #if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     env:
       RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
