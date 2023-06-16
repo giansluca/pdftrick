@@ -36,80 +36,76 @@ jobs:
       - name: Test
         run: mvn test -B
 
-#  create-release:
-#    runs-on: ubuntu-latest
-#    if: github.ref == 'refs/heads/develop'
-#    #if: github.ref == 'refs/heads/master'
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#      - name: Set release version
-#        id: version
-#        run: echo "::set-output name=RELEASE_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
-#      - name: Create Release
-#        uses: actions/create-release@v1
-#        id: release
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          release_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-#          tag_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-#          draft: false
-#          prerelease: false
-#    outputs:
-#      upload_url: ${{ steps.release.outputs.upload_url }}
-#      release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
-#
-#  release-mac:
-#    needs: create-release
-#    runs-on: macos-latest
-#    if: github.ref == 'refs/heads/develop'
-#    #if: github.ref == 'refs/heads/master'
-#    env:
-#      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#      - name: Set up JDK
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#      - name: Build
-#        run: mvn clean package -DskipTests -P mac -B
-#      - name: Upload mac artifact
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ github.token }}
-#        with:
-#          upload_url: ${{ needs.create-release.outputs.upload_url }}
-#          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.dmg
-#          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.dmg
-#          asset_content_type: application/octet-stream
-#
-#  release-windows:
-#    needs: create-release
-#    runs-on: windows-latest
-#    if: github.ref == 'refs/heads/develop'
-#    #if: github.ref == 'refs/heads/master'
-#    env:
-#      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#      - name: Set up JDK
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#      - name: Build
-#        run: mvn clean package -DskipTests -P win -B
-#      - name: Upload windows artifact
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ github.token }}
-#        with:
-#          upload_url: ${{ needs.create-release.outputs.upload_url }}
-#          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.exe
-#          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.exe
-#          asset_content_type: application/octet-stream
+  create-release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set release version
+        id: version
+        run: echo "::set-output name=RELEASE_VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: v${{ steps.version.outputs.RELEASE_VERSION }}
+          tag: v${{ steps.version.outputs.RELEASE_VERSION }}
+    outputs:
+      upload_url: ${{ steps.release.outputs.upload_url }}
+      release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
+
+  release-mac:
+    needs: create-release
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/master'
+    env:
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build
+        run: mvn clean package -DskipTests -P mac -B
+      - name: Upload mac artifact
+        uses: shogo82148/actions-upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.dmg
+
+  release-windows:
+    needs: create-release
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/master'
+    env:
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build
+        run: mvn clean package -DskipTests -P win -B
+      - name: Upload windows artifact
+        uses: shogo82148/actions-upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./target/PdfTrick_${{ env.RELEASE_VERSION }}.exe
+          asset_name: PdfTrick_${{ env.RELEASE_VERSION }}.exe
