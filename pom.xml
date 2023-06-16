@@ -4,7 +4,7 @@
 
     <groupId>org.gmdev</groupId>
     <artifactId>pdftrick</artifactId>
-    <version>1.3.7-SNAPSHOT</version>
+    <version>1.3.6-SNAPSHOT</version>
 
     <name>PdfTrick</name>
     <description>Pdf images extractor</description>
